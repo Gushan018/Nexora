@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  body {
+    background-color: theme('colors.background');
+    color: theme('colors.textPrimary');
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-surface/40 backdrop-blur-md border border-white/10;
+  }
+  
+  .glass-card {
+    @apply bg-card/60 backdrop-blur-lg border border-white/5 shadow-xl;
+  }
+
+  .text-gradient {
+    background-image: theme('backgroundImage.gradient-premium');
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Custom Scrollbar for a premium look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0E1A; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1F2937; 
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #374151; 
+}
