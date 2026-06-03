@@ -11,12 +11,16 @@ const getAllVendors = async (req, res) => {
         isApproved: true, 
       },
       select: {
-       
         vendorId: true,
         businessName: true,
         description: true,
         location: true,
-      
+        vendorType: true,
+        isApproved: true,
+        eventPackages: true,
+        reviews: {
+          select: { rating: true }
+        }
       },
     });
 

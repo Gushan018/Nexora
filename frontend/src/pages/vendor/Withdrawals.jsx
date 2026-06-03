@@ -7,9 +7,9 @@ import { Input } from '../../components/common/Input';
 import { cn } from '../../utils/cn';
 
 const HISTORY = [
-  { id: 'WD-1029', date: 'Oct 01, 2026', amount: '$4,200.00', status: 'Completed', account: 'Chase ****4242' },
-  { id: 'WD-1028', date: 'Sep 15, 2026', amount: '$1,850.00', status: 'Completed', account: 'Chase ****4242' },
-  { id: 'WD-1027', date: 'Aug 30, 2026', amount: '$3,100.00', status: 'Completed', account: 'Chase ****4242' },
+  { id: 'WD-1029', date: 'Oct 01, 2026', amount: 'LKR 4,200.00', status: 'Completed', account: 'Chase ****4242' },
+  { id: 'WD-1028', date: 'Sep 15, 2026', amount: 'LKR 1,850.00', status: 'Completed', account: 'Chase ****4242' },
+  { id: 'WD-1027', date: 'Aug 30, 2026', amount: 'LKR 3,100.00', status: 'Completed', account: 'Chase ****4242' },
 ];
 
 export const Withdrawals = () => {
@@ -31,7 +31,7 @@ export const Withdrawals = () => {
           </div>
           <h1 className="text-3xl font-bold text-white mb-4">Withdrawal Initiated</h1>
           <p className="text-white/60 mb-8">
-            Your request for <strong className="text-white">${amount}</strong> is being processed. Funds typically arrive in your connected bank account within 1-3 business days.
+            Your request for <strong className="text-white">LKR {amount}</strong> is being processed. Funds typically arrive in your connected bank account within 1-3 business days.
           </p>
           <Button variant="outline" onClick={() => setIsRequested(false)}>Return to Wallet</Button>
         </motion.div>
@@ -63,7 +63,7 @@ export const Withdrawals = () => {
               <CardContent className="p-6">
                 <h3 className="text-sm font-medium text-white/80 mb-2">Available for Withdrawal</h3>
                 <div className="flex items-end gap-3">
-                  <span className="text-4xl font-bold text-white">${availableBalance.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
+                  <span className="text-4xl font-bold text-white">LKR {availableBalance.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
                 </div>
               </CardContent>
             </Card>
@@ -72,7 +72,7 @@ export const Withdrawals = () => {
               <CardContent className="p-6">
                 <h3 className="text-sm font-medium text-white/60 mb-2">Pending Clearance</h3>
                 <div className="flex items-end gap-3">
-                  <span className="text-3xl font-bold text-white/50">$3,200.00</span>
+                  <span className="text-3xl font-bold text-white/50">LKR 3,200.00</span>
                 </div>
                 <p className="text-xs text-white/40 mt-2">Funds held in escrow for upcoming events</p>
               </CardContent>

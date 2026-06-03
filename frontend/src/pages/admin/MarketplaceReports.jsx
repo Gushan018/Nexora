@@ -114,11 +114,11 @@ export const MarketplaceReports = () => {
           <CardContent className="p-0">
             <div className="divide-y divide-white/5">
               {[
-                { term: 'Vegan Catering Options', volume: '12.5k', location: 'Austin, TX' },
-                { term: 'Drone Light Shows', volume: '8.2k', location: 'Los Angeles, CA' },
-                { term: 'Ice Sculpture Artists', volume: '5.1k', location: 'Chicago, IL' },
+                { term: 'Vegan Catering Options', volume: '12.5k', location: 'Kandy, Sri Lanka' },
+                { term: 'Drone Light Shows', volume: '8.2k', location: 'Colombo, Sri Lanka' },
+                { term: 'Ice Sculpture Artists', volume: '5.1k', location: 'Colombo, Sri Lanka' },
                 { term: 'Pet-Friendly Venues', volume: '4.8k', location: 'Global' },
-                { term: 'Silent Disco Equipment', volume: '3.2k', location: 'New York, NY' },
+                { term: 'Silent Disco Equipment', volume: '3.2k', location: 'Colombo, Sri Lanka' },
               ].map((search, i) => (
                 <div key={i} className="p-4 flex items-center justify-between hover:bg-white/[0.02] transition-colors">
                   <div>

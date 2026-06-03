@@ -6,10 +6,10 @@ import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 
 const SERVICES = [
-  { id: 'SVC-001', name: 'Premium Wedding Photography', category: 'Photography', price: 'from $1,500', bookings: 24, status: 'Active' },
-  { id: 'SVC-002', name: 'Pre-Shoot Engagement Session', category: 'Photography', price: 'from $450', bookings: 12, status: 'Active' },
-  { id: 'SVC-003', name: 'Drone Videography Add-on', category: 'Videography', price: 'from $300', bookings: 8, status: 'Active' },
-  { id: 'SVC-004', name: 'Destination Wedding Package', category: 'Photography', price: 'from $3,500', bookings: 2, status: 'Hidden' },
+  { id: 'SVC-001', name: 'Premium Wedding Photography', category: 'Photography', price: 'from LKR 1,500', bookings: 24, status: 'Active' },
+  { id: 'SVC-002', name: 'Pre-Shoot Engagement Session', category: 'Photography', price: 'from LKR 450', bookings: 12, status: 'Active' },
+  { id: 'SVC-003', name: 'Drone Videography Add-on', category: 'Videography', price: 'from LKR 300', bookings: 8, status: 'Active' },
+  { id: 'SVC-004', name: 'Destination Wedding Package', category: 'Photography', price: 'from LKR 3,500', bookings: 2, status: 'Hidden' },
 ];
 
 export const ServiceListing = () => {

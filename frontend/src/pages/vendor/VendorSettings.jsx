@@ -61,7 +61,7 @@ export const VendorSettings = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-white/90">Default Currency</label>
                   <select className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
-                    <option value="USD">USD ($)</option>
+                    <option value="USD">LKR (Rs)</option>
                     <option value="EUR">EUR (€)</option>
                     <option value="GBP">GBP (£)</option>
                   </select>

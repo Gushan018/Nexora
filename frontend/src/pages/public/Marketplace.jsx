@@ -4,31 +4,48 @@ import { Search, Filter, ShoppingCart, Star, ChevronDown, Heart } from 'lucide-r
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import { cn } from '../../utils/cn';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '../../utils/api';
+import { Link, useNavigate } from 'react-router-dom';
+import { PageLoader } from '../../components/common/PageLoader';
+import { useAuth } from '../../context/AuthContext';
 
-// Mock Data
-const PRODUCTS = [
-  { id: 1, name: 'Premium Gold Cutlery Set', category: 'Catering', price: 120, rating: 4.8, reviews: 124, image: 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=500&q=80', vendor: 'Luxe Dining' },
-  { id: 2, name: 'Crystal Chandelier Tent', category: 'Decor', price: 1500, rating: 4.9, reviews: 56, image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=500&q=80', vendor: 'Event Elegance' },
-  { id: 3, name: 'Professional DJ Set & Lights', category: 'Entertainment', price: 850, rating: 4.7, reviews: 342, image: 'https://images.unsplash.com/photo-1571266028243-cb40f5616b37?w=500&q=80', vendor: 'SoundWave' },
-  { id: 4, name: 'Floral Archway Centerpiece', category: 'Decor', price: 450, rating: 5.0, reviews: 89, image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=500&q=80', vendor: 'Bloom Designs' },
-  { id: 5, name: 'Vintage Photo Booth', category: 'Entertainment', price: 300, rating: 4.6, reviews: 210, image: 'https://images.unsplash.com/photo-1516280440502-36a5bb3b1ce1?w=500&q=80', vendor: 'Memories Inc' },
-  { id: 6, name: 'Artisan Wedding Cake (3 Tier)', category: 'Catering', price: 650, rating: 4.9, reviews: 178, image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=500&q=80', vendor: 'Sweet Treats' },
-];
+// No mock data needed here anymore
 
 const CATEGORIES = ['All', 'Decor', 'Catering', 'Entertainment', 'Venue Supplies', 'Lighting'];
 
-export const Marketplace = () => {
+export const Marketplace = ({ isDashboard = false }) => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+
+  const { user } = useAuth();
+
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const res = await api.get('/products');
+      return res.data;
+    }
+  });
+
+  const { data: wishlistItems = [] } = useQuery({
+    queryKey: ['wishlist'],
+    queryFn: async () => {
+      if (!user) return [];
+      const res = await api.get('/wishlist/my');
+      return res.data;
+    },
+    enabled: !!user
+  });
   
-  const filteredProducts = PRODUCTS.filter(p => {
-    const matchesCategory = activeCategory === 'All' || p.category === activeCategory;
-    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredProducts = products.filter(p => {
+    const matchesCategory = activeCategory === 'All' || (p.category?.categoryName || 'Uncategorized') === activeCategory;
+    const matchesSearch = p.productName.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   return (
-    <div className="pt-40 pb-20 min-h-screen bg-background">
+    <div className={cn("pb-20 min-h-screen bg-background", !isDashboard ? "pt-32" : "pt-6")}>
       <div className="container mx-auto px-6 max-w-7xl">
         
         {/* Header Section */}
@@ -88,19 +105,22 @@ export const Marketplace = () => {
           </div>
         </motion.div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <ProductCard product={product} />
-            </motion.div>
-          ))}
-        </div>
+        {isLoading ? (
+          <PageLoader text="Loading products..." />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProducts.map((product, index) => (
+              <motion.div
+                key={product.productId}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <ProductCard product={product} wishlistItems={wishlistItems} />
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         {filteredProducts.length === 0 && (
           <div className="py-20 text-center">
@@ -117,29 +137,82 @@ export const Marketplace = () => {
   );
 };
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, wishlistItems = [] }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  
+  const wishlistItem = wishlistItems.find(item => item.productId === product.productId);
+  const isWishlisted = !!wishlistItem;
+
+  const addToWishlistMutation = useMutation({
+    mutationFn: async () => {
+      const res = await api.post('/wishlist/add', {
+        productId: product.productId
+      });
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['wishlist']);
+    },
+    onError: (err) => {
+      alert(err.response?.data?.message || 'Failed to add to wishlist.');
+    }
+  });
+
+  const removeFromWishlistMutation = useMutation({
+    mutationFn: async (wishlistId) => {
+      const res = await api.delete(`/wishlist/${wishlistId}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['wishlist']);
+    },
+    onError: (err) => {
+      alert(err.response?.data?.message || 'Failed to remove from wishlist.');
+    }
+  });
+
+  const handleWishlistToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isWishlisted) {
+      removeFromWishlistMutation.mutate(wishlistItem.wishlistId);
+    } else {
+      addToWishlistMutation.mutate();
+    }
+  };
 
   return (
     <div 
       className="glass-card rounded-2xl overflow-hidden group cursor-pointer border border-white/5 hover:border-primary/50 transition-colors duration-500"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => navigate(`/customer/product-details/${product.productId}`)}
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-surface">
         <img 
-          src={product.image} 
-          alt={product.name}
+          src={product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=500&q=80'} 
+          alt={product.productName}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
         />
         <div className="absolute top-4 right-4">
-          <button className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white/80 hover:text-red-400 hover:bg-black/60 transition-all border border-white/10">
-            <Heart className="w-5 h-5" />
+          <button 
+            onClick={handleWishlistToggle}
+            disabled={addToWishlistMutation.isPending || removeFromWishlistMutation.isPending}
+            className={cn(
+              "w-10 h-10 rounded-full flex items-center justify-center transition-all border disabled:opacity-50",
+              isWishlisted 
+                ? "bg-red-500/20 text-red-500 border-red-500/50" 
+                : "bg-black/40 backdrop-blur-md text-white/80 border-white/10 hover:text-red-400 hover:bg-black/60"
+            )}
+          >
+            <Heart className={cn("w-5 h-5", isWishlisted && "fill-current")} />
           </button>
         </div>
         <div className="absolute top-4 left-4">
           <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-medium text-white/90 border border-white/10">
-            {product.category}
+            {product.category?.categoryName || 'Uncategorized'}
           </span>
         </div>
         
@@ -148,7 +221,15 @@ const ProductCard = ({ product }) => {
           "absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent flex items-end justify-center transition-opacity duration-300",
           isHovered ? "opacity-100" : "opacity-0"
         )}>
-          <Button className="w-full" leftIcon={<ShoppingCart className="w-4 h-4" />}>
+          <Button 
+            className="w-full" 
+            leftIcon={<ShoppingCart className="w-4 h-4" />}
+            onClick={(e) => {
+              e.stopPropagation();
+              // Logic to quick add to cart could go here later
+              navigate(`/customer/product-details/${product.productId}`);
+            }}
+          >
             Quick Add
           </Button>
         </div>
@@ -157,20 +238,20 @@ const ProductCard = ({ product }) => {
       <div className="p-6">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <p className="text-xs text-primary mb-1 font-medium">{product.vendor}</p>
+            <p className="text-xs text-primary mb-1 font-medium">{product.vendor?.businessName}</p>
             <h3 className="text-lg font-semibold text-white leading-tight mb-2 group-hover:text-primary transition-colors">
-              {product.name}
+              {product.productName}
             </h3>
           </div>
           <div className="text-right">
-            <span className="text-xl font-bold text-white">${product.price}</span>
+            <span className="text-xl font-bold text-white">LKR {Number(product.price).toFixed(2)}</span>
           </div>
         </div>
         
         <div className="flex items-center gap-2 text-sm">
           <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-          <span className="text-white font-medium">{product.rating}</span>
-          <span className="text-white/40">({product.reviews} reviews)</span>
+          <span className="text-white font-medium">4.8</span>
+          <span className="text-white/40">(12 reviews)</span>
         </div>
       </div>
     </div>

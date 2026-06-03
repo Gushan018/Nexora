@@ -3,14 +3,40 @@ import { motion } from 'framer-motion';
 import { Star, Upload, CheckCircle2, ChevronLeft, Building, Camera, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { cn } from '../../utils/cn';
+import { useMutation } from '@tanstack/react-query';
+import { api } from '../../utils/api';
 
 export const ReviewSubmission = () => {
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  const vendorId = searchParams.get('vendorId');
+  const serviceId = searchParams.get('serviceId');
+  const productId = searchParams.get('productId');
+
+  const submitReviewMutation = useMutation({
+    mutationFn: async () => {
+      const res = await api.post('/reviews', {
+        rating,
+        comment: reviewText,
+        vendorId: vendorId ? parseInt(vendorId) : null,
+        serviceId: serviceId ? parseInt(serviceId) : null,
+        productId: productId ? parseInt(productId) : null
+      });
+      return res.data;
+    },
+    onSuccess: () => {
+      setIsSubmitted(true);
+    },
+    onError: (err) => {
+      alert(err.response?.data?.message || 'Failed to submit review.');
+    }
+  });
 
   if (isSubmitted) {
     return (
@@ -53,8 +79,8 @@ export const ReviewSubmission = () => {
               <Camera className="w-8 h-8" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white">Lumiere Photography</h2>
-              <p className="text-sm text-white/50">Service provided on Oct 14, 2026</p>
+              <h2 className="text-xl font-bold text-white">Reviewing Your Experience</h2>
+              <p className="text-sm text-white/50">Your feedback is highly valued.</p>
             </div>
           </CardContent>
         </Card>
@@ -130,10 +156,10 @@ export const ReviewSubmission = () => {
             <Button 
               className="w-full" 
               size="lg"
-              disabled={rating === 0 || reviewText.length < 50}
-              onClick={() => setIsSubmitted(true)}
+              disabled={rating === 0 || reviewText.length < 50 || submitReviewMutation.isPending}
+              onClick={() => submitReviewMutation.mutate()}
             >
-              Submit Review
+              {submitReviewMutation.isPending ? 'Submitting...' : 'Submit Review'}
             </Button>
 
           </CardContent>

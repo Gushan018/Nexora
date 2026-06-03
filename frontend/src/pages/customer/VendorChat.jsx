@@ -4,29 +4,49 @@ import { MessageSquare, Send, Paperclip, MoreVertical, ChevronLeft, Phone, Calen
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
-import { Link } from 'react-router-dom';
-
-const CHAT_HISTORY = [
-  { id: 1, sender: 'vendor', time: '10:30 AM', text: 'Hi! Thanks for booking with Lumiere Photography. I saw your notes about wanting sunset photos.' },
-  { id: 2, sender: 'customer', time: '10:35 AM', text: 'Yes! The venue has a gorgeous west-facing terrace. Do you think we need to adjust the timeline to catch the golden hour?' },
-  { id: 3, sender: 'vendor', time: '10:40 AM', text: 'Let me check the sunset times for Oct 14th in Malibu.' },
-  { id: 4, sender: 'vendor', time: '10:42 AM', text: 'Sunset is exactly at 6:22 PM. If we slip out at 5:45 PM during cocktail hour, we can absolutely accommodate the drone shots for the sunset session.' },
-];
+import { Link, useParams } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '../../utils/api';
+import { PageLoader } from '../../components/common/PageLoader';
 
 export const VendorChat = () => {
+  const { conversationId } = useParams();
+  const queryClient = useQueryClient();
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState(CHAT_HISTORY);
   const bottomRef = useRef(null);
+
+  const { data: messages = [], isLoading } = useQuery({
+    queryKey: ['messages', conversationId],
+    queryFn: async () => {
+      if (!conversationId) return [];
+      const res = await api.get(`/chat/messages/${conversationId}`);
+      return res.data;
+    },
+    enabled: !!conversationId,
+    refetchInterval: 3000 // Poll every 3 seconds
+  });
+
+  const sendMutation = useMutation({
+    mutationFn: async (text) => {
+      const res = await api.post('/chat/messages', { conversationId, text });
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['messages', conversationId]);
+      setMessage('');
+    }
+  });
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   const handleSend = () => {
-    if (!message.trim()) return;
-    setMessages([...messages, { id: Date.now(), sender: 'customer', time: 'Just now', text: message }]);
-    setMessage('');
+    if (!message.trim() || sendMutation.isPending) return;
+    sendMutation.mutate(message);
   };
+
+  if (isLoading) return <PageLoader />;
 
   return (
     <div className="max-w-4xl mx-auto h-[calc(100vh-6rem)] pt-6 flex flex-col">
@@ -67,7 +87,8 @@ export const VendorChat = () => {
           </div>
 
           {messages.map((msg) => {
-            const isMe = msg.sender === 'customer';
+            const isMe = msg.senderType === 'customer';
+            const timeStr = new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             return (
               <div key={msg.id} className={cn("flex w-full", isMe ? "justify-end" : "justify-start")}>
                 <div className={cn(
@@ -79,7 +100,7 @@ export const VendorChat = () => {
                     "text-[10px] mt-2 flex items-center gap-1",
                     isMe ? "text-white/60 justify-end" : "text-white/40 justify-start"
                   )}>
-                    {msg.time}
+                    {timeStr}
                   </div>
                 </div>
               </div>
@@ -105,7 +126,7 @@ export const VendorChat = () => {
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             />
-            <Button size="sm" className="px-4 shrink-0" onClick={handleSend} disabled={!message.trim()}>
+            <Button size="sm" className="px-4 shrink-0" onClick={handleSend} disabled={!message.trim() || sendMutation.isPending}>
               <Send className="w-4 h-4" />
             </Button>
           </div>

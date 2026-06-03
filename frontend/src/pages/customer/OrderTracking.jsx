@@ -125,15 +125,15 @@ export const OrderTracking = () => {
               <div className="pt-4 border-t border-white/5 space-y-2 text-sm">
                 <div className="flex justify-between text-white/60">
                   <span>Subtotal</span>
-                  <span className="text-white">$12,500</span>
+                  <span className="text-white">LKR 12,500</span>
                 </div>
                 <div className="flex justify-between text-white/60">
                   <span>Logistics</span>
-                  <span className="text-white">$350</span>
+                  <span className="text-white">LKR 350</span>
                 </div>
                 <div className="flex justify-between font-bold pt-2 border-t border-white/5 text-white">
                   <span>Total</span>
-                  <span className="text-primary">$12,850</span>
+                  <span className="text-primary">LKR 12,850</span>
                 </div>
               </div>
             </CardContent>

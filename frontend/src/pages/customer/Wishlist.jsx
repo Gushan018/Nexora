@@ -1,52 +1,89 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, MoreVertical } from 'lucide-react';
+import { Heart, Trash2 } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '../../utils/api';
+import { Link } from 'react-router-dom';
+import { PageLoader } from '../../components/common/PageLoader';
 
 export const Wishlist = () => {
+  const queryClient = useQueryClient();
+
+  const { data: wishlist, isLoading } = useQuery({
+    queryKey: ['wishlist'],
+    queryFn: async () => {
+      const res = await api.get('/wishlist/my');
+      return res.data;
+    }
+  });
+
+  const removeMutation = useMutation({
+    mutationFn: async (id) => {
+      await api.delete(`/wishlist/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['wishlist']);
+      queryClient.invalidateQueries(['customerDashboardStats']);
+    }
+  });
+
+  if (isLoading) return <PageLoader text="Loading wishlist..." />;
+
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Wishlist</h1>
-          <p className="text-white/60">Manage and view all records.</p>
-        </div>
-        <Button>Add New</Button>
+      <div>
+        <h1 className="text-2xl font-bold text-white mb-2">My Wishlist</h1>
+        <p className="text-white/60">Saved items and services for your upcoming events.</p>
       </div>
-      <Card>
-        <div className="p-4 border-b border-white/5 flex gap-4">
-          <div className="relative flex-1">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
-            <input type="text" placeholder="Search records..." className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-white focus:outline-none focus:border-primary" />
-          </div>
-          <Button variant="outline" leftIcon={<Filter className="w-4 h-4"/>}>Filter</Button>
+
+      {wishlist?.length === 0 ? (
+        <Card className="text-center py-12">
+          <CardContent className="flex flex-col items-center">
+            <Heart className="w-12 h-12 text-white/20 mb-4" />
+            <h3 className="text-xl font-bold text-white mb-2">Your wishlist is empty</h3>
+            <p className="text-white/60 mb-6">Start browsing the marketplace and vendors to save your favorites!</p>
+            <Link to="/customer/marketplace">
+              <Button>Explore Marketplace</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {wishlist?.map((item) => {
+            const detail = item.product || item.service || item.package;
+            const type = item.product ? 'Product' : item.service ? 'Service' : 'Package';
+            
+            return (
+              <Card key={item.wishlistId} className="group overflow-hidden flex flex-col">
+                <div className="h-48 overflow-hidden relative">
+                  <img src={detail?.imageUrl || 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=500&q=80'} alt="Item" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <button 
+                    onClick={() => removeMutation.mutate(item.wishlistId)}
+                    className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-red-400 hover:bg-red-500 hover:text-white transition-colors"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                  <div className="absolute bottom-4 left-4 px-3 py-1 bg-black/50 backdrop-blur-md text-xs font-medium text-white rounded-full">
+                    {type}
+                  </div>
+                </div>
+                <CardContent className="p-6 flex flex-col flex-1">
+                  <h3 className="font-bold text-white text-lg mb-1">{detail?.productName || detail?.serviceName || detail?.packageName}</h3>
+                  <p className="text-sm text-primary mb-3">{detail?.vendor?.businessName || 'Unknown Vendor'}</p>
+                  <div className="mt-auto pt-4 flex items-center justify-between border-t border-white/10">
+                    <span className="font-bold text-white">LKR {Number(detail?.price || 0).toFixed(2)}</span>
+                    <Link to={item.product ? `/customer/product-details/${item.productId}` : `/vendor-directory`}>
+                      <Button variant="outline" size="sm">View Details</Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b border-white/5 text-sm text-white/50">
-                <th className="p-4 font-medium">ID</th>
-                <th className="p-4 font-medium">Name</th>
-                <th className="p-4 font-medium">Status</th>
-                <th className="p-4 font-medium">Date</th>
-                <th className="p-4"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {[1,2,3,4,5].map(i => (
-                <tr key={i} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="p-4 text-white">#00${i}</td>
-                  <td className="p-4 text-white">Sample Record ${i}</td>
-                  <td className="p-4"><span className="px-2 py-1 bg-green-500/10 text-green-400 rounded-full text-xs">Active</span></td>
-                  <td className="p-4 text-white/60">Oct 24, 2026</td>
-                  <td className="p-4 text-right"><button className="text-white/40 hover:text-white"><MoreVertical className="w-5 h-5"/></button></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      )}
     </div>
   );
 };

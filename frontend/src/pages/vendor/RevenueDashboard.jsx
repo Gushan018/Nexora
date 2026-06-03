@@ -34,7 +34,7 @@ export const RevenueDashboard = () => {
             <h3 className="text-sm font-medium text-white/80 mb-2">Gross Revenue (YTD)</h3>
             <div className="flex justify-between items-end">
               <div>
-                <span className="text-5xl font-bold text-white">$142,500</span>
+                <span className="text-5xl font-bold text-white">LKR 142,500</span>
                 <p className="text-sm text-green-400 flex items-center gap-1 mt-2">
                   <ArrowUpRight className="w-4 h-4" /> +24% vs last year
                 </p>
@@ -51,7 +51,7 @@ export const RevenueDashboard = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Platform Fees</h3>
             <div className="flex flex-col justify-end h-full">
-              <span className="text-3xl font-bold text-white/80">-$7,125</span>
+              <span className="text-3xl font-bold text-white/80">-LKR 7,125</span>
               <p className="text-xs text-white/40 mt-1">Flat 5% Nexora Fee</p>
             </div>
           </CardContent>
@@ -62,7 +62,7 @@ export const RevenueDashboard = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Net Earnings</h3>
             <div className="flex flex-col justify-end h-full">
-              <span className="text-3xl font-bold text-white">$135,375</span>
+              <span className="text-3xl font-bold text-white">LKR 135,375</span>
               <p className="text-xs text-white/40 mt-1">Available to withdraw</p>
             </div>
           </CardContent>
@@ -100,11 +100,11 @@ export const RevenueDashboard = () => {
           <CardContent className="p-0">
             <div className="divide-y divide-white/5">
               {[
-                { date: 'Oct 01, 2026', amount: '$4,200.00', status: 'Cleared' },
-                { date: 'Sep 15, 2026', amount: '$1,850.00', status: 'Cleared' },
-                { date: 'Aug 30, 2026', amount: '$3,100.00', status: 'Cleared' },
-                { date: 'Aug 15, 2026', amount: '$2,400.00', status: 'Cleared' },
-                { date: 'Jul 30, 2026', amount: '$5,100.00', status: 'Cleared' },
+                { date: 'Oct 01, 2026', amount: 'LKR 4,200.00', status: 'Cleared' },
+                { date: 'Sep 15, 2026', amount: 'LKR 1,850.00', status: 'Cleared' },
+                { date: 'Aug 30, 2026', amount: 'LKR 3,100.00', status: 'Cleared' },
+                { date: 'Aug 15, 2026', amount: 'LKR 2,400.00', status: 'Cleared' },
+                { date: 'Jul 30, 2026', amount: 'LKR 5,100.00', status: 'Cleared' },
               ].map((payout, i) => (
                 <div key={i} className="p-4 flex items-center justify-between hover:bg-white/[0.02] transition-colors">
                   <div className="flex items-center gap-3">

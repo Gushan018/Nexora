@@ -7,10 +7,10 @@ import { cn } from '../../utils/cn';
 import { Link } from 'react-router-dom';
 
 const BOOKINGS = [
-  { id: 'BKG-8492', customer: 'Sarah Jenkins', eventType: 'Wedding Reception', date: 'Oct 14, 2026', status: 'Confirmed', amount: '$3,200', paid: '$640' },
-  { id: 'BKG-8491', customer: 'David Osei', eventType: 'Corporate Gala', date: 'Oct 22, 2026', status: 'Confirmed', amount: '$1,500', paid: '$1,500' },
-  { id: 'BKG-8100', customer: 'Emma Watson', eventType: 'Engagement Party', date: 'Sep 20, 2026', status: 'Completed', amount: '$2,100', paid: '$2,100' },
-  { id: 'BKG-7944', customer: 'Liam Hemsworth', eventType: 'Birthday Bash', date: 'Aug 15, 2026', status: 'Cancelled', amount: '$800', paid: '$160' },
+  { id: 'BKG-8492', customer: 'Sarah Jenkins', eventType: 'Wedding Reception', date: 'Oct 14, 2026', status: 'Confirmed', amount: 'LKR 3,200', paid: 'LKR 640' },
+  { id: 'BKG-8491', customer: 'David Osei', eventType: 'Corporate Gala', date: 'Oct 22, 2026', status: 'Confirmed', amount: 'LKR 1,500', paid: 'LKR 1,500' },
+  { id: 'BKG-8100', customer: 'Emma Watson', eventType: 'Engagement Party', date: 'Sep 20, 2026', status: 'Completed', amount: 'LKR 2,100', paid: 'LKR 2,100' },
+  { id: 'BKG-7944', customer: 'Liam Hemsworth', eventType: 'Birthday Bash', date: 'Aug 15, 2026', status: 'Cancelled', amount: 'LKR 800', paid: 'LKR 160' },
 ];
 
 export const BookingManagement = () => {
@@ -43,7 +43,7 @@ export const BookingManagement = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Pending Balance</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">$14,500</span>
+              <span className="text-3xl font-bold text-white">LKR 14,500</span>
             </div>
           </CardContent>
         </Card>

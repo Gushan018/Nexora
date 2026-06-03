@@ -7,11 +7,11 @@ import { cn } from '../../utils/cn';
 import { Link } from 'react-router-dom';
 
 const PRODUCTS = [
-  { id: '#PRD-01', name: 'Premium Gold Cutlery Set', category: 'Catering Supplies', price: '$120.00', stock: 45, status: 'Active' },
-  { id: '#PRD-02', name: 'Crystal Wine Glasses (Set of 12)', category: 'Catering Supplies', price: '$85.00', stock: 12, status: 'Active' },
-  { id: '#PRD-03', name: 'Silk Table Linens', category: 'Decor', price: '$45.00', stock: 0, status: 'Out of Stock' },
-  { id: '#PRD-04', name: 'LED Uplights (x4)', category: 'Lighting', price: '$450.00', stock: 8, status: 'Draft' },
-  { id: '#PRD-05', name: 'Rustic Wooden Arch', category: 'Decor', price: '$300.00', stock: 2, status: 'Low Stock' },
+  { id: '#PRD-01', name: 'Premium Gold Cutlery Set', category: 'Catering Supplies', price: 'LKR 120.00', stock: 45, status: 'Active' },
+  { id: '#PRD-02', name: 'Crystal Wine Glasses (Set of 12)', category: 'Catering Supplies', price: 'LKR 85.00', stock: 12, status: 'Active' },
+  { id: '#PRD-03', name: 'Silk Table Linens', category: 'Decor', price: 'LKR 45.00', stock: 0, status: 'Out of Stock' },
+  { id: '#PRD-04', name: 'LED Uplights (x4)', category: 'Lighting', price: 'LKR 450.00', stock: 8, status: 'Draft' },
+  { id: '#PRD-05', name: 'Rustic Wooden Arch', category: 'Decor', price: 'LKR 300.00', stock: 2, status: 'Low Stock' },
 ];
 
 export const SellerProductManagement = () => {

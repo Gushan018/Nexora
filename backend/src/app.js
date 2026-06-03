@@ -13,6 +13,12 @@ const cartRoutes = require('./routes/cart.routes');
 const orderRoutes = require('./routes/order.routes');
 const paymentRoutes = require('./routes/payment.routes');
 const adminRoutes = require('./routes/admin.routes'); 
+const customerRoutes = require('./routes/customer.routes');
+const reviewRoutes = require('./routes/review.routes');
+const notificationRoutes = require('./routes/notification.routes');
+const wishlistRoutes = require('./routes/wishlist.routes');
+const budgetRoutes = require('./routes/budget.routes');
+const chatRoutes = require('./routes/chat.routes');
 
 // ===================================
 
@@ -33,6 +39,12 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes); 
+app.use('/api/customers', customerRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/budget', budgetRoutes);
+app.use('/api/chat', chatRoutes);
 
 // ===================================
 

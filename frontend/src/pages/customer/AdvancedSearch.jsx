@@ -39,8 +39,8 @@ export const AdvancedSearch = () => {
                 <h3 className="text-sm font-bold text-white">Price Range</h3>
                 <input type="range" min="0" max="10000" className="w-full accent-primary" />
                 <div className="flex justify-between text-xs text-white/40">
-                  <span>$0</span>
-                  <span>$10,000+</span>
+                  <span>LKR 0</span>
+                  <span>LKR 10,000+</span>
                 </div>
               </div>
 
@@ -108,7 +108,7 @@ export const AdvancedSearch = () => {
                   <div>
                     <h3 className="font-bold text-lg text-white mb-1 group-hover:text-primary transition-colors">Grand Azure Resort</h3>
                     <p className="text-sm text-white/60 flex items-center gap-1 mb-3">
-                      <MapPin className="w-3.5 h-3.5" /> Malibu, CA
+                      <MapPin className="w-3.5 h-3.5" /> Kandy, Sri Lanka
                     </p>
                     <p className="text-sm text-white/70 line-clamp-2">
                       A breathtaking beachfront venue perfect for sunset ceremonies and grand receptions.
@@ -117,7 +117,7 @@ export const AdvancedSearch = () => {
                   <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-end">
                     <div>
                       <span className="text-xs text-white/40 block">Starting from</span>
-                      <span className="font-bold text-white">$4,500</span>
+                      <span className="font-bold text-white">LKR 4,500</span>
                     </div>
                     <Button variant="outline" size="sm">View Details</Button>
                   </div>

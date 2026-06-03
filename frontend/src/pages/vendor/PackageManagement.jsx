@@ -65,7 +65,7 @@ export const PackageManagement = () => {
                     {pkg.name}
                   </h3>
                   <div className="flex items-baseline gap-1 mt-2">
-                    <span className="text-3xl font-bold text-white">${pkg.price}</span>
+                    <span className="text-3xl font-bold text-white">LKR {pkg.price}</span>
                     <span className="text-sm text-white/40">/event</span>
                   </div>
                 </div>
@@ -108,9 +108,9 @@ export const PackageManagement = () => {
             <CardContent className="p-0">
               <div className="divide-y divide-white/5">
                 {[
-                  { name: 'Extra Hour of Coverage', price: '$250/hr' },
-                  { name: 'Rush Editing (1 Week Delivery)', price: '$500 flat' },
-                  { name: 'Drone Photography', price: '$350 flat' },
+                  { name: 'Extra Hour of Coverage', price: 'LKR 250/hr' },
+                  { name: 'Rush Editing (1 Week Delivery)', price: 'LKR 500 flat' },
+                  { name: 'Drone Photography', price: 'LKR 350 flat' },
                 ].map((addon, i) => (
                   <div key={i} className="p-4 flex items-center justify-between group hover:bg-white/[0.02] transition-colors">
                     <div className="flex items-center gap-3">

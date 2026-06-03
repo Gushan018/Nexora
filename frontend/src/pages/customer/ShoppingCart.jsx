@@ -4,44 +4,68 @@ import { Trash2, Minus, Plus, ShoppingBag, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '../../utils/api';
 
 export const ShoppingCart = () => {
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: 'Premium Gold Cutlery Set (100 Pieces)',
-      vendor: 'Luxe Dining',
-      price: 120.00,
-      quantity: 2,
-      image: 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=200&q=80'
-    },
-    {
-      id: 2,
-      name: 'Silk Table Linens (10 Pack)',
-      vendor: 'Event Elegance',
-      price: 45.00,
-      quantity: 5,
-      image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=200&q=80'
-    }
-  ]);
+  const queryClient = useQueryClient();
 
-  const updateQuantity = (id, delta) => {
-    setItems(items.map(item => {
-      if (item.id === id) {
-        const newQuantity = Math.max(1, item.quantity + delta);
-        return { ...item, quantity: newQuantity };
+  const { data: cart, isLoading } = useQuery({
+    queryKey: ['cart'],
+    queryFn: async () => {
+      try {
+        const res = await api.get('/cart');
+        return res.data;
+      } catch (err) {
+        if (err.response?.status === 404) return { cartItems: [] };
+        throw err;
       }
-      return item;
-    }));
+    }
+  });
+
+  const removeItemMutation = useMutation({
+    mutationFn: async (cartItemId) => {
+      const res = await api.delete(`/cart/item/${cartItemId}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['cart']);
+    },
+    onError: (err) => {
+      alert(err.response?.data?.message || 'Failed to remove item.');
+    }
+  });
+
+  const updateQuantityMutation = useMutation({
+    mutationFn: async ({ cartItemId, quantity }) => {
+      const res = await api.put(`/cart/item/${cartItemId}`, { quantity });
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['cart']);
+    },
+    onError: (err) => {
+      alert(err.response?.data?.message || 'Failed to update quantity.');
+    }
+  });
+
+  const updateQuantity = (cartItemId, currentQuantity, delta) => {
+    const newQuantity = currentQuantity + delta;
+    if (newQuantity < 1) return;
+    updateQuantityMutation.mutate({ cartItemId, quantity: newQuantity });
   };
 
   const removeItem = (id) => {
-    setItems(items.filter(item => item.id !== id));
+    removeItemMutation.mutate(id);
   };
 
-  const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const items = cart?.cartItems || [];
+
+  const subtotal = items.reduce((sum, item) => sum + (Number(item.product.price) * item.quantity), 0);
   const tax = subtotal * 0.10; // 10% tax
   const total = subtotal + tax;
+
+  if (isLoading) return <div className="pt-32 pb-20 text-center text-white">Loading cart...</div>;
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background">
@@ -66,20 +90,21 @@ export const ShoppingCart = () => {
             
             <div className="lg:col-span-2 space-y-6">
               {items.map((item) => (
-                <Card key={item.id} className="overflow-hidden">
+                <Card key={item.cartItemId} className="overflow-hidden">
                   <CardContent className="p-0 flex flex-col sm:flex-row">
                     <div className="w-full sm:w-48 h-48 sm:h-auto bg-surface shrink-0">
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      <img src={item.product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=200&q=80'} alt={item.product.productName} className="w-full h-full object-cover" />
                     </div>
                     <div className="p-6 flex-1 flex flex-col justify-between">
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <p className="text-sm text-primary mb-1">{item.vendor}</p>
-                          <h3 className="text-lg font-bold text-white leading-tight">{item.name}</h3>
+                          <p className="text-sm text-primary mb-1">Product ID: {item.productId}</p>
+                          <h3 className="text-lg font-bold text-white leading-tight">{item.product.productName}</h3>
                         </div>
                         <button 
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => removeItem(item.cartItemId)}
                           className="text-white/40 hover:text-red-400 transition-colors p-2"
+                          disabled={removeItemMutation.isPending}
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
@@ -87,16 +112,15 @@ export const ShoppingCart = () => {
                       
                       <div className="flex justify-between items-center mt-auto pt-4 border-t border-white/5">
                         <div className="flex items-center gap-4 bg-surface rounded-xl border border-white/10 p-1">
-                          <button onClick={() => updateQuantity(item.id, -1)} className="w-8 h-8 rounded-lg hover:bg-white/10 text-white flex items-center justify-center">
+                          <button onClick={() => updateQuantity(item.cartItemId, item.quantity, -1)} className="w-8 h-8 rounded-lg hover:bg-white/10 text-white flex items-center justify-center">
                             <Minus className="w-4 h-4" />
                           </button>
                           <span className="w-8 text-center font-medium text-white">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.id, 1)} className="w-8 h-8 rounded-lg hover:bg-white/10 text-white flex items-center justify-center">
+                          <button onClick={() => updateQuantity(item.cartItemId, item.quantity, 1)} className="w-8 h-8 rounded-lg hover:bg-white/10 text-white flex items-center justify-center">
                             <Plus className="w-4 h-4" />
                           </button>
                         </div>
-                        <div className="text-xl font-bold text-white">
-                          ${(item.price * item.quantity).toFixed(2)}
+                        <div className="text-xl font-bold text-white">LKR {(Number(item.product.price) * item.quantity).toFixed(2)}
                         </div>
                       </div>
                     </div>
@@ -113,11 +137,11 @@ export const ShoppingCart = () => {
                   <div className="space-y-4 text-sm border-b border-white/10 pb-6 mb-6">
                     <div className="flex justify-between text-white/80">
                       <span>Subtotal ({items.length} items)</span>
-                      <span>${subtotal.toFixed(2)}</span>
+                      <span>LKR {subtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-white/80">
                       <span>Estimated Tax (10%)</span>
-                      <span>${tax.toFixed(2)}</span>
+                      <span>LKR {tax.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-white/80">
                       <span>Shipping</span>
@@ -127,7 +151,7 @@ export const ShoppingCart = () => {
 
                   <div className="flex justify-between items-center text-xl font-bold text-white mb-8">
                     <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>LKR {total.toFixed(2)}</span>
                   </div>
 
                   <Link to="/customer/checkout">

@@ -116,9 +116,9 @@ export const VendorBookingAnalytics = () => {
           <CardContent className="flex-1 p-0 flex">
             <div className="w-1/2 p-6 border-r border-white/5 space-y-4">
               {[
-                { city: 'Los Angeles, CA', count: 42, pct: 50 },
+                { city: 'Colombo, Sri Lanka', count: 42, pct: 50 },
                 { city: 'Santa Monica, CA', count: 21, pct: 25 },
-                { city: 'Malibu, CA', count: 12, pct: 14 },
+                { city: 'Kandy, Sri Lanka', count: 12, pct: 14 },
                 { city: 'Other', count: 9, pct: 11 },
               ].map((loc, i) => (
                 <div key={i}>

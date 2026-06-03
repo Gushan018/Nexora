@@ -36,15 +36,15 @@ export const BookingCancellation = () => {
             <div className="bg-surface/50 border border-white/5 rounded-lg p-4 space-y-2">
               <div className="flex justify-between">
                 <span>Total Booking Value:</span>
-                <span className="font-bold text-white">$3,200.00</span>
+                <span className="font-bold text-white">LKR 3,200.00</span>
               </div>
               <div className="flex justify-between">
                 <span>Amount Paid:</span>
-                <span className="font-bold text-white">$640.00 (Deposit)</span>
+                <span className="font-bold text-white">LKR 640.00 (Deposit)</span>
               </div>
               <div className="flex justify-between text-red-400 font-bold pt-2 border-t border-white/5">
                 <span>Estimated Refund:</span>
-                <span>$0.00 (Non-refundable deposit)</span>
+                <span>LKR 0.00 (Non-refundable deposit)</span>
               </div>
             </div>
 

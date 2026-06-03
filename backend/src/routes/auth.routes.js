@@ -7,8 +7,12 @@ const {
   loginCustomer, 
   registerVendor, 
   loginVendor,
-  loginAdmin               
+  loginAdmin,
+  loginUnified
 } = require('../controllers/auth.controller');
+
+// Unified Login
+router.post('/login', loginUnified);
 
 // Customer Routes
 router.post('/register/customer', registerCustomer);

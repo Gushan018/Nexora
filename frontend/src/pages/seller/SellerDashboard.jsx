@@ -22,7 +22,7 @@ export const SellerDashboard = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <SellerStatCard title="Total Sales" value="$8,450" trend="+15%" icon={<DollarSign className="w-5 h-5 text-green-400" />} />
+        <SellerStatCard title="Total Sales" value="LKR 8,450" trend="+15%" icon={<DollarSign className="w-5 h-5 text-green-400" />} />
         <SellerStatCard title="Orders Today" value="12" trend="+3" icon={<ShoppingCart className="w-5 h-5 text-primary" />} />
         <SellerStatCard title="Low Stock Items" value="4" isWarning icon={<AlertTriangle className="w-5 h-5 text-yellow-400" />} />
         <SellerStatCard title="Total Products" value="86" trend="+2" icon={<Package className="w-5 h-5 text-accent" />} />
@@ -52,9 +52,9 @@ export const SellerDashboard = () => {
                 </thead>
                 <tbody className="text-sm">
                   {[
-                    { id: '#SL-0992', product: 'Gold Cutlery Set', date: 'Today, 2:30 PM', status: 'Pending', total: '$120.00', color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
-                    { id: '#SL-0991', product: 'LED Uplights (x4)', date: 'Today, 11:15 AM', status: 'Processing', total: '$450.00', color: 'text-blue-400', bg: 'bg-blue-400/10' },
-                    { id: '#SL-0990', product: 'Table Linens (x20)', date: 'Yesterday', status: 'Shipped', total: '$340.00', color: 'text-green-400', bg: 'bg-green-400/10' },
+                    { id: '#SL-0992', product: 'Gold Cutlery Set', date: 'Today, 2:30 PM', status: 'Pending', total: 'LKR 120.00', color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
+                    { id: '#SL-0991', product: 'LED Uplights (x4)', date: 'Today, 11:15 AM', status: 'Processing', total: 'LKR 450.00', color: 'text-blue-400', bg: 'bg-blue-400/10' },
+                    { id: '#SL-0990', product: 'Table Linens (x20)', date: 'Yesterday', status: 'Shipped', total: 'LKR 340.00', color: 'text-green-400', bg: 'bg-green-400/10' },
                   ].map((order, i) => (
                     <tr key={i} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                       <td className="py-4 pl-2 font-medium text-white">{order.id}</td>
