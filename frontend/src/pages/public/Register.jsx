@@ -1,42 +1,132 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Lock, User, ArrowRight, CheckCircle2, Store } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, CheckCircle2, Store, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
+import { useAuth } from '../../context/AuthContext';
+import { api } from '../../utils/api';
 
 export const Register = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [accountType, setAccountType] = useState('customer'); // 'customer' or 'vendor'
+  
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    businessName: '',
+    vendorType: 'OTHER'
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleRegister = (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleRegister = async (e) => {
     e.preventDefault();
-    if(accountType === 'vendor') {
-      navigate('/vendor/dashboard');
-    } else {
-      navigate('/customer/dashboard');
+    setError('');
+    
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      if (accountType === 'vendor') {
+        const vendorData = {
+          business_name: formData.businessName || `${formData.firstName} ${formData.lastName}'s Business`,
+          email: formData.email,
+          password: formData.password,
+          vendor_type: formData.vendorType,
+        };
+        const res = await api.post('/auth/register/vendor', vendorData);
+        alert(res.data.message || 'Vendor registered successfully. Awaiting admin approval.');
+        navigate('/login');
+      } else {
+        const customerData = {
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          password: formData.password,
+        };
+        const res = await api.post('/auth/register/customer', customerData);
+        
+        // Auto login after successful register
+        if (res.status === 201) {
+          const loginRes = await login(formData.email, formData.password);
+          if (loginRes.success) {
+            navigate('/customer/dashboard');
+          } else {
+            navigate('/login');
+          }
+        }
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center relative pt-40 pb-12">
       
-      {/* Background Effects */}
+      {/* Advanced Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full mix-blend-screen" />
-        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-accent/10 blur-[120px] rounded-full mix-blend-screen" />
+        <motion.div 
+          animate={{ y: [0, -50, 0], x: [0, 30, 0], opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 right-1/4 w-[30rem] h-[30rem] bg-primary/30 blur-[150px] rounded-full mix-blend-screen" 
+        />
+        <motion.div 
+          animate={{ y: [0, 50, 0], x: [0, -30, 0], opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-1/4 left-1/4 w-[30rem] h-[30rem] bg-accent/30 blur-[150px] rounded-full mix-blend-screen" 
+        />
       </div>
 
-      <div className="w-full max-w-xl relative z-10 px-4">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6, type: 'spring', damping: 20 }}
+        className="w-full max-w-xl relative z-10 px-4"
+      >
         
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Join Nexora</h1>
-          <p className="text-white/60">Create an account to start planning or selling.</p>
+          <motion.h1 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-3xl font-bold text-white mb-2"
+          >
+            Join Nexora
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="text-white/60"
+          >
+            Create an account to start planning or selling.
+          </motion.p>
         </div>
 
-        <div className="bg-surface/50 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+        <div className="bg-surface/40 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group">
           
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+          <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
+
+          {error && (
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-xl text-red-500 text-sm text-center">
+              {error}
+            </div>
+          )}
 
           {/* Account Type Selector */}
           <div className="grid grid-cols-2 gap-4 mb-8">
@@ -77,6 +167,9 @@ export const Register = () => {
                   <User className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                   <input 
                     type="text" 
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
                     placeholder="John" 
                     required
                     className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/20"
@@ -87,6 +180,9 @@ export const Register = () => {
                 <label className="text-sm font-medium text-white/80 block">Last Name</label>
                 <input 
                   type="text" 
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
                   placeholder="Doe" 
                   required
                   className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/20"
@@ -100,6 +196,9 @@ export const Register = () => {
                 <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                 <input 
                   type="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="name@example.com" 
                   required
                   className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/20"
@@ -112,11 +211,21 @@ export const Register = () => {
               <div className="relative">
                 <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                 <input 
-                  type="password" 
+                  type={showPassword ? "text" : "password"} 
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                   placeholder="Create a strong password" 
                   required
-                  className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/20"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-12 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/20"
                 />
+                <button 
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/80 transition-colors focus:outline-none"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
               
               {/* Password Strength Indicator */}
@@ -143,17 +252,22 @@ export const Register = () => {
               </label>
             </div>
 
-            <Button type="submit" className={cn("w-full mt-4", accountType === 'vendor' ? "bg-accent hover:bg-accent-hover text-white" : "bg-primary hover:bg-primary-hover")} size="lg" rightIcon={<ArrowRight className="w-4 h-4"/>}>
-              Create {accountType === 'vendor' ? 'Vendor' : 'Customer'} Account
+            <Button type="submit" isLoading={isLoading} className={cn("w-full mt-6 shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-all", accountType === 'vendor' ? "bg-accent hover:bg-accent-hover text-white" : "bg-primary hover:bg-primary-hover")} size="lg" rightIcon={!isLoading && <ArrowRight className="w-4 h-4"/>}>
+              {isLoading ? 'Creating Account...' : `Create ${accountType === 'vendor' ? 'Vendor' : 'Customer'} Account`}
             </Button>
           </form>
         </div>
 
-        <p className="text-center mt-8 text-white/50 text-sm">
-          Already have an account? <Link to="/login" className="text-white hover:text-primary font-medium transition-colors">Log in</Link>
-        </p>
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-center mt-8 text-white/50 text-sm"
+        >
+          Already have an account? <Link to="/login" className="text-white hover:text-primary font-bold transition-colors underline underline-offset-4">Log in</Link>
+        </motion.p>
 
-      </div>
+      </motion.div>
     </div>
   );
 };
