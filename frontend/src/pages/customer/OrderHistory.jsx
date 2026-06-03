@@ -4,51 +4,102 @@ import { Package, Search, Filter, ChevronRight, CheckCircle2, Clock, MapPin } fr
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../../utils/api';
+import { PageLoader } from '../../components/common/PageLoader';
 
-const ORDERS = [
-  {
-    id: '#ORD-8921-X',
-    date: 'Oct 24, 2026',
-    status: 'Delivered',
-    total: '$345.50',
-    items: [
-      { name: 'Crystal Wine Glasses (Set of 12)', qty: 2, image: 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100&q=80' }
-    ],
-    tracking: 'Delivered on Oct 26, 2026 at 2:30 PM'
-  },
-  {
-    id: '#ORD-8890-Y',
-    date: 'Oct 18, 2026',
-    status: 'In Transit',
-    total: '$1,200.00',
-    items: [
-      { name: 'Premium Gold Cutlery Set (100 Pieces)', qty: 1, image: 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100&q=80&grayscale' },
-      { name: 'Silk Table Linens', qty: 5, image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=100&q=80' }
-    ],
-    tracking: 'Arriving by Oct 30, 2026'
-  },
-  {
-    id: '#ORD-8845-Z',
-    date: 'Sep 05, 2026',
-    status: 'Processing',
-    total: '$85.00',
-    items: [
-      { name: 'LED String Lights (50ft)', qty: 3, image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=100&q=80' }
-    ],
-    tracking: 'Preparing for shipment'
-  }
-];
+// Mock data removed
 
 const StatusIcon = ({ status }) => {
   switch(status) {
-    case 'Delivered': return <CheckCircle2 className="w-5 h-5 text-green-400" />;
-    case 'In Transit': return <MapPin className="w-5 h-5 text-blue-400" />;
-    case 'Processing': return <Clock className="w-5 h-5 text-yellow-400" />;
+    case 'DELIVERED': return <CheckCircle2 className="w-5 h-5 text-green-400" />;
+    case 'IN_TRANSIT': return <MapPin className="w-5 h-5 text-blue-400" />;
+    case 'PROCESSING': 
+    case 'PENDING': return <Clock className="w-5 h-5 text-yellow-400" />;
     default: return <Package className="w-5 h-5 text-white/40" />;
   }
 };
 
 export const OrderHistory = () => {
+  const { data: orders = [], isLoading } = useQuery({
+    queryKey: ['orders'],
+    queryFn: async () => {
+      const res = await api.get('/orders/my');
+      return res.data;
+    }
+  });
+
+  const handleDownloadInvoice = (order) => {
+    const printWindow = window.open('', '_blank');
+    const itemsHtml = order.orderItems.map(item => `
+      <tr>
+        <td>
+          <strong>${item.product.productName}</strong><br/>
+          <span style="color:#666; font-size:14px;">Qty: ${item.quantity}</span>
+        </td>
+        <td style="text-align: right;">LKR ${Number(item.unitPrice * item.quantity).toFixed(2)}</td>
+      </tr>
+    `).join('');
+
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Invoice - #${order.orderId}</title>
+          <style>
+            body { font-family: system-ui, -apple-system, sans-serif; padding: 40px; color: #111; max-width: 800px; margin: 0 auto; }
+            .header { border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+            h1 { margin: 0; color: #6366f1; }
+            .total { font-size: 24px; font-weight: bold; margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px; text-align: right; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+            th { color: #666; font-weight: 600; text-transform: uppercase; font-size: 12px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div>
+              <h1>NEXORA</h1>
+              <p style="color: #666; margin-top: 4px;">Premium Marketplace</p>
+            </div>
+            <div style="text-align: right;">
+              <p><strong>INVOICE</strong></p>
+              <p>#${order.orderId}</p>
+              <p>${new Date(order.orderDate).toLocaleDateString()}</p>
+            </div>
+          </div>
+          
+          <h3>Order Details</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th style="text-align: right;">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${itemsHtml}
+            </tbody>
+          </table>
+          
+          <div class="total">
+            Total Paid: LKR ${Number(order.totalAmount).toFixed(2)}
+          </div>
+          
+          <p style="margin-top: 50px; color: #666; font-size: 12px; text-align: center;">
+            Thank you for shopping with Nexora. This is a computer-generated document.
+          </p>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 250);
+  };
+
+  if (isLoading) return <PageLoader text="Loading order history..." />;
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       
@@ -74,25 +125,25 @@ export const OrderHistory = () => {
       </Card>
 
       <div className="space-y-6">
-        {ORDERS.map((order, i) => (
-          <Card key={i} className="overflow-hidden hover:border-white/20 transition-colors">
+        {orders.map((order) => (
+          <Card key={order.orderId} className="overflow-hidden hover:border-white/20 transition-colors">
             {/* Order Header */}
             <div className="bg-surface/50 p-4 sm:p-6 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex flex-wrap gap-x-8 gap-y-2">
                 <div>
                   <p className="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">Order Placed</p>
-                  <p className="text-sm text-white/90">{order.date}</p>
+                  <p className="text-sm text-white/90">{new Date(order.orderDate).toLocaleDateString()}</p>
                 </div>
                 <div>
                   <p className="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">Total</p>
-                  <p className="text-sm text-white/90">{order.total}</p>
+                  <p className="text-sm text-white/90">LKR {Number(order.totalAmount).toFixed(2)}</p>
                 </div>
                 <div>
                   <p className="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">Order #</p>
-                  <p className="text-sm font-medium text-primary">{order.id}</p>
+                  <p className="text-sm font-medium text-primary">#{order.orderId}</p>
                 </div>
               </div>
-              <Button variant="outline" size="sm">View Invoice</Button>
+              <Button variant="outline" size="sm" onClick={() => handleDownloadInvoice(order)}>View Invoice</Button>
             </div>
             
             {/* Order Body */}
@@ -101,25 +152,23 @@ export const OrderHistory = () => {
                 <StatusIcon status={order.status} />
                 <div>
                   <h4 className="font-bold text-white text-lg">{order.status}</h4>
-                  <p className="text-sm text-white/60">{order.tracking}</p>
+                  <p className="text-sm text-white/60">Shipped to: {order.shippingAddress}</p>
                 </div>
               </div>
 
               <div className="space-y-4">
-                {order.items.map((item, j) => (
-                  <div key={j} className="flex gap-4 p-4 rounded-xl border border-white/5 bg-surface/30">
+                {order.orderItems.map((item) => (
+                  <div key={item.orderItemId} className="flex gap-4 p-4 rounded-xl border border-white/5 bg-surface/30">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface shrink-0">
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      <img src={item.product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100&q=80'} alt={item.product.productName} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
-                        <h5 className="font-medium text-white text-sm sm:text-base line-clamp-1">{item.name}</h5>
-                        <p className="text-sm text-white/50 mt-1">Qty: {item.qty}</p>
+                        <h5 className="font-medium text-white text-sm sm:text-base line-clamp-1">{item.product.productName}</h5>
+                        <p className="text-sm text-white/50 mt-1">Qty: {item.quantity}</p>
                       </div>
                       <div className="flex gap-3 mt-2 sm:mt-0">
-                        <button className="text-xs font-medium text-primary hover:underline">Track Package</button>
-                        <span className="text-white/20">|</span>
-                        <button className="text-xs font-medium text-white/60 hover:text-white transition-colors">Write Review</button>
+                        <span className="text-xs font-medium text-white/60">LKR {Number(item.unitPrice).toFixed(2)} each</span>
                       </div>
                     </div>
                   </div>
@@ -128,6 +177,12 @@ export const OrderHistory = () => {
             </CardContent>
           </Card>
         ))}
+        {orders.length === 0 && (
+          <div className="text-center py-20 border border-white/10 rounded-2xl bg-surface/50">
+            <h2 className="text-2xl font-bold text-white mb-2">No orders yet</h2>
+            <p className="text-white/60">You haven't placed any orders.</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -117,7 +117,7 @@ export const CategoryView = () => {
                       <p className="text-xs text-primary font-medium mb-1">{product.vendor}</p>
                       <h3 className="text-lg font-bold text-white mb-4 line-clamp-2 leading-tight group-hover:text-primary transition-colors">{product.name}</h3>
                       <div className="mt-auto">
-                        <span className="text-xl font-bold text-white">${product.price.toFixed(2)}</span>
+                        <span className="text-xl font-bold text-white">LKR {product.price.toFixed(2)}</span>
                       </div>
                     </CardContent>
                   </Card>

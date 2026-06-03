@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, Users, Check, ChevronRight } from 'lucide-react';
+import { Calendar, MapPin, Users, Check, ChevronRight, Heart, Building2, PartyPopper } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
@@ -8,11 +9,12 @@ import { cn } from '../../utils/cn';
 export const CreateEvent = () => {
   const [step, setStep] = useState(1);
   const [eventType, setEventType] = useState('');
+  const navigate = useNavigate();
 
   const EVENT_TYPES = [
-    { id: 'wedding', name: 'Wedding', icon: '💍', desc: 'Ceremonies, Receptions, Anniversaries' },
-    { id: 'corporate', name: 'Corporate Event', icon: '🏢', desc: 'Conferences, Seminars, Galas' },
-    { id: 'party', name: 'Private Party', icon: '🎉', desc: 'Birthdays, Showers, Gatherings' },
+    { id: 'wedding', name: 'Wedding', icon: <Heart className="w-6 h-6 text-pink-400" />, desc: 'Ceremonies, Receptions, Anniversaries' },
+    { id: 'corporate', name: 'Corporate Event', icon: <Building2 className="w-6 h-6 text-blue-400" />, desc: 'Conferences, Seminars, Galas' },
+    { id: 'party', name: 'Private Party', icon: <PartyPopper className="w-6 h-6 text-yellow-400" />, desc: 'Birthdays, Showers, Gatherings' },
   ];
 
   return (
@@ -143,10 +145,10 @@ export const CreateEvent = () => {
               <CardContent className="space-y-6 p-8 pt-0">
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-white/80">Total Estimated Budget (USD)</label>
+                  <label className="text-sm font-medium text-white/80">Total Estimated Budget (LKR)</label>
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 font-bold">$</span>
-                    <input type="number" placeholder="15000" className="w-full bg-surface/50 border border-white/10 rounded-xl pl-8 pr-4 py-4 text-2xl font-bold text-white focus:outline-none focus:border-primary transition-colors" />
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 font-bold">LKR</span>
+                    <input type="number" placeholder="15000" className="w-full bg-surface/50 border border-white/10 rounded-xl pl-14 pr-4 py-4 text-2xl font-bold text-white focus:outline-none focus:border-primary transition-colors" />
                   </div>
                 </div>
 
@@ -156,7 +158,7 @@ export const CreateEvent = () => {
 
                 <div className="pt-8 flex justify-between">
                   <Button variant="outline" onClick={() => setStep(2)}>Back</Button>
-                  <Button rightIcon={<Check className="w-4 h-4"/>}>Create Event Dashboard</Button>
+                  <Button rightIcon={<Check className="w-4 h-4"/>} onClick={() => navigate('/customer/event-dashboard')}>Create Event Dashboard</Button>
                 </div>
               </CardContent>
             </motion.div>

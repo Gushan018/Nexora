@@ -5,15 +5,21 @@ import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 import { Link } from 'react-router-dom';
-
-const CHATS = [
-  { id: 1, name: 'Lumiere Photography', role: 'Vendor', lastMessage: 'Yes, we can absolutely accommodate the drone shots for the sunset session.', time: '10:42 AM', unread: 2, online: true, type: '/customer/chat/vendor' },
-  { id: 2, name: 'Bloom Catering', role: 'Vendor', lastMessage: 'Perfect. We will finalize the menu next week.', time: 'Yesterday', unread: 0, online: false, type: '/customer/chat/vendor' },
-  { id: 3, name: 'Nexora Support', role: 'Admin', lastMessage: 'Your refund request has been processed successfully.', time: 'Oct 01', unread: 0, online: true, type: '/customer/chat/admin' },
-  { id: 4, name: 'Luxe Decor Supply', role: 'Seller', lastMessage: 'The centerpieces have shipped! Here is your tracking...', time: 'Sep 28', unread: 1, online: false, type: '/customer/chat/seller' },
-];
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../../utils/api';
+import { PageLoader } from '../../components/common/PageLoader';
 
 export const ChatInbox = () => {
+  const { data: conversations, isLoading } = useQuery({
+    queryKey: ['conversations'],
+    queryFn: async () => {
+      const res = await api.get('/chat/conversations');
+      return res.data;
+    }
+  });
+
+  if (isLoading) return <PageLoader />;
+
   return (
     <div className="space-y-6 max-w-5xl mx-auto h-[calc(100vh-8rem)] flex flex-col">
       <div className="flex justify-between items-center shrink-0">
@@ -40,44 +46,38 @@ export const ChatInbox = () => {
             </div>
             <div className="flex gap-2">
               <span className="px-3 py-1 bg-primary/20 text-primary text-xs font-bold rounded-full cursor-pointer">All</span>
-              <span className="px-3 py-1 bg-white/5 text-white/60 hover:text-white text-xs font-bold rounded-full cursor-pointer transition-colors">Unread (3)</span>
-              <span className="px-3 py-1 bg-white/5 text-white/60 hover:text-white text-xs font-bold rounded-full cursor-pointer transition-colors">Vendors</span>
             </div>
           </div>
 
           <div className="flex-1 overflow-y-auto custom-scrollbar">
-            {CHATS.map((chat) => (
-              <Link to={chat.type} key={chat.id}>
+            {conversations?.map((conv) => {
+              const lastMessage = conv.messages?.[0];
+              const timeStr = lastMessage ? new Date(lastMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+              
+              return (
+              <Link to={`/customer/vendor-chat/${conv.id}`} key={conv.id}>
                 <div className="p-4 border-b border-white/5 hover:bg-white/[0.02] cursor-pointer transition-colors flex gap-4">
                   <div className="relative shrink-0">
                     <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center font-bold text-lg text-white">
-                      {chat.name.charAt(0)}
+                      {conv.vendor.businessName.charAt(0)}
                     </div>
-                    {chat.online && (
-                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-surface" />
-                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-baseline mb-1">
-                      <h4 className="font-bold text-white truncate pr-2">{chat.name}</h4>
-                      <span className={cn("text-xs shrink-0", chat.unread > 0 ? "text-primary font-bold" : "text-white/40")}>
-                        {chat.time}
+                      <h4 className="font-bold text-white truncate pr-2">{conv.vendor.businessName}</h4>
+                      <span className={cn("text-xs shrink-0 text-white/40")}>
+                        {timeStr}
                       </span>
                     </div>
                     <div className="flex justify-between items-center gap-2">
-                      <p className={cn("text-sm truncate", chat.unread > 0 ? "text-white font-medium" : "text-white/50")}>
-                        {chat.lastMessage}
+                      <p className={cn("text-sm truncate text-white/50")}>
+                        {lastMessage ? lastMessage.text : 'No messages yet'}
                       </p>
-                      {chat.unread > 0 && (
-                        <div className="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center shrink-0">
-                          {chat.unread}
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
               </Link>
-            ))}
+            )})}
           </div>
         </div>
 

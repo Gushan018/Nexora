@@ -5,15 +5,23 @@ import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../../utils/api';
+import { PageLoader } from '../../components/common/PageLoader';
 
-const BOOKINGS = [
-  { id: 'BKG-8492', vendor: 'Lumiere Photography', type: 'Photography', date: 'Oct 14, 2026', status: 'Confirmed', amount: '$3,200', rating: null },
-  { id: 'BKG-8491', vendor: 'Grand Azure Resort', type: 'Venue', date: 'Oct 14, 2026', status: 'Confirmed', amount: '$4,500', rating: null },
-  { id: 'BKG-8100', vendor: 'Bloom Catering', type: 'Catering', date: 'Sep 20, 2026', status: 'Completed', amount: '$2,100', rating: 5 },
-  { id: 'BKG-7944', vendor: 'DJ Velocity', type: 'Entertainment', date: 'Aug 15, 2026', status: 'Cancelled', amount: '$800', rating: null },
-];
+// Mock data removed
 
 export const BookingHistory = () => {
+  const { data: bookings = [], isLoading } = useQuery({
+    queryKey: ['bookings'],
+    queryFn: async () => {
+      const res = await api.get('/bookings/my');
+      return res.data;
+    }
+  });
+
+  if (isLoading) return <PageLoader text="Loading booking history..." />;
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -31,7 +39,9 @@ export const BookingHistory = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/80 mb-2">Upcoming Events</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">2</span>
+              <span className="text-3xl font-bold text-white">
+                {bookings.filter(b => b.status === 'ACCEPTED' && new Date(b.eventDate) >= new Date()).length}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -39,7 +49,8 @@ export const BookingHistory = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Total Spent</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">$10,600</span>
+              <span className="text-3xl font-bold text-white">LKR {bookings.reduce((acc, b) => acc + Number(b.service?.price || b.package?.price || 0), 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -74,40 +85,48 @@ export const BookingHistory = () => {
               </tr>
             </thead>
             <tbody className="text-sm">
-              {BOOKINGS.map((booking, i) => (
-                <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+              {bookings.map((booking) => (
+                <tr key={booking.bookingId} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
                   <td className="p-4 pl-6">
                     <div className="flex items-center gap-3">
                       <div className="flex flex-col">
-                        <span className="font-bold text-white">{booking.vendor}</span>
-                        <span className="text-xs text-white/50">{booking.type} • {booking.id}</span>
+                        <span className="font-bold text-white">
+                          {booking.service ? booking.service.serviceName : booking.package ? booking.package.packageName : 'Unknown'}
+                        </span>
+                        <span className="text-xs text-white/50">ID: {booking.bookingId}</span>
                       </div>
                     </div>
                   </td>
-                  <td className="p-4 text-white/80">{booking.date}</td>
-                  <td className="p-4 font-medium text-white">{booking.amount}</td>
+                  <td className="p-4 text-white/80">{new Date(booking.eventDate).toLocaleDateString()}</td>
+                  <td className="p-4 font-medium text-white">LKR {booking.service ? Number(booking.service.price).toFixed(2) : booking.package ? Number(booking.package.price).toFixed(2) : '0.00'}
+                  </td>
                   <td className="p-4">
                     <span className={cn(
                       "px-2.5 py-1 rounded-full text-xs font-medium border border-current/20 flex items-center gap-1.5 w-fit",
-                      booking.status === 'Confirmed' ? "text-primary bg-primary/10" : 
-                      booking.status === 'Completed' ? "text-green-400 bg-green-400/10" :
-                      "text-white/40 bg-white/5"
+                      booking.status === 'ACCEPTED' ? "text-primary bg-primary/10" : 
+                      booking.status === 'COMPLETED' ? "text-green-400 bg-green-400/10" :
+                      booking.status === 'REJECTED' ? "text-red-400 bg-red-400/10" :
+                      "text-yellow-400 bg-yellow-400/10"
                     )}>
-                      {booking.status === 'Confirmed' && <Clock className="w-3.5 h-3.5" />}
-                      {booking.status === 'Completed' && <CheckCircle2 className="w-3.5 h-3.5" />}
+                      {booking.status === 'ACCEPTED' && <Clock className="w-3.5 h-3.5" />}
+                      {booking.status === 'COMPLETED' && <CheckCircle2 className="w-3.5 h-3.5" />}
                       {booking.status}
                     </span>
                   </td>
                   <td className="p-4 pr-6 text-right space-x-2">
-                    {booking.status === 'Completed' && !booking.rating && (
-                      <Button variant="outline" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
-                        Review
-                      </Button>
+                    {booking.status === 'COMPLETED' && (
+                      <Link to={`/customer/review-submission?vendorId=${booking.package?.vendorId || booking.service?.vendorId || ''}&serviceId=${booking.serviceId || ''}&productId=${booking.packageId || ''}`}>
+                        <Button variant="outline" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                          Review
+                        </Button>
+                      </Link>
                     )}
-                    {booking.status === 'Completed' && booking.rating && (
-                      <span className="inline-flex items-center gap-1 text-yellow-400 text-xs font-bold bg-yellow-400/10 px-2 py-1 rounded border border-yellow-400/20">
-                        {booking.rating} <Star className="w-3 h-3 fill-current" />
-                      </span>
+                    {booking.status === 'ACCEPTED' && (
+                      <Link to={`/customer/payment-page?bookingId=${booking.bookingId}&amount=${booking.service ? booking.service.price : booking.package ? booking.package.price : 0}&item=Booking%20Payment`}>
+                        <Button size="sm" className="bg-primary/20 hover:bg-primary/30 text-primary border-primary/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                          Pay Now
+                        </Button>
+                      </Link>
                     )}
                     <Link to={`/customer/booking-details`}>
                       <button className="p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-lg transition-colors" title="View Details">
@@ -117,6 +136,11 @@ export const BookingHistory = () => {
                   </td>
                 </tr>
               ))}
+              {bookings.length === 0 && (
+                <tr>
+                  <td colSpan="5" className="p-8 text-center text-white/60">No bookings found.</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

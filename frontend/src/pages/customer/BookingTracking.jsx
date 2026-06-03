@@ -8,7 +8,7 @@ import { cn } from '../../utils/cn';
 const MILESTONES = [
   { id: 1, title: 'Deposit Paid & Contract Signed', date: 'Oct 01, 2026', status: 'completed', desc: 'Your date is officially secured.' },
   { id: 2, title: 'Pre-Event Consultation', date: 'Oct 05, 2026', status: 'completed', desc: 'Discussed shot list and locations with the photographer.' },
-  { id: 3, title: 'Final Balance Due', date: 'Oct 10, 2026', status: 'current', desc: 'Remaining $2,560 is due 4 days prior to the event.' },
+  { id: 3, title: 'Final Balance Due', date: 'Oct 10, 2026', status: 'current', desc: 'Remaining LKR 2,560 is due 4 days prior to the event.' },
   { id: 4, title: 'Event Day Execution', date: 'Oct 14, 2026', status: 'upcoming', desc: 'Photographer arrives at 10:00 AM.' },
   { id: 5, title: 'Gallery Delivery', date: 'Nov 01, 2026', status: 'upcoming', desc: 'High-resolution edited photos delivered via Nexora.' },
 ];
@@ -114,7 +114,7 @@ export const BookingTracking = () => {
                 <AlertCircle className="w-4 h-4 text-primary" /> Action Required
               </h4>
               <p className="text-white/80 leading-relaxed">
-                Your final balance of <span className="font-bold text-white">$2,560.00</span> is due in 4 days. Please complete the payment to avoid cancellation.
+                Your final balance of <span className="font-bold text-white">LKR 2,560.00</span> is due in 4 days. Please complete the payment to avoid cancellation.
               </p>
             </CardContent>
           </Card>

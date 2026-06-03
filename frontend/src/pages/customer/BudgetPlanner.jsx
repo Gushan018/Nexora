@@ -4,17 +4,25 @@ import { Calculator, PieChart, TrendingUp, Plus, MoreVertical, Edit2, Trash2 } f
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 
-const BUDGET_CATEGORIES = [
-  { id: 1, name: 'Venue & Catering', allocated: 8000, spent: 7500, color: 'bg-primary' },
-  { id: 2, name: 'Photography & Video', allocated: 3000, spent: 3200, color: 'bg-accent' },
-  { id: 3, name: 'Decor & Flowers', allocated: 2500, spent: 1200, color: 'bg-green-500' },
-  { id: 4, name: 'Entertainment', allocated: 1500, spent: 0, color: 'bg-yellow-500' },
-];
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { api } from '../../utils/api';
+import { PageLoader } from '../../components/common/PageLoader';
 
 export const BudgetPlanner = () => {
-  const totalAllocated = BUDGET_CATEGORIES.reduce((sum, cat) => sum + cat.allocated, 0);
-  const totalSpent = BUDGET_CATEGORIES.reduce((sum, cat) => sum + cat.spent, 0);
-  const percentageSpent = Math.round((totalSpent / totalAllocated) * 100);
+  const { data: budget, isLoading, refetch } = useQuery({
+    queryKey: ['budget'],
+    queryFn: async () => {
+      const res = await api.get('/budget');
+      return res.data;
+    }
+  });
+
+  const categories = budget?.categories || [];
+  const totalAllocated = parseFloat(budget?.totalBudget || 0);
+  const totalSpent = categories.reduce((sum, cat) => sum + parseFloat(cat.spent), 0);
+  const percentageSpent = totalAllocated > 0 ? Math.round((totalSpent / totalAllocated) * 100) : 0;
+
+  if (isLoading) return <PageLoader />;
 
   return (
     <div className="space-y-6">
@@ -34,7 +42,7 @@ export const BudgetPlanner = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/80 mb-2">Total Budget</h3>
             <div className="flex items-end gap-3">
-              <span className="text-4xl font-bold text-white">${totalAllocated.toLocaleString()}</span>
+              <span className="text-4xl font-bold text-white">LKR {totalAllocated.toLocaleString()}</span>
             </div>
             <p className="text-xs text-white/50 mt-4">Configured for Sarah & John's Wedding</p>
           </CardContent>
@@ -44,7 +52,7 @@ export const BudgetPlanner = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Total Spent</h3>
             <div className="flex items-end justify-between">
-              <span className="text-3xl font-bold text-white">${totalSpent.toLocaleString()}</span>
+              <span className="text-3xl font-bold text-white">LKR {totalSpent.toLocaleString()}</span>
               <span className="text-xl font-bold text-primary">{percentageSpent}%</span>
             </div>
             {/* Mini Progress Bar */}
@@ -58,7 +66,7 @@ export const BudgetPlanner = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Remaining Funds</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-green-400">${(totalAllocated - totalSpent).toLocaleString()}</span>
+              <span className="text-3xl font-bold text-green-400">LKR {(totalAllocated - totalSpent).toLocaleString()}</span>
             </div>
             <p className="text-xs text-white/50 mt-4">Across all active categories</p>
           </CardContent>
@@ -71,16 +79,18 @@ export const BudgetPlanner = () => {
         <div className="lg:col-span-2 space-y-4">
           <h3 className="font-bold text-white mb-2">Budget Categories</h3>
           
-          {BUDGET_CATEGORIES.map(cat => {
-            const catPercentage = Math.round((cat.spent / cat.allocated) * 100);
-            const isOverBudget = cat.spent > cat.allocated;
+          {categories.map(cat => {
+            const allocated = parseFloat(cat.allocated);
+            const spent = parseFloat(cat.spent);
+            const catPercentage = allocated > 0 ? Math.round((spent / allocated) * 100) : 0;
+            const isOverBudget = spent > allocated;
             
             return (
               <Card key={cat.id} className="overflow-visible">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-4">
                     <div className="flex items-center gap-3">
-                      <div className={`w-3 h-3 rounded-full ${cat.color}`} />
+                      <div className={`w-3 h-3 rounded-full ${cat.color || 'bg-primary'}`} />
                       <h4 className="font-bold text-white text-lg">{cat.name}</h4>
                     </div>
                     <div className="flex gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
@@ -90,20 +100,20 @@ export const BudgetPlanner = () => {
                   </div>
                   
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-white/60">Spent: <span className="font-bold text-white">${cat.spent.toLocaleString()}</span></span>
-                    <span className="text-white/60">Allocated: <span className="font-bold text-white">${cat.allocated.toLocaleString()}</span></span>
+                    <span className="text-white/60">Spent: <span className="font-bold text-white">LKR {spent.toLocaleString()}</span></span>
+                    <span className="text-white/60">Allocated: <span className="font-bold text-white">LKR {allocated.toLocaleString()}</span></span>
                   </div>
                   
                   <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-2">
                     <div 
-                      className={`h-full ${isOverBudget ? 'bg-red-500' : cat.color}`} 
+                      className={`h-full ${isOverBudget ? 'bg-red-500' : cat.color || 'bg-primary'}`} 
                       style={{ width: `${Math.min(catPercentage, 100)}%` }} 
                     />
                   </div>
                   
                   <div className="flex justify-between items-center mt-2">
                     <span className={`text-xs font-bold ${isOverBudget ? 'text-red-400' : 'text-white/40'}`}>
-                      {isOverBudget ? `Over budget by $${(cat.spent - cat.allocated).toLocaleString()}` : `${catPercentage}% used`}
+                      {isOverBudget ? `Over budget by LKR ${(spent - allocated).toLocaleString()}` : `${catPercentage}% used`}
                     </span>
                     <button className="text-xs text-primary font-medium hover:underline">View Expenses</button>
                   </div>
@@ -137,7 +147,7 @@ export const BudgetPlanner = () => {
                 />
                 <div className="absolute inset-0 bg-background rounded-full m-2 flex flex-col items-center justify-center">
                   <span className="text-white/60 text-xs uppercase tracking-wider mb-1">Total</span>
-                  <span className="text-2xl font-bold text-white">${totalAllocated.toLocaleString()}</span>
+                  <span className="text-2xl font-bold text-white">LKR {totalAllocated.toLocaleString()}</span>
                 </div>
               </div>
               <p className="text-sm text-white/60">Your budget allocation is heavily focused on Venue & Catering (53%).</p>
