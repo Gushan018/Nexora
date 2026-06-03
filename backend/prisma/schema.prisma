@@ -73,6 +73,9 @@ model Customer {
   orders        Order[]
   reviews       Review[]
   notifications Notification[]
+  wishlists     Wishlist[]
+  conversations Conversation[]
+  budget        Budget?
 
   @@map("customer")
 }
@@ -94,6 +97,7 @@ model Vendor {
   eventPackages EventPackage[]
   availability  Availability[]
   reviews       Review[]
+  conversations Conversation[]
 
   @@map("vendor")
 }
@@ -122,6 +126,7 @@ model Service {
   category   ServiceCategory? @relation(fields: [categoryId], references: [categoryId], onDelete: SetNull)
   bookings   Booking[]
   reviews    Review[]
+  wishlists  Wishlist[]
 
   @@map("service")
 }
@@ -143,6 +148,7 @@ model Product {
   cartItems  CartItem[]
   orderItems OrderItem[]
   reviews    Review[]
+  wishlists  Wishlist[]
 
   @@map("product")
 }
@@ -158,6 +164,7 @@ model EventPackage {
   vendorId Int      @map("vendor_id")
   vendor   Vendor   @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
   bookings Booking[]
+  wishlists Wishlist[]
 
   @@map("event_package")
 }
@@ -289,4 +296,78 @@ model Notification {
   customer   Customer? @relation(fields: [customerId], references: [customerId], onDelete: SetNull)
 
   @@map("notification")
+}
+
+model Wishlist {
+  wishlistId Int      @id @default(autoincrement()) @map("wishlist_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  customerId Int      @map("customer_id")
+  productId  Int?     @map("product_id")
+  serviceId  Int?     @map("service_id")
+  packageId  Int?     @map("package_id")
+
+  customer Customer      @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  product  Product?      @relation(fields: [productId], references: [productId], onDelete: Cascade)
+  service  Service?      @relation(fields: [serviceId], references: [serviceId], onDelete: Cascade)
+  package  EventPackage? @relation(fields: [packageId], references: [packageId], onDelete: Cascade)
+
+  @@unique([customerId, productId])
+  @@unique([customerId, serviceId])
+  @@unique([customerId, packageId])
+
+  @@map("wishlist")
+}
+
+model Conversation {
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  
+  customerId   Int       @map("customer_id")
+  vendorId     Int       @map("vendor_id")
+  
+  customer     Customer  @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  vendor       Vendor    @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+  messages     Message[]
+  
+  @@unique([customerId, vendorId])
+  @@map("conversation")
+}
+
+model Message {
+  id             Int          @id @default(autoincrement())
+  text           String
+  senderType     String       @map("sender_type") // 'customer' or 'vendor'
+  isRead         Boolean      @default(false) @map("is_read")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  
+  conversationId Int          @map("conversation_id")
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@map("message")
+}
+
+model Budget {
+  id           Int      @id @default(autoincrement())
+  customerId   Int      @unique @map("customer_id")
+  totalBudget  Decimal  @db.Decimal(10, 2) @default(0) @map("total_budget")
+  
+  customer     Customer @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  categories   BudgetCategory[]
+
+  @@map("budget")
+}
+
+model BudgetCategory {
+  id           Int      @id @default(autoincrement())
+  name         String
+  allocated    Decimal  @db.Decimal(10, 2) @default(0)
+  spent        Decimal  @db.Decimal(10, 2) @default(0)
+  color        String?
+  
+  budgetId     Int      @map("budget_id")
+  budget       Budget   @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+
+  @@map("budget_category")
 }

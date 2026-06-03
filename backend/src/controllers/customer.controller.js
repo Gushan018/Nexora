@@ -1,0 +1,116 @@
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+// Get Customer Profile
+const getCustomerProfile = async (req, res) => {
+  try {
+    const customerId = req.user.id;
+    const customer = await prisma.customer.findUnique({
+      where: { customerId },
+      select: {
+        customerId: true,
+        name: true,
+        email: true,
+        contactNumber: true,
+        registrationDate: true,
+      }
+    });
+
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found." });
+    }
+
+    res.status(200).json(customer);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+// Update Customer Profile
+const updateCustomerProfile = async (req, res) => {
+  try {
+    const customerId = req.user.id;
+    const { name, contactNumber } = req.body;
+
+    const updatedCustomer = await prisma.customer.update({
+      where: { customerId },
+      data: {
+        name,
+        contactNumber
+      },
+      select: {
+        customerId: true,
+        name: true,
+        email: true,
+        contactNumber: true,
+        registrationDate: true,
+      }
+    });
+
+    res.status(200).json({ message: "Profile updated successfully.", customer: updatedCustomer });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+// Get Customer Dashboard Stats
+const getDashboardStats = async (req, res) => {
+  try {
+    const customerId = req.user.id;
+
+    const activeOrders = await prisma.order.count({
+      where: { customerId, status: { notIn: ['DELIVERED', 'CANCELLED'] } }
+    });
+
+    const pendingBookings = await prisma.booking.count({
+      where: { customerId, status: 'PENDING' }
+    });
+
+    const upcomingEvents = await prisma.booking.count({
+      where: { customerId, status: 'ACCEPTED', eventDate: { gte: new Date() } }
+    });
+
+    // Mocking wishlist count as we don't have a specific table for it yet
+    const wishlisted = await prisma.wishlist.count({ where: { customerId } }); 
+
+    const recentOrders = await prisma.order.findMany({
+      where: { customerId },
+      orderBy: { orderDate: 'desc' },
+      take: 3,
+      include: { orderItems: { include: { product: true } } }
+    });
+
+    const upcomingBookingsList = await prisma.booking.findMany({
+      where: { customerId, status: { in: ['ACCEPTED', 'PENDING'] }, eventDate: { gte: new Date() } },
+      orderBy: { eventDate: 'asc' },
+      take: 3,
+      include: { service: { include: { vendor: true } }, package: { include: { vendor: true } } }
+    });
+
+    const recommendedVendors = await prisma.vendor.findMany({
+      where: { isApproved: true },
+      take: 2,
+    });
+
+    const actionRequired = upcomingBookingsList.filter(b => b.status === 'ACCEPTED');
+
+    res.status(200).json({
+      activeOrders,
+      pendingBookings,
+      upcomingEvents,
+      wishlisted,
+      recentOrders,
+      upcomingBookingsList,
+      recommendedVendors,
+      actionRequired
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+module.exports = {
+  getCustomerProfile,
+  updateCustomerProfile,
+  getDashboardStats
+};

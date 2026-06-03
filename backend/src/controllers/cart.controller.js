@@ -10,12 +10,14 @@ const addItemToCart = async (req, res) => {
     const customerId = req.user.id;
 
 
-    const cart = await prisma.cart.findUnique({
+    let cart = await prisma.cart.findUnique({
       where: { customerId },
     });
 
     if (!cart) {
-      return res.status(404).json({ message: "Cart not found for this customer." });
+      cart = await prisma.cart.create({
+        data: { customerId }
+      });
     }
 
 
@@ -45,6 +47,7 @@ const addItemToCart = async (req, res) => {
 
     res.status(200).json({ message: "Product added to cart successfully." });
   } catch (error) {
+    console.error("Add to cart error:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
@@ -71,7 +74,7 @@ const getMyCart = async (req, res) => {
     });
 
     if (!cart) {
-      return res.status(404).json({ message: "Cart not found." });
+      return res.status(200).json({ cartItems: [] });
     }
 
     res.status(200).json(cart);
@@ -102,8 +105,36 @@ const removeItemFromCart = async (req, res) => {
     }
   };
 
+// ===========================================
+// 4. UPDATE ITEM QUANTITY (Customer)
+// ===========================================
+const updateCartItemQuantity = async (req, res) => {
+  try {
+    const { cartItemId } = req.params;
+    const { quantity } = req.body;
+
+    if (quantity < 1) {
+       return res.status(400).json({ message: "Quantity must be at least 1." });
+    }
+
+    const updatedItem = await prisma.cartItem.update({
+      where: { cartItemId: parseInt(cartItemId) },
+      data: { quantity: parseInt(quantity) },
+    });
+
+    res.status(200).json({ message: "Quantity updated successfully.", item: updatedItem });
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({ message: 'Cart item not found.' });
+    }
+    console.error("Update quantity error:", error);
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
 module.exports = {
   addItemToCart,
   getMyCart,
   removeItemFromCart,
+  updateCartItemQuantity,
 };

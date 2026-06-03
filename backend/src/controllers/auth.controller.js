@@ -164,4 +164,59 @@ const loginAdmin = async (req, res) => {
 };
 
 
-module.exports = { registerCustomer, loginCustomer, registerVendor, loginVendor, loginAdmin };
+// ==========================================
+// 6. UNIFIED LOGIN
+// ==========================================
+const loginUnified = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // 1. Check Admin
+    const admin = await prisma.admin.findUnique({ where: { email } });
+    if (admin && password === admin.password) {
+      const token = generateToken(admin.adminId, 'admin');
+      return res.status(200).json({
+        message: "Login successful!",
+        token,
+        user: { id: admin.adminId, email: admin.email, role: 'admin' }
+      });
+    }
+
+    // 2. Check Vendor
+    const vendor = await prisma.vendor.findUnique({ where: { email } });
+    if (vendor) {
+      const isMatch = await bcrypt.compare(password, vendor.password);
+      if (isMatch) {
+        if (!vendor.isApproved) {
+          return res.status(403).json({ message: "Your account has not yet been approved by the admin." });
+        }
+        const token = generateToken(vendor.vendorId, 'vendor');
+        return res.status(200).json({
+          message: "Login successful!",
+          token,
+          user: { id: vendor.vendorId, businessName: vendor.businessName, email: vendor.email, role: 'vendor' }
+        });
+      }
+    }
+
+    // 3. Check Customer
+    const customer = await prisma.customer.findUnique({ where: { email } });
+    if (customer) {
+      const isMatch = await bcrypt.compare(password, customer.password);
+      if (isMatch) {
+        const token = generateToken(customer.customerId, 'customer');
+        return res.status(200).json({
+          message: "Login successful!",
+          token,
+          user: { id: customer.customerId, name: customer.name, email: customer.email, role: 'customer' }
+        });
+      }
+    }
+
+    return res.status(400).json({ message: "Invalid email or password." });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+module.exports = { registerCustomer, loginCustomer, registerVendor, loginVendor, loginAdmin, loginUnified };
