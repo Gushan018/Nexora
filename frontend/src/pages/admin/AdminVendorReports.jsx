@@ -112,7 +112,7 @@ export const AdminVendorReports = () => {
                     <Crown className="w-5 h-5 text-yellow-500" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-white">Pro Tier ($99/mo)</h4>
+                    <h4 className="font-bold text-white">Pro Tier (LKR 99/mo)</h4>
                     <p className="text-xs text-white/60">Premium features unlocked</p>
                   </div>
                 </div>

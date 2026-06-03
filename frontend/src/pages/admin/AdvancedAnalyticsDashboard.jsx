@@ -43,7 +43,7 @@ export const AdvancedAnalyticsDashboard = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Q4 Revenue Forecast</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">$4.2M</span>
+              <span className="text-3xl font-bold text-white">LKR 4.2M</span>
             </div>
             <p className="text-xs text-green-400 font-bold mt-2">High Confidence (92%)</p>
           </CardContent>
@@ -61,7 +61,7 @@ export const AdvancedAnalyticsDashboard = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">LTV Projection</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">$2,850</span>
+              <span className="text-3xl font-bold text-white">LKR 2,850</span>
             </div>
             <p className="text-xs text-green-400 font-bold mt-2">+15% over historical avg</p>
           </CardContent>

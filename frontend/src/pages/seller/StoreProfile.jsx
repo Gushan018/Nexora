@@ -107,7 +107,7 @@ export const StoreProfile = () => {
                   <CardContent className="p-4">
                     <h3 className="text-sm font-bold text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
                     <div className="flex justify-between items-center mt-2">
-                      <span className="text-lg font-bold text-white">${product.price.toFixed(2)}</span>
+                      <span className="text-lg font-bold text-white">LKR {product.price.toFixed(2)}</span>
                       <button className="text-xs font-medium text-white/60 hover:text-white px-2 py-1 bg-white/5 hover:bg-white/10 rounded transition-colors">View Details</button>
                     </div>
                   </CardContent>

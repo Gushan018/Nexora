@@ -6,10 +6,10 @@ import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 
 const ORDERS = [
-  { id: '#ORD-901', customer: 'Sarah Jenkins', date: 'Oct 24, 2026', items: 3, total: '$450.00', status: 'Pending Fulfillment' },
-  { id: '#ORD-902', customer: 'TechNova Corp', date: 'Oct 23, 2026', items: 10, total: '$1,200.00', status: 'In Transit' },
-  { id: '#ORD-903', customer: 'Michael Chen', date: 'Oct 20, 2026', items: 1, total: '$85.00', status: 'Delivered' },
-  { id: '#ORD-904', customer: 'Elena Rossi', date: 'Oct 19, 2026', items: 5, total: '$225.00', status: 'Delivered' },
+  { id: '#ORD-901', customer: 'Sarah Jenkins', date: 'Oct 24, 2026', items: 3, total: 'LKR 450.00', status: 'Pending Fulfillment' },
+  { id: '#ORD-902', customer: 'TechNova Corp', date: 'Oct 23, 2026', items: 10, total: 'LKR 1,200.00', status: 'In Transit' },
+  { id: '#ORD-903', customer: 'Michael Chen', date: 'Oct 20, 2026', items: 1, total: 'LKR 85.00', status: 'Delivered' },
+  { id: '#ORD-904', customer: 'Elena Rossi', date: 'Oct 19, 2026', items: 5, total: 'LKR 225.00', status: 'Delivered' },
 ];
 
 export const OrderManagement = () => {

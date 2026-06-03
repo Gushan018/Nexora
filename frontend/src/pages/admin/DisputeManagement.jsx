@@ -6,9 +6,9 @@ import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 
 const DISPUTES = [
-  { id: 'DSP-8812', bookingId: 'BKG-9922', customer: 'Emma Watson', vendor: 'Elite Catering Co.', amount: '$4,100', reason: 'Service not rendered as described', status: 'Open', created: '2 days ago', urgency: 'High' },
-  { id: 'DSP-8811', bookingId: 'BKG-8910', customer: 'Michael Chen', vendor: 'Lumiere Photography', amount: '$500', reason: 'Late delivery of gallery', status: 'In Review', created: '5 days ago', urgency: 'Medium' },
-  { id: 'DSP-8810', bookingId: 'BKG-8802', customer: 'Sarah Jenkins', vendor: 'DJ Velocity', amount: '$150', reason: 'Requested refund for unused overtime', status: 'Resolved', created: '2 weeks ago', urgency: 'Low' },
+  { id: 'DSP-8812', bookingId: 'BKG-9922', customer: 'Emma Watson', vendor: 'Elite Catering Co.', amount: 'LKR 4,100', reason: 'Service not rendered as described', status: 'Open', created: '2 days ago', urgency: 'High' },
+  { id: 'DSP-8811', bookingId: 'BKG-8910', customer: 'Michael Chen', vendor: 'Lumiere Photography', amount: 'LKR 500', reason: 'Late delivery of gallery', status: 'In Review', created: '5 days ago', urgency: 'Medium' },
+  { id: 'DSP-8810', bookingId: 'BKG-8802', customer: 'Sarah Jenkins', vendor: 'DJ Velocity', amount: 'LKR 150', reason: 'Requested refund for unused overtime', status: 'Resolved', created: '2 weeks ago', urgency: 'Low' },
 ];
 
 export const DisputeManagement = () => {
@@ -39,7 +39,7 @@ export const DisputeManagement = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Value at Risk</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">$14,250</span>
+              <span className="text-3xl font-bold text-white">LKR 14,250</span>
             </div>
           </CardContent>
         </Card>

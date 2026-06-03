@@ -6,10 +6,10 @@ import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 
 const BOOKINGS = [
-  { id: 'BKG-9920', customer: 'Sarah Jenkins', vendor: 'Lumiere Photography', date: 'Oct 14, 2026', value: '$3,200', status: 'Confirmed', issue: false },
-  { id: 'BKG-9921', customer: 'David Osei', vendor: 'Grand Azure Resort', date: 'Oct 22, 2026', value: '$12,500', status: 'Pending Deposit', issue: false },
-  { id: 'BKG-9922', customer: 'Emma Watson', vendor: 'Elite Catering Co.', date: 'Sep 20, 2026', value: '$4,100', status: 'Disputed', issue: true },
-  { id: 'BKG-9923', customer: 'Liam Hemsworth', vendor: 'DJ Velocity', date: 'Aug 15, 2026', value: '$800', status: 'Cancelled', issue: false },
+  { id: 'BKG-9920', customer: 'Sarah Jenkins', vendor: 'Lumiere Photography', date: 'Oct 14, 2026', value: 'LKR 3,200', status: 'Confirmed', issue: false },
+  { id: 'BKG-9921', customer: 'David Osei', vendor: 'Grand Azure Resort', date: 'Oct 22, 2026', value: 'LKR 12,500', status: 'Pending Deposit', issue: false },
+  { id: 'BKG-9922', customer: 'Emma Watson', vendor: 'Elite Catering Co.', date: 'Sep 20, 2026', value: 'LKR 4,100', status: 'Disputed', issue: true },
+  { id: 'BKG-9923', customer: 'Liam Hemsworth', vendor: 'DJ Velocity', date: 'Aug 15, 2026', value: 'LKR 800', status: 'Cancelled', issue: false },
 ];
 
 export const AdminBookingManagement = () => {
@@ -39,7 +39,7 @@ export const AdminBookingManagement = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Value in Escrow</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">$1.2M</span>
+              <span className="text-3xl font-bold text-white">LKR 1.2M</span>
             </div>
           </CardContent>
         </Card>

@@ -6,9 +6,9 @@ import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 
 const PRODUCTS = [
-  { id: 'PRD-1092', name: 'Replica Designer Serving Tray', seller: 'Cheap Party Supplies', category: 'Decor', price: '$15.00', flag: 'Potential Counterfeit', risk: 'High', status: 'Pending Review' },
-  { id: 'PRD-1093', name: 'Industrial Heat Lamp', seller: 'ProSound Equipment', category: 'Equipment', price: '$450.00', flag: 'Missing Safety Docs', risk: 'Medium', status: 'Pending Review' },
-  { id: 'PRD-1094', name: 'Vintage Silver Cutlery Set', seller: 'Luxe Dining Rentals', category: 'Tableware', price: '$85.00/day', flag: 'Image Copyright Claim', risk: 'Low', status: 'Resolved' },
+  { id: 'PRD-1092', name: 'Replica Designer Serving Tray', seller: 'Cheap Party Supplies', category: 'Decor', price: 'LKR 15.00', flag: 'Potential Counterfeit', risk: 'High', status: 'Pending Review' },
+  { id: 'PRD-1093', name: 'Industrial Heat Lamp', seller: 'ProSound Equipment', category: 'Equipment', price: 'LKR 450.00', flag: 'Missing Safety Docs', risk: 'Medium', status: 'Pending Review' },
+  { id: 'PRD-1094', name: 'Vintage Silver Cutlery Set', seller: 'Luxe Dining Rentals', category: 'Tableware', price: 'LKR 85.00/day', flag: 'Image Copyright Claim', risk: 'Low', status: 'Resolved' },
 ];
 
 export const ProductModeration = () => {

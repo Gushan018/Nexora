@@ -6,10 +6,10 @@ import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 
 const TRANSACTIONS = [
-  { id: 'TRX-1092', date: 'Oct 24, 2026', desc: 'Booking Payout - Sarah Jenkins', amount: '+$1,275.00', status: 'Completed', type: 'Credit' },
-  { id: 'TRX-1091', date: 'Oct 23, 2026', desc: 'Platform Commission Fee (15%)', amount: '-$225.00', status: 'Completed', type: 'Debit' },
-  { id: 'TRX-1090', date: 'Oct 20, 2026', desc: 'Withdrawal to Bank ****4592', amount: '-$3,500.00', status: 'Processing', type: 'Debit' },
-  { id: 'TRX-1089', date: 'Oct 15, 2026', desc: 'Booking Payout - TechNova', amount: '+$4,250.00', status: 'Completed', type: 'Credit' },
+  { id: 'TRX-1092', date: 'Oct 24, 2026', desc: 'Booking Payout - Sarah Jenkins', amount: '+LKR 1,275.00', status: 'Completed', type: 'Credit' },
+  { id: 'TRX-1091', date: 'Oct 23, 2026', desc: 'Platform Commission Fee (15%)', amount: '-LKR 225.00', status: 'Completed', type: 'Debit' },
+  { id: 'TRX-1090', date: 'Oct 20, 2026', desc: 'Withdrawal to Bank ****4592', amount: '-LKR 3,500.00', status: 'Processing', type: 'Debit' },
+  { id: 'TRX-1089', date: 'Oct 15, 2026', desc: 'Booking Payout - TechNova', amount: '+LKR 4,250.00', status: 'Completed', type: 'Credit' },
 ];
 
 export const Earnings = () => {
@@ -31,7 +31,7 @@ export const Earnings = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/80 mb-2">Available Balance</h3>
             <div className="flex items-end justify-between">
-              <span className="text-4xl font-bold text-white">$1,275.00</span>
+              <span className="text-4xl font-bold text-white">LKR 1,275.00</span>
               <div className="flex items-center gap-1 text-sm text-green-400 bg-green-400/10 px-2 py-1 rounded-full">
                 <ArrowUpRight className="w-3 h-3" /> 12%
               </div>
@@ -44,7 +44,7 @@ export const Earnings = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Pending Clearance</h3>
             <div className="flex items-end justify-between">
-              <span className="text-3xl font-bold text-white">$450.00</span>
+              <span className="text-3xl font-bold text-white">LKR 450.00</span>
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
                 <Activity className="w-4 h-4 text-white/40" />
               </div>
@@ -57,7 +57,7 @@ export const Earnings = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Total Earnings (YTD)</h3>
             <div className="flex items-end justify-between">
-              <span className="text-3xl font-bold text-white">$34,250.00</span>
+              <span className="text-3xl font-bold text-white">LKR 34,250.00</span>
             </div>
             <p className="text-xs text-white/50 mt-4">After platform fees.</p>
           </CardContent>

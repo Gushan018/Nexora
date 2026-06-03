@@ -6,10 +6,10 @@ import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 
 const SELLERS = [
-  { id: 'SEL-401', name: 'Luxe Dining Rentals', category: 'Tableware', products: 124, location: 'Chicago, IL', gmv: '$85,200', status: 'Verified' },
-  { id: 'SEL-402', name: 'ProSound Equipment', category: 'AV Gear', products: 45, location: 'Austin, TX', gmv: '$112,000', status: 'Verified' },
-  { id: 'SEL-403', name: 'Floral Wholesalers', category: 'Decor', products: 312, location: 'Miami, FL', gmv: '$14,500', status: 'Pending Review' },
-  { id: 'SEL-404', name: 'Cheap Party Supplies', category: 'Decor', products: 12, location: 'Unknown', gmv: '$800', status: 'Flagged' },
+  { id: 'SEL-401', name: 'Luxe Dining Rentals', category: 'Tableware', products: 124, location: 'Colombo, Sri Lanka', gmv: 'LKR 85,200', status: 'Verified' },
+  { id: 'SEL-402', name: 'ProSound Equipment', category: 'AV Gear', products: 45, location: 'Kandy, Sri Lanka', gmv: 'LKR 112,000', status: 'Verified' },
+  { id: 'SEL-403', name: 'Floral Wholesalers', category: 'Decor', products: 312, location: 'Galle, Sri Lanka', gmv: 'LKR 14,500', status: 'Pending Review' },
+  { id: 'SEL-404', name: 'Cheap Party Supplies', category: 'Decor', products: 12, location: 'Unknown', gmv: 'LKR 800', status: 'Flagged' },
 ];
 
 export const AdminSellerManagement = () => {

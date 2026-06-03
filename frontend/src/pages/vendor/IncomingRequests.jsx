@@ -14,7 +14,7 @@ const REQUESTS = [
     package: 'Premium Full Day',
     guests: 150,
     location: 'Grand Azure Resort, Malibu',
-    value: '$3,200',
+    value: 'LKR 3,200',
     message: 'We loved your portfolio! We are looking for lots of candid shots and drone coverage of the venue.',
     timeAgo: '2 hours ago',
     urgent: true
@@ -26,7 +26,7 @@ const REQUESTS = [
     package: 'Essential Coverage',
     guests: 50,
     location: 'Downtown Loft, LA',
-    value: '$1,500',
+    value: 'LKR 1,500',
     message: 'Intimate ceremony. Just need the basics covered.',
     timeAgo: '1 day ago',
     urgent: false
@@ -60,7 +60,7 @@ export const IncomingRequests = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Potential Value</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">$4,700</span>
+              <span className="text-3xl font-bold text-white">LKR 4,700</span>
             </div>
           </CardContent>
         </Card>

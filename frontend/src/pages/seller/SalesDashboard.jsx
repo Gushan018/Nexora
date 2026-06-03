@@ -15,7 +15,7 @@ export const SalesDashboard = () => {
         <Button>Generate Report</Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[ {title: 'Total Users', val: '12,345', icon: <Users/>}, {title: 'Revenue', val: '$34,500', icon: <DollarSign/>}, {title: 'Active Sessions', val: '1,234', icon: <Activity/>} ].map((stat, i) => (
+        {[ {title: 'Total Users', val: '12,345', icon: <Users/>}, {title: 'Revenue', val: 'LKR 34,500', icon: <DollarSign/>}, {title: 'Active Sessions', val: '1,234', icon: <Activity/>} ].map((stat, i) => (
           <Card key={i}>
             <CardContent className="p-6 flex items-center justify-between">
               <div>

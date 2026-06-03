@@ -140,7 +140,7 @@ export const BookingApproval = () => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-white/60">Base Package</span>
-                  <span className="font-medium text-white">$3,200.00</span>
+                  <span className="font-medium text-white">LKR 3,200.00</span>
                 </div>
                 
                 {/* Editable Add-on */}
@@ -167,11 +167,11 @@ export const BookingApproval = () => {
                 <div className="pt-4 border-t border-white/5 space-y-2">
                   <div className="flex justify-between items-end">
                     <span className="font-bold text-white">Total Quote</span>
-                    <span className="text-xl font-bold text-white">$3,350.00</span>
+                    <span className="text-xl font-bold text-white">LKR 3,350.00</span>
                   </div>
                   <div className="flex justify-between items-end text-sm">
                     <span className="text-primary font-medium">Deposit to Collect (20%)</span>
-                    <span className="text-primary font-bold">$670.00</span>
+                    <span className="text-primary font-bold">LKR 670.00</span>
                   </div>
                 </div>
               </div>

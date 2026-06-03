@@ -101,7 +101,7 @@ export const SystemSettings = () => {
               <div className="space-y-1.5">
                 <label className="text-sm font-medium text-white/80 block">Default Currency</label>
                 <select className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
-                  <option>USD ($)</option>
+                  <option>LKR (Rs)</option>
                   <option>EUR (€)</option>
                   <option>GBP (£)</option>
                 </select>
