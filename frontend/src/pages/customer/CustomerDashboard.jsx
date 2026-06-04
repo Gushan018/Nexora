@@ -57,7 +57,7 @@ export const CustomerDashboard = () => {
             transition={{ delay: 0.6 }}
             className="flex flex-wrap gap-4"
           >
-            <Button size="lg" className="px-8 shadow-[0_0_20px_rgba(124,58,237,0.3)] bg-primary hover:bg-primary-hover transition-all" onClick={() => navigate('/customer/booking-history')}>
+            <Button size="lg" className="px-8 shadow-[0_0_20px_rgba(212,175,55,0.3)] bg-primary hover:bg-primary-hover transition-all" onClick={() => navigate('/customer/booking-history')}>
               View Event Plan
             </Button>
             <Button variant="outline" size="lg" className="px-8 bg-surface/50 border-white/10 hover:bg-white/10 transition-all text-white" onClick={() => navigate('/customer/vendor-directory')}>
@@ -248,7 +248,7 @@ const StatCard = ({ icon, title, value, label, delay }) => (
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay, type: "spring" }}
   >
-    <Card className="hover:border-primary/40 transition-all duration-300 group hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(124,58,237,0.1)] bg-surface/40 backdrop-blur-md">
+    <Card className="hover:border-primary/40 transition-all duration-300 group hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(212,175,55,0.1)] bg-surface/40 backdrop-blur-md">
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-primary/50 group-hover:bg-primary/10 transition-colors">

@@ -79,7 +79,7 @@ export const IncomingRequests = () => {
           REQUESTS.map((req) => (
             <Card key={req.id} className={cn(
               "overflow-hidden transition-all duration-300",
-              req.urgent ? "border-accent/30 shadow-[0_0_20px_rgba(124,58,237,0.1)]" : "border-white/10"
+              req.urgent ? "border-accent/30 shadow-[0_0_20px_rgba(212,175,55,0.1)]" : "border-white/10"
             )}>
               {req.urgent && (
                 <div className="bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider px-4 py-1.5 text-center border-b border-accent/20">
