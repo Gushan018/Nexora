@@ -255,9 +255,13 @@ export const DashboardLayout = ({ role = 'admin' }) => {
             <div className="relative">
               <div 
                 onClick={() => setActiveDropdown(activeDropdown === 'profile' ? null : 'profile')}
-                className="w-10 h-10 rounded-full bg-gradient-premium border border-white/20 cursor-pointer flex items-center justify-center font-bold text-white shadow-lg"
+                className="w-10 h-10 rounded-full bg-gradient-premium border border-white/20 cursor-pointer flex items-center justify-center font-bold text-primary shadow-lg overflow-hidden bg-surface"
               >
-                {user?.name?.charAt(0) || 'U'}
+                {user?.profileImage ? (
+                  <img src={user.profileImage.startsWith('blob:') ? user.profileImage : `http://localhost:5000${user.profileImage}`} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-white">{user?.name?.charAt(0) || 'U'}</span>
+                )}
               </div>
               <AnimatePresence>
                 {activeDropdown === 'profile' && (
