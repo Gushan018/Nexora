@@ -119,7 +119,7 @@ export const DashboardLayout = ({ role = 'admin' }) => {
                 className={cn(
                   "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 relative text-sm",
                   location.pathname.startsWith(link.path) 
-                    ? "bg-primary/20 text-primary shadow-[0_0_15px_rgba(124,58,237,0.3)]" 
+                    ? "bg-primary/20 text-primary shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
                     : "text-white/60 hover:bg-white/5 hover:text-white"
                 )}
               >

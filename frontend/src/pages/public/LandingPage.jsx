@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Search, Star, MapPin, Calendar, CheckCircle2, SearchCode, CalendarCheck, GlassWater, ChevronRight } from 'lucide-react';
+import { Search, MapPin, Calendar, Users, ArrowRight, Star, CheckCircle2, SearchCode, CalendarCheck, GlassWater } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
@@ -10,106 +10,170 @@ export const LandingPage = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [location, setLocation] = React.useState('');
   const [date, setDate] = React.useState('');
+  const [guests, setGuests] = React.useState('');
 
   const handleSearch = () => {
     navigate(`/vendor-directory?query=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(location)}`);
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 15 } }
-  };
-
   return (
-    <div className="w-full relative overflow-hidden pb-24">
+    <div className="w-full relative overflow-hidden bg-background min-h-screen">
       
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex flex-col justify-center pt-20">
-        {/* Advanced Animated Background */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <div className="absolute inset-0 bg-black/60 mix-blend-multiply z-10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent z-10" />
-          <motion.div 
-            animate={{ scale: [1, 1.05, 1], rotate: [0, 1, 0] }} 
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0"
-          >
-            <img 
-              src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2000" 
-              alt="Event Background" 
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-          {/* Floating Glowing Orbs */}
-          <motion.div 
-            animate={{ y: [0, -50, 0], x: [0, 30, 0], opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/40 blur-[150px] rounded-full mix-blend-screen z-10 pointer-events-none" 
+      <section className="relative min-h-[95vh] flex flex-col justify-center items-center pt-24 pb-32">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2000" 
+            alt="Luxury Event Background" 
+            className="w-full h-full object-cover"
           />
-          <motion.div 
-            animate={{ y: [0, 50, 0], x: [0, -30, 0], opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-accent/40 blur-[150px] rounded-full mix-blend-screen z-10 pointer-events-none" 
-          />
+          {/* Overlay gradient as seen in screenshot: dark blue tint */}
+          <div className="absolute inset-0 bg-[#0A101D]/70 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0A101D]/50 via-transparent to-background" />
         </div>
 
-        <div className="relative z-20 max-w-7xl mx-auto px-4 w-full flex flex-col items-center text-center">
+        <div className="relative z-20 max-w-7xl mx-auto px-4 w-full flex flex-col items-center text-center mt-10">
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col items-center"
           >
-            <motion.span variants={itemVariants} className="px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-white text-sm font-medium backdrop-blur-md mb-6 inline-block shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-              The Premium Event Marketplace
-            </motion.span>
-            <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6 leading-tight max-w-4xl mx-auto drop-shadow-2xl">
-              Extraordinary Events, <br className="hidden md:block"/><span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_auto] animate-gradient">Engineered Perfectly.</span>
-            </motion.h1>
-            <motion.p variants={itemVariants} className="text-xl text-white/80 max-w-2xl mx-auto mb-10 font-medium drop-shadow-lg">
-              Discover, book, and manage world-class venues, caterers, and entertainers for your next unforgettable moment.
-            </motion.p>
+            <span className="px-4 py-1 rounded-full border border-primary/30 text-primary text-xs font-bold tracking-widest uppercase bg-black/40 backdrop-blur-sm mb-8">
+              Exclusive Event Management
+            </span>
+            <h1 className="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight max-w-4xl drop-shadow-2xl">
+              Elevate Every Moment to the Extraordinary
+            </h1>
+            <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-16 font-light drop-shadow-lg">
+              Discover, book, and seamlessly manage world-class venues and experiences with our premier marketplace platform.
+            </p>
           </motion.div>
 
           {/* Search Bar */}
           <motion.div 
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.6, type: 'spring' }}
-            className="w-full max-w-4xl bg-surface/60 border border-white/10 rounded-3xl p-3 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col md:flex-row gap-3 relative overflow-hidden group"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="w-full max-w-5xl bg-[#1C2333]/80 border border-white/10 rounded-2xl p-2 backdrop-blur-xl shadow-2xl flex flex-col md:flex-row items-center gap-2"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="flex-1 flex flex-col px-4 py-3 border-r border-white/10">
+              <span className="text-[10px] uppercase font-bold text-white/50 tracking-wider mb-1">Event Type</span>
+              <div className="flex items-center">
+                <Search className="w-4 h-4 text-primary mr-2" />
+                <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="e.g. Gala, Corporate" className="bg-transparent w-full text-white text-sm focus:outline-none placeholder:text-white/40" />
+              </div>
+            </div>
             
-            <div className="flex-1 flex items-center bg-black/40 rounded-2xl px-4 py-4 border border-white/5 hover:bg-black/60 transition-colors relative z-10">
-              <Search className="w-5 h-5 text-primary mr-3" />
-              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="What are you looking for?" className="bg-transparent w-full text-white focus:outline-none placeholder:text-white/40" />
+            <div className="flex-1 flex flex-col px-4 py-3 border-r border-white/10">
+              <span className="text-[10px] uppercase font-bold text-white/50 tracking-wider mb-1">Location</span>
+              <div className="flex items-center">
+                <MapPin className="w-4 h-4 text-primary mr-2" />
+                <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="New York, NY" className="bg-transparent w-full text-white text-sm focus:outline-none placeholder:text-white/40" />
+              </div>
             </div>
-            <div className="flex-1 flex items-center bg-black/40 rounded-2xl px-4 py-4 border border-white/5 hover:bg-black/60 transition-colors relative z-10">
-              <MapPin className="w-5 h-5 text-primary mr-3" />
-              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Location" className="bg-transparent w-full text-white focus:outline-none placeholder:text-white/40" />
+            
+            <div className="flex-1 flex flex-col px-4 py-3 border-r border-white/10">
+              <span className="text-[10px] uppercase font-bold text-white/50 tracking-wider mb-1">Date</span>
+              <div className="flex items-center">
+                <Calendar className="w-4 h-4 text-primary mr-2" />
+                <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-transparent w-full text-white text-sm focus:outline-none placeholder:text-white/40 [&::-webkit-calendar-picker-indicator]:filter-[invert(1)]" />
+              </div>
             </div>
-            <div className="flex-1 flex items-center bg-black/40 rounded-2xl px-4 py-4 border border-white/5 hover:bg-black/60 transition-colors relative z-10">
-              <Calendar className="w-5 h-5 text-primary mr-3" />
-              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="bg-transparent w-full text-white focus:outline-none placeholder:text-white/40 [&::-webkit-calendar-picker-indicator]:filter-[invert(1)]" />
+
+            <div className="flex-1 flex flex-col px-4 py-3 border-r border-white/10">
+              <span className="text-[10px] uppercase font-bold text-white/50 tracking-wider mb-1">Guests</span>
+              <div className="flex items-center">
+                <Users className="w-4 h-4 text-primary mr-2" />
+                <input type="number" value={guests} onChange={(e) => setGuests(e.target.value)} placeholder="Number of guests" className="bg-transparent w-full text-white text-sm focus:outline-none placeholder:text-white/40" />
+              </div>
             </div>
-            <Button size="lg" className="md:w-auto w-full px-8 rounded-2xl shadow-lg shadow-primary/20 relative z-10" onClick={handleSearch}>
-              Search
+
+            <Button size="lg" className="w-full md:w-auto h-full px-8 rounded-xl shrink-0" onClick={handleSearch} rightIcon={<ArrowRight className="w-4 h-4"/>}>
+              Find Venues
             </Button>
           </motion.div>
+
+          {/* Stats below search */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="flex flex-wrap justify-center gap-10 mt-16"
+          >
+            {[
+              { name: 'Luxury Villas', count: '142 VENUES' },
+              { name: 'Yacht Charters', count: '89 EXPERIENCES' },
+              { name: 'Private Estates', count: '64 VENUES' },
+              { name: 'Historic Castles', count: '29 VENUES' },
+              { name: 'Rooftop Lounges', count: '115 VENUES' },
+              { name: 'Fine Dining', count: '230 EXPERIENCES' },
+            ].map((stat, i) => (
+              <div key={i} className="flex flex-col items-start text-left">
+                <span className="text-white font-medium text-sm mb-1">{stat.name}</span>
+                <span className="text-primary text-[10px] font-bold tracking-widest">{stat.count}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Curated Excellence Section */}
+      <section className="py-24 relative z-10 max-w-7xl mx-auto px-4 border-b border-white/5">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-serif text-white mb-4">Curated Excellence</h2>
+          <p className="text-white/60 max-w-xl mx-auto text-sm leading-relaxed">
+            Every venue and service is rigorously vetted to meet our uncompromising standards of luxury and quality.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { 
+              tag: 'FROM $5,000/NIGHT', 
+              title: 'Exclusive Estates', 
+              desc: 'Access to private properties not available on the public market.',
+              img: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=1000'
+            },
+            { 
+              tag: 'CUSTOM QUOTES', 
+              title: 'Bespoke Decor', 
+              desc: 'Award-winning designers to transform any space to your vision.',
+              img: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=1000'
+            },
+            { 
+              tag: 'FROM $2,000/ACT', 
+              title: 'Elite Entertainment', 
+              desc: 'World-class performers, speakers, and musicians for your event.',
+              img: 'https://images.unsplash.com/photo-1470229722913-7c090be5bb1a?q=80&w=1000'
+            }
+          ].map((item, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="group relative h-[28rem] rounded-2xl overflow-hidden cursor-pointer"
+            >
+              <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A101D] via-[#0A101D]/40 to-transparent flex flex-col justify-end p-8">
+                <span className="text-primary text-[10px] font-bold tracking-widest border border-primary/30 bg-black/40 backdrop-blur-md px-3 py-1 rounded-sm w-max mb-4">
+                  {item.tag}
+                </span>
+                <h3 className="text-2xl font-serif text-white mb-2">{item.title}</h3>
+                <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
       {/* How it Works */}
       <section className="relative z-20 max-w-7xl mx-auto px-4 mt-24">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">How Nexora Works</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">How Nexora Works</h2>
           <p className="text-white/60 max-w-2xl mx-auto text-lg">Planning an event has never been this seamless. Follow these three simple steps to bring your vision to life.</p>
         </div>
 
@@ -119,7 +183,7 @@ export const LandingPage = () => {
           {[
             { icon: <SearchCode className="w-8 h-8 text-primary" />, title: '1. Discover', desc: 'Browse our curated marketplace of premium vendors, venues, and pre-built event packages.' },
             { icon: <CalendarCheck className="w-8 h-8 text-accent" />, title: '2. Book & Plan', desc: 'Secure your dates instantly, manage contracts, and coordinate with all vendors from one dashboard.' },
-            { icon: <GlassWater className="w-8 h-8 text-green-400" />, title: '3. Celebrate', desc: 'Enjoy your perfectly engineered event while we handle the payments and backend logistics.' }
+            { icon: <GlassWater className="w-8 h-8 text-primary" />, title: '3. Celebrate', desc: 'Enjoy your perfectly engineered event while we handle the payments and backend logistics.' }
           ].map((step, i) => (
               <motion.div 
               key={i}
@@ -135,7 +199,7 @@ export const LandingPage = () => {
                 <div className="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 {step.icon}
               </div>
-              <h3 className="text-xl font-bold text-white mb-3 relative z-10">{step.title}</h3>
+              <h3 className="text-xl font-serif text-white mb-3 relative z-10">{step.title}</h3>
               <p className="text-white/60 leading-relaxed relative z-10">{step.desc}</p>
             </motion.div>
           ))}
@@ -146,10 +210,10 @@ export const LandingPage = () => {
       <section className="relative z-20 max-w-7xl mx-auto px-4 mt-32">
         <div className="flex flex-col sm:flex-row justify-between items-end mb-10 gap-4">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">Explore Categories</h2>
+            <h2 className="text-3xl md:text-4xl font-serif text-white mb-2">Explore Categories</h2>
             <p className="text-white/60 text-lg">Find the perfect professionals for your event.</p>
           </div>
-          <Link to="/marketplace" className="text-primary hover:text-primary-light font-medium flex items-center gap-1 transition-colors">
+          <Link to="/marketplace" className="text-primary hover:text-primaryHover font-medium flex items-center gap-1 transition-colors">
             View All Categories <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -181,7 +245,7 @@ export const LandingPage = () => {
       {/* Testimonials */}
       <section className="relative z-20 max-w-7xl mx-auto px-4 mt-32">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Loved by Hosts & Vendors</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">Loved by Hosts & Vendors</h2>
           <p className="text-white/60 max-w-2xl mx-auto text-lg">Don't just take our word for it. See what our community has to say about the Nexora experience.</p>
         </div>
 
@@ -192,12 +256,12 @@ export const LandingPage = () => {
             { name: 'Elena Rodriguez', role: 'Premium Caterer', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80', text: 'Since listing my catering business on Nexora, my high-end bookings have skyrocketed. The AI booking management saves me hours of admin work every single week.' },
           ].map((testimonial, i) => (
             <div key={i} className="bg-surface/50 border border-white/10 rounded-3xl p-8 backdrop-blur-sm relative">
-              <Star className="w-8 h-8 text-white/5 absolute top-6 right-6" />
+              <Star className="w-8 h-8 text-primary absolute top-6 right-6 opacity-30" />
               <div className="flex items-center gap-4 mb-6">
-                <img src={testimonial.img} alt={testimonial.name} className="w-14 h-14 rounded-full object-cover border-2 border-white/10" />
+                <img src={testimonial.img} alt={testimonial.name} className="w-14 h-14 rounded-full object-cover border-2 border-primary/20" />
                 <div>
                   <h4 className="text-white font-bold">{testimonial.name}</h4>
-                  <p className="text-white/40 text-sm">{testimonial.role}</p>
+                  <p className="text-primary text-sm">{testimonial.role}</p>
                 </div>
               </div>
               <p className="text-white/70 leading-relaxed italic">"{testimonial.text}"</p>
@@ -207,24 +271,24 @@ export const LandingPage = () => {
       </section>
 
       {/* Vendor CTA */}
-      <section className="relative z-20 max-w-7xl mx-auto px-4 mt-32">
-        <div className="bg-gradient-to-br from-surface to-surface/50 border border-white/10 rounded-3xl p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 overflow-hidden relative">
+      <section className="relative z-20 max-w-7xl mx-auto px-4 mt-32 mb-32">
+        <div className="bg-gradient-to-br from-surface to-surface/50 border border-primary/20 rounded-3xl p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 overflow-hidden relative">
           
-          <div className="absolute top-0 right-0 w-96 h-96 bg-accent/20 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
 
           <div className="flex-1 relative z-10">
-            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-4 leading-tight">Grow your business <br/>on Nexora.</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-white tracking-tighter mb-4 leading-tight">Grow your business <br/>on Nexora.</h2>
             <p className="text-lg text-white/60 mb-8 max-w-lg">
               Join thousands of premium vendors booking high-value clients. Get access to AI tools, secure payments, and a beautiful storefront.
             </p>
             <ul className="space-y-4 mb-8">
               {['Zero upfront listing fees', 'Guaranteed payouts', 'AI-powered booking management'].map((item, i) => (
                 <li key={i} className="flex items-center text-white/80 font-medium">
-                  <CheckCircle2 className="w-5 h-5 text-accent mr-3" /> {item}
+                  <CheckCircle2 className="w-5 h-5 text-primary mr-3" /> {item}
                 </li>
               ))}
             </ul>
-            <Button className="bg-accent hover:bg-accent-hover text-white shadow-[0_0_20px_rgba(240,98,146,0.3)]" size="lg" onClick={() => navigate('/register')}>
+            <Button className="bg-primary hover:bg-primaryHover text-[#131A26] shadow-[0_0_20px_rgba(212,175,55,0.3)]" size="lg" onClick={() => navigate('/register')}>
               Become a Vendor
             </Button>
           </div>

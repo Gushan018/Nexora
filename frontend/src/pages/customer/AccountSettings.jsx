@@ -20,7 +20,7 @@ export const AccountSettings = () => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const res = await api.put('/customer/profile', {
+      const res = await api.put('/customers/profile', {
         name: `${formFirst} ${formLast}`.trim()
       });
       const updatedUser = { ...user, ...res.data.customer };
@@ -60,7 +60,7 @@ export const AccountSettings = () => {
         <Card className="md:col-span-1 border-white/5 bg-surface/40 hover:border-primary/30 transition-colors">
           <CardContent className="p-8 flex flex-col items-center text-center space-y-4">
             <div className="relative group cursor-pointer">
-              <div className="w-32 h-32 rounded-full bg-gradient-premium border-4 border-surface p-1 shadow-[0_0_30px_rgba(124,58,237,0.3)]">
+              <div className="w-32 h-32 rounded-full bg-gradient-premium border-4 border-surface p-1 shadow-[0_0_30px_rgba(212,175,55,0.3)]">
                 <div className="w-full h-full rounded-full bg-surface flex items-center justify-center text-4xl text-primary font-bold overflow-hidden">
                   {firstName?.charAt(0) || 'U'}
                 </div>
