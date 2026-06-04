@@ -4,11 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, User, Sparkles } from 'lucide-react';
 import { Button } from '../common/Button';
 import { cn } from '../../utils/cn';
+import { useAuth } from '../../context/AuthContext';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +31,7 @@ export const Navbar = () => {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-surface/80 backdrop-blur-md border-b border-white/10 py-4" : "bg-transparent py-6"
+        isScrolled ? "bg-background/90 backdrop-blur-md border-b border-primary/20 py-4" : "bg-transparent py-6"
       )}
     >
       <div className="container mx-auto px-6 max-w-7xl">
@@ -61,12 +63,20 @@ export const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
-            <Link to="/login" className="text-sm font-medium text-white/80 hover:text-white transition-colors">
-              Sign In
-            </Link>
-            <Link to="/register">
-              <Button>Get Started</Button>
-            </Link>
+            {!loading && user ? (
+              <Link to={`/${user.role}/dashboard`}>
+                <Button>Go to Dashboard</Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/login" className="text-sm font-medium text-white/80 hover:text-white transition-colors">
+                  Sign In
+                </Link>
+                <Link to="/register">
+                  <Button>Get Started</Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Toggle */}
@@ -86,7 +96,7 @@ export const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-surface/95 backdrop-blur-xl border-b border-white/10 shadow-2xl py-6 px-6 md:hidden flex flex-col gap-4"
+            className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-primary/20 shadow-2xl py-6 px-6 md:hidden flex flex-col gap-4"
           >
             {navLinks.map((link) => (
               <Link
@@ -100,12 +110,20 @@ export const Navbar = () => {
             ))}
             <div className="h-px bg-white/10 my-2" />
             <div className="flex flex-col gap-3">
-              <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button variant="outline" className="w-full">Sign In</Button>
-              </Link>
-              <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button className="w-full">Get Started</Button>
-              </Link>
+              {!loading && user ? (
+                <Link to={`/${user.role}/dashboard`} onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button className="w-full">Go to Dashboard</Button>
+                </Link>
+              ) : (
+                <>
+                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Button variant="outline" className="w-full">Sign In</Button>
+                  </Link>
+                  <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Button className="w-full">Get Started</Button>
+                  </Link>
+                </>
+              )}
             </div>
           </motion.div>
         )}
