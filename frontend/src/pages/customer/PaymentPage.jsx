@@ -12,8 +12,15 @@ export const PaymentPage = () => {
   const [paymentMethod, setPaymentMethod] = useState('ONLINE');
   const [cardDetails, setCardDetails] = useState({ number: '', expiry: '', cvc: '', name: '' });
   const [cardErrors, setCardErrors] = useState({});
+  const [file, setFile] = useState(null);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  
+  const amount = searchParams.get('amount') || '0.00';
+  const orderId = searchParams.get('orderId');
+  const bookingId = searchParams.get('bookingId');
+  const itemName = searchParams.get('item') || 'Order Payment';
+  const isOrder = !!orderId;
 
   const validateCard = () => {
     const errors = {};
@@ -66,24 +73,32 @@ export const PaymentPage = () => {
     if (cardErrors.cvc) setCardErrors({ ...cardErrors, cvc: null });
   };
 
-  const amount = searchParams.get('amount') || '0.00';
-  const orderId = searchParams.get('orderId');
-  const bookingId = searchParams.get('bookingId');
-  const itemName = searchParams.get('item') || 'Order Payment';
 
   const paymentMutation = useMutation({
     mutationFn: async () => {
+      let receiptUrl = null;
+
+      if (paymentMethod === 'BANK_SLIP' && file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        const uploadRes = await api.post('/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        receiptUrl = uploadRes.data.url;
+      }
+
       const res = await api.post('/payments/pay', {
         amount,
         paymentMethod,
         orderId,
         bookingId,
+        receiptUrl,
         transactionId: paymentMethod === 'ONLINE' ? 'txn_' + Math.floor(Math.random() * 1000000) : null
       });
       return res.data;
     },
     onSuccess: () => {
-      navigate('/customer/order-success');
+      navigate(`/customer/order-success?type=${isOrder ? 'order' : 'booking'}&id=${orderId || bookingId || 'N/A'}&amount=${amount}&item=${encodeURIComponent(itemName)}`);
     },
     onError: (err) => {
       alert(err.response?.data?.message || 'Payment failed.');
@@ -96,7 +111,7 @@ export const PaymentPage = () => {
         
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold text-white mb-4">Secure Checkout</h1>
-          <p className="text-white/60">Complete your payment to confirm your booking.</p>
+          <p className="text-white/60">Complete your payment to confirm your {isOrder ? 'order' : 'booking'}.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -207,8 +222,13 @@ export const PaymentPage = () => {
                         <p><strong>Account No:</strong> 1234567890</p>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-white/80 mb-2">Payment Slip Image (Optional in Demo)</label>
-                        <input type="file" accept="image/*,.pdf" className="w-full text-sm text-white/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30" />
+                        <label className="block text-sm font-medium text-white/80 mb-2">Payment Slip Image</label>
+                        <input 
+                          type="file" 
+                          accept="image/*,.pdf" 
+                          onChange={(e) => setFile(e.target.files[0])}
+                          className="w-full text-sm text-white/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30" 
+                        />
                       </div>
                     </div>
                   </motion.div>

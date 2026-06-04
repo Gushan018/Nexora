@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 // ===========================================
 const makePayment = async (req, res) => {
   try {
-    const { bookingId, orderId, amount, paymentMethod, transactionId } = req.body;
+    const { bookingId, orderId, amount, paymentMethod, transactionId, receiptUrl } = req.body;
     
 
     if (!bookingId && !orderId) {
@@ -23,6 +23,7 @@ const makePayment = async (req, res) => {
         amount: parseFloat(amount),
         paymentMethod: paymentMethod, // "ONLINE" or "BANK_SLIP"
         transactionId: transactionId || null,
+        receiptUrl: receiptUrl || null,
         status: paymentStatus,
         paidAt: paymentMethod === 'ONLINE' ? new Date() : null,
       }

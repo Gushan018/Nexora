@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Save, User, Mail, Shield, Camera } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -16,12 +16,36 @@ export const AccountSettings = () => {
   const [formFirst, setFormFirst] = useState(firstName || '');
   const [formLast, setFormLast] = useState(defaultLastName || '');
   const [isSaving, setIsSaving] = useState(false);
+  
+  const [file, setFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(user?.profileImage || null);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreviewImage(URL.createObjectURL(selectedFile));
+    }
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
     try {
+      let profileImageUrl = user?.profileImage;
+
+      if (file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        const uploadRes = await api.post('/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        profileImageUrl = uploadRes.data.url;
+      }
+
       const res = await api.put('/customers/profile', {
-        name: `${formFirst} ${formLast}`.trim()
+        name: `${formFirst} ${formLast}`.trim(),
+        profileImage: profileImageUrl
       });
       const updatedUser = { ...user, ...res.data.customer };
       setUser(updatedUser);
@@ -59,10 +83,15 @@ export const AccountSettings = () => {
         {/* Profile Avatar Card */}
         <Card className="md:col-span-1 border-white/5 bg-surface/40 hover:border-primary/30 transition-colors">
           <CardContent className="p-8 flex flex-col items-center text-center space-y-4">
-            <div className="relative group cursor-pointer">
+            <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+              <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
               <div className="w-32 h-32 rounded-full bg-gradient-premium border-4 border-surface p-1 shadow-[0_0_30px_rgba(212,175,55,0.3)]">
                 <div className="w-full h-full rounded-full bg-surface flex items-center justify-center text-4xl text-primary font-bold overflow-hidden">
-                  {firstName?.charAt(0) || 'U'}
+                  {previewImage ? (
+                    <img src={previewImage.startsWith('blob:') ? previewImage : `http://localhost:5000${previewImage}`} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    firstName?.charAt(0) || 'U'
+                  )}
                 </div>
               </div>
               <div className="absolute inset-0 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center border-4 border-transparent">
