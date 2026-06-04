@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calculator, PieChart, TrendingUp, Plus, MoreVertical, Edit2, Trash2 } from 'lucide-react';
+import { Calculator, PieChart, TrendingUp, Plus, Edit2, Trash2, Edit3 } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
+import { Input } from '../../components/common/Input';
+import { Modal } from '../../components/common/Modal';
 
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../utils/api';
 import { PageLoader } from '../../components/common/PageLoader';
 
+const COLORS = ['bg-primary', 'bg-accent', 'bg-green-500', 'bg-blue-500', 'bg-purple-500', 'bg-pink-500', 'bg-orange-500'];
+
 export const BudgetPlanner = () => {
-  const { data: budget, isLoading, refetch } = useQuery({
+  const queryClient = useQueryClient();
+  
+  // States for Modals
+  const [isTotalModalOpen, setIsTotalModalOpen] = useState(false);
+  const [editTotalBudget, setEditTotalBudget] = useState('');
+  
+  const [isCatModalOpen, setIsCatModalOpen] = useState(false);
+  const [catForm, setCatForm] = useState({ id: null, name: '', allocated: '', spent: '', color: 'bg-primary' });
+
+  // Fetch Budget
+  const { data: budget, isLoading } = useQuery({
     queryKey: ['budget'],
     queryFn: async () => {
       const res = await api.get('/budget');
@@ -17,15 +31,87 @@ export const BudgetPlanner = () => {
     }
   });
 
+  // Mutations
+  const totalMut = useMutation({
+    mutationFn: async (totalBudget) => api.put('/budget/total', { totalBudget }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['budget']);
+      setIsTotalModalOpen(false);
+    }
+  });
+
+  const addCatMut = useMutation({
+    mutationFn: async (data) => api.post('/budget/categories', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['budget']);
+      setIsCatModalOpen(false);
+    }
+  });
+
+  const updateCatMut = useMutation({
+    mutationFn: async (data) => api.put(`/budget/categories/${data.id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['budget']);
+      setIsCatModalOpen(false);
+    }
+  });
+
+  const deleteCatMut = useMutation({
+    mutationFn: async (id) => api.delete(`/budget/categories/${id}`),
+    onSuccess: () => queryClient.invalidateQueries(['budget'])
+  });
+
+  // Calculations
   const categories = budget?.categories || [];
   const totalAllocated = parseFloat(budget?.totalBudget || 0);
   const totalSpent = categories.reduce((sum, cat) => sum + parseFloat(cat.spent), 0);
   const percentageSpent = totalAllocated > 0 ? Math.round((totalSpent / totalAllocated) * 100) : 0;
 
+  // Handlers
+  const handleOpenTotalModal = () => {
+    setEditTotalBudget(totalAllocated.toString());
+    setIsTotalModalOpen(true);
+  };
+
+  const handleSaveTotal = () => {
+    if (editTotalBudget && !isNaN(editTotalBudget)) {
+      totalMut.mutate(parseFloat(editTotalBudget));
+    }
+  };
+
+  const handleOpenCatModal = (cat = null) => {
+    if (cat) {
+      setCatForm({ id: cat.id, name: cat.name, allocated: cat.allocated, spent: cat.spent, color: cat.color });
+    } else {
+      setCatForm({ id: null, name: '', allocated: '', spent: '0', color: COLORS[Math.floor(Math.random() * COLORS.length)] });
+    }
+    setIsCatModalOpen(true);
+  };
+
+  const handleSaveCat = () => {
+    const data = {
+      name: catForm.name,
+      allocated: parseFloat(catForm.allocated || 0),
+      spent: parseFloat(catForm.spent || 0),
+      color: catForm.color
+    };
+    if (catForm.id) {
+      updateCatMut.mutate({ id: catForm.id, ...data });
+    } else {
+      addCatMut.mutate(data);
+    }
+  };
+
+  const handleDeleteCat = (id) => {
+    if (window.confirm("Are you sure you want to delete this category?")) {
+      deleteCatMut.mutate(id);
+    }
+  };
+
   if (isLoading) return <PageLoader />;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-20">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">
@@ -34,17 +120,20 @@ export const BudgetPlanner = () => {
           </h1>
           <p className="text-white/60">Track your event expenses and manage category allocations.</p>
         </div>
-        <Button leftIcon={<Plus className="w-4 h-4"/>}>Add Expense</Button>
+        <Button onClick={() => handleOpenCatModal()} leftIcon={<Plus className="w-4 h-4"/>}>Add Expense / Category</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card className="border-primary/20 bg-primary/5">
+        <Card className="border-primary/20 bg-primary/5 relative group cursor-pointer" onClick={handleOpenTotalModal}>
+          <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+            <Edit3 className="w-4 h-4 text-primary" />
+          </div>
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/80 mb-2">Total Budget</h3>
             <div className="flex items-end gap-3">
               <span className="text-4xl font-bold text-white">LKR {totalAllocated.toLocaleString()}</span>
             </div>
-            <p className="text-xs text-white/50 mt-4">Configured for Sarah & John's Wedding</p>
+            <p className="text-xs text-primary/80 mt-4">Click to edit total budget</p>
           </CardContent>
         </Card>
 
@@ -57,7 +146,7 @@ export const BudgetPlanner = () => {
             </div>
             {/* Mini Progress Bar */}
             <div className="w-full h-1.5 bg-white/10 rounded-full mt-4 overflow-hidden">
-              <div className="h-full bg-primary" style={{ width: `${percentageSpent}%` }} />
+              <div className="h-full bg-primary" style={{ width: `${Math.min(percentageSpent, 100)}%` }} />
             </div>
           </CardContent>
         </Card>
@@ -66,7 +155,9 @@ export const BudgetPlanner = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Remaining Funds</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-green-400">LKR {(totalAllocated - totalSpent).toLocaleString()}</span>
+              <span className={`text-3xl font-bold ${(totalAllocated - totalSpent) < 0 ? 'text-red-400' : 'text-green-400'}`}>
+                LKR {(totalAllocated - totalSpent).toLocaleString()}
+              </span>
             </div>
             <p className="text-xs text-white/50 mt-4">Across all active categories</p>
           </CardContent>
@@ -79,6 +170,12 @@ export const BudgetPlanner = () => {
         <div className="lg:col-span-2 space-y-4">
           <h3 className="font-bold text-white mb-2">Budget Categories</h3>
           
+          {categories.length === 0 && (
+            <div className="text-center py-10 bg-white/5 rounded-xl border border-white/10">
+              <p className="text-white/50">No categories added yet.</p>
+            </div>
+          )}
+
           {categories.map(cat => {
             const allocated = parseFloat(cat.allocated);
             const spent = parseFloat(cat.spent);
@@ -86,7 +183,7 @@ export const BudgetPlanner = () => {
             const isOverBudget = spent > allocated;
             
             return (
-              <Card key={cat.id} className="overflow-visible">
+              <Card key={cat.id} className="overflow-visible group border-white/5 hover:border-white/10 transition-colors">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-4">
                     <div className="flex items-center gap-3">
@@ -94,8 +191,8 @@ export const BudgetPlanner = () => {
                       <h4 className="font-bold text-white text-lg">{cat.name}</h4>
                     </div>
                     <div className="flex gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-                      <button className="p-1.5 text-white/40 hover:text-primary transition-colors"><Edit2 className="w-4 h-4"/></button>
-                      <button className="p-1.5 text-white/40 hover:text-red-400 transition-colors"><Trash2 className="w-4 h-4"/></button>
+                      <button onClick={() => handleOpenCatModal(cat)} className="p-1.5 text-white/40 hover:text-primary transition-colors bg-white/5 rounded-lg"><Edit2 className="w-4 h-4"/></button>
+                      <button onClick={() => handleDeleteCat(cat.id)} className="p-1.5 text-white/40 hover:text-red-400 transition-colors bg-white/5 rounded-lg"><Trash2 className="w-4 h-4"/></button>
                     </div>
                   </div>
                   
@@ -115,14 +212,14 @@ export const BudgetPlanner = () => {
                     <span className={`text-xs font-bold ${isOverBudget ? 'text-red-400' : 'text-white/40'}`}>
                       {isOverBudget ? `Over budget by LKR ${(spent - allocated).toLocaleString()}` : `${catPercentage}% used`}
                     </span>
-                    <button className="text-xs text-primary font-medium hover:underline">View Expenses</button>
+                    <button onClick={() => handleOpenCatModal(cat)} className="text-xs text-primary font-medium hover:underline">Add Expense</button>
                   </div>
                 </CardContent>
               </Card>
             )
           })}
           
-          <Button variant="outline" className="w-full border-dashed border-white/20 text-white/60 hover:text-white" leftIcon={<Plus className="w-4 h-4"/>}>
+          <Button onClick={() => handleOpenCatModal()} variant="outline" className="w-full border-dashed border-white/20 text-white/60 hover:text-white" leftIcon={<Plus className="w-4 h-4"/>}>
             Add New Category
           </Button>
         </div>
@@ -132,7 +229,6 @@ export const BudgetPlanner = () => {
           <Card>
             <CardContent className="p-6 flex flex-col items-center text-center">
               <div className="w-48 h-48 rounded-full border-[16px] border-surface relative mb-6 flex items-center justify-center">
-                {/* Simulated donut chart using conic-gradient */}
                 <div 
                   className="absolute inset-0 rounded-full"
                   style={{
@@ -150,24 +246,66 @@ export const BudgetPlanner = () => {
                   <span className="text-2xl font-bold text-white">LKR {totalAllocated.toLocaleString()}</span>
                 </div>
               </div>
-              <p className="text-sm text-white/60">Your budget allocation is heavily focused on Venue & Catering (53%).</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-primary/10 border-primary/20">
-            <CardContent className="p-6">
-              <h4 className="font-bold text-white mb-2 flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-primary" /> Smart Tip
-              </h4>
-              <p className="text-sm text-white/80 leading-relaxed mb-4">
-                You are currently tracking under budget for Entertainment. Consider exploring our Marketplace for live bands or DJs to elevate your event.
-              </p>
-              <Button size="sm" className="w-full">Browse Marketplace</Button>
+              <p className="text-sm text-white/60">Your budget is tracked securely. Stay on top of your expenses.</p>
             </CardContent>
           </Card>
         </div>
 
       </div>
+
+      {/* Modals */}
+      <Modal isOpen={isTotalModalOpen} onClose={() => setIsTotalModalOpen(false)} title="Update Total Budget">
+        <div className="space-y-4">
+          <Input 
+            label="Total Budget Amount (LKR)" 
+            type="number" 
+            value={editTotalBudget} 
+            onChange={(e) => setEditTotalBudget(e.target.value)} 
+            placeholder="e.g. 500000"
+          />
+          <Button onClick={handleSaveTotal} isLoading={totalMut.isPending} className="w-full">Save Changes</Button>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isCatModalOpen} onClose={() => setIsCatModalOpen(false)} title={catForm.id ? "Edit Category" : "Add Category"}>
+        <div className="space-y-4">
+          <Input 
+            label="Category Name" 
+            value={catForm.name} 
+            onChange={(e) => setCatForm({ ...catForm, name: e.target.value })} 
+            placeholder="e.g. Venue, Photography"
+          />
+          <Input 
+            label="Allocated Budget (LKR)" 
+            type="number" 
+            value={catForm.allocated} 
+            onChange={(e) => setCatForm({ ...catForm, allocated: e.target.value })} 
+          />
+          <Input 
+            label="Amount Spent (LKR)" 
+            type="number" 
+            value={catForm.spent} 
+            onChange={(e) => setCatForm({ ...catForm, spent: e.target.value })} 
+            helperText="Update this as you make payments."
+          />
+          <div>
+            <label className="text-sm font-medium text-white/90 mb-2 block">Color Tag</label>
+            <div className="flex gap-2">
+              {COLORS.map(c => (
+                <div 
+                  key={c} 
+                  onClick={() => setCatForm({ ...catForm, color: c })}
+                  className={`w-8 h-8 rounded-full cursor-pointer ${c} ${catForm.color === c ? 'ring-2 ring-white ring-offset-2 ring-offset-background' : 'opacity-50 hover:opacity-100'}`}
+                />
+              ))}
+            </div>
+          </div>
+          <Button onClick={handleSaveCat} isLoading={addCatMut.isPending || updateCatMut.isPending} className="w-full mt-4">
+            {catForm.id ? 'Save Changes' : 'Create Category'}
+          </Button>
+        </div>
+      </Modal>
+
     </div>
   );
 };
