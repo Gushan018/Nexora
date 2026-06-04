@@ -46,16 +46,12 @@ export const Login = () => {
     <div className="min-h-screen flex items-center justify-center relative pt-40 pb-12">
       
       {/* Advanced Animated Background */}
+      {/* Advanced Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div 
-          animate={{ y: [0, -50, 0], x: [0, 30, 0], opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 left-1/4 w-[30rem] h-[30rem] bg-primary/30 blur-[150px] rounded-full mix-blend-screen" 
-        />
-        <motion.div 
-          animate={{ y: [0, 50, 0], x: [0, -30, 0], opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-accent/30 blur-[150px] rounded-full mix-blend-screen" 
+          animate={{ y: [0, -50, 0], x: [0, 30, 0], opacity: [0.1, 0.3, 0.1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 left-1/4 w-[40rem] h-[40rem] bg-primary/20 blur-[150px] rounded-full mix-blend-screen" 
         />
       </div>
 
@@ -71,7 +67,7 @@ export const Login = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-3xl font-bold text-white mb-2"
+            className="text-4xl font-serif text-white mb-2"
           >
             Welcome back
           </motion.h1>
@@ -138,7 +134,7 @@ export const Login = () => {
               </div>
             </div>
 
-            <Button type="submit" isLoading={isLoading} className="w-full mt-4 bg-primary hover:bg-primary-hover shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-all" size="lg" rightIcon={!isLoading && <ArrowRight className="w-4 h-4"/>}>
+            <Button type="submit" isLoading={isLoading} className="w-full mt-4" size="lg" rightIcon={!isLoading && <ArrowRight className="w-4 h-4"/>}>
               {isLoading ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
