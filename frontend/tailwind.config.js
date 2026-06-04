@@ -7,13 +7,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#7C3AED", 
-        primaryHover: "#8B5CF6",
-        secondary: "#1B1F28", 
-        accent: "#7C3AED",
-        background: "#0F1115", 
-        surface: "#1B1F28",
-        card: "#1B1F28", 
+        primary: "#D4AF37", 
+        primaryHover: "#C5A059",
+        secondary: "#1C2333", 
+        accent: "#E5C158",
+        background: "#131A26", 
+        surface: "#1C2333",
+        card: "#1C2333", 
         textPrimary: "#F8FAFC",
         muted: "#94A3B8",
         border: "#2D3748",
@@ -21,8 +21,12 @@ export default {
         warning: "#F59E0B",
         error: "#EF4444"
       },
+      fontFamily: {
+        serif: ['"Playfair Display"', 'serif'],
+        sans: ['Inter', 'sans-serif'],
+      },
       backgroundImage: {
-        'gradient-premium': 'linear-gradient(135deg, #7C3AED, #8B5CF6)',
+        'gradient-premium': 'linear-gradient(135deg, #D4AF37, #C5A059)',
       }
     },
   },
