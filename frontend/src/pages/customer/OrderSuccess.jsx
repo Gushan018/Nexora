@@ -3,15 +3,40 @@ import { motion } from 'framer-motion';
 import { CheckCircle, Calendar, MapPin, Receipt, ArrowRight, Download } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../../utils/api';
 
 export const OrderSuccess = () => {
+  const [searchParams] = useSearchParams();
+  const type = searchParams.get('type') || 'booking';
+  const isOrder = type === 'order';
+  const id = searchParams.get('id') || 'N/A';
+  const amount = searchParams.get('amount') || '0.00';
+  let itemName = searchParams.get('item') || (isOrder ? 'Marketplace Items' : 'Grand Azure Resort');
+  
+  const { data: myOrders } = useQuery({
+    queryKey: ['myOrders'],
+    queryFn: async () => {
+      const res = await api.get('/orders/my');
+      return res.data;
+    },
+    enabled: isOrder && id !== 'N/A'
+  });
+
+  const orderData = myOrders?.find(o => o.orderId.toString() === id);
+  if (isOrder && orderData && orderData.orderItems?.length > 0) {
+    itemName = orderData.orderItems.map(item => item.product.productName).join(', ');
+  }
+  
+  const referenceId = `#NXR-${isOrder ? 'ORD' : 'BKG'}-${id.padStart(4, '0')}`;
+  
   const handleDownloadInvoice = () => {
     const printWindow = window.open('', '_blank');
     printWindow.document.write(`
       <html>
         <head>
-          <title>Invoice - #NXR-8492-771</title>
+          <title>Invoice - ${referenceId}</title>
           <style>
             body { font-family: system-ui, -apple-system, sans-serif; padding: 40px; color: #111; max-width: 800px; margin: 0 auto; }
             .header { border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
@@ -30,7 +55,7 @@ export const OrderSuccess = () => {
             </div>
             <div style="text-align: right;">
               <p><strong>INVOICE</strong></p>
-              <p>#NXR-8492-771</p>
+              <p>${referenceId}</p>
               <p>${new Date().toLocaleDateString()}</p>
             </div>
           </div>
@@ -46,17 +71,17 @@ export const OrderSuccess = () => {
             <tbody>
               <tr>
                 <td>
-                  <strong>Grand Azure Resort</strong><br/>
-                  <span style="color:#666; font-size:14px;">Full Day Access • Standard Package<br/>
-                  Oct 14, 2026 | 10:00 AM - 11:00 PM</span>
+                  <strong>${itemName}</strong><br/>
+                  <span style="color:#666; font-size:14px;">${isOrder ? 'Physical Product Delivery' : 'Full Day Access • Standard Package'}<br/>
+                  ${isOrder ? 'Standard Shipping' : 'Oct 14, 2026 | 10:00 AM - 11:00 PM'}</span>
                 </td>
-                <td style="text-align: right;">LKR 147.00</td>
+                <td style="text-align: right;">LKR ${Number(amount).toFixed(2)}</td>
               </tr>
             </tbody>
           </table>
           
           <div class="total">
-            Total Paid: LKR 147.00
+            Total Paid: LKR ${Number(amount).toFixed(2)}
           </div>
           
           <p style="margin-top: 50px; color: #666; font-size: 12px; text-align: center;">
@@ -86,9 +111,9 @@ export const OrderSuccess = () => {
           <div className="w-24 h-24 rounded-full bg-green-500/20 border-4 border-green-500 flex items-center justify-center mb-6">
             <CheckCircle className="w-12 h-12 text-green-400" />
           </div>
-          <h1 className="text-4xl font-bold text-white mb-4">Booking Confirmed!</h1>
+          <h1 className="text-4xl font-bold text-white mb-4">{isOrder ? 'Order Confirmed!' : 'Booking Confirmed!'}</h1>
           <p className="text-lg text-white/60 max-w-md">
-            Thank you for your payment. Your booking has been successfully processed and the vendor has been notified.
+            Thank you for your payment. Your {isOrder ? 'order' : 'booking'} has been successfully processed and the vendor has been notified.
           </p>
         </motion.div>
 
@@ -96,8 +121,8 @@ export const OrderSuccess = () => {
           <CardContent className="p-8">
             <div className="flex justify-between items-center pb-6 border-b border-white/10 mb-6">
               <div>
-                <span className="text-xs text-white/40 uppercase tracking-wider block mb-1">Booking Reference</span>
-                <span className="font-mono text-lg font-bold text-white">#NXR-8492-771</span>
+                <span className="text-xs text-white/40 uppercase tracking-wider block mb-1">{isOrder ? 'Order Reference' : 'Booking Reference'}</span>
+                <span className="font-mono text-lg font-bold text-white">{referenceId}</span>
               </div>
               <Button variant="outline" size="sm" leftIcon={<Download className="w-4 h-4"/>} onClick={handleDownloadInvoice}>Invoice</Button>
             </div>
@@ -108,34 +133,41 @@ export const OrderSuccess = () => {
                   <Receipt className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-lg">Grand Azure Resort</h3>
-                  <p className="text-sm text-white/60">Full Day Access • Standard Package</p>
+                  <h3 className="font-bold text-white text-lg">{itemName}</h3>
+                  <p className="text-sm text-white/60">{isOrder ? 'Marketplace Order' : 'Full Day Access • Standard Package'}</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                <div className="bg-white/5 rounded-xl p-4">
-                  <div className="flex items-center gap-2 text-white/40 text-xs mb-1">
-                    <Calendar className="w-3.5 h-3.5" /> Date & Time
+              {!isOrder && (
+                <div className="grid grid-cols-2 gap-4 pt-2">
+                  <div className="bg-white/5 rounded-xl p-4">
+                    <div className="flex items-center gap-2 text-white/40 text-xs mb-1">
+                      <Calendar className="w-3.5 h-3.5" /> Date & Time
+                    </div>
+                    <p className="text-sm font-medium text-white">Oct 14, 2026</p>
+                    <p className="text-sm text-white/60">10:00 AM - 11:00 PM</p>
                   </div>
-                  <p className="text-sm font-medium text-white">Oct 14, 2026</p>
-                  <p className="text-sm text-white/60">10:00 AM - 11:00 PM</p>
-                </div>
-                <div className="bg-white/5 rounded-xl p-4">
-                  <div className="flex items-center gap-2 text-white/40 text-xs mb-1">
-                    <MapPin className="w-3.5 h-3.5" /> Location
+                  <div className="bg-white/5 rounded-xl p-4">
+                    <div className="flex items-center gap-2 text-white/40 text-xs mb-1">
+                      <MapPin className="w-3.5 h-3.5" /> Location
+                    </div>
+                    <p className="text-sm font-medium text-white">Kandy, Sri Lanka</p>
+                    <p className="text-sm text-primary hover:underline cursor-pointer">Get Directions</p>
                   </div>
-                  <p className="text-sm font-medium text-white">Kandy, Sri Lanka</p>
-                  <p className="text-sm text-primary hover:underline cursor-pointer">Get Directions</p>
                 </div>
-              </div>
+              )}
+              {isOrder && (
+                <div className="bg-white/5 rounded-xl p-4 mt-2">
+                   <p className="text-sm text-white/60">Your order will be shipped soon. You can track your order in your dashboard.</p>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link to="/customer/order-history" className="w-full sm:w-auto">
-            <Button variant="outline" className="w-full">View My Bookings</Button>
+          <Link to={isOrder ? "/customer/order-history" : "/customer/booking-history"} className="w-full sm:w-auto">
+            <Button variant="outline" className="w-full">{isOrder ? 'View My Orders' : 'View My Bookings'}</Button>
           </Link>
           <Link to="/customer/dashboard" className="w-full sm:w-auto">
             <Button className="w-full" rightIcon={<ArrowRight className="w-4 h-4"/>}>Return to Dashboard</Button>
