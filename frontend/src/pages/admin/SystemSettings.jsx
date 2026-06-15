@@ -58,7 +58,7 @@ export const SystemSettings = () => {
                 <label className="text-sm font-medium text-slate-800 block">Platform Name</label>
                 <input 
                   type="text" 
-                  defaultValue="Nexora Marketplace" 
+                  defaultValue="Event Nest Marketplace" 
                   className="w-full bg-surface border border-slate-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors"
                 />
               </div>

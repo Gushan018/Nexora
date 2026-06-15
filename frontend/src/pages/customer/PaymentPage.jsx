@@ -218,7 +218,7 @@ export const PaymentPage = () => {
                       </div>
                       <div className="bg-background rounded-lg p-3 text-sm text-slate-800 border border-slate-200 mb-4">
                         <p><strong>Bank:</strong> Commercial Bank</p>
-                        <p><strong>Account Name:</strong> Nexora Marketplace</p>
+                        <p><strong>Account Name:</strong> Event Nest Marketplace</p>
                         <p><strong>Account No:</strong> 1234567890</p>
                       </div>
                       <div>

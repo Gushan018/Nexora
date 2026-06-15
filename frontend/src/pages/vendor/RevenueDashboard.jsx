@@ -52,7 +52,7 @@ export const RevenueDashboard = () => {
             <h3 className="text-sm font-medium text-slate-600 mb-2">Platform Fees</h3>
             <div className="flex flex-col justify-end h-full">
               <span className="text-3xl font-bold text-slate-800">-LKR 7,125</span>
-              <p className="text-xs text-slate-500 mt-1">Flat 5% Nexora Fee</p>
+              <p className="text-xs text-slate-500 mt-1">Flat 5% Event Nest Fee</p>
             </div>
           </CardContent>
         </Card>

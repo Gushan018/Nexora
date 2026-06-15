@@ -102,7 +102,7 @@ export const DashboardLayout = ({ role = 'admin' }) => {
             <Link to="/" className="flex items-center justify-center group w-full">
               <img 
                 src="/logo.png" 
-                alt="Nexora" 
+                alt="Event Nest" 
                 className="h-16 md:h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
               />
             </Link>
