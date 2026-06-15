@@ -52,8 +52,8 @@ export const Navbar = () => {
                 key={link.name}
                 to={link.path}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-white",
-                  location.pathname === link.path ? "text-white" : "text-white/60"
+                  "text-sm font-medium transition-colors hover:text-slate-900",
+                  location.pathname === link.path ? "text-slate-900" : "text-slate-600"
                 )}
               >
                 {link.name}
@@ -69,7 +69,7 @@ export const Navbar = () => {
               </Link>
             ) : (
               <>
-                <Link to="/login" className="text-sm font-medium text-white/80 hover:text-white transition-colors">
+                <Link to="/login" className="text-sm font-medium text-slate-800 hover:text-slate-900 transition-colors">
                   Sign In
                 </Link>
                 <Link to="/register">
@@ -81,7 +81,7 @@ export const Navbar = () => {
 
           {/* Mobile Toggle */}
           <button
-            className="md:hidden text-white p-2"
+            className="md:hidden text-slate-900 p-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X /> : <Menu />}
@@ -102,13 +102,13 @@ export const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className="text-lg font-medium text-white/80 hover:text-white p-2 rounded-lg hover:bg-white/5 transition-colors"
+                className="text-lg font-medium text-slate-800 hover:text-slate-900 p-2 rounded-lg hover:bg-slate-100 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.name}
               </Link>
             ))}
-            <div className="h-px bg-white/10 my-2" />
+            <div className="h-px bg-slate-200 my-2" />
             <div className="flex flex-col gap-3">
               {!loading && user ? (
                 <Link to={`/${user.role}/dashboard`} onClick={() => setIsMobileMenuOpen(false)}>

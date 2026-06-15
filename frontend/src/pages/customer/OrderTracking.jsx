@@ -18,11 +18,11 @@ export const OrderTracking = () => {
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <MapPin className="w-7 h-7 text-primary" />
             Track Order #NXR-8492
           </h1>
-          <p className="text-white/60">Estimated Completion: Oct 18, 2026</p>
+          <p className="text-slate-600">Estimated Completion: Oct 18, 2026</p>
         </div>
         <Button variant="outline" leftIcon={<MessageSquare className="w-4 h-4"/>}>Contact Vendor</Button>
       </div>
@@ -38,7 +38,7 @@ export const OrderTracking = () => {
             <CardContent className="p-6 pt-0">
               <div className="relative">
                 {/* Vertical Line */}
-                <div className="absolute left-[15px] top-4 bottom-4 w-[2px] bg-white/10" />
+                <div className="absolute left-[15px] top-4 bottom-4 w-[2px] bg-slate-200" />
                 
                 <div className="space-y-8 relative">
                   {TRACKING_STEPS.map((step, i) => (
@@ -46,17 +46,17 @@ export const OrderTracking = () => {
                       <div className="shrink-0 relative z-10">
                         {step.status === 'completed' && (
                           <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center ring-4 ring-background">
-                            <CheckCircle2 className="w-5 h-5 text-white" />
+                            <CheckCircle2 className="w-5 h-5 text-slate-900" />
                           </div>
                         )}
                         {step.status === 'current' && (
                           <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center ring-4 ring-background animate-pulse">
-                            <Truck className="w-4 h-4 text-white" />
+                            <Truck className="w-4 h-4 text-slate-900" />
                           </div>
                         )}
                         {step.status === 'upcoming' && (
-                          <div className="w-8 h-8 rounded-full bg-surface border-2 border-white/20 flex items-center justify-center ring-4 ring-background">
-                            <div className="w-2 h-2 rounded-full bg-white/20" />
+                          <div className="w-8 h-8 rounded-full bg-surface border-2 border-slate-400 flex items-center justify-center ring-4 ring-background">
+                            <div className="w-2 h-2 rounded-full bg-slate-300" />
                           </div>
                         )}
                       </div>
@@ -68,11 +68,11 @@ export const OrderTracking = () => {
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-1">
                           <h4 className={cn(
                             "font-bold text-lg",
-                            step.status === 'current' ? "text-accent" : "text-white"
+                            step.status === 'current' ? "text-accent" : "text-slate-900"
                           )}>{step.title}</h4>
-                          <span className="text-xs font-mono text-white/40 bg-white/5 px-2 py-1 rounded">{step.time}</span>
+                          <span className="text-xs font-mono text-slate-500 bg-slate-100 px-2 py-1 rounded">{step.time}</span>
                         </div>
-                        <p className="text-sm text-white/60">{step.desc}</p>
+                        <p className="text-sm text-slate-600">{step.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -94,9 +94,9 @@ export const OrderTracking = () => {
                   BC
                 </div>
                 <div>
-                  <h4 className="font-bold text-white">Bloom Catering</h4>
+                  <h4 className="font-bold text-slate-900">Bloom Catering</h4>
                   <div className="flex items-center gap-1 text-xs text-yellow-400 mt-1">
-                    ★ 4.9 <span className="text-white/40">(128 reviews)</span>
+                    ★ 4.9 <span className="text-slate-500">(128 reviews)</span>
                   </div>
                 </div>
               </div>
@@ -113,25 +113,25 @@ export const OrderTracking = () => {
             </CardHeader>
             <CardContent className="p-6 pt-0 space-y-4">
               <div className="flex gap-3">
-                <div className="w-12 h-12 rounded bg-white/5 flex items-center justify-center shrink-0">
-                  <Package className="w-6 h-6 text-white/40" />
+                <div className="w-12 h-12 rounded bg-slate-100 flex items-center justify-center shrink-0">
+                  <Package className="w-6 h-6 text-slate-500" />
                 </div>
                 <div>
-                  <h5 className="font-medium text-sm text-white line-clamp-2">Premium 3-Course Wedding Menu</h5>
-                  <span className="text-xs text-white/50">Qty: 150 pax</span>
+                  <h5 className="font-medium text-sm text-slate-900 line-clamp-2">Premium 3-Course Wedding Menu</h5>
+                  <span className="text-xs text-slate-500">Qty: 150 pax</span>
                 </div>
               </div>
               
-              <div className="pt-4 border-t border-white/5 space-y-2 text-sm">
-                <div className="flex justify-between text-white/60">
+              <div className="pt-4 border-t border-slate-200 space-y-2 text-sm">
+                <div className="flex justify-between text-slate-600">
                   <span>Subtotal</span>
-                  <span className="text-white">LKR 12,500</span>
+                  <span className="text-slate-900">LKR 12,500</span>
                 </div>
-                <div className="flex justify-between text-white/60">
+                <div className="flex justify-between text-slate-600">
                   <span>Logistics</span>
-                  <span className="text-white">LKR 350</span>
+                  <span className="text-slate-900">LKR 350</span>
                 </div>
-                <div className="flex justify-between font-bold pt-2 border-t border-white/5 text-white">
+                <div className="flex justify-between font-bold pt-2 border-t border-slate-200 text-slate-900">
                   <span>Total</span>
                   <span className="text-primary">LKR 12,850</span>
                 </div>

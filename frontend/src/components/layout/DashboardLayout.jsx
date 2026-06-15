@@ -46,7 +46,7 @@ export const DashboardLayout = ({ role = 'admin' }) => {
   }, [user, loading, navigate]);
 
   if (loading || !user) {
-    return <div className="min-h-screen bg-background flex items-center justify-center"><motion.div className="w-16 h-16 rounded-full border-4 border-white/10 border-t-primary animate-spin" /></div>;
+    return <div className="min-h-screen bg-background flex items-center justify-center"><motion.div className="w-16 h-16 rounded-full border-4 border-slate-300 border-t-primary animate-spin" /></div>;
   }
 
   const getLinks = () => {
@@ -68,15 +68,12 @@ export const DashboardLayout = ({ role = 'admin' }) => {
       case 'customer':
         return [
           { name: 'Dashboard', path: '/customer/dashboard', icon: <LayoutDashboard /> },
-          { name: 'Services', path: '/customer/services', icon: <Briefcase /> },
           { name: 'Marketplace', path: '/customer/marketplace', icon: <ShoppingBag /> },
           { name: 'Event Packages', path: '/customer/event-packages', icon: <Package /> },
           { name: 'Directory', path: '/customer/vendor-directory', icon: <Search /> },
           { name: 'My Orders', path: '/customer/order-history', icon: <ShoppingBag /> },
           { name: 'My Events', path: '/customer/event-dashboard', icon: <Calendar /> },
-          { name: 'Wishlist', path: '/customer/wishlist', icon: <Heart /> },
           { name: 'Messages', path: '/customer/chat-inbox', icon: <MessageSquare /> },
-          { name: 'Budget Planner', path: '/customer/budget-planner', icon: <List /> },
           { name: 'Settings', path: '/customer/account-settings', icon: <Settings /> },
         ];
       case 'seller':
@@ -96,12 +93,12 @@ export const DashboardLayout = ({ role = 'admin' }) => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed md:sticky top-0 left-0 z-40 w-64 h-[100dvh] bg-surface border-r border-white/5 transition-transform duration-300 md:translate-x-0 overflow-y-auto",
+          "fixed md:sticky top-0 left-0 z-40 w-64 h-[100dvh] bg-surface border-r border-slate-200 transition-transform duration-300 md:translate-x-0 overflow-y-auto",
           !isSidebarOpen && "-translate-x-full"
         )}
       >
         <div className="flex flex-col h-full">
-          <div className="h-24 flex items-center justify-center px-6 border-b border-white/5">
+          <div className="h-24 flex items-center justify-center px-6 border-b border-slate-200">
             <Link to="/" className="flex items-center justify-center group w-full">
               <img 
                 src="/logo.png" 
@@ -120,7 +117,7 @@ export const DashboardLayout = ({ role = 'admin' }) => {
                   "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 relative text-sm",
                   location.pathname.startsWith(link.path) 
                     ? "bg-primary/20 text-primary shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
-                    : "text-white/60 hover:bg-white/5 hover:text-white"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 )}
               >
                 {location.pathname.startsWith(link.path) && (
@@ -139,7 +136,7 @@ export const DashboardLayout = ({ role = 'admin' }) => {
             ))}
           </nav>
           
-          <div className="p-4 border-t border-white/5">
+          <div className="p-4 border-t border-slate-200">
             <button 
               onClick={() => {
                 logout();
@@ -156,9 +153,9 @@ export const DashboardLayout = ({ role = 'admin' }) => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 flex items-center justify-between px-6 bg-surface/50 backdrop-blur-md border-b border-white/5 sticky top-0 z-30">
+        <header className="h-16 flex items-center justify-between px-6 bg-surface/50 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30">
           <button 
-            className="md:hidden text-white/60 hover:text-white"
+            className="md:hidden text-slate-600 hover:text-slate-900"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
             <Menu />
@@ -166,12 +163,22 @@ export const DashboardLayout = ({ role = 'admin' }) => {
           
           <div className="flex items-center gap-4 ml-auto relative" ref={dropdownRef}>
             
+            {/* Wishlist Link */}
+            {role === 'customer' && (
+              <Link
+                to="/customer/wishlist"
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-slate-100 text-slate-600 hover:text-slate-900 relative"
+              >
+                <Heart className="w-5 h-5" />
+              </Link>
+            )}
+
             {/* Cart Dropdown */}
             {role === 'customer' && (
               <div className="relative">
                 <button 
                   onClick={() => setActiveDropdown(activeDropdown === 'cart' ? null : 'cart')}
-                  className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'cart' ? "bg-primary/20 text-primary" : "bg-white/5 text-white/60 hover:text-white")}
+                  className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'cart' ? "bg-primary/20 text-primary" : "bg-slate-100 text-slate-600 hover:text-slate-900")}
                 >
                   <ShoppingCart className="w-5 h-5" />
                   {cart?.cartItems?.length > 0 && (
@@ -186,22 +193,22 @@ export const DashboardLayout = ({ role = 'admin' }) => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-4 w-80 bg-surface border border-white/10 rounded-2xl shadow-xl overflow-hidden z-50"
+                      className="absolute right-0 mt-4 w-80 bg-surface border border-slate-300 rounded-2xl shadow-xl overflow-hidden z-50"
                     >
-                      <div className="p-4 border-b border-white/10 flex justify-between items-center">
-                        <h3 className="font-bold text-white">Your Cart</h3>
+                      <div className="p-4 border-b border-slate-300 flex justify-between items-center">
+                        <h3 className="font-bold text-slate-900">Your Cart</h3>
                         <span className="text-xs text-primary">{cart?.cartItems?.length || 0} items</span>
                       </div>
                       <div className="max-h-64 overflow-y-auto p-4 space-y-4">
                         {!cart?.cartItems?.length ? (
-                          <p className="text-white/40 text-sm text-center py-4">Your cart is empty.</p>
+                          <p className="text-slate-500 text-sm text-center py-4">Your cart is empty.</p>
                         ) : (
                           cart.cartItems.map((item) => (
                             <div key={item.cartItemId} className="flex gap-3">
                               <img src={item.product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100'} alt="" className="w-12 h-12 rounded-lg object-cover" />
                               <div className="flex-1">
-                                <h4 className="text-sm font-bold text-white line-clamp-1">{item.product.productName}</h4>
-                                <p className="text-xs text-white/60">Qty: {item.quantity}</p>
+                                <h4 className="text-sm font-bold text-slate-900 line-clamp-1">{item.product.productName}</h4>
+                                <p className="text-xs text-slate-600">Qty: {item.quantity}</p>
                               </div>
                               <div className="text-sm font-bold text-primary">
                                 LKR {(Number(item.product.price) * item.quantity).toFixed(2)}
@@ -210,7 +217,7 @@ export const DashboardLayout = ({ role = 'admin' }) => {
                           ))
                         )}
                       </div>
-                      <div className="p-4 border-t border-white/10 bg-white/5">
+                      <div className="p-4 border-t border-slate-300 bg-slate-100">
                         <Link to="/customer/shopping-cart" onClick={() => setActiveDropdown(null)}>
                           <button className="w-full py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
                             View Full Cart
@@ -227,7 +234,7 @@ export const DashboardLayout = ({ role = 'admin' }) => {
             <div className="relative">
               <button 
                 onClick={() => setActiveDropdown(activeDropdown === 'notifications' ? null : 'notifications')}
-                className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'notifications' ? "bg-primary/20 text-primary" : "bg-white/5 text-white/60 hover:text-white")}
+                className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'notifications' ? "bg-primary/20 text-primary" : "bg-slate-100 text-slate-600 hover:text-slate-900")}
               >
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />
@@ -238,12 +245,12 @@ export const DashboardLayout = ({ role = 'admin' }) => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute right-0 mt-4 w-80 bg-surface border border-white/10 rounded-2xl shadow-xl overflow-hidden z-50"
+                    className="absolute right-0 mt-4 w-80 bg-surface border border-slate-300 rounded-2xl shadow-xl overflow-hidden z-50"
                   >
-                    <div className="p-4 border-b border-white/10">
-                      <h3 className="font-bold text-white">Notifications</h3>
+                    <div className="p-4 border-b border-slate-300">
+                      <h3 className="font-bold text-slate-900">Notifications</h3>
                     </div>
-                    <div className="p-4 text-center text-white/40 text-sm py-8">
+                    <div className="p-4 text-center text-slate-500 text-sm py-8">
                       No new notifications
                     </div>
                   </motion.div>
@@ -255,12 +262,12 @@ export const DashboardLayout = ({ role = 'admin' }) => {
             <div className="relative">
               <div 
                 onClick={() => setActiveDropdown(activeDropdown === 'profile' ? null : 'profile')}
-                className="w-10 h-10 rounded-full bg-gradient-premium border border-white/20 cursor-pointer flex items-center justify-center font-bold text-primary shadow-lg overflow-hidden bg-surface"
+                className="w-10 h-10 rounded-full bg-gradient-premium border border-slate-400 cursor-pointer flex items-center justify-center font-bold text-primary shadow-lg overflow-hidden bg-surface"
               >
                 {user?.profileImage ? (
                   <img src={user.profileImage.startsWith('blob:') ? user.profileImage : `http://localhost:5000${user.profileImage}`} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-white">{user?.name?.charAt(0) || 'U'}</span>
+                  <span className="text-slate-900">{user?.name?.charAt(0) || 'U'}</span>
                 )}
               </div>
               <AnimatePresence>
@@ -269,14 +276,14 @@ export const DashboardLayout = ({ role = 'admin' }) => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute right-0 mt-4 w-48 bg-surface border border-white/10 rounded-2xl shadow-xl overflow-hidden z-50"
+                    className="absolute right-0 mt-4 w-48 bg-surface border border-slate-300 rounded-2xl shadow-xl overflow-hidden z-50"
                   >
-                    <div className="p-4 border-b border-white/10 bg-white/5">
-                      <p className="font-bold text-white truncate">{user?.name || 'User'}</p>
-                      <p className="text-xs text-white/60 truncate">{user?.email || 'user@example.com'}</p>
+                    <div className="p-4 border-b border-slate-300 bg-slate-100">
+                      <p className="font-bold text-slate-900 truncate">{user?.name || 'User'}</p>
+                      <p className="text-xs text-slate-600 truncate">{user?.email || 'user@example.com'}</p>
                     </div>
                     <div className="p-2 flex flex-col">
-                      <Link to={`/${role}/account-settings`} onClick={() => setActiveDropdown(null)} className="px-4 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors text-left flex items-center gap-2">
+                      <Link to={`/${role}/account-settings`} onClick={() => setActiveDropdown(null)} className="px-4 py-2 text-sm text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors text-left flex items-center gap-2">
                         <Settings className="w-4 h-4" /> Settings
                       </Link>
                       <button 

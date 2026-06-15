@@ -11,13 +11,21 @@ const addItemToCart = async (req, res) => {
 
 
     let cart = await prisma.cart.findUnique({
-      where: { customerId },
+      where: { customerId: parseInt(customerId) },
     });
 
     if (!cart) {
       cart = await prisma.cart.create({
-        data: { customerId }
+        data: { customerId: parseInt(customerId) }
       });
+    }
+
+    const product = await prisma.product.findUnique({
+      where: { productId: parseInt(productId) }
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found. Please refresh the page." });
     }
 
 
@@ -47,6 +55,9 @@ const addItemToCart = async (req, res) => {
 
     res.status(200).json({ message: "Product added to cart successfully." });
   } catch (error) {
+    if (error.code === 'P2003') {
+      return res.status(401).json({ message: "Your session is invalid because the database was reset. Please log out and log back in." });
+    }
     console.error("Add to cart error:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }

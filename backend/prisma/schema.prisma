@@ -76,7 +76,6 @@ model Customer {
   notifications Notification[]
   wishlists     Wishlist[]
   conversations Conversation[]
-  budget        Budget?
 
   @@map("customer")
 }
@@ -159,6 +158,7 @@ model EventPackage {
   packageId   Int      @id @default(autoincrement()) @map("package_id")
   packageName String   @map("package_name")
   description String?
+  imageUrl    String?
   price       Decimal  @db.Decimal(10, 2)
   isApproved  Boolean  @default(false) @map("is_approved")
   createdAt   DateTime @default(now()) @map("created_at")
@@ -349,28 +349,4 @@ model Message {
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@map("message")
-}
-
-model Budget {
-  id           Int      @id @default(autoincrement())
-  customerId   Int      @unique @map("customer_id")
-  totalBudget  Decimal  @db.Decimal(10, 2) @default(0) @map("total_budget")
-  
-  customer     Customer @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  categories   BudgetCategory[]
-
-  @@map("budget")
-}
-
-model BudgetCategory {
-  id           Int      @id @default(autoincrement())
-  name         String
-  allocated    Decimal  @db.Decimal(10, 2) @default(0)
-  spent        Decimal  @db.Decimal(10, 2) @default(0)
-  color        String?
-  
-  budgetId     Int      @map("budget_id")
-  budget       Budget   @relation(fields: [budgetId], references: [id], onDelete: Cascade)
-
-  @@map("budget_category")
 }
