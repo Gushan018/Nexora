@@ -15,7 +15,7 @@ export const AdminRevenueReports = () => {
             <DollarSign className="w-7 h-7 text-green-400" />
             Platform Revenue Reports
           </h1>
-          <p className="text-slate-600">Analyze Nexora's top-line revenue, commission splits, and payment processing fees.</p>
+          <p className="text-slate-600">Analyze Event Nest's top-line revenue, commission splits, and payment processing fees.</p>
         </div>
         <div className="flex gap-2">
           <select className="bg-surface/50 border border-slate-300 rounded-lg px-4 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">

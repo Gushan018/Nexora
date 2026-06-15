@@ -52,7 +52,7 @@ app.use('/api/upload', uploadRoutes);
 
 // Test Route
 app.get('/', (req, res) => {
-  res.json({ message: '🚀 Nexora API is Running Perfectly!' });
+  res.json({ message: '🚀 Event Nest API is Running Perfectly!' });
 });
 
 // Server Start 

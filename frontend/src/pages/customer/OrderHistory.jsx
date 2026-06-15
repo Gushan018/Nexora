@@ -59,7 +59,7 @@ export const OrderHistory = () => {
         <body>
           <div class="header">
             <div>
-              <img src="${window.location.origin}/logo.png" alt="Nexora Logo" style="height: 48px; object-fit: contain; margin-bottom: 8px;" />
+              <img src="${window.location.origin}/logo.png" alt="Event Nest Logo" style="height: 48px; object-fit: contain; margin-bottom: 8px;" />
               <p style="color: #666; margin-top: 4px;">Premium Marketplace</p>
             </div>
             <div style="text-align: right;">
@@ -87,7 +87,7 @@ export const OrderHistory = () => {
           </div>
           
           <p style="margin-top: 50px; color: #666; font-size: 12px; text-align: center;">
-            Thank you for shopping with Nexora. This is a computer-generated document.
+            Thank you for shopping with Event Nest. This is a computer-generated document.
           </p>
         </body>
       </html>

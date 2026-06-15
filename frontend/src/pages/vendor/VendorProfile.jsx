@@ -17,7 +17,7 @@ export const VendorProfile = () => {
             <Store className="w-7 h-7 text-primary" />
             Vendor Profile
           </h1>
-          <p className="text-slate-600">Manage how customers see your business on Nexora.</p>
+          <p className="text-slate-600">Manage how customers see your business on Event Nest.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" leftIcon={<Eye className="w-4 h-4"/>}>Preview Public Profile</Button>

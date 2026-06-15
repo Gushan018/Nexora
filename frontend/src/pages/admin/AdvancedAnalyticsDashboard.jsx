@@ -28,7 +28,7 @@ export const AdvancedAnalyticsDashboard = () => {
               <Zap className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-slate-900">Nexora AI Insight</h3>
+              <h3 className="text-lg font-bold text-slate-900">Event Nest AI Insight</h3>
               <p className="text-sm text-slate-800 mt-1 max-w-2xl">
                 Our predictive model indicates a <strong>15% surge in Photography bookings</strong> for the upcoming spring season in the Los Angeles metro area. Consider launching targeted ad campaigns to acquire more photography vendors in this region.
               </p>

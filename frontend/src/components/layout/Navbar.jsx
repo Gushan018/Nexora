@@ -40,7 +40,7 @@ export const Navbar = () => {
           <Link to="/" className="flex items-center group">
             <img 
               src="/logo.png" 
-              alt="Nexora" 
+              alt="Event Nest" 
               className="h-16 md:h-20 object-contain transition-transform duration-300 group-hover:scale-105" 
             />
           </Link>

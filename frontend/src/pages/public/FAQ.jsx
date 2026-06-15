@@ -9,8 +9,8 @@ const FAQS = [
   {
     category: 'General',
     questions: [
-      { q: "What is Nexora?", a: "Nexora is a unified Event Management and Marketplace Platform that connects event planners, service vendors, and product sellers in a single, seamless ecosystem." },
-      { q: "Is Nexora free to use?", a: "Creating an account and browsing as a Customer is 100% free. Vendors and Sellers may have platform fees applied to transactions or opt-in to premium listing packages." },
+      { q: "What is Event Nest?", a: "Event Nest is a unified Event Management and Marketplace Platform that connects event planners, service vendors, and product sellers in a single, seamless ecosystem." },
+      { q: "Is Event Nest free to use?", a: "Creating an account and browsing as a Customer is 100% free. Vendors and Sellers may have platform fees applied to transactions or opt-in to premium listing packages." },
     ]
   },
   {

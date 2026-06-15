@@ -173,7 +173,7 @@ export const LandingPage = () => {
       {/* How it Works */}
       <section className="relative z-20 max-w-7xl mx-auto px-4 mt-24">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">How Nexora Works</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">How Event Nest Works</h2>
           <p className="text-slate-600 max-w-2xl mx-auto text-lg">Planning an event has never been this seamless. Follow these three simple steps to bring your vision to life.</p>
         </div>
 
@@ -246,14 +246,14 @@ export const LandingPage = () => {
       <section className="relative z-20 max-w-7xl mx-auto px-4 mt-32">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">Loved by Hosts & Vendors</h2>
-          <p className="text-slate-600 max-w-2xl mx-auto text-lg">Don't just take our word for it. See what our community has to say about the Nexora experience.</p>
+          <p className="text-slate-600 max-w-2xl mx-auto text-lg">Don't just take our word for it. See what our community has to say about the Event Nest experience.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { name: 'Sarah Jenkins', role: 'Bride-to-be', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80', text: 'Nexora made planning my wedding completely stress-free. I found my dream venue and photographer within hours, and the contract process was entirely seamless.' },
-            { name: 'Michael Chen', role: 'Corporate Event Manager', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80', text: 'The level of professionalism and the quality of vendors on this platform is unmatched. We now use Nexora exclusively for all our quarterly corporate retreats.' },
-            { name: 'Elena Rodriguez', role: 'Premium Caterer', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80', text: 'Since listing my catering business on Nexora, my high-end bookings have skyrocketed. The AI booking management saves me hours of admin work every single week.' },
+            { name: 'Sarah Jenkins', role: 'Bride-to-be', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80', text: 'Event Nest made planning my wedding completely stress-free. I found my dream venue and photographer within hours, and the contract process was entirely seamless.' },
+            { name: 'Michael Chen', role: 'Corporate Event Manager', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80', text: 'The level of professionalism and the quality of vendors on this platform is unmatched. We now use Event Nest exclusively for all our quarterly corporate retreats.' },
+            { name: 'Elena Rodriguez', role: 'Premium Caterer', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80', text: 'Since listing my catering business on Event Nest, my high-end bookings have skyrocketed. The AI booking management saves me hours of admin work every single week.' },
           ].map((testimonial, i) => (
             <div key={i} className="bg-surface/50 border border-slate-300 rounded-3xl p-8 backdrop-blur-sm relative">
               <Star className="w-8 h-8 text-primary absolute top-6 right-6 opacity-30" />
@@ -277,7 +277,7 @@ export const LandingPage = () => {
           <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
 
           <div className="flex-1 relative z-10">
-            <h2 className="text-4xl md:text-5xl font-serif text-slate-900 tracking-tighter mb-4 leading-tight">Grow your business <br/>on Nexora.</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-slate-900 tracking-tighter mb-4 leading-tight">Grow your business <br/>on Event Nest.</h2>
             <p className="text-lg text-slate-600 mb-8 max-w-lg">
               Join thousands of premium vendors booking high-value clients. Get access to AI tools, secure payments, and a beautiful storefront.
             </p>
@@ -297,7 +297,7 @@ export const LandingPage = () => {
             <div className="w-full aspect-[4/3] rounded-2xl border border-slate-300 bg-black/50 overflow-hidden p-2 rotate-2 shadow-2xl backdrop-blur-sm">
               <img 
                 src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2000" 
-                alt="Nexora Dashboard" 
+                alt="Event Nest Dashboard" 
                 className="w-full h-full object-cover rounded-xl border border-slate-200 opacity-80"
               />
             </div>

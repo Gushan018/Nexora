@@ -98,7 +98,7 @@ export const AdminNotificationManagement = () => {
                 { title: 'Scheduled Maintenance', target: 'All Users', type: 'Warning', date: '2 hours ago', reach: '45,210' },
                 { title: 'New Feature: Instant Payouts', target: 'All Vendors', type: 'Success', date: 'Oct 24, 2026', reach: '1,842' },
                 { title: 'Update your KYC Documents', target: 'Pro Vendors', type: 'Info', date: 'Oct 15, 2026', reach: '680' },
-                { title: 'Welcome to Nexora V2!', target: 'All Users', type: 'Info', date: 'Sep 01, 2026', reach: '42,100' },
+                { title: 'Welcome to Event Nest V2!', target: 'All Users', type: 'Info', date: 'Sep 01, 2026', reach: '42,100' },
               ].map((log, i) => (
                 <div key={i} className="p-4 hover:bg-slate-50 transition-colors">
                   <div className="flex justify-between items-start mb-2">

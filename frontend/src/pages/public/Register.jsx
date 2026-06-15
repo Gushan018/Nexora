@@ -101,7 +101,7 @@ export const Register = () => {
             transition={{ delay: 0.2 }}
             className="text-4xl font-serif text-slate-900 mb-2"
           >
-            Join Nexora
+            Join Event Nest
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -243,7 +243,7 @@ export const Register = () => {
                 />
               </div>
               <label htmlFor="terms" className="text-xs text-slate-600 leading-tight">
-                By creating an account, you agree to Nexora's <a href="/terms" className="text-primary hover:underline">Terms of Service</a> and <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>.
+                By creating an account, you agree to Event Nest's <a href="/terms" className="text-primary hover:underline">Terms of Service</a> and <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>.
               </label>
             </div>
 

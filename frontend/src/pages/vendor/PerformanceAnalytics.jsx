@@ -22,7 +22,7 @@ export const PerformanceAnalytics = () => {
             <BarChart3 className="w-7 h-7 text-primary" />
             Performance Analytics
           </h1>
-          <p className="text-slate-600">Track your visibility and conversion metrics on Nexora.</p>
+          <p className="text-slate-600">Track your visibility and conversion metrics on Event Nest.</p>
         </div>
         <div className="flex gap-2">
           <select className="bg-surface/50 border border-slate-300 rounded-lg px-4 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
@@ -97,7 +97,7 @@ export const PerformanceAnalytics = () => {
           <CardContent className="flex-1 pt-0">
             <div className="space-y-6">
               {[
-                { source: 'Nexora Search', percent: 65, color: 'bg-primary' },
+                { source: 'Event Nest Search', percent: 65, color: 'bg-primary' },
                 { source: 'Direct Link', percent: 20, color: 'bg-accent' },
                 { source: 'External Referrals', percent: 10, color: 'bg-yellow-500' },
                 { source: 'Other', percent: 5, color: 'bg-slate-300' },

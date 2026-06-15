@@ -153,7 +153,7 @@ export const CreateEvent = () => {
                 </div>
 
                 <div className="p-4 rounded-xl bg-primary/10 border border-primary/20 text-sm text-primary">
-                  Based on your event type and guest count, Nexora will automatically generate a recommended budget breakdown for Venues, Catering, Photography, and more.
+                  Based on your event type and guest count, Event Nest will automatically generate a recommended budget breakdown for Venues, Catering, Photography, and more.
                 </div>
 
                 <div className="pt-8 flex justify-between">

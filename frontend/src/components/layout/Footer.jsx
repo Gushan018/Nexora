@@ -11,7 +11,7 @@ export const Footer = () => {
             <Link to="/" className="flex items-center group mb-6">
               <img 
                 src="/logo.png" 
-                alt="Nexora" 
+                alt="Event Nest" 
                 className="h-20 md:h-24 object-contain transition-transform duration-300 group-hover:scale-105" 
               />
             </Link>
@@ -65,7 +65,7 @@ export const Footer = () => {
 
         <div className="border-t border-slate-200 pt-8 flex flex-col md:flex-row items-center justify-between">
           <p className="text-slate-500 text-sm">
-            © {new Date().getFullYear()} Nexora. All rights reserved.
+            © {new Date().getFullYear()} Event Nest. All rights reserved.
           </p>
           <div className="flex items-center gap-6 mt-4 md:mt-0">
             <span className="text-slate-500 text-sm flex items-center gap-2">
