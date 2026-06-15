@@ -17,7 +17,7 @@ export const Card = ({ className, children, ...props }) => {
 
 export const CardHeader = ({ className, children, ...props }) => {
   return (
-    <div className={cn("px-6 py-4 border-b border-white/5", className)} {...props}>
+    <div className={cn("px-6 py-4 border-b border-slate-200", className)} {...props}>
       {children}
     </div>
   );
@@ -25,7 +25,7 @@ export const CardHeader = ({ className, children, ...props }) => {
 
 export const CardTitle = ({ className, children, ...props }) => {
   return (
-    <h3 className={cn("text-lg font-semibold text-white", className)} {...props}>
+    <h3 className={cn("text-lg font-semibold text-slate-900", className)} {...props}>
       {children}
     </h3>
   );
@@ -33,7 +33,7 @@ export const CardTitle = ({ className, children, ...props }) => {
 
 export const CardDescription = ({ className, children, ...props }) => {
   return (
-    <p className={cn("text-sm text-white/60 mt-1", className)} {...props}>
+    <p className={cn("text-sm text-slate-600 mt-1", className)} {...props}>
       {children}
     </p>
   );
@@ -49,7 +49,7 @@ export const CardContent = ({ className, children, ...props }) => {
 
 export const CardFooter = ({ className, children, ...props }) => {
   return (
-    <div className={cn("px-6 py-4 border-t border-white/5 flex items-center", className)} {...props}>
+    <div className={cn("px-6 py-4 border-t border-slate-200 flex items-center", className)} {...props}>
       {children}
     </div>
   );

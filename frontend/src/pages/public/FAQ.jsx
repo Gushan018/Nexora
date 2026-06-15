@@ -52,7 +52,7 @@ export const FAQ = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl lg:text-5xl font-bold text-white mb-6"
+            className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
           >
             Frequently Asked <span className="text-gradient">Questions</span>
           </motion.h1>
@@ -60,7 +60,7 @@ export const FAQ = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-white/60 text-lg max-w-2xl mx-auto"
+            className="text-slate-600 text-lg max-w-2xl mx-auto"
           >
             Everything you need to know about the product and billing. Can't find the answer you're looking for? Please chat to our friendly team.
           </motion.p>
@@ -78,8 +78,8 @@ export const FAQ = () => {
               className={cn(
                 "px-6 py-3 rounded-xl font-medium transition-all duration-300 border",
                 activeCategory === cat.category 
-                  ? "bg-primary/20 border-primary text-white shadow-[0_0_20px_rgba(91,124,250,0.2)]" 
-                  : "bg-surface border-white/10 text-white/60 hover:bg-white/5"
+                  ? "bg-primary/20 border-primary text-slate-900 shadow-[0_0_20px_rgba(91,124,250,0.2)]" 
+                  : "bg-surface border-slate-300 text-slate-600 hover:bg-slate-100"
               )}
             >
               {cat.category}
@@ -102,15 +102,15 @@ export const FAQ = () => {
                   key={i} 
                   className={cn(
                     "mb-4 rounded-2xl border transition-all duration-300 overflow-hidden",
-                    openIndex === i ? "bg-surface/80 border-primary/50" : "bg-surface/30 border-white/10 hover:border-white/20"
+                    openIndex === i ? "bg-surface/80 border-primary/50" : "bg-surface/30 border-slate-300 hover:border-slate-400"
                   )}
                 >
                   <button 
                     onClick={() => toggleQuestion(i)}
                     className="w-full flex items-center justify-between p-6 text-left"
                   >
-                    <h3 className="text-lg font-medium text-white pr-8">{faq.q}</h3>
-                    <ChevronDown className={cn("w-5 h-5 text-white/40 shrink-0 transition-transform duration-300", openIndex === i && "rotate-180 text-primary")} />
+                    <h3 className="text-lg font-medium text-slate-900 pr-8">{faq.q}</h3>
+                    <ChevronDown className={cn("w-5 h-5 text-slate-500 shrink-0 transition-transform duration-300", openIndex === i && "rotate-180 text-primary")} />
                   </button>
                   
                   <AnimatePresence>
@@ -121,7 +121,7 @@ export const FAQ = () => {
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                       >
-                        <div className="p-6 pt-0 text-white/60 leading-relaxed border-t border-white/5 mt-2">
+                        <div className="p-6 pt-0 text-slate-600 leading-relaxed border-t border-slate-200 mt-2">
                           {faq.a}
                         </div>
                       </motion.div>
@@ -134,12 +134,12 @@ export const FAQ = () => {
         </div>
 
         {/* Still have questions? */}
-        <div className="rounded-3xl bg-surface/50 border border-white/10 p-8 text-center flex flex-col items-center">
+        <div className="rounded-3xl bg-surface/50 border border-slate-300 p-8 text-center flex flex-col items-center">
           <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-6">
             <MessageCircle className="w-8 h-8 text-primary" />
           </div>
-          <h3 className="text-2xl font-bold text-white mb-2">Still have questions?</h3>
-          <p className="text-white/60 mb-8 max-w-md mx-auto">
+          <h3 className="text-2xl font-bold text-slate-900 mb-2">Still have questions?</h3>
+          <p className="text-slate-600 mb-8 max-w-md mx-auto">
             Can't find the answer you're looking for? Please chat to our friendly team.
           </p>
           <Link to="/contact-us">

@@ -11,7 +11,7 @@ export const SystemSettings = () => {
       
       {/* Sidebar Navigation */}
       <div className="w-full md:w-64 shrink-0 space-y-2">
-        <h1 className="text-2xl font-bold text-white mb-6">Settings</h1>
+        <h1 className="text-2xl font-bold text-slate-900 mb-6">Settings</h1>
         
         <nav className="space-y-1">
           {[
@@ -29,7 +29,7 @@ export const SystemSettings = () => {
                 "w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors text-left",
                 item.active 
                   ? "bg-primary/20 text-primary border border-primary/20" 
-                  : "text-white/60 hover:text-white hover:bg-white/5"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               )}
             >
               <item.icon className="w-4 h-4" />
@@ -43,8 +43,8 @@ export const SystemSettings = () => {
       <div className="flex-1 space-y-6">
         
         <div>
-          <h2 className="text-xl font-bold text-white">General Settings</h2>
-          <p className="text-sm text-white/60 mt-1">Manage global platform configurations and branding.</p>
+          <h2 className="text-xl font-bold text-slate-900">General Settings</h2>
+          <p className="text-sm text-slate-600 mt-1">Manage global platform configurations and branding.</p>
         </div>
 
         <Card>
@@ -55,28 +55,28 @@ export const SystemSettings = () => {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-white/80 block">Platform Name</label>
+                <label className="text-sm font-medium text-slate-800 block">Platform Name</label>
                 <input 
                   type="text" 
                   defaultValue="Nexora Marketplace" 
-                  className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-surface border border-slate-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors"
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-white/80 block">Support Email</label>
+                <label className="text-sm font-medium text-slate-800 block">Support Email</label>
                 <input 
                   type="email" 
                   defaultValue="support@nexora.com" 
-                  className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-surface border border-slate-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors"
                 />
               </div>
             </div>
             
             <div className="space-y-1.5 pt-2">
-              <label className="text-sm font-medium text-white/80 block">Platform Logo (Dark Mode)</label>
+              <label className="text-sm font-medium text-slate-800 block">Platform Logo (Dark Mode)</label>
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded bg-surface border border-white/10 flex items-center justify-center">
-                  <span className="font-bold text-white tracking-widest text-xs">NEXORA</span>
+                <div className="w-16 h-16 rounded bg-surface border border-slate-300 flex items-center justify-center">
+                  <span className="font-bold text-slate-900 tracking-widest text-xs">NEXORA</span>
                 </div>
                 <Button variant="outline" size="sm">Upload New</Button>
               </div>
@@ -91,16 +91,16 @@ export const SystemSettings = () => {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-white/80 block">Default Timezone</label>
-                <select className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
+                <label className="text-sm font-medium text-slate-800 block">Default Timezone</label>
+                <select className="w-full bg-surface border border-slate-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
                   <option>UTC (Coordinated Universal Time)</option>
                   <option>PST (Pacific Standard Time)</option>
                   <option>EST (Eastern Standard Time)</option>
                 </select>
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-white/80 block">Default Currency</label>
-                <select className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
+                <label className="text-sm font-medium text-slate-800 block">Default Currency</label>
+                <select className="w-full bg-surface border border-slate-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
                   <option>LKR (Rs)</option>
                   <option>EUR (€)</option>
                   <option>GBP (£)</option>
@@ -116,14 +116,14 @@ export const SystemSettings = () => {
             <CardDescription>Toggle platform availability.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-surface/50">
+            <div className="flex items-center justify-between p-4 rounded-xl border border-slate-300 bg-surface/50">
               <div>
-                <h4 className="font-bold text-white text-sm">Maintenance Mode</h4>
-                <p className="text-xs text-white/50 mt-1 max-w-md">When enabled, the public marketplace is disabled and shows a "Down for Maintenance" page. Admins can still log in.</p>
+                <h4 className="font-bold text-slate-900 text-sm">Maintenance Mode</h4>
+                <p className="text-xs text-slate-500 mt-1 max-w-md">When enabled, the public marketplace is disabled and shows a "Down for Maintenance" page. Admins can still log in.</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" className="sr-only peer" />
-                <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-slate-300 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
           </CardContent>

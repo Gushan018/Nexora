@@ -21,13 +21,13 @@ export const CategoryView = () => {
         
         {/* Category Header */}
         <div className="mb-8">
-          <div className="text-sm text-white/40 mb-4 flex items-center gap-2">
+          <div className="text-sm text-slate-500 mb-4 flex items-center gap-2">
             <span>Marketplace</span>
             <span>/</span>
             <span className="text-primary font-medium">Decor & Rentals</span>
           </div>
-          <h1 className="text-4xl font-bold text-white mb-4">Decor & Rentals</h1>
-          <p className="text-white/60 max-w-2xl">Browse our extensive collection of event decorations, furniture rentals, and atmospheric lighting to make your venue unforgettable.</p>
+          <h1 className="text-4xl font-bold text-slate-900 mb-4">Decor & Rentals</h1>
+          <p className="text-slate-600 max-w-2xl">Browse our extensive collection of event decorations, furniture rentals, and atmospheric lighting to make your venue unforgettable.</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
@@ -35,45 +35,45 @@ export const CategoryView = () => {
           {/* Sidebar Filters */}
           <div className="lg:w-64 shrink-0 space-y-6">
             <div className="relative">
-              <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
-              <input type="text" placeholder="Search in category..." className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-primary transition-colors" />
+              <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+              <input type="text" placeholder="Search in category..." className="w-full bg-surface border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-primary transition-colors" />
             </div>
 
             <Card className="bg-surface/30">
               <CardContent className="p-5 space-y-6">
                 <div>
-                  <h3 className="text-white font-medium mb-3">Price Range</h3>
+                  <h3 className="text-slate-900 font-medium mb-3">Price Range</h3>
                   <div className="flex gap-2 items-center mb-4">
-                    <input type="number" placeholder="Min" className="w-full bg-surface border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none" />
-                    <span className="text-white/40">-</span>
-                    <input type="number" placeholder="Max" className="w-full bg-surface border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none" />
+                    <input type="number" placeholder="Min" className="w-full bg-surface border border-slate-300 rounded-lg px-3 py-1.5 text-sm text-slate-900 focus:outline-none" />
+                    <span className="text-slate-500">-</span>
+                    <input type="number" placeholder="Max" className="w-full bg-surface border border-slate-300 rounded-lg px-3 py-1.5 text-sm text-slate-900 focus:outline-none" />
                   </div>
                   <input type="range" min="0" max="1000" className="w-full accent-primary" />
                 </div>
 
-                <div className="pt-6 border-t border-white/5">
-                  <h3 className="text-white font-medium mb-3">Sub-Categories</h3>
+                <div className="pt-6 border-t border-slate-200">
+                  <h3 className="text-slate-900 font-medium mb-3">Sub-Categories</h3>
                   <div className="space-y-2">
                     {['Centerpieces', 'Linens & Chair Covers', 'Lighting', 'Archways & Backdrops', 'Signage'].map(sub => (
                       <label key={sub} className="flex items-center gap-3 cursor-pointer group">
-                        <input type="checkbox" className="w-4 h-4 rounded border-white/20 text-primary bg-surface focus:ring-primary/50" />
-                        <span className="text-sm text-white/70 group-hover:text-white transition-colors">{sub}</span>
+                        <input type="checkbox" className="w-4 h-4 rounded border-slate-400 text-primary bg-surface focus:ring-primary/50" />
+                        <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{sub}</span>
                       </label>
                     ))}
                   </div>
                 </div>
 
-                <div className="pt-6 border-t border-white/5">
-                  <h3 className="text-white font-medium mb-3">Minimum Rating</h3>
+                <div className="pt-6 border-t border-slate-200">
+                  <h3 className="text-slate-900 font-medium mb-3">Minimum Rating</h3>
                   <div className="space-y-2">
                     {[4, 3, 2].map(rating => (
                       <label key={rating} className="flex items-center gap-3 cursor-pointer group">
-                        <input type="radio" name="rating" className="w-4 h-4 border-white/20 text-primary bg-surface focus:ring-primary/50" />
+                        <input type="radio" name="rating" className="w-4 h-4 border-slate-400 text-primary bg-surface focus:ring-primary/50" />
                         <div className="flex items-center gap-1">
                           {[...Array(5)].map((_, i) => (
-                            <Star key={i} className={cn("w-3.5 h-3.5", i < rating ? "fill-yellow-400 text-yellow-400" : "text-white/20")} />
+                            <Star key={i} className={cn("w-3.5 h-3.5", i < rating ? "fill-yellow-400 text-yellow-400" : "text-slate-300")} />
                           ))}
-                          <span className="text-xs text-white/50 ml-1">& Up</span>
+                          <span className="text-xs text-slate-500 ml-1">& Up</span>
                         </div>
                       </label>
                     ))}
@@ -86,8 +86,8 @@ export const CategoryView = () => {
           {/* Product Grid Area */}
           <div className="flex-1">
             <div className="flex justify-between items-center mb-6">
-              <p className="text-white/60 text-sm">Showing <span className="text-white font-medium">142</span> products</p>
-              <button className="flex items-center gap-2 text-sm text-white/80 bg-surface border border-white/10 rounded-lg px-4 py-2 hover:bg-white/5 transition-colors">
+              <p className="text-slate-600 text-sm">Showing <span className="text-slate-900 font-medium">142</span> products</p>
+              <button className="flex items-center gap-2 text-sm text-slate-800 bg-surface border border-slate-300 rounded-lg px-4 py-2 hover:bg-slate-100 transition-colors">
                 Sort by: Featured <ChevronDown className="w-4 h-4" />
               </button>
             </div>
@@ -105,7 +105,7 @@ export const CategoryView = () => {
                       <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md rounded-full px-2.5 py-1 flex items-center gap-1">
                         <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                        <span className="text-xs font-bold text-white">{product.rating}</span>
+                        <span className="text-xs font-bold text-slate-900">{product.rating}</span>
                       </div>
                       <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0">
                         <button className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow-lg hover:bg-primary/80 transition-colors">
@@ -115,9 +115,9 @@ export const CategoryView = () => {
                     </div>
                     <CardContent className="p-5 flex flex-col flex-1">
                       <p className="text-xs text-primary font-medium mb-1">{product.vendor}</p>
-                      <h3 className="text-lg font-bold text-white mb-4 line-clamp-2 leading-tight group-hover:text-primary transition-colors">{product.name}</h3>
+                      <h3 className="text-lg font-bold text-slate-900 mb-4 line-clamp-2 leading-tight group-hover:text-primary transition-colors">{product.name}</h3>
                       <div className="mt-auto">
-                        <span className="text-xl font-bold text-white">LKR {product.price.toFixed(2)}</span>
+                        <span className="text-xl font-bold text-slate-900">LKR {product.price.toFixed(2)}</span>
                       </div>
                     </CardContent>
                   </Card>

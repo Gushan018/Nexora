@@ -99,7 +99,7 @@ export const Register = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl font-serif text-white mb-2"
+            className="text-4xl font-serif text-slate-900 mb-2"
           >
             Join Nexora
           </motion.h1>
@@ -107,13 +107,13 @@ export const Register = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-white/60"
+            className="text-slate-600"
           >
             Create an account to start planning or selling.
           </motion.p>
         </div>
 
-        <div className="bg-surface/40 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group">
+        <div className="bg-surface/40 border border-slate-300 rounded-3xl p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group">
           
           <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
 
@@ -130,8 +130,8 @@ export const Register = () => {
               className={cn(
                 "p-4 rounded-xl border flex flex-col items-center text-center transition-all",
                 accountType === 'customer' 
-                  ? "bg-primary/20 border-primary text-white" 
-                  : "bg-surface border-white/10 text-white/50 hover:bg-white/5"
+                  ? "bg-primary/20 border-primary text-slate-900" 
+                  : "bg-surface border-slate-300 text-slate-500 hover:bg-slate-100"
               )}
             >
               <User className="w-6 h-6 mb-2" />
@@ -143,8 +143,8 @@ export const Register = () => {
               className={cn(
                 "p-4 rounded-xl border flex flex-col items-center text-center transition-all",
                 accountType === 'vendor' 
-                  ? "bg-accent/20 border-accent text-white" 
-                  : "bg-surface border-white/10 text-white/50 hover:bg-white/5"
+                  ? "bg-accent/20 border-accent text-slate-900" 
+                  : "bg-surface border-slate-300 text-slate-500 hover:bg-slate-100"
               )}
             >
               <Store className="w-6 h-6 mb-2" />
@@ -157,9 +157,9 @@ export const Register = () => {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white/80 block">First Name</label>
+                <label className="text-sm font-medium text-slate-800 block">First Name</label>
                 <div className="relative">
-                  <User className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+                  <User className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input 
                     type="text" 
                     name="firstName"
@@ -167,12 +167,12 @@ export const Register = () => {
                     onChange={handleChange}
                     placeholder="John" 
                     required
-                    className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/20"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-12 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-400"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white/80 block">Last Name</label>
+                <label className="text-sm font-medium text-slate-800 block">Last Name</label>
                 <input 
                   type="text" 
                   name="lastName"
@@ -180,15 +180,15 @@ export const Register = () => {
                   onChange={handleChange}
                   placeholder="Doe" 
                   required
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/20"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-400"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 block">Email Address</label>
+              <label className="text-sm font-medium text-slate-800 block">Email Address</label>
               <div className="relative">
-                <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+                <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input 
                   type="email" 
                   name="email"
@@ -196,15 +196,15 @@ export const Register = () => {
                   onChange={handleChange}
                   placeholder="name@example.com" 
                   required
-                  className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/20"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-12 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-400"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 block">Password</label>
+              <label className="text-sm font-medium text-slate-800 block">Password</label>
               <div className="relative">
-                <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+                <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input 
                   type={showPassword ? "text" : "password"} 
                   name="password"
@@ -212,12 +212,12 @@ export const Register = () => {
                   onChange={handleChange}
                   placeholder="Create a strong password" 
                   required
-                  className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-12 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/20"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-12 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-400"
                 />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/80 transition-colors focus:outline-none"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 transition-colors focus:outline-none"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -227,9 +227,9 @@ export const Register = () => {
               <div className="flex gap-1 pt-2">
                 <div className="h-1 flex-1 bg-green-500 rounded-full" />
                 <div className="h-1 flex-1 bg-green-500 rounded-full" />
-                <div className="h-1 flex-1 bg-surface border border-white/10 rounded-full" />
+                <div className="h-1 flex-1 bg-surface border border-slate-300 rounded-full" />
               </div>
-              <p className="text-[10px] text-white/40">Must be at least 8 characters long</p>
+              <p className="text-[10px] text-slate-500">Must be at least 8 characters long</p>
             </div>
 
             {/* Terms checkbox */}
@@ -239,10 +239,10 @@ export const Register = () => {
                   id="terms" 
                   type="checkbox" 
                   required
-                  className="w-4 h-4 rounded bg-surface border-white/10 text-primary focus:ring-primary focus:ring-offset-surface"
+                  className="w-4 h-4 rounded bg-surface border-slate-300 text-primary focus:ring-primary focus:ring-offset-surface"
                 />
               </div>
-              <label htmlFor="terms" className="text-xs text-white/60 leading-tight">
+              <label htmlFor="terms" className="text-xs text-slate-600 leading-tight">
                 By creating an account, you agree to Nexora's <a href="/terms" className="text-primary hover:underline">Terms of Service</a> and <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>.
               </label>
             </div>
@@ -257,9 +257,9 @@ export const Register = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="text-center mt-8 text-white/50 text-sm"
+          className="text-center mt-8 text-slate-500 text-sm"
         >
-          Already have an account? <Link to="/login" className="text-white hover:text-primary font-bold transition-colors underline underline-offset-4">Log in</Link>
+          Already have an account? <Link to="/login" className="text-slate-900 hover:text-primary font-bold transition-colors underline underline-offset-4">Log in</Link>
         </motion.p>
 
       </motion.div>

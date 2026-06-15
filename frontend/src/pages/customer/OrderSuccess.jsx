@@ -50,7 +50,7 @@ export const OrderSuccess = () => {
         <body>
           <div class="header">
             <div>
-              <h1>NEXORA</h1>
+              <img src="${window.location.origin}/logo.png" alt="Nexora Logo" style="height: 48px; object-fit: contain; margin-bottom: 8px;" />
               <p style="color: #666; margin-top: 4px;">Premium Marketplace</p>
             </div>
             <div style="text-align: right;">
@@ -111,18 +111,18 @@ export const OrderSuccess = () => {
           <div className="w-24 h-24 rounded-full bg-green-500/20 border-4 border-green-500 flex items-center justify-center mb-6">
             <CheckCircle className="w-12 h-12 text-green-400" />
           </div>
-          <h1 className="text-4xl font-bold text-white mb-4">{isOrder ? 'Order Confirmed!' : 'Booking Confirmed!'}</h1>
-          <p className="text-lg text-white/60 max-w-md">
+          <h1 className="text-4xl font-bold text-slate-900 mb-4">{isOrder ? 'Order Confirmed!' : 'Booking Confirmed!'}</h1>
+          <p className="text-lg text-slate-600 max-w-md">
             Thank you for your payment. Your {isOrder ? 'order' : 'booking'} has been successfully processed and the vendor has been notified.
           </p>
         </motion.div>
 
         <Card className="mb-8 border-primary/20 bg-surface/50 backdrop-blur-xl">
           <CardContent className="p-8">
-            <div className="flex justify-between items-center pb-6 border-b border-white/10 mb-6">
+            <div className="flex justify-between items-center pb-6 border-b border-slate-300 mb-6">
               <div>
-                <span className="text-xs text-white/40 uppercase tracking-wider block mb-1">{isOrder ? 'Order Reference' : 'Booking Reference'}</span>
-                <span className="font-mono text-lg font-bold text-white">{referenceId}</span>
+                <span className="text-xs text-slate-500 uppercase tracking-wider block mb-1">{isOrder ? 'Order Reference' : 'Booking Reference'}</span>
+                <span className="font-mono text-lg font-bold text-slate-900">{referenceId}</span>
               </div>
               <Button variant="outline" size="sm" leftIcon={<Download className="w-4 h-4"/>} onClick={handleDownloadInvoice}>Invoice</Button>
             </div>
@@ -133,32 +133,32 @@ export const OrderSuccess = () => {
                   <Receipt className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-lg">{itemName}</h3>
-                  <p className="text-sm text-white/60">{isOrder ? 'Marketplace Order' : 'Full Day Access • Standard Package'}</p>
+                  <h3 className="font-bold text-slate-900 text-lg">{itemName}</h3>
+                  <p className="text-sm text-slate-600">{isOrder ? 'Marketplace Order' : 'Full Day Access • Standard Package'}</p>
                 </div>
               </div>
 
               {!isOrder && (
                 <div className="grid grid-cols-2 gap-4 pt-2">
-                  <div className="bg-white/5 rounded-xl p-4">
-                    <div className="flex items-center gap-2 text-white/40 text-xs mb-1">
+                  <div className="bg-slate-100 rounded-xl p-4">
+                    <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
                       <Calendar className="w-3.5 h-3.5" /> Date & Time
                     </div>
-                    <p className="text-sm font-medium text-white">Oct 14, 2026</p>
-                    <p className="text-sm text-white/60">10:00 AM - 11:00 PM</p>
+                    <p className="text-sm font-medium text-slate-900">Oct 14, 2026</p>
+                    <p className="text-sm text-slate-600">10:00 AM - 11:00 PM</p>
                   </div>
-                  <div className="bg-white/5 rounded-xl p-4">
-                    <div className="flex items-center gap-2 text-white/40 text-xs mb-1">
+                  <div className="bg-slate-100 rounded-xl p-4">
+                    <div className="flex items-center gap-2 text-slate-500 text-xs mb-1">
                       <MapPin className="w-3.5 h-3.5" /> Location
                     </div>
-                    <p className="text-sm font-medium text-white">Kandy, Sri Lanka</p>
+                    <p className="text-sm font-medium text-slate-900">Kandy, Sri Lanka</p>
                     <p className="text-sm text-primary hover:underline cursor-pointer">Get Directions</p>
                   </div>
                 </div>
               )}
               {isOrder && (
-                <div className="bg-white/5 rounded-xl p-4 mt-2">
-                   <p className="text-sm text-white/60">Your order will be shipped soon. You can track your order in your dashboard.</p>
+                <div className="bg-slate-100 rounded-xl p-4 mt-2">
+                   <p className="text-sm text-slate-600">Your order will be shipped soon. You can track your order in your dashboard.</p>
                 </div>
               )}
             </div>

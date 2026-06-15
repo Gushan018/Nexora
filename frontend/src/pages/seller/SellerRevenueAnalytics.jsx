@@ -9,21 +9,21 @@ export const SellerRevenueAnalytics = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-white">Seller Revenue Analytics</h1>
-          <p className="text-white/60">Deep dive into your metrics.</p>
+          <h1 className="text-2xl font-bold text-slate-900">Seller Revenue Analytics</h1>
+          <p className="text-slate-600">Deep dive into your metrics.</p>
         </div>
         <Button variant="outline">Export Data</Button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="h-80">
           <CardHeader><CardTitle>Revenue Over Time</CardTitle></CardHeader>
-          <CardContent className="h-full flex items-center justify-center border-t border-white/5">
+          <CardContent className="h-full flex items-center justify-center border-t border-slate-200">
             <BarChart3 className="w-16 h-16 text-primary/40" />
           </CardContent>
         </Card>
         <Card className="h-80">
           <CardHeader><CardTitle>Distribution</CardTitle></CardHeader>
-          <CardContent className="h-full flex items-center justify-center border-t border-white/5">
+          <CardContent className="h-full flex items-center justify-center border-t border-slate-200">
             <PieChart className="w-16 h-16 text-accent/40" />
           </CardContent>
         </Card>

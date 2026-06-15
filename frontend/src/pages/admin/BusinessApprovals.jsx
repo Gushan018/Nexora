@@ -17,36 +17,36 @@ export const BusinessApprovals = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <ShieldCheck className="w-7 h-7 text-primary" />
             Identity & Business Verification
           </h1>
-          <p className="text-white/60">Review KYC/KYB documents to approve new vendors on the platform.</p>
+          <p className="text-slate-600">Review KYC/KYB documents to approve new vendors on the platform.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card className="border-yellow-500/20 bg-yellow-500/5">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/80 mb-2">Pending Review</h3>
+            <h3 className="text-sm font-medium text-slate-800 mb-2">Pending Review</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-yellow-500">42</span>
             </div>
             <p className="text-xs text-yellow-500/60 mt-2">Requires manual approval</p>
           </CardContent>
         </Card>
-        <Card className="border-white/10">
+        <Card className="border-slate-300">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-2">Auto-Approved Today</h3>
+            <h3 className="text-sm font-medium text-slate-600 mb-2">Auto-Approved Today</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">128</span>
+              <span className="text-3xl font-bold text-slate-900">128</span>
             </div>
-            <p className="text-xs text-white/40 mt-2">Passed algorithmic checks</p>
+            <p className="text-xs text-slate-500 mt-2">Passed algorithmic checks</p>
           </CardContent>
         </Card>
         <Card className="border-red-500/20">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-2">Rejected Today</h3>
+            <h3 className="text-sm font-medium text-slate-600 mb-2">Rejected Today</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-red-400">7</span>
             </div>
@@ -56,17 +56,17 @@ export const BusinessApprovals = () => {
       </div>
 
       <Card>
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between">
+        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input 
               type="text" 
               placeholder="Search by business name or ID..." 
-              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors" 
+              className="w-full bg-surface border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
             />
           </div>
           <div className="flex gap-2">
-            <select className="bg-surface border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary/50 cursor-pointer">
+            <select className="bg-surface border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
               <option>Sort: Highest Risk First</option>
               <option>Sort: Oldest First</option>
             </select>
@@ -77,7 +77,7 @@ export const BusinessApprovals = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/5 text-sm font-medium text-white/50 bg-white/[0.02]">
+              <tr className="border-b border-slate-200 text-sm font-medium text-slate-500 bg-slate-50">
                 <th className="p-4 pl-6">Business Details</th>
                 <th className="p-4">Owner</th>
                 <th className="p-4">Submitted</th>
@@ -88,20 +88,20 @@ export const BusinessApprovals = () => {
             <tbody className="text-sm">
               {APPROVALS.map((approval, i) => (
                 <tr key={i} className={cn(
-                  "border-b border-white/5 transition-colors group",
-                  approval.risk === 'High' ? "bg-red-500/5" : "hover:bg-white/[0.02]"
+                  "border-b border-slate-200 transition-colors group",
+                  approval.risk === 'High' ? "bg-red-500/5" : "hover:bg-slate-50"
                 )}>
                   <td className="p-4 pl-6">
                     <div className="flex flex-col">
-                      <span className="font-bold text-white flex items-center gap-1.5"><Building className="w-3.5 h-3.5 text-white/40"/> {approval.business}</span>
-                      <span className="text-xs text-white/50">{approval.type} • {approval.id}</span>
+                      <span className="font-bold text-slate-900 flex items-center gap-1.5"><Building className="w-3.5 h-3.5 text-slate-500"/> {approval.business}</span>
+                      <span className="text-xs text-slate-500">{approval.type} • {approval.id}</span>
                       <span className="text-[10px] text-primary mt-1 font-bold tracking-wider uppercase flex items-center gap-1">
                         <FileText className="w-3 h-3"/> {approval.documents} Docs attached
                       </span>
                     </div>
                   </td>
-                  <td className="p-4 text-white/80">{approval.owner}</td>
-                  <td className="p-4 text-white/80">{approval.date}</td>
+                  <td className="p-4 text-slate-800">{approval.owner}</td>
+                  <td className="p-4 text-slate-800">{approval.date}</td>
                   <td className="p-4">
                     <span className={cn(
                       "px-2.5 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 w-fit",

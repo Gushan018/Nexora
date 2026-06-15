@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Filter, ShoppingCart, Star, ChevronDown, Heart } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Filter, ShoppingCart, Star, ChevronDown, Heart, X } from 'lucide-react';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import { cn } from '../../utils/cn';
@@ -17,6 +17,11 @@ const CATEGORIES = ['All', 'Decor', 'Catering', 'Entertainment', 'Venue Supplies
 export const Marketplace = ({ isDashboard = false }) => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+  const [minRating, setMinRating] = useState('');
+  const [sortBy, setSortBy] = useState('newest');
 
   const { user } = useAuth();
 
@@ -41,7 +46,19 @@ export const Marketplace = ({ isDashboard = false }) => {
   const filteredProducts = products.filter(p => {
     const matchesCategory = activeCategory === 'All' || (p.category?.categoryName || 'Uncategorized') === activeCategory;
     const matchesSearch = p.productName.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    const matchesMinPrice = minPrice === '' || Number(p.price) >= Number(minPrice);
+    const matchesMaxPrice = maxPrice === '' || Number(p.price) <= Number(maxPrice);
+    
+    // Average rating calculation
+    const avgRating = p.reviews?.length ? p.reviews.reduce((acc, curr) => acc + curr.rating, 0) / p.reviews.length : 0;
+    const matchesRating = minRating === '' || avgRating >= Number(minRating);
+
+    return matchesCategory && matchesSearch && matchesMinPrice && matchesMaxPrice && matchesRating;
+  }).sort((a, b) => {
+    if (sortBy === 'price-asc') return Number(a.price) - Number(b.price);
+    if (sortBy === 'price-desc') return Number(b.price) - Number(a.price);
+    if (sortBy === 'name-asc') return a.productName.localeCompare(b.productName);
+    return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
   });
 
   return (
@@ -53,7 +70,7 @@ export const Marketplace = ({ isDashboard = false }) => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl lg:text-5xl font-bold text-white mb-4"
+            className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4"
           >
             Event <span className="text-gradient">Marketplace</span>
           </motion.h1>
@@ -61,7 +78,7 @@ export const Marketplace = ({ isDashboard = false }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-white/60 text-lg max-w-2xl"
+            className="text-slate-600 text-lg max-w-2xl"
           >
             Discover and purchase premium supplies, decor, and equipment for your next unforgettable event.
           </motion.p>
@@ -72,7 +89,7 @@ export const Marketplace = ({ isDashboard = false }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="flex flex-col md:flex-row gap-4 mb-10"
+          className="flex flex-col gap-4 mb-10"
         >
           <div className="flex-1">
             <Input 
@@ -83,11 +100,26 @@ export const Marketplace = ({ isDashboard = false }) => {
               className="h-12 text-base"
             />
           </div>
-          <div className="flex items-center gap-3 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
-            <Button variant="outline" className="h-12 whitespace-nowrap" leftIcon={<Filter className="w-4 h-4" />}>
+          <div className="flex flex-wrap items-center gap-3 pb-2 md:pb-0">
+            <Button 
+              variant={showFilters ? "primary" : "outline"} 
+              className="h-12 whitespace-nowrap" 
+              leftIcon={<Filter className="w-4 h-4" />}
+              onClick={() => setShowFilters(!showFilters)}
+            >
               Filters
             </Button>
-            <div className="h-8 w-px bg-white/10 mx-2 hidden md:block" />
+            <select 
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="h-12 px-4 rounded-xl border border-slate-200 bg-surface/50 text-slate-600 focus:outline-none focus:border-primary/50"
+            >
+              <option value="newest">Newest</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="name-asc">Name: A to Z</option>
+            </select>
+            <div className="h-8 w-px bg-slate-200 mx-2 hidden md:block" />
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
@@ -96,7 +128,7 @@ export const Marketplace = ({ isDashboard = false }) => {
                   "h-12 px-6 rounded-xl font-medium transition-all whitespace-nowrap border",
                   activeCategory === cat 
                     ? "bg-primary/20 border-primary text-primary" 
-                    : "bg-surface/50 border-white/5 text-white/60 hover:bg-surface hover:text-white"
+                    : "bg-surface/50 border-slate-200 text-slate-600 hover:bg-surface hover:text-slate-900"
                 )}
               >
                 {cat}
@@ -104,6 +136,64 @@ export const Marketplace = ({ isDashboard = false }) => {
             ))}
           </div>
         </motion.div>
+
+        {/* Expanded Filters */}
+        <AnimatePresence>
+          {showFilters && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden mb-10"
+            >
+              <div className="p-6 bg-surface/50 border border-slate-200 rounded-2xl">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-bold text-slate-900">Advanced Filters</h3>
+                  <button onClick={() => {
+                    setMinPrice('');
+                    setMaxPrice('');
+                    setMinRating('');
+                  }} className="text-sm text-primary hover:underline">
+                    Clear Filters
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-600 mb-2">Price Range (LKR)</label>
+                    <div className="flex items-center gap-4">
+                      <Input 
+                        type="number" 
+                        placeholder="Min" 
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(e.target.value)}
+                      />
+                      <span className="text-slate-400">-</span>
+                      <Input 
+                        type="number" 
+                        placeholder="Max" 
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-600 mb-2">Minimum Rating</label>
+                    <select 
+                      value={minRating}
+                      onChange={(e) => setMinRating(e.target.value)}
+                      className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-surface text-slate-600 focus:outline-none focus:border-primary/50"
+                    >
+                      <option value="">Any Rating</option>
+                      <option value="4">4 Stars & Above</option>
+                      <option value="3">3 Stars & Above</option>
+                      <option value="2">2 Stars & Above</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {isLoading ? (
           <PageLoader text="Loading products..." />
@@ -124,11 +214,11 @@ export const Marketplace = ({ isDashboard = false }) => {
 
         {filteredProducts.length === 0 && (
           <div className="py-20 text-center">
-            <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Search className="w-10 h-10 text-white/40" />
+            <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Search className="w-10 h-10 text-slate-500" />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">No products found</h3>
-            <p className="text-white/60">Try adjusting your search or filters to find what you're looking for.</p>
+            <h3 className="text-xl font-semibold text-slate-900 mb-2">No products found</h3>
+            <p className="text-slate-600">Try adjusting your search or filters to find what you're looking for.</p>
           </div>
         )}
 
@@ -185,7 +275,7 @@ const ProductCard = ({ product, wishlistItems = [] }) => {
 
   return (
     <div 
-      className="glass-card rounded-2xl overflow-hidden group cursor-pointer border border-white/5 hover:border-primary/50 transition-colors duration-500"
+      className="glass-card rounded-2xl overflow-hidden group cursor-pointer border border-slate-200 hover:border-primary/50 transition-colors duration-500"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => navigate(`/customer/product-details/${product.productId}`)}
@@ -201,17 +291,17 @@ const ProductCard = ({ product, wishlistItems = [] }) => {
             onClick={handleWishlistToggle}
             disabled={addToWishlistMutation.isPending || removeFromWishlistMutation.isPending}
             className={cn(
-              "w-10 h-10 rounded-full flex items-center justify-center transition-all border disabled:opacity-50",
+              "w-10 h-10 rounded-full flex items-center justify-center transition-all border disabled:opacity-50 shadow-sm",
               isWishlisted 
-                ? "bg-red-500/20 text-red-500 border-red-500/50" 
-                : "bg-black/40 backdrop-blur-md text-white/80 border-white/10 hover:text-red-400 hover:bg-black/60"
+                ? "bg-red-50 text-red-500 border-red-200" 
+                : "bg-white/90 backdrop-blur-md text-slate-400 border-white hover:text-red-500 hover:bg-white"
             )}
           >
             <Heart className={cn("w-5 h-5", isWishlisted && "fill-current")} />
           </button>
         </div>
         <div className="absolute top-4 left-4">
-          <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-medium text-white/90 border border-white/10">
+          <span className="px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-xs font-bold text-slate-900 border border-white shadow-sm tracking-wide">
             {product.category?.categoryName || 'Uncategorized'}
           </span>
         </div>
@@ -239,19 +329,19 @@ const ProductCard = ({ product, wishlistItems = [] }) => {
         <div className="flex items-start justify-between mb-2">
           <div>
             <p className="text-xs text-primary mb-1 font-medium">{product.vendor?.businessName}</p>
-            <h3 className="text-lg font-semibold text-white leading-tight mb-2 group-hover:text-primary transition-colors">
+            <h3 className="text-lg font-semibold text-slate-900 leading-tight mb-2 group-hover:text-primary transition-colors">
               {product.productName}
             </h3>
           </div>
           <div className="text-right">
-            <span className="text-xl font-bold text-white">LKR {Number(product.price).toFixed(2)}</span>
+            <span className="text-xl font-bold text-slate-900">LKR {Number(product.price).toFixed(2)}</span>
           </div>
         </div>
         
         <div className="flex items-center gap-2 text-sm">
           <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-          <span className="text-white font-medium">4.8</span>
-          <span className="text-white/40">(12 reviews)</span>
+          <span className="text-slate-900 font-medium">4.8</span>
+          <span className="text-slate-500">(12 reviews)</span>
         </div>
       </div>
     </div>

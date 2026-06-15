@@ -96,7 +96,7 @@ export const ProductDetails = () => {
 
   if (isLoading) return <PageLoader text="Loading product details..." />;
   
-  if (!product) return <div className="pt-32 pb-20 text-center text-white">Product not found.</div>;
+  if (!product) return <div className="pt-32 pb-20 text-center text-slate-900">Product not found.</div>;
 
   const images = [
     product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=800&q=80',
@@ -112,7 +112,7 @@ export const ProductDetails = () => {
           
           {/* Image Gallery */}
           <div className="space-y-4">
-            <div className="aspect-square rounded-3xl overflow-hidden bg-surface border border-white/10 relative group">
+            <div className="aspect-square rounded-3xl overflow-hidden bg-surface border border-slate-300 relative group">
               <img src={images[activeImage]} alt={product.productName} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
             </div>
             <div className="flex gap-4 overflow-x-auto pb-2">
@@ -144,7 +144,7 @@ export const ProductDetails = () => {
                       "w-10 h-10 rounded-full flex items-center justify-center transition-colors disabled:opacity-50",
                       isWishlisted 
                         ? "text-red-500 border border-red-500/50 bg-red-500/10" 
-                        : "bg-surface border border-white/10 text-white/60 hover:text-red-400 hover:border-red-400/50"
+                        : "bg-surface border border-slate-300 text-slate-600 hover:text-red-400 hover:border-red-400/50"
                     )}
                   >
                     <Heart className={cn("w-5 h-5", isWishlisted && "fill-current")} />
@@ -154,50 +154,50 @@ export const ProductDetails = () => {
                       navigator.clipboard.writeText(window.location.href);
                       alert('Link copied to clipboard!');
                     }}
-                    className="w-10 h-10 rounded-full bg-surface border border-white/10 flex items-center justify-center text-white/60 hover:text-primary transition-colors"
+                    className="w-10 h-10 rounded-full bg-surface border border-slate-300 flex items-center justify-center text-slate-600 hover:text-primary transition-colors"
                   >
                     <Share2 className="w-5 h-5" />
                   </button>
                 </div>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4 leading-tight">{product.productName}</h1>
+              <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 leading-tight">{product.productName}</h1>
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-1 text-yellow-400">
                   <Star className="w-4 h-4 fill-yellow-400" />
                   <span className="font-bold">4.8</span>
                 </div>
-                <span className="text-white/40">({product.reviews?.length || 0} reviews)</span>
-                <span className="text-white/20">|</span>
+                <span className="text-slate-500">({product.reviews?.length || 0} reviews)</span>
+                <span className="text-slate-300">|</span>
                 <span className="text-green-400 font-medium flex items-center gap-1"><CheckCircle2 className="w-4 h-4"/> In Stock ({product.quantity})</span>
               </div>
             </div>
 
             <div className="mb-8">
-              <span className="text-4xl font-bold text-white">LKR {Number(product.price).toFixed(2)}</span>
+              <span className="text-4xl font-bold text-slate-900">LKR {Number(product.price).toFixed(2)}</span>
             </div>
 
-            <p className="text-white/70 leading-relaxed mb-8">{product.description || 'No description provided.'}</p>
+            <p className="text-slate-700 leading-relaxed mb-8">{product.description || 'No description provided.'}</p>
 
             <div className="mb-8 space-y-3">
-              <h3 className="text-white font-bold mb-4">Key Details</h3>
+              <h3 className="text-slate-900 font-bold mb-4">Key Details</h3>
               <div className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
-                  <p className="text-white/80 text-sm">Vendor Location: {product.vendor?.location || 'N/A'}</p>
+                  <p className="text-slate-800 text-sm">Vendor Location: {product.vendor?.location || 'N/A'}</p>
               </div>
               <div className="flex items-start gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
-                  <p className="text-white/80 text-sm">Available Quantity: {product.quantity}</p>
+                  <p className="text-slate-800 text-sm">Available Quantity: {product.quantity}</p>
               </div>
             </div>
 
-            <div className="mt-auto space-y-6 pt-8 border-t border-white/10">
+            <div className="mt-auto space-y-6 pt-8 border-t border-slate-300">
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-4 bg-surface rounded-xl border border-white/10 p-1">
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 rounded-lg hover:bg-white/10 text-white flex items-center justify-center">
+                <div className="flex items-center gap-4 bg-surface rounded-xl border border-slate-300 p-1">
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 rounded-lg hover:bg-slate-200 text-slate-900 flex items-center justify-center">
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="w-8 text-center font-bold text-white">{quantity}</span>
-                  <button onClick={() => setQuantity(Math.min(product.quantity, quantity + 1))} className="w-10 h-10 rounded-lg hover:bg-white/10 text-white flex items-center justify-center">
+                  <span className="w-8 text-center font-bold text-slate-900">{quantity}</span>
+                  <button onClick={() => setQuantity(Math.min(product.quantity, quantity + 1))} className="w-10 h-10 rounded-lg hover:bg-slate-200 text-slate-900 flex items-center justify-center">
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>
@@ -211,18 +211,18 @@ export const ProductDetails = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-surface/50 border border-white/5 flex items-start gap-3">
+                <div className="p-4 rounded-xl bg-surface/50 border border-slate-200 flex items-start gap-3">
                   <Truck className="w-5 h-5 text-primary shrink-0" />
                   <div>
-                    <h4 className="text-sm font-bold text-white mb-1">Fast Delivery</h4>
-                    <p className="text-xs text-white/50">Usually ships within 24 hours.</p>
+                    <h4 className="text-sm font-bold text-slate-900 mb-1">Fast Delivery</h4>
+                    <p className="text-xs text-slate-500">Usually ships within 24 hours.</p>
                   </div>
                 </div>
-                <div className="p-4 rounded-xl bg-surface/50 border border-white/5 flex items-start gap-3">
+                <div className="p-4 rounded-xl bg-surface/50 border border-slate-200 flex items-start gap-3">
                   <ShieldCheck className="w-5 h-5 text-green-400 shrink-0" />
                   <div>
-                    <h4 className="text-sm font-bold text-white mb-1">Buyer Protection</h4>
-                    <p className="text-xs text-white/50">Full refund if not as described.</p>
+                    <h4 className="text-sm font-bold text-slate-900 mb-1">Buyer Protection</h4>
+                    <p className="text-xs text-slate-500">Full refund if not as described.</p>
                   </div>
                 </div>
               </div>
