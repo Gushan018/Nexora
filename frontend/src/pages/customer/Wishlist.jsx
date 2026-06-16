@@ -74,7 +74,7 @@ export const Wishlist = () => {
                   <p className="text-sm text-primary mb-3">{detail?.vendor?.businessName || 'Unknown Vendor'}</p>
                   <div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-300">
                     <span className="font-bold text-slate-900">LKR {Number(detail?.price || 0).toFixed(2)}</span>
-                    <Link to={item.product ? `/customer/product-details/${item.productId}` : `/vendor-directory`}>
+                    <Link to={item.product ? `/customer/product-details/${item.productId}` : `/event-packages`}>
                       <Button variant="outline" size="sm">View Details</Button>
                     </Link>
                   </div>

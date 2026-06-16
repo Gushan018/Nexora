@@ -118,23 +118,23 @@ export const CustomerDashboard = () => {
         <div className="absolute top-0 right-0 w-[30rem] h-[30rem] bg-primary/20 blur-[120px] rounded-full pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/20 blur-[100px] rounded-full pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
         
-        <div className="relative z-10">
+        <div className="relative z-10 flex flex-col items-start">
           <motion.h1 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl sm:text-5xl font-black text-slate-900 mb-4 tracking-tight"
+            className="text-4xl sm:text-5xl font-black text-slate-900 mb-6 tracking-tight"
           >
-            Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">{user?.name ? user.name.split(' ')[0] : 'Guest'}</span> 👋
+            Welcome to your Dashboard, <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">{user?.name ? user.name.split(' ')[0] : 'Guest'}</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-slate-700 text-lg max-w-2xl mb-8 leading-relaxed"
+            className="text-slate-600 text-lg max-w-xl mb-10 leading-relaxed font-medium"
           >
-            {stats?.upcomingBookingsList?.length > 0 ? `Your next upcoming event is in ${Math.ceil((new Date(stats.upcomingBookingsList[0].eventDate) - new Date()) / (1000 * 60 * 60 * 24))} days! ` : 'You have no upcoming events. '}
-            You have <span className="text-slate-900 font-bold">{stats?.actionRequired?.length || 0}</span> pending action{stats?.actionRequired?.length === 1 ? '' : 's'} and <span className="text-slate-900 font-bold">{stats?.wishlisted || 0}</span> wishlisted item{stats?.wishlisted === 1 ? '' : 's'}.
+            Manage your event bookings, discover exclusive packages, and track your wishlist all in one place. Let's make your next event unforgettable.
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -142,11 +142,11 @@ export const CustomerDashboard = () => {
             transition={{ delay: 0.6 }}
             className="flex flex-wrap gap-4"
           >
-            <Button size="lg" className="px-8 shadow-[0_0_20px_rgba(212,175,55,0.3)] bg-primary hover:bg-primary-hover transition-all" onClick={() => navigate('/customer/booking-history')}>
-              View Event Plan
+            <Button size="lg" className="px-8 bg-primary hover:bg-primary-hover transition-all text-white shadow-lg shadow-primary/30 font-bold" onClick={() => navigate('/customer/event-packages')}>
+              Explore Packages
             </Button>
-            <Button variant="outline" size="lg" className="px-8 bg-surface/50 border-slate-300 hover:bg-slate-200 transition-all text-slate-900" onClick={() => navigate('/customer/vendor-directory')}>
-              Browse Vendors
+            <Button variant="outline" size="lg" className="px-8 bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-slate-900 shadow-sm font-bold" onClick={() => navigate('/customer/marketplace')}>
+              Shop Marketplace
             </Button>
           </motion.div>
         </div>
@@ -196,7 +196,11 @@ export const CustomerDashboard = () => {
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
                 <CardTitle>Event Timeline</CardTitle>
-                <CardDescription>Your schedule for "Sarah's Dream Wedding"</CardDescription>
+                <CardDescription>
+                  {stats?.upcomingBookingsList?.length > 0 
+                    ? `Your schedule for upcoming events` 
+                    : 'Upcoming event schedules will appear here.'}
+                </CardDescription>
               </div>
               <Button variant="ghost" size="sm" rightIcon={<ArrowUpRight className="w-4 h-4" />}>
                 View All
@@ -309,7 +313,7 @@ export const CustomerDashboard = () => {
                 <p className="text-slate-500 text-sm">No suggestions at this time.</p>
               ) : (
                 stats?.recommendedVendors?.map((vendor, i) => (
-                  <div key={vendor.vendorId} onClick={() => navigate(`/customer/vendor-directory`)} className="flex items-center justify-between p-3 rounded-xl bg-surface/50 border border-slate-200 hover:border-slate-300 transition-colors group cursor-pointer">
+                  <div key={vendor.vendorId} onClick={() => navigate(`/customer/event-packages`)} className="flex items-center justify-between p-3 rounded-xl bg-surface/50 border border-slate-200 hover:border-slate-300 transition-colors group cursor-pointer">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-gradient-premium flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity" />
                       <div>
