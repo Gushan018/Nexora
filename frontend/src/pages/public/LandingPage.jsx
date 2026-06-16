@@ -13,7 +13,7 @@ export const LandingPage = () => {
   const [guests, setGuests] = React.useState('');
 
   const handleSearch = () => {
-    navigate(`/vendor-directory?query=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(location)}`);
+    navigate(`/event-packages?query=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(location)}`);
   };
 
   return (

@@ -18,6 +18,9 @@ const getAllVendors = async (req, res) => {
         vendorType: true,
         isApproved: true,
         eventPackages: true,
+        services: {
+          include: { category: true }
+        },
         reviews: {
           select: { rating: true }
         }
