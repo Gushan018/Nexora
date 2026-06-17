@@ -1,0 +1,129 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { DollarSign, TrendingUp, Download, Calendar, Activity, ArrowUpRight } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
+import { Button } from '../../components/common/Button';
+import { cn } from '../../utils/cn';
+
+export const RevenueDashboard = () => {
+  return (
+    <div className="space-y-6 max-w-6xl mx-auto pb-12">
+      
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+            <DollarSign className="w-7 h-7 text-green-400" />
+            Revenue Dashboard
+          </h1>
+          <p className="text-white/60">Analyze your earnings, taxes, and financial health.</p>
+        </div>
+        <div className="flex gap-2">
+          <select className="bg-surface/50 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-primary/50 cursor-pointer">
+            <option>2026 (YTD)</option>
+            <option>2025</option>
+          </select>
+          <Button variant="outline" leftIcon={<Download className="w-4 h-4"/>}>Export CSV</Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-4">
+        
+        {/* Gross Revenue */}
+        <Card className="border-green-500/20 bg-green-500/5 md:col-span-2">
+          <CardContent className="p-6">
+            <h3 className="text-sm font-medium text-white/80 mb-2">Gross Revenue (YTD)</h3>
+            <div className="flex justify-between items-end">
+              <div>
+                <span className="text-5xl font-bold text-white">$142,500</span>
+                <p className="text-sm text-green-400 flex items-center gap-1 mt-2">
+                  <ArrowUpRight className="w-4 h-4" /> +24% vs last year
+                </p>
+              </div>
+              <div className="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center border border-green-500/20">
+                <TrendingUp className="w-8 h-8 text-green-400" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Platform Fees */}
+        <Card className="border-white/10">
+          <CardContent className="p-6">
+            <h3 className="text-sm font-medium text-white/60 mb-2">Platform Fees</h3>
+            <div className="flex flex-col justify-end h-full">
+              <span className="text-3xl font-bold text-white/80">-$7,125</span>
+              <p className="text-xs text-white/40 mt-1">Flat 5% Nexora Fee</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Net Earnings */}
+        <Card className="border-white/10">
+          <CardContent className="p-6">
+            <h3 className="text-sm font-medium text-white/60 mb-2">Net Earnings</h3>
+            <div className="flex flex-col justify-end h-full">
+              <span className="text-3xl font-bold text-white">$135,375</span>
+              <p className="text-xs text-white/40 mt-1">Available to withdraw</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Revenue Chart */}
+        <Card className="lg:col-span-2 border-white/5 h-[400px] flex flex-col">
+          <CardHeader>
+            <CardTitle>Income over time</CardTitle>
+            <CardDescription>Monthly breakdown of your earnings</CardDescription>
+          </CardHeader>
+          <CardContent className="flex-1 flex items-center justify-center border-t border-white/5 relative">
+            <div className="absolute inset-0 p-6 flex flex-col justify-between pointer-events-none opacity-20">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="w-full h-px bg-white/20" />
+              ))}
+            </div>
+            <div className="text-center z-10">
+              <Activity className="w-16 h-16 text-green-400/20 mx-auto mb-4" />
+              <p className="text-white/40 font-medium">Recharts Line Graph</p>
+              <p className="text-xs text-white/30">Visualizing monthly MRR / ARR</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Recent Payouts */}
+        <Card className="border-white/5">
+          <CardHeader>
+            <CardTitle>Recent Payouts</CardTitle>
+            <CardDescription>Transfers to your bank</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="divide-y divide-white/5">
+              {[
+                { date: 'Oct 01, 2026', amount: '$4,200.00', status: 'Cleared' },
+                { date: 'Sep 15, 2026', amount: '$1,850.00', status: 'Cleared' },
+                { date: 'Aug 30, 2026', amount: '$3,100.00', status: 'Cleared' },
+                { date: 'Aug 15, 2026', amount: '$2,400.00', status: 'Cleared' },
+                { date: 'Jul 30, 2026', amount: '$5,100.00', status: 'Cleared' },
+              ].map((payout, i) => (
+                <div key={i} className="p-4 flex items-center justify-between hover:bg-white/[0.02] transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded bg-white/5 flex items-center justify-center">
+                      <Calendar className="w-4 h-4 text-white/40" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-white">{payout.date}</p>
+                      <p className="text-xs text-green-400">{payout.status}</p>
+                    </div>
+                  </div>
+                  <span className="font-bold text-white">{payout.amount}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+    </div>
+  );
+};
