@@ -108,7 +108,7 @@ export const CreateEvent = () => {
                     <label className="text-sm font-medium text-slate-800">Date</label>
                     <div className="relative">
                       <Calendar className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
-                      <input type="date" className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary transition-colors [color-scheme:dark]" />
+                      <input type="date" min={new Date().toISOString().split('T')[0]} className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary transition-colors [color-scheme:dark]" />
                     </div>
                   </div>
                   <div className="space-y-2">

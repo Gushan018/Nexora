@@ -78,6 +78,7 @@ const getMyOrders = async (req, res) => {
     const orders = await prisma.order.findMany({
       where: { customerId },
       include: {
+        customer: { select: { name: true, email: true } },
         orderItems: {
           include: {
             product: { select: { productName: true, imageUrl: true } }
