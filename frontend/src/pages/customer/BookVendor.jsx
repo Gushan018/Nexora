@@ -169,6 +169,7 @@ export const BookVendor = () => {
                         <CalendarIcon className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                         <input 
                           type="date" 
+                          min={new Date().toISOString().split('T')[0]}
                           value={eventDate}
                           onChange={(e) => setEventDate(e.target.value)}
                           className="w-full bg-surface border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary transition-colors [color-scheme:dark]" 
