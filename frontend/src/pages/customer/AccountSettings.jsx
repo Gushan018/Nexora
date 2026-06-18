@@ -4,11 +4,13 @@ import { Save, User, Mail, Shield, Camera } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../utils/cn';
 import { api } from '../../utils/api';
 
 export const AccountSettings = () => {
   const { user, setUser } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   
   const [firstName, ...lastNameArr] = (user?.name || ' ').split(' ');
   const defaultLastName = lastNameArr.join(' ');
@@ -161,6 +163,45 @@ export const AccountSettings = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Theme Preferences Card */}
+      <Card className="border-slate-200 bg-surface/40 hover:border-primary/30 transition-colors mt-8">
+        <CardHeader>
+          <CardTitle className="text-xl flex items-center gap-2">
+            <Shield className="w-5 h-5 text-primary" />
+            Appearance
+          </CardTitle>
+          <CardDescription>Customize how Event Nest looks for you.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className={cn(
+                "flex-1 p-6 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-4",
+                theme === 'light' ? "border-primary bg-primary/5 text-primary" : "border-slate-200 hover:border-slate-300 text-slate-600 hover:bg-slate-50"
+              )}
+            >
+              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
+                <div className="w-6 h-6 bg-yellow-400 rounded-full" />
+              </div>
+              <span className="font-bold">Light Mode</span>
+            </button>
+            <button
+              onClick={toggleTheme}
+              className={cn(
+                "flex-1 p-6 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-4",
+                theme === 'dark' ? "border-primary bg-primary/5 text-primary" : "border-slate-200 hover:border-slate-300 text-slate-600 hover:bg-slate-50"
+              )}
+            >
+              <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center">
+                <div className="w-4 h-4 bg-transparent rounded-full shadow-[inset_4px_-4px_0_0_#cbd5e1]" />
+              </div>
+              <span className="font-bold">Dark Mode</span>
+            </button>
+          </div>
+        </CardContent>
+      </Card>
 
     </motion.div>
   );

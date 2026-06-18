@@ -37,7 +37,6 @@ import { CreateEvent } from './pages/customer/CreateEvent';
 import { ManageEvent } from './pages/customer/ManageEvent';
 import { BookVendor } from './pages/customer/BookVendor';
 import { BookingDetails } from './pages/customer/BookingDetails';
-import { BookingHistory } from './pages/customer/BookingHistory';
 import { ReviewSubmission } from './pages/customer/ReviewSubmission';
 import { ChatInbox } from './pages/customer/ChatInbox';
 import { VendorChat } from './pages/customer/VendorChat';
@@ -149,7 +148,6 @@ function App() {
           <Route path="manage-event" element={<ManageEvent />} />
           <Route path="book-vendor" element={<BookVendor />} />
           <Route path="booking-details" element={<BookingDetails />} />
-          <Route path="booking-history" element={<BookingHistory />} />
           <Route path="review-submission" element={<ReviewSubmission />} />
           <Route path="chat-inbox" element={<ChatInbox />} />
           <Route path="vendor-chat/:conversationId?" element={<VendorChat />} />

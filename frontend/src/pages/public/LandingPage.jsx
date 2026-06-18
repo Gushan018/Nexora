@@ -46,7 +46,7 @@ export const LandingPage = () => {
             <h1 className="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight max-w-4xl drop-shadow-2xl">
               Elevate Every Moment to the Extraordinary
             </h1>
-            <p className="text-lg md:text-xl text-slate-100 max-w-2xl mx-auto mb-16 font-light drop-shadow-lg">
+            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-16 font-light drop-shadow-lg">
               Discover, book, and seamlessly manage world-class venues and experiences with our premier marketplace platform.
             </p>
           </motion.div>
