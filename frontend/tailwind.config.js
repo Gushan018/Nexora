@@ -7,17 +7,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#5B7CFA",
-        secondary: "#00D4FF",
+        primary: "#7C3AED", 
+        primaryHover: "#8B5CF6",
+        secondary: "#1B1F28", 
         accent: "#7C3AED",
-        background: "#0A0E1A",
-        surface: "#111827",
-        card: "#161F2F",
-        textPrimary: "#FFFFFF",
-        muted: "#94A3B8"
+        background: "#0F1115", 
+        surface: "#1B1F28",
+        card: "#1B1F28", 
+        textPrimary: "#F8FAFC",
+        muted: "#94A3B8",
+        border: "#2D3748",
+        success: "#10B981",
+        warning: "#F59E0B",
+        error: "#EF4444"
       },
       backgroundImage: {
-        'gradient-premium': 'linear-gradient(135deg, #5B7CFA, #00D4FF, #7C3AED)',
+        'gradient-premium': 'linear-gradient(135deg, #7C3AED, #8B5CF6)',
       }
     },
   },

@@ -41,9 +41,6 @@ import { EventDashboard } from './pages/customer/EventDashboard';
 import { CreateEvent } from './pages/customer/CreateEvent';
 import { ManageEvent } from './pages/customer/ManageEvent';
 import { BudgetPlanner } from './pages/customer/BudgetPlanner';
-import { GuestList } from './pages/customer/GuestList';
-import { TaskManagement } from './pages/customer/TaskManagement';
-import { TimelinePlanner } from './pages/customer/TimelinePlanner';
 import { BookVendor } from './pages/customer/BookVendor';
 import { BookingDetails } from './pages/customer/BookingDetails';
 import { BookingTracking } from './pages/customer/BookingTracking';
@@ -53,9 +50,6 @@ import { ReviewSubmission } from './pages/customer/ReviewSubmission';
 import { ReviewManagement } from './pages/customer/ReviewManagement';
 import { ChatInbox } from './pages/customer/ChatInbox';
 import { VendorChat } from './pages/customer/VendorChat';
-import { SellerChat } from './pages/customer/SellerChat';
-import { PurchaseReports } from './pages/customer/PurchaseReports';
-import { BookingReports } from './pages/customer/BookingReports';
 import { VendorDashboard } from './pages/vendor/VendorDashboard';
 import { VendorProfile } from './pages/vendor/VendorProfile';
 import { BusinessVerification } from './pages/vendor/BusinessVerification';
@@ -146,12 +140,17 @@ function App() {
           <Route index element={<CustomerDashboard />} />
           <Route path="dashboard" element={<CustomerDashboard />} />
           <Route path="customer-dashboard" element={<CustomerDashboard />} />
+          {/* Public pages inside customer dashboard layout */}
+          <Route path="services" element={<Services isDashboard />} />
+          <Route path="marketplace" element={<Marketplace isDashboard />} />
+          <Route path="event-packages" element={<EventPackages isDashboard />} />
+          <Route path="vendor-directory" element={<VendorDirectory isDashboard />} />
           <Route path="profile-management" element={<ProfileManagement />} />
           <Route path="account-settings" element={<AccountSettings />} />
           <Route path="notification-center" element={<NotificationCenter />} />
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="product-listing" element={<ProductListing />} />
-          <Route path="product-details" element={<ProductDetails />} />
+          <Route path="product-details/:id" element={<ProductDetails />} />
           <Route path="category-view" element={<CategoryView />} />
           <Route path="advanced-search" element={<AdvancedSearch />} />
           <Route path="shopping-cart" element={<ShoppingCart />} />
@@ -164,9 +163,6 @@ function App() {
           <Route path="create-event" element={<CreateEvent />} />
           <Route path="manage-event" element={<ManageEvent />} />
           <Route path="budget-planner" element={<BudgetPlanner />} />
-          <Route path="guest-list" element={<GuestList />} />
-          <Route path="task-management" element={<TaskManagement />} />
-          <Route path="timeline-planner" element={<TimelinePlanner />} />
           <Route path="book-vendor" element={<BookVendor />} />
           <Route path="booking-details" element={<BookingDetails />} />
           <Route path="booking-tracking" element={<BookingTracking />} />
@@ -175,10 +171,7 @@ function App() {
           <Route path="review-submission" element={<ReviewSubmission />} />
           <Route path="review-management" element={<ReviewManagement />} />
           <Route path="chat-inbox" element={<ChatInbox />} />
-          <Route path="vendor-chat" element={<VendorChat />} />
-          <Route path="seller-chat" element={<SellerChat />} />
-          <Route path="purchase-reports" element={<PurchaseReports />} />
-          <Route path="booking-reports" element={<BookingReports />} />
+          <Route path="vendor-chat/:conversationId?" element={<VendorChat />} />
         </Route>
 
         <Route path="/vendor" element={<DashboardLayout role="vendor" />}>

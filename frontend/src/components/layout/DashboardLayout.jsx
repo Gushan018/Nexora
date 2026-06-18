@@ -1,11 +1,53 @@
-import React, { useState } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Calendar, ShoppingBag, Settings, LogOut, Bell, Menu, X, User, Heart, MessageSquare, List } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Calendar, ShoppingBag, Settings, LogOut, Bell, Menu, X, User, Heart, MessageSquare, List, Package, Search, Briefcase, ShoppingCart } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../../context/AuthContext';
 import { cn } from '../../utils/cn';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../../utils/api';
 
 export const DashboardLayout = ({ role = 'admin' }) => {
+  const { user, loading, logout } = useAuth();
+  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const location = useLocation();
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const { data: cart } = useQuery({
+    queryKey: ['cart'],
+    queryFn: async () => {
+      try {
+        const res = await api.get('/cart');
+        return res.data;
+      } catch (err) {
+        if (err.response?.status === 404) return { cartItems: [] };
+        throw err;
+      }
+    },
+    enabled: role === 'customer'
+  });
+
+  React.useEffect(() => {
+    if (!loading && !user) {
+      navigate('/login');
+    }
+  }, [user, loading, navigate]);
+
+  if (loading || !user) {
+    return <div className="min-h-screen bg-background flex items-center justify-center"><motion.div className="w-16 h-16 rounded-full border-4 border-white/10 border-t-primary animate-spin" /></div>;
+  }
 
   const getLinks = () => {
     switch (role) {
@@ -26,10 +68,15 @@ export const DashboardLayout = ({ role = 'admin' }) => {
       case 'customer':
         return [
           { name: 'Dashboard', path: '/customer/dashboard', icon: <LayoutDashboard /> },
+          { name: 'Services', path: '/customer/services', icon: <Briefcase /> },
+          { name: 'Marketplace', path: '/customer/marketplace', icon: <ShoppingBag /> },
+          { name: 'Event Packages', path: '/customer/event-packages', icon: <Package /> },
+          { name: 'Directory', path: '/customer/vendor-directory', icon: <Search /> },
           { name: 'My Orders', path: '/customer/order-history', icon: <ShoppingBag /> },
           { name: 'My Events', path: '/customer/event-dashboard', icon: <Calendar /> },
           { name: 'Wishlist', path: '/customer/wishlist', icon: <Heart /> },
           { name: 'Messages', path: '/customer/chat-inbox', icon: <MessageSquare /> },
+          { name: 'Budget Planner', path: '/customer/budget-planner', icon: <List /> },
           { name: 'Settings', path: '/customer/account-settings', icon: <Settings /> },
         ];
       case 'seller':
@@ -49,8 +96,8 @@ export const DashboardLayout = ({ role = 'admin' }) => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed md:sticky top-0 left-0 z-40 w-64 h-screen bg-surface border-r border-white/5 transition-transform duration-300",
-          !isSidebarOpen && "-translate-x-full md:translate-x-0"
+          "fixed md:sticky top-0 left-0 z-40 w-64 h-[100dvh] bg-surface border-r border-white/5 transition-transform duration-300 md:translate-x-0 overflow-y-auto",
+          !isSidebarOpen && "-translate-x-full"
         )}
       >
         <div className="flex flex-col h-full">
@@ -64,26 +111,42 @@ export const DashboardLayout = ({ role = 'admin' }) => {
             </Link>
           </div>
           
-          <nav className="flex-1 py-6 px-4 space-y-2">
+          <nav className="flex-1 py-4 px-3 space-y-1">
             {getLinks().map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-xl transition-colors",
-                  location.pathname === link.path 
-                    ? "bg-primary/10 text-primary" 
+                  "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 relative text-sm",
+                  location.pathname.startsWith(link.path) 
+                    ? "bg-primary/20 text-primary shadow-[0_0_15px_rgba(124,58,237,0.3)]" 
                     : "text-white/60 hover:bg-white/5 hover:text-white"
                 )}
               >
-                {React.cloneElement(link.icon, { className: 'w-5 h-5' })}
-                <span className="font-medium">{link.name}</span>
+                {location.pathname.startsWith(link.path) && (
+                  <motion.div 
+                    layoutId="activeTab"
+                    className="absolute inset-0 bg-primary/10 rounded-xl border border-primary/30"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+                <div className="relative z-10 flex items-center gap-3 w-full">
+                  {React.cloneElement(link.icon, { className: 'w-5 h-5' })}
+                  <span className="font-medium">{link.name}</span>
+                </div>
               </Link>
             ))}
           </nav>
           
           <div className="p-4 border-t border-white/5">
-            <button className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl text-red-400 hover:bg-red-500/10 transition-colors">
+            <button 
+              onClick={() => {
+                logout();
+                navigate('/login');
+              }}
+              className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl text-red-400 hover:bg-red-500/10 transition-colors"
+            >
               <LogOut className="w-5 h-5" />
               <span className="font-medium">Logout</span>
             </button>
@@ -101,19 +164,159 @@ export const DashboardLayout = ({ role = 'admin' }) => {
             <Menu />
           </button>
           
-          <div className="flex items-center gap-4 ml-auto">
-            <button className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:text-white transition-colors relative">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />
-            </button>
-            <div className="w-10 h-10 rounded-full bg-gradient-premium border border-white/20" />
+          <div className="flex items-center gap-4 ml-auto relative" ref={dropdownRef}>
+            
+            {/* Cart Dropdown */}
+            {role === 'customer' && (
+              <div className="relative">
+                <button 
+                  onClick={() => setActiveDropdown(activeDropdown === 'cart' ? null : 'cart')}
+                  className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'cart' ? "bg-primary/20 text-primary" : "bg-white/5 text-white/60 hover:text-white")}
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                  {cart?.cartItems?.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-surface">
+                      {cart.cartItems.length}
+                    </span>
+                  )}
+                </button>
+                <AnimatePresence>
+                  {activeDropdown === 'cart' && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute right-0 mt-4 w-80 bg-surface border border-white/10 rounded-2xl shadow-xl overflow-hidden z-50"
+                    >
+                      <div className="p-4 border-b border-white/10 flex justify-between items-center">
+                        <h3 className="font-bold text-white">Your Cart</h3>
+                        <span className="text-xs text-primary">{cart?.cartItems?.length || 0} items</span>
+                      </div>
+                      <div className="max-h-64 overflow-y-auto p-4 space-y-4">
+                        {!cart?.cartItems?.length ? (
+                          <p className="text-white/40 text-sm text-center py-4">Your cart is empty.</p>
+                        ) : (
+                          cart.cartItems.map((item) => (
+                            <div key={item.cartItemId} className="flex gap-3">
+                              <img src={item.product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100'} alt="" className="w-12 h-12 rounded-lg object-cover" />
+                              <div className="flex-1">
+                                <h4 className="text-sm font-bold text-white line-clamp-1">{item.product.productName}</h4>
+                                <p className="text-xs text-white/60">Qty: {item.quantity}</p>
+                              </div>
+                              <div className="text-sm font-bold text-primary">
+                                LKR {(Number(item.product.price) * item.quantity).toFixed(2)}
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                      <div className="p-4 border-t border-white/10 bg-white/5">
+                        <Link to="/customer/shopping-cart" onClick={() => setActiveDropdown(null)}>
+                          <button className="w-full py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                            View Full Cart
+                          </button>
+                        </Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            {/* Notifications Dropdown */}
+            <div className="relative">
+              <button 
+                onClick={() => setActiveDropdown(activeDropdown === 'notifications' ? null : 'notifications')}
+                className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'notifications' ? "bg-primary/20 text-primary" : "bg-white/5 text-white/60 hover:text-white")}
+              >
+                <Bell className="w-5 h-5" />
+                <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />
+              </button>
+              <AnimatePresence>
+                {activeDropdown === 'notifications' && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute right-0 mt-4 w-80 bg-surface border border-white/10 rounded-2xl shadow-xl overflow-hidden z-50"
+                  >
+                    <div className="p-4 border-b border-white/10">
+                      <h3 className="font-bold text-white">Notifications</h3>
+                    </div>
+                    <div className="p-4 text-center text-white/40 text-sm py-8">
+                      No new notifications
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Profile Dropdown */}
+            <div className="relative">
+              <div 
+                onClick={() => setActiveDropdown(activeDropdown === 'profile' ? null : 'profile')}
+                className="w-10 h-10 rounded-full bg-gradient-premium border border-white/20 cursor-pointer flex items-center justify-center font-bold text-white shadow-lg"
+              >
+                {user?.name?.charAt(0) || 'U'}
+              </div>
+              <AnimatePresence>
+                {activeDropdown === 'profile' && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute right-0 mt-4 w-48 bg-surface border border-white/10 rounded-2xl shadow-xl overflow-hidden z-50"
+                  >
+                    <div className="p-4 border-b border-white/10 bg-white/5">
+                      <p className="font-bold text-white truncate">{user?.name || 'User'}</p>
+                      <p className="text-xs text-white/60 truncate">{user?.email || 'user@example.com'}</p>
+                    </div>
+                    <div className="p-2 flex flex-col">
+                      <Link to={`/${role}/account-settings`} onClick={() => setActiveDropdown(null)} className="px-4 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors text-left flex items-center gap-2">
+                        <Settings className="w-4 h-4" /> Settings
+                      </Link>
+                      <button 
+                        onClick={() => {
+                          setActiveDropdown(null);
+                          logout();
+                          navigate('/login');
+                        }}
+                        className="px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-colors text-left flex items-center gap-2"
+                      >
+                        <LogOut className="w-4 h-4" /> Logout
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            
           </div>
         </header>
 
-        <main className="flex-1 p-6 md:p-8 overflow-y-auto">
-          <Outlet />
+        <main className="flex-1 p-6 md:p-8 overflow-y-auto relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="h-full"
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
+
+      {/* Mobile overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
     </div>
   );
 };
