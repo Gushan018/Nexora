@@ -738,6 +738,11 @@ const updateMutation = useMutation({
 
 This is similar to ProfileManagement but more feature-rich.
 
+#### Form Data Validation
+- The "Save Changes" functionality enforces strict data integrity constraints.
+- It verifies `disabled={isSaving || !formFirst.trim() || !formLast.trim()}` directly on the button.
+- If a user maliciously or accidentally deletes their First Name or Last Name, the submission is completely blocked, guaranteeing valid database records.
+
 #### Profile Image Upload Flow
 
 ```
@@ -917,7 +922,7 @@ const amount = Number(booking.service?.price || booking.package?.price || 0);
 - "Continue to Details" button (disabled if no selection)
 
 **Step 2 — Event Details** (Lines 159–209):
-- Date picker with calendar icon
+- Date picker with calendar icon. **Date Safety Validation:** Uses `min={new Date().toISOString().split('T')[0]}` to physically prevent selection of any past dates, safeguarding against chronological anomalies.
 - Location text input with map pin icon
 - Optional message to vendor (textarea)
 - "Back" and "Review" buttons
@@ -986,7 +991,7 @@ Is `sticky top-24` — stays visible while scrolling.
 #### 3-Step Event Planning Wizard
 
 **Step 1 — Event Type**: Wedding, Corporate Event, Private Party (with icons + descriptions)
-**Step 2 — The Basics**: Event name, date, guest count, city/location
+**Step 2 — The Basics**: Event name, date, guest count, city/location. **Date Safety Validation:** Like `BookVendor`, the date picker explicitly uses a `min` attribute bounding the calendar to `today` and beyond, eliminating time-travel errors.
 **Step 3 — Budget Configuration**: Total estimated budget in LKR
 
 **Note**: All inputs are uncontrolled or using local state. No form submission logic exists yet. The "Create Event Dashboard" button in Step 3 just navigates to `/customer/event-dashboard`.
@@ -1093,7 +1098,7 @@ const updateQuantity = (cartItemId, currentQuantity, delta) => {
 
 #### 2-Step Process
 
-1. **Shipping Details** (Step 1): Address input, "Review Order" button
+1. **Shipping Details** (Step 1): Address input. **Validation Rule:** The "Review Order" button is robustly disabled (`disabled={shippingAddress.trim().length < 10}`) until the user enters a descriptive address (minimum 10 characters), preventing empty or overly brief address errors before advancing.
 2. **Review & Place** (Step 2): "Place Order" button in summary sidebar
 
 #### Order Placement Flow
@@ -1266,6 +1271,12 @@ const handleDownloadInvoice = () => {
 
 **Route**: `/customer/order-history`  
 **File**: `frontend/src/pages/customer/OrderHistory.jsx` (247 lines)
+
+#### Dynamic Invoice Generation
+- Generates beautiful, premium PDF invoices entirely on the frontend via `window.print()`.
+- **Modern Styling:** Utilizes the 'Inter' typography, a clean grid layout for items, and a dark-themed summary box with gold accents.
+- **Print Adjustments:** Employs `@media print { * { -webkit-print-color-adjust: exact !important; } }` to force modern browsers to print the dark mode backgrounds exactly as they appear on screen.
+- **Relational Data Mapping:** Injects `${order.customer?.name}` directly from the newly patched `getMyOrders` API endpoint (which now accurately executes `include: { customer: true }`).
 
 #### Tab + Search Filtering
 
@@ -1812,3 +1823,15 @@ AccountSettings
 ### Q12: How does the admin view customer data?
 
 **Answer**: `AdminCustomerManagement.jsx` provides an admin-facing dashboard with aggregate metrics (active customers, average lifetime value, high-risk accounts) and a customer table showing financial data, activity, and risk scores. **However**, this component currently uses static mock data — there's no backend API for it yet. The risk scoring system (Low/High) with color-coded badges is defined but not connected to any real data source.
+
+
+## 8. Recent Enhancements & Bug Fixes (June 2026)
+
+### 8.1 Robust Form Validations
+- **Date Safety**: Added strict minimum date constraints (blocking past dates) to the native HTML date pickers in both `BookVendor.jsx` and `CreateEvent.jsx`.
+- **Checkout Validation**: The `Checkout.jsx` component now strictly requires a minimum 10-character shipping address before enabling the 'Review Order' step.
+- **Profile Data Integrity**: In `AccountSettings.jsx`, the 'Save Changes' button disables itself if the user completely clears their First Name or Last Name.
+
+### 8.2 Invoice Generation Overhaul
+- **Backend API Fix**: Updated the `getMyOrders` controller query to explicitly include the `customer` relation (`include: { customer: { select: { name: true, email: true } } }`).
+- **Frontend Invoice Template**: Upgraded the HTML template used for PDF generation in `OrderHistory.jsx`. Removed placeholder text, enlarged the logo, fetched the correct customer name, and applied `-webkit-print-color-adjust: exact` so that high-contrast colors actually print correctly.
