@@ -249,7 +249,6 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                 className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'notifications' ? "bg-primary/20 text-primary" : "bg-slate-100 text-slate-600 hover:text-slate-900")}
               >
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />
               </button>
               <AnimatePresence>
                 {activeDropdown === 'notifications' && (
