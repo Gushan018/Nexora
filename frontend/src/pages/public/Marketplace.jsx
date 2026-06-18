@@ -301,7 +301,7 @@ const ProductCard = ({ product, wishlistItems = [] }) => {
           </button>
         </div>
         <div className="absolute top-4 left-4">
-          <span className="px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-xs font-bold text-slate-900 border border-white shadow-sm tracking-wide">
+          <span className="px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-xs font-bold text-[#0f172a] border border-white shadow-sm tracking-wide">
             {product.category?.categoryName || 'Uncategorized'}
           </span>
         </div>

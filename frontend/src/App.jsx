@@ -22,9 +22,9 @@ import { EmailVerification } from './pages/public/EmailVerification';
 import { NotFound } from './pages/public/NotFound';
 import { Maintenance } from './pages/public/Maintenance';
 import { CustomerDashboard } from './pages/customer/CustomerDashboard';
-import { ProfileManagement } from './pages/customer/ProfileManagement';
+
 import { AccountSettings } from './pages/customer/AccountSettings';
-import { NotificationCenter } from './pages/customer/NotificationCenter';
+
 import { Wishlist } from './pages/customer/Wishlist';
 import { ProductDetails } from './pages/customer/ProductDetails';
 import { ShoppingCart } from './pages/customer/ShoppingCart';
@@ -33,8 +33,8 @@ import { PaymentPage } from './pages/customer/PaymentPage';
 import { OrderSuccess } from './pages/customer/OrderSuccess';
 import { OrderHistory } from './pages/customer/OrderHistory';
 import { EventDashboard } from './pages/customer/EventDashboard';
-import { CreateEvent } from './pages/customer/CreateEvent';
-import { ManageEvent } from './pages/customer/ManageEvent';
+
+
 import { BookVendor } from './pages/customer/BookVendor';
 import { BookingDetails } from './pages/customer/BookingDetails';
 import { ReviewSubmission } from './pages/customer/ReviewSubmission';
@@ -133,9 +133,9 @@ function App() {
           <Route path="services" element={<Services isDashboard />} />
           <Route path="marketplace" element={<Marketplace isDashboard />} />
           <Route path="event-packages" element={<EventPackages isDashboard />} />
-          <Route path="profile-management" element={<ProfileManagement />} />
+
           <Route path="account-settings" element={<AccountSettings />} />
-          <Route path="notification-center" element={<NotificationCenter />} />
+
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="product-details/:id" element={<ProductDetails />} />
           <Route path="shopping-cart" element={<ShoppingCart />} />
@@ -144,8 +144,8 @@ function App() {
           <Route path="order-success" element={<OrderSuccess />} />
           <Route path="order-history" element={<OrderHistory />} />
           <Route path="event-dashboard" element={<EventDashboard />} />
-          <Route path="create-event" element={<CreateEvent />} />
-          <Route path="manage-event" element={<ManageEvent />} />
+
+
           <Route path="book-vendor" element={<BookVendor />} />
           <Route path="booking-details" element={<BookingDetails />} />
           <Route path="review-submission" element={<ReviewSubmission />} />
