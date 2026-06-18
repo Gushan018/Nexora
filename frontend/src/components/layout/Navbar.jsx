@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, User, Sparkles } from 'lucide-react';
+import { Menu, X, ChevronDown, User, Sparkles, Sun, Moon } from 'lucide-react';
 import { Button } from '../common/Button';
 import { cn } from '../../utils/cn';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { user, loading } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,6 +68,16 @@ export const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className={cn("p-2 rounded-full transition-colors", 
+                isTransparentDark ? "text-white/90 hover:text-white hover:bg-white/10 drop-shadow-md" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+              )}
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+
             {!loading && user ? (
               <Link to={`/${user.role}/dashboard`}>
                 <Button>Go to Dashboard</Button>
@@ -116,6 +128,17 @@ export const Navbar = () => {
             ))}
             <div className="h-px bg-slate-200 my-2" />
             <div className="flex flex-col gap-3">
+              <button
+                onClick={() => {
+                  toggleTheme();
+                  setIsMobileMenuOpen(false);
+                }}
+                className="flex items-center gap-2 p-2 rounded-lg text-slate-800 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              >
+                {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                <span className="font-medium">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+              </button>
+              
               {!loading && user ? (
                 <Link to={`/${user.role}/dashboard`} onClick={() => setIsMobileMenuOpen(false)}>
                   <Button className="w-full">Go to Dashboard</Button>

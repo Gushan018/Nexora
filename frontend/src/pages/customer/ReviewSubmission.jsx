@@ -53,8 +53,8 @@ export const ReviewSubmission = () => {
           <p className="text-slate-600 mb-8">
             Thank you for sharing your experience. Your feedback helps other planners make informed decisions and helps vendors improve their services.
           </p>
-          <Link to="/customer/booking-history">
-            <Button variant="outline">Return to Bookings</Button>
+          <Link to="/customer/event-dashboard">
+            <Button variant="outline" className="w-full mt-4">Return to Events</Button>
           </Link>
         </motion.div>
       </div>
@@ -66,8 +66,8 @@ export const ReviewSubmission = () => {
       <div className="container mx-auto px-6 max-w-2xl">
         
         <div className="mb-8">
-          <Link to="/customer/booking-history" className="text-sm text-slate-600 hover:text-slate-900 flex items-center gap-1 w-fit mb-4 transition-colors">
-            <ChevronLeft className="w-4 h-4" /> Back to History
+          <Link to="/customer/event-dashboard" className="text-sm text-slate-600 hover:text-slate-900 flex items-center gap-1 w-fit mb-4 transition-colors">
+            <ChevronLeft className="w-4 h-4" /> Back to Events
           </Link>
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Leave a Review</h1>
           <p className="text-slate-600">Share your experience with the vendor.</p>

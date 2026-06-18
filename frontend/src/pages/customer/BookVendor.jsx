@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar as CalendarIcon, Clock, Users, MessageSquare, ShieldCheck, ArrowRight, ChevronRight, Check } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Users, MessageSquare, ShieldCheck, ArrowRight, ChevronRight, Check, MapPin } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
@@ -13,6 +13,7 @@ export const BookVendor = () => {
   const [step, setStep] = useState(1);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [eventDate, setEventDate] = useState('');
+  const [location, setLocation] = useState('');
   const [message, setMessage] = useState('');
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -33,14 +34,14 @@ export const BookVendor = () => {
       const res = await api.post('/bookings', {
         packageId: selectedPackage,
         eventDate: eventDate || new Date().toISOString(),
-        location: 'Default Location', // In a full implementation we would have an input for this
+        location: location || 'Not Specified',
         notes: message
       });
       return res.data;
     },
     onSuccess: () => {
       alert('Booking request sent successfully!');
-      navigate('/customer/booking-history');
+      navigate('/customer/event-dashboard');
     },
     onError: (err) => {
       console.error(err);
@@ -176,6 +177,20 @@ export const BookVendor = () => {
                     </div>
 
                     <div className="space-y-2">
+                      <label className="text-sm font-medium text-slate-800">Event Location</label>
+                      <div className="relative">
+                        <MapPin className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                        <input 
+                          type="text" 
+                          value={location}
+                          onChange={(e) => setLocation(e.target.value)}
+                          placeholder="Where is the event taking place?"
+                          className="w-full bg-surface border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary transition-colors" 
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
                       <label className="text-sm font-medium text-slate-800">Message to Vendor (Optional)</label>
                       <textarea 
                         rows="3" 
@@ -188,7 +203,7 @@ export const BookVendor = () => {
 
                     <div className="pt-6 flex justify-between">
                       <Button variant="outline" onClick={() => setStep(1)}>Back</Button>
-                      <Button onClick={() => setStep(3)} rightIcon={<ChevronRight className="w-4 h-4"/>} disabled={!eventDate}>Review</Button>
+                      <Button onClick={() => setStep(3)} rightIcon={<ChevronRight className="w-4 h-4"/>} disabled={!eventDate || !location}>Review</Button>
                     </div>
                   </CardContent>
                 </motion.div>

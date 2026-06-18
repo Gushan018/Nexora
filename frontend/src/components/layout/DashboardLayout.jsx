@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Calendar, ShoppingBag, Settings, LogOut, Bell, Menu, X, User, Heart, MessageSquare, List, Package, Search, Briefcase, ShoppingCart } from 'lucide-react';
+import { 
+  LayoutDashboard, ShoppingBag, Settings, LogOut, Menu, User, Sparkles, X, Heart, Search, FileText, Bell, CheckCircle, PackageSearch, Image, Building2, Store, PlusCircle, CheckSquare, MessageSquare, TrendingUp, Briefcase, ChevronDown, Sun, Moon, ShoppingCart, DollarSign, Calendar, Package
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../utils/cn';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../utils/api';
 
-export const DashboardLayout = ({ role = 'admin' }) => {
+export const DashboardLayout = ({ role = 'customer' }) => {
   const { user, loading, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -73,7 +77,7 @@ export const DashboardLayout = ({ role = 'admin' }) => {
           { name: 'My Orders', path: '/customer/order-history', icon: <ShoppingBag /> },
           { name: 'My Events', path: '/customer/event-dashboard', icon: <Calendar /> },
           { name: 'Messages', path: '/customer/chat-inbox', icon: <MessageSquare /> },
-          { name: 'Settings', path: '/customer/account-settings', icon: <Settings /> },
+          { name: 'My Profile', path: '/customer/account-settings', icon: <User /> },
         ];
       case 'seller':
         return [
@@ -162,6 +166,15 @@ export const DashboardLayout = ({ role = 'admin' }) => {
           
           <div className="flex items-center gap-4 ml-auto relative" ref={dropdownRef}>
             
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-slate-100 text-slate-600 hover:text-slate-900 relative"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+
             {/* Wishlist Link */}
             {role === 'customer' && (
               <Link
@@ -283,7 +296,7 @@ export const DashboardLayout = ({ role = 'admin' }) => {
                     </div>
                     <div className="p-2 flex flex-col">
                       <Link to={`/${role}/account-settings`} onClick={() => setActiveDropdown(null)} className="px-4 py-2 text-sm text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors text-left flex items-center gap-2">
-                        <Settings className="w-4 h-4" /> Settings
+                        <User className="w-4 h-4" /> My Profile
                       </Link>
                       <button 
                         onClick={() => {

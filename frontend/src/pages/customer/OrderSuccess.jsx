@@ -166,7 +166,7 @@ export const OrderSuccess = () => {
         </Card>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link to={isOrder ? "/customer/order-history" : "/customer/booking-history"} className="w-full sm:w-auto">
+          <Link to={isOrder ? "/customer/order-history" : "/customer/event-dashboard"} className="w-full sm:w-auto">
             <Button variant="outline" className="w-full">{isOrder ? 'View My Orders' : 'View My Bookings'}</Button>
           </Link>
           <Link to="/customer/dashboard" className="w-full sm:w-auto">

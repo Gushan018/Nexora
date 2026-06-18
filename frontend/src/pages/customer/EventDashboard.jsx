@@ -1,14 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Plus, CalendarDays, MapPin, Users, Activity, Clock, Settings, ArrowRight } from 'lucide-react';
+import { Plus, CalendarDays, MapPin, Users, Activity, Clock, Settings, ArrowRight, CheckCircle2, ListOrdered, Hourglass } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../utils/api';
 import { PageLoader } from '../../components/common/PageLoader';
+import { cn } from '../../utils/cn';
 
 export const EventDashboard = () => {
+  const [activeTab, setActiveTab] = React.useState('ALL');
+
   const { data: bookings = [], isLoading } = useQuery({
     queryKey: ['bookings'],
     queryFn: async () => {
@@ -16,6 +19,21 @@ export const EventDashboard = () => {
       return res.data;
     }
   });
+
+  const filteredBookings = React.useMemo(() => {
+    if (activeTab === 'ALL') return bookings;
+    if (activeTab === 'PENDING') return bookings.filter(b => b.status === 'PENDING');
+    if (activeTab === 'UPCOMING') return bookings.filter(b => b.status === 'ACCEPTED');
+    if (activeTab === 'COMPLETED') return bookings.filter(b => b.status === 'COMPLETED');
+    return bookings;
+  }, [bookings, activeTab]);
+
+  const tabs = [
+    { id: 'ALL', label: 'All Events', icon: <ListOrdered className="w-4 h-4" /> },
+    { id: 'PENDING', label: 'Pending Approval', icon: <Hourglass className="w-4 h-4" /> },
+    { id: 'UPCOMING', label: 'Upcoming (Accepted)', icon: <CalendarDays className="w-4 h-4" /> },
+    { id: 'COMPLETED', label: 'Completed', icon: <CheckCircle2 className="w-4 h-4" /> },
+  ];
 
   if (isLoading) return <PageLoader text="Loading your events..." />;
   return (
@@ -28,11 +46,29 @@ export const EventDashboard = () => {
         </div>
       </div>
 
+      <div className="flex overflow-x-auto hide-scrollbar gap-2 pb-2 border-b border-slate-200">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              "px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2",
+              activeTab === tab.id 
+                ? "bg-primary text-slate-900 shadow-sm border border-primary/20" 
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-transparent"
+            )}
+          >
+            {tab.icon}
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {bookings.length === 0 ? (
-          <div className="col-span-2 text-center text-slate-600 py-12">No events found. Start by exploring the vendor directory to book a service or package!</div>
+        {filteredBookings.length === 0 ? (
+          <div className="col-span-2 text-center text-slate-600 py-12">No events found for this status.</div>
         ) : (
-          bookings.map((booking, i) => {
+          filteredBookings.map((booking, i) => {
             const name = booking.service?.serviceName || booking.package?.packageName || 'My Event';
             const type = booking.service?.category?.name || 'Event';
             const amount = Number(booking.service?.price || booking.package?.price || 0);
@@ -49,7 +85,8 @@ export const EventDashboard = () => {
                     <img src={booking.package?.imageUrl || booking.service?.images?.[0] || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=500&q=80'} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
                     <div className="absolute bottom-4 left-4 flex gap-2">
-                      <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-medium text-slate-900 border border-slate-300">
+                      <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-medium text-white border border-slate-300/50 flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
                         {type}
                       </span>
                       <span className="px-3 py-1 bg-primary/80 backdrop-blur-md rounded-full text-xs font-medium text-slate-900 border border-slate-300">
