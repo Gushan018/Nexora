@@ -6,6 +6,73 @@ import { Button } from '../../components/common/Button';
 import { Link } from 'react-router-dom';
 
 export const OrderSuccess = () => {
+  const handleDownloadInvoice = () => {
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Invoice - #NXR-8492-771</title>
+          <style>
+            body { font-family: system-ui, -apple-system, sans-serif; padding: 40px; color: #111; max-width: 800px; margin: 0 auto; }
+            .header { border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+            h1 { margin: 0; color: #6366f1; }
+            .total { font-size: 24px; font-weight: bold; margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px; text-align: right; }
+            table { w-full; width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+            th { color: #666; font-weight: 600; text-transform: uppercase; font-size: 12px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div>
+              <h1>NEXORA</h1>
+              <p style="color: #666; margin-top: 4px;">Premium Marketplace</p>
+            </div>
+            <div style="text-align: right;">
+              <p><strong>INVOICE</strong></p>
+              <p>#NXR-8492-771</p>
+              <p>${new Date().toLocaleDateString()}</p>
+            </div>
+          </div>
+          
+          <h3>Order Details</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th style="text-align: right;">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Grand Azure Resort</strong><br/>
+                  <span style="color:#666; font-size:14px;">Full Day Access • Standard Package<br/>
+                  Oct 14, 2026 | 10:00 AM - 11:00 PM</span>
+                </td>
+                <td style="text-align: right;">LKR 147.00</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div class="total">
+            Total Paid: LKR 147.00
+          </div>
+          
+          <p style="margin-top: 50px; color: #666; font-size: 12px; text-align: center;">
+            Thank you for shopping with Nexora. This is a computer-generated document.
+          </p>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+    }, 250);
+  };
+
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background flex flex-col items-center justify-center">
       <div className="container mx-auto px-6 max-w-2xl">
@@ -32,7 +99,7 @@ export const OrderSuccess = () => {
                 <span className="text-xs text-white/40 uppercase tracking-wider block mb-1">Booking Reference</span>
                 <span className="font-mono text-lg font-bold text-white">#NXR-8492-771</span>
               </div>
-              <Button variant="outline" size="sm" leftIcon={<Download className="w-4 h-4"/>}>Invoice</Button>
+              <Button variant="outline" size="sm" leftIcon={<Download className="w-4 h-4"/>} onClick={handleDownloadInvoice}>Invoice</Button>
             </div>
 
             <div className="space-y-6">
@@ -58,7 +125,7 @@ export const OrderSuccess = () => {
                   <div className="flex items-center gap-2 text-white/40 text-xs mb-1">
                     <MapPin className="w-3.5 h-3.5" /> Location
                   </div>
-                  <p className="text-sm font-medium text-white">Malibu, CA</p>
+                  <p className="text-sm font-medium text-white">Kandy, Sri Lanka</p>
                   <p className="text-sm text-primary hover:underline cursor-pointer">Get Directions</p>
                 </div>
               </div>
@@ -70,8 +137,8 @@ export const OrderSuccess = () => {
           <Link to="/customer/order-history" className="w-full sm:w-auto">
             <Button variant="outline" className="w-full">View My Bookings</Button>
           </Link>
-          <Link to="/customer/event-dashboard" className="w-full sm:w-auto">
-            <Button className="w-full" rightIcon={<ArrowRight className="w-4 h-4"/>}>Return to Event Dashboard</Button>
+          <Link to="/customer/dashboard" className="w-full sm:w-auto">
+            <Button className="w-full" rightIcon={<ArrowRight className="w-4 h-4"/>}>Return to Dashboard</Button>
           </Link>
         </div>
 

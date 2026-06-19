@@ -44,9 +44,9 @@ export const ManageEvent = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               {[
-                { name: 'Luxe Dining Catering', category: 'Catering', status: 'Confirmed', fee: '$5,500' },
-                { name: 'Elite Photography Studio', category: 'Photography', status: 'Confirmed', fee: '$2,500' },
-                { name: 'Bloom Floral Designs', category: 'Decor', status: 'Pending Approval', fee: '$1,200' },
+                { name: 'Luxe Dining Catering', category: 'Catering', status: 'Confirmed', fee: 'LKR 5,500' },
+                { name: 'Elite Photography Studio', category: 'Photography', status: 'Confirmed', fee: 'LKR 2,500' },
+                { name: 'Bloom Floral Designs', category: 'Decor', status: 'Pending Approval', fee: 'LKR 1,200' },
               ].map((vendor, i) => (
                 <div key={i} className="flex items-center justify-between p-4 rounded-xl bg-surface/50 border border-white/5 hover:border-white/10 transition-colors group">
                   <div className="flex items-center gap-4">
@@ -106,8 +106,8 @@ export const ManageEvent = () => {
             <CardContent>
               <div className="mb-6 text-center">
                 <p className="text-sm text-white/60 mb-1">Total Spent</p>
-                <h3 className="text-4xl font-extrabold text-white mb-2">$9,200</h3>
-                <p className="text-xs text-white/40">out of $15,000 budget</p>
+                <h3 className="text-4xl font-extrabold text-white mb-2">LKR 9,200</h3>
+                <p className="text-xs text-white/40">out of LKR 15,000 budget</p>
               </div>
               
               <div className="w-full h-3 rounded-full bg-surface border border-white/5 overflow-hidden mb-6">
@@ -117,15 +117,15 @@ export const ManageEvent = () => {
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-white/70">Vendors</span>
-                  <span className="text-white font-medium">$8,000</span>
+                  <span className="text-white font-medium">LKR 8,000</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-white/70">Marketplace</span>
-                  <span className="text-white font-medium">$1,200</span>
+                  <span className="text-white font-medium">LKR 1,200</span>
                 </div>
                 <div className="flex justify-between text-sm pt-3 border-t border-white/10">
                   <span className="text-white/90 font-medium">Remaining</span>
-                  <span className="text-green-400 font-bold">$5,800</span>
+                  <span className="text-green-400 font-bold">LKR 5,800</span>
                 </div>
               </div>
               <Button className="w-full mt-6" variant="outline">Manage Budget</Button>

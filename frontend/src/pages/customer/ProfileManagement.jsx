@@ -5,8 +5,68 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../..
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import { cn } from '../../utils/cn';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '../../utils/api';
+import { useAuth } from '../../context/AuthContext';
 
 export const ProfileManagement = () => {
+  const { user, setUser } = useAuth();
+  const queryClient = useQueryClient();
+  const [formData, setFormData] = React.useState({
+    firstName: '',
+    lastName: '',
+    phone: ''
+  });
+
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ['customerProfile'],
+    queryFn: async () => {
+      const res = await api.get('/customers/profile');
+      return res.data;
+    }
+  });
+
+  React.useEffect(() => {
+    if (profile) {
+      const parts = profile.name ? profile.name.split(' ') : [''];
+      setFormData({
+        firstName: parts[0] || '',
+        lastName: parts.slice(1).join(' ') || '',
+        phone: profile.contactNumber || ''
+      });
+    }
+  }, [profile]);
+
+  const updateMutation = useMutation({
+    mutationFn: async (data) => {
+      const res = await api.put('/customers/profile', data);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['customerProfile']);
+      if (data.customer) {
+        setUser({ ...user, name: data.customer.name });
+      }
+      alert('Profile updated successfully!');
+    },
+    onError: (err) => {
+      alert(err.response?.data?.message || 'Error updating profile');
+    }
+  });
+
+  const handleSave = () => {
+    updateMutation.mutate({
+      name: `${formData.firstName} ${formData.lastName}`.trim(),
+      contactNumber: formData.phone
+    });
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  if (isLoading) return <div className="text-white">Loading profile...</div>;
+
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       
@@ -15,7 +75,13 @@ export const ProfileManagement = () => {
           <h1 className="text-3xl font-bold text-white tracking-tight">Account Settings</h1>
           <p className="text-white/60">Manage your profile, security, and preferences.</p>
         </div>
-        <Button leftIcon={<Save className="w-4 h-4"/>}>Save All Changes</Button>
+        <Button 
+          leftIcon={<Save className="w-4 h-4"/>} 
+          onClick={handleSave}
+          disabled={updateMutation.isPending}
+        >
+          {updateMutation.isPending ? 'Saving...' : 'Save All Changes'}
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -73,8 +139,18 @@ export const ProfileManagement = () => {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <Input label="First Name" defaultValue="Jane" />
-                <Input label="Last Name" defaultValue="Doe" />
+                <Input 
+                  label="First Name" 
+                  name="firstName"
+                  value={formData.firstName} 
+                  onChange={handleChange}
+                />
+                <Input 
+                  label="Last Name" 
+                  name="lastName"
+                  value={formData.lastName} 
+                  onChange={handleChange}
+                />
               </div>
               <div className="space-y-1.5">
                 <label className="text-sm font-medium text-white/90">Bio / Notes (Optional)</label>
@@ -98,7 +174,7 @@ export const ProfileManagement = () => {
                     <Mail className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-medium text-white">jane.doe@example.com</p>
+                    <p className="font-medium text-white">{profile?.email}</p>
                     <p className="text-xs text-white/60 flex items-center gap-1 mt-0.5">
                       <ShieldCheck className="w-3 h-3 text-green-400" /> Email Verified
                     </p>
@@ -106,7 +182,12 @@ export const ProfileManagement = () => {
                 </div>
                 <Button variant="outline" size="sm">Change Email</Button>
               </div>
-              <Input label="Phone Number" defaultValue="+1 (555) 123-4567" />
+              <Input 
+                label="Phone Number" 
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
             </CardContent>
           </Card>
 
