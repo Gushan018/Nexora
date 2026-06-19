@@ -4,19 +4,34 @@ import { Search, MapPin, Star, Filter, ShieldCheck, Mail } from 'lucide-react';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import { cn } from '../../utils/cn';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../../utils/api';
+import { Link, useSearchParams } from 'react-router-dom';
+import { PageLoader } from '../../components/common/PageLoader';
 
-const VENDORS = [
-  { id: 1, name: 'Elite Photography Studio', category: 'Photography', rating: 4.9, reviews: 312, location: 'Colombo, LK', verified: true, image: 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=500&q=80', description: 'Award-winning wedding and corporate event photography.' },
-  { id: 2, name: 'Luxe Dining Catering', category: 'Catering', rating: 4.8, reviews: 189, location: 'Kandy, LK', verified: true, image: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=500&q=80', description: 'Premium multi-cuisine catering for high-end events.' },
-  { id: 3, name: 'SoundWave DJs', category: 'Entertainment', rating: 4.6, reviews: 87, location: 'Galle, LK', verified: false, image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=500&q=80', description: 'Professional DJ setups, lighting, and sound engineering.' },
-  { id: 4, name: 'Bloom Floral Designs', category: 'Decor', rating: 5.0, reviews: 45, location: 'Colombo, LK', verified: true, image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=500&q=80', description: 'Bespoke floral arrangements and venue styling.' },
-];
+// Mock data removed
 
-export const VendorDirectory = () => {
-  const [search, setSearch] = useState('');
+export const VendorDirectory = ({ isDashboard = false }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialSearch = [searchParams.get('query'), searchParams.get('location')].filter(Boolean).join(' ');
+  const [search, setSearch] = useState(initialSearch || '');
+
+  const { data: vendors = [], isLoading } = useQuery({
+    queryKey: ['vendors'],
+    queryFn: async () => {
+      const res = await api.get('/vendors');
+      return res.data;
+    }
+  });
+
+  const filteredVendors = vendors.filter(vendor => 
+    vendor.businessName.toLowerCase().includes(search.toLowerCase()) || 
+    (vendor.vendorType && vendor.vendorType.toLowerCase().includes(search.toLowerCase())) ||
+    (vendor.location && vendor.location.toLowerCase().includes(search.toLowerCase()))
+  );
 
   return (
-    <div className="pt-40 pb-20 min-h-screen bg-background">
+    <div className={cn("pb-20 min-h-screen bg-background", !isDashboard ? "pt-40" : "pt-6")}>
       <div className="container mx-auto px-6 max-w-7xl">
         
         {/* Header Section */}
@@ -61,56 +76,67 @@ export const VendorDirectory = () => {
 
         {/* Vendor Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {VENDORS.map((vendor, index) => (
-            <motion.div
-              key={vendor.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="glass-card rounded-2xl p-6 border border-white/5 hover:border-primary/50 transition-all duration-300 group cursor-pointer flex flex-col sm:flex-row gap-6"
-            >
-              <div className="w-full sm:w-40 h-40 shrink-0 rounded-xl overflow-hidden bg-surface relative">
-                <img src={vendor.image} alt={vendor.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                {vendor.verified && (
-                  <div className="absolute top-2 left-2 bg-green-500 text-white rounded-full p-1 shadow-lg" title="Verified Vendor">
-                    <ShieldCheck className="w-4 h-4" />
+          {isLoading && <PageLoader text="Loading vendors..." />}
+          {!isLoading && filteredVendors.length === 0 && (
+             <div className="col-span-2 text-center text-white/60 py-12">No vendors match your search.</div>
+          )}
+          {filteredVendors.map((vendor, index) => {
+            const avgRating = vendor.reviews?.length 
+              ? (vendor.reviews.reduce((acc, curr) => acc + curr.rating, 0) / vendor.reviews.length).toFixed(1)
+              : 'New';
+
+            return (
+              <Link to={`/customer/book-vendor?id=${vendor.vendorId}`} key={vendor.vendorId}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: Math.min(index * 0.1, 1) }}
+                  className="glass-card rounded-2xl p-6 border border-white/5 hover:border-primary/50 transition-all duration-300 group cursor-pointer flex flex-col sm:flex-row gap-6 h-full"
+                >
+                  <div className="w-full sm:w-40 h-40 shrink-0 rounded-xl overflow-hidden bg-surface relative flex items-center justify-center text-white/20">
+                    <span className="text-4xl font-bold">{vendor.businessName.charAt(0)}</span>
+                    {vendor.isApproved && (
+                      <div className="absolute top-2 left-2 bg-green-500 text-white rounded-full p-1 shadow-lg" title="Verified Vendor">
+                        <ShieldCheck className="w-4 h-4" />
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              
-              <div className="flex-1 flex flex-col">
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <span className="text-xs font-semibold text-primary uppercase tracking-wider mb-1 block">
-                      {vendor.category}
-                    </span>
-                    <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{vendor.name}</h3>
-                  </div>
-                </div>
-                
-                <p className="text-white/60 text-sm mb-4 line-clamp-2">
-                  {vendor.description}
-                </p>
-                
-                <div className="mt-auto flex items-center justify-between">
-                  <div className="flex items-center gap-4 text-sm">
-                    <div className="flex items-center gap-1 text-white/80">
-                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                      <span className="font-medium">{vendor.rating}</span>
-                      <span className="text-white/40">({vendor.reviews})</span>
+                  
+                  <div className="flex-1 flex flex-col">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <span className="text-xs font-semibold text-primary uppercase tracking-wider mb-1 block">
+                          {vendor.vendorType}
+                        </span>
+                        <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{vendor.businessName}</h3>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-1 text-white/60">
-                      <MapPin className="w-4 h-4" />
-                      {vendor.location}
+                    
+                    <p className="text-white/60 text-sm mb-4 line-clamp-2">
+                      {vendor.description || 'No description available.'}
+                    </p>
+                    
+                    <div className="mt-auto flex items-center justify-between">
+                      <div className="flex items-center gap-4 text-sm">
+                        <div className="flex items-center gap-1 text-white/80">
+                          <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                          <span className="font-medium">{avgRating}</span>
+                          <span className="text-white/40">({vendor.reviews?.length || 0})</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-white/60">
+                          <MapPin className="w-4 h-4" />
+                          {vendor.location || 'Anywhere'}
+                        </div>
+                      </div>
+                      <Button variant="ghost" size="icon" className="h-10 w-10 bg-white/5 hover:bg-primary/20 hover:text-primary">
+                        <Mail className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
-                  <Button variant="ghost" size="icon" className="h-10 w-10 bg-white/5 hover:bg-primary/20 hover:text-primary">
-                    <Mail className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                </motion.div>
+              </Link>
+            );
+          })}
         </div>
 
       </div>

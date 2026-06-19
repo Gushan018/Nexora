@@ -1,10 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CalendarDays, Store, ShoppingBag, ShieldCheck, Zap, HeartHandshake } from 'lucide-react';
+import { cn } from '../../utils/cn';
 
-export const Services = () => {
+export const Services = ({ isDashboard = false }) => {
   return (
-    <div className="pt-40 pb-20 min-h-screen bg-background relative overflow-hidden">
+    <div className={cn("pb-20 min-h-screen bg-background relative overflow-hidden", !isDashboard ? "pt-40" : "pt-6")}>
       
       {/* Background Orbs */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary/10 blur-[120px] rounded-full pointer-events-none" />
