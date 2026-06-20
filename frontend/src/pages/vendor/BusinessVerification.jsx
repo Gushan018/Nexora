@@ -73,7 +73,7 @@ export const BusinessVerification = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
-                  Remove the $1,000/month withdrawal limit.
+                  Remove the LKR 1,000/month withdrawal limit.
                 </li>
               </ul>
             </CardContent>

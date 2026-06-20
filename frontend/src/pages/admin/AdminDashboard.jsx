@@ -27,7 +27,7 @@ export const AdminDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
         <StatCard 
           title="Total Platform GMV" 
-          value="$2.4M" 
+          value="LKR 2.4M" 
           trend="+18%" 
           trendUp={true}
           icon={<DollarSign className="w-5 h-5 text-green-400" />} 

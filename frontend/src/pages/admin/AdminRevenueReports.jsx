@@ -33,7 +33,7 @@ export const AdminRevenueReports = () => {
             <h3 className="text-sm font-medium text-white/80 mb-2">Net Platform Revenue</h3>
             <div className="flex justify-between items-end">
               <div>
-                <span className="text-5xl font-bold text-white">$1.24M</span>
+                <span className="text-5xl font-bold text-white">LKR 1.24M</span>
                 <p className="text-sm text-green-400 flex items-center gap-1 mt-2 font-bold">
                   <TrendingUp className="w-4 h-4" /> +18.2% vs last period
                 </p>
@@ -49,7 +49,7 @@ export const AdminRevenueReports = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Commission Revenue</h3>
             <div className="flex flex-col justify-end h-full">
-              <span className="text-3xl font-bold text-white">$842.5K</span>
+              <span className="text-3xl font-bold text-white">LKR 842.5K</span>
               <p className="text-xs text-white/40 mt-1">From 5% transaction fees</p>
             </div>
           </CardContent>
@@ -59,7 +59,7 @@ export const AdminRevenueReports = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Subscription Revenue</h3>
             <div className="flex flex-col justify-end h-full">
-              <span className="text-3xl font-bold text-white">$397.5K</span>
+              <span className="text-3xl font-bold text-white">LKR 397.5K</span>
               <p className="text-xs text-white/40 mt-1">From Pro Vendor Tiers</p>
             </div>
           </CardContent>
@@ -97,10 +97,10 @@ export const AdminRevenueReports = () => {
           <CardContent className="flex-1 pt-0">
             <div className="space-y-6">
               {[
-                { source: 'Stripe Processing Fees', amount: '$420,000', percent: 65, color: 'bg-red-400' },
-                { source: 'Refunds Issued', amount: '$125,000', percent: 20, color: 'bg-yellow-500' },
-                { source: 'Dispute Chargebacks', amount: '$45,000', percent: 10, color: 'bg-orange-500' },
-                { source: 'Other Overheads', amount: '$15,000', percent: 5, color: 'bg-white/20' },
+                { source: 'Stripe Processing Fees', amount: 'LKR 420,000', percent: 65, color: 'bg-red-400' },
+                { source: 'Refunds Issued', amount: 'LKR 125,000', percent: 20, color: 'bg-yellow-500' },
+                { source: 'Dispute Chargebacks', amount: 'LKR 45,000', percent: 10, color: 'bg-orange-500' },
+                { source: 'Other Overheads', amount: 'LKR 15,000', percent: 5, color: 'bg-white/20' },
               ].map((item, i) => (
                 <div key={i} className="space-y-2">
                   <div className="flex justify-between text-sm">

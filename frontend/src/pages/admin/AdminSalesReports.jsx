@@ -42,7 +42,7 @@ export const AdminSalesReports = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/60 mb-2">Average Order Value (AOV)</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">$1,850</span>
+              <span className="text-3xl font-bold text-white">LKR 1,850</span>
             </div>
             <p className="text-xs text-green-400 font-bold mt-2">+2.1% vs last month</p>
           </CardContent>
@@ -53,7 +53,7 @@ export const AdminSalesReports = () => {
             <div className="flex justify-between items-start">
               <div>
                 <h3 className="text-sm font-medium text-white/80 mb-2">Gross Merchandise Value (GMV)</h3>
-                <span className="text-5xl font-bold text-white">$23.0M</span>
+                <span className="text-5xl font-bold text-white">LKR 23.0M</span>
                 <p className="text-sm text-accent font-bold mt-2">Total value of all bookings processed</p>
               </div>
               <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center border border-accent/20">
@@ -121,11 +121,11 @@ export const AdminSalesReports = () => {
           <CardContent className="flex-1 pt-0">
             <div className="space-y-6 mt-4">
               {[
-                { category: 'Venues & Spaces', gmv: '$12.5M', percent: 54, color: 'bg-primary' },
-                { category: 'Catering & Food', gmv: '$5.2M', percent: 22, color: 'bg-accent' },
-                { category: 'Photography & Video', gmv: '$3.1M', percent: 13, color: 'bg-yellow-500' },
-                { category: 'Entertainment / DJs', gmv: '$1.5M', percent: 6, color: 'bg-green-400' },
-                { category: 'Decor & Rentals', gmv: '$0.7M', percent: 5, color: 'bg-white/20' },
+                { category: 'Venues & Spaces', gmv: 'LKR 12.5M', percent: 54, color: 'bg-primary' },
+                { category: 'Catering & Food', gmv: 'LKR 5.2M', percent: 22, color: 'bg-accent' },
+                { category: 'Photography & Video', gmv: 'LKR 3.1M', percent: 13, color: 'bg-yellow-500' },
+                { category: 'Entertainment / DJs', gmv: 'LKR 1.5M', percent: 6, color: 'bg-green-400' },
+                { category: 'Decor & Rentals', gmv: 'LKR 0.7M', percent: 5, color: 'bg-white/20' },
               ].map((item, i) => (
                 <div key={i} className="space-y-2">
                   <div className="flex justify-between items-end">

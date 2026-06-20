@@ -91,7 +91,7 @@ export const AddProduct = () => {
               </div>
               <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
                 <p className="text-sm text-primary font-medium flex items-center justify-between">
-                  Estimated Platform Fee (5%): <span>-$0.00</span>
+                  Estimated Platform Fee (5%): <span>-LKR 0.00</span>
                 </p>
               </div>
             </CardContent>

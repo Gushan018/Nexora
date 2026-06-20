@@ -6,10 +6,10 @@ import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 
 const CUSTOMERS = [
-  { id: 'CUST-8492', name: 'Sarah Jenkins', email: 'sarah.j@example.com', totalSpent: '$12,450', bookings: 4, lastActive: '2 hours ago', riskScore: 'Low' },
-  { id: 'CUST-8491', name: 'Michael Chen', email: 'michael.chen@domain.com', totalSpent: '$1,500', bookings: 1, lastActive: '1 day ago', riskScore: 'Low' },
-  { id: 'CUST-8490', name: 'Emily Davis', email: 'emily.d@example.com', totalSpent: '$45,000', bookings: 12, lastActive: '5 mins ago', riskScore: 'Low' },
-  { id: 'CUST-8489', name: 'Unknown User', email: 'test12345@scam.net', totalSpent: '$0', bookings: 0, lastActive: '1 week ago', riskScore: 'High' },
+  { id: 'CUST-8492', name: 'Sarah Jenkins', email: 'sarah.j@example.com', totalSpent: 'LKR 12,450', bookings: 4, lastActive: '2 hours ago', riskScore: 'Low' },
+  { id: 'CUST-8491', name: 'Michael Chen', email: 'michael.chen@domain.com', totalSpent: 'LKR 1,500', bookings: 1, lastActive: '1 day ago', riskScore: 'Low' },
+  { id: 'CUST-8490', name: 'Emily Davis', email: 'emily.d@example.com', totalSpent: 'LKR 45,000', bookings: 12, lastActive: '5 mins ago', riskScore: 'Low' },
+  { id: 'CUST-8489', name: 'Unknown User', email: 'test12345@scam.net', totalSpent: 'LKR 0', bookings: 0, lastActive: '1 week ago', riskScore: 'High' },
 ];
 
 export const AdminCustomerManagement = () => {
@@ -39,7 +39,7 @@ export const AdminCustomerManagement = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-white/80 mb-2">Avg. Lifetime Value</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-green-400">$2,150</span>
+              <span className="text-3xl font-bold text-green-400">LKR 2,150</span>
             </div>
           </CardContent>
         </Card>

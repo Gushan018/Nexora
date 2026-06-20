@@ -95,7 +95,7 @@ export const VendorProfile = () => {
                 <Input label="Public Phone" defaultValue="+1 (555) 987-6543" />
               </div>
               <Input label="Website" leftIcon={<Globe className="w-4 h-4"/>} defaultValue="https://lumierephoto.com" />
-              <Input label="Physical Studio Address (Optional)" leftIcon={<MapPin className="w-4 h-4"/>} defaultValue="123 Arts District, Los Angeles, CA 90013" />
+              <Input label="Physical Studio Address (Optional)" leftIcon={<MapPin className="w-4 h-4"/>} defaultValue="123 Arts District, Colombo, Sri Lanka 90013" />
             </CardContent>
           </Card>
         </div>

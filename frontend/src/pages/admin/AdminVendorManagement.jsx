@@ -6,10 +6,10 @@ import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 
 const VENDORS = [
-  { id: 'VND-201', name: 'Lumiere Photography', category: 'Photography', rating: 4.9, location: 'Los Angeles, CA', gmv: '$142,500', status: 'Verified' },
-  { id: 'VND-202', name: 'Grand Azure Resort', category: 'Venues', rating: 4.5, location: 'Malibu, CA', gmv: '$450,000', status: 'Verified' },
-  { id: 'VND-203', name: 'DJ Velocity', category: 'Entertainment', rating: 4.2, location: 'San Diego, CA', gmv: '$24,000', status: 'Pending Review' },
-  { id: 'VND-204', name: 'Elite Catering Co.', category: 'Catering', rating: 2.8, location: 'Orange County, CA', gmv: '$5,200', status: 'Warning' },
+  { id: 'VND-201', name: 'Lumiere Photography', category: 'Photography', rating: 4.9, location: 'Colombo, Sri Lanka', gmv: 'LKR 142,500', status: 'Verified' },
+  { id: 'VND-202', name: 'Grand Azure Resort', category: 'Venues', rating: 4.5, location: 'Kandy, Sri Lanka', gmv: 'LKR 450,000', status: 'Verified' },
+  { id: 'VND-203', name: 'DJ Velocity', category: 'Entertainment', rating: 4.2, location: 'Galle, Sri Lanka', gmv: 'LKR 24,000', status: 'Pending Review' },
+  { id: 'VND-204', name: 'Elite Catering Co.', category: 'Catering', rating: 2.8, location: 'Negombo, Sri Lanka', gmv: 'LKR 5,200', status: 'Warning' },
 ];
 
 export const AdminVendorManagement = () => {
