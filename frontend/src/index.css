@@ -5,6 +5,7 @@
   body {
     background-color: theme('colors.background');
     color: theme('colors.textPrimary');
+    font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 }
@@ -32,11 +33,11 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0F1115; 
+  background: #131A26; 
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1B1F28; 
+  background: #1C2333; 
   border-radius: 4px;
 }
 
