@@ -13,13 +13,13 @@ export const Input = React.forwardRef(({
   return (
     <div className="flex flex-col space-y-1.5 w-full">
       {label && (
-        <label className="text-sm font-medium text-white/90">
+        <label className="text-sm font-medium text-slate-800">
           {label}
         </label>
       )}
       <div className="relative">
         {leftIcon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/50">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
             {leftIcon}
           </div>
         )}
@@ -37,13 +37,13 @@ export const Input = React.forwardRef(({
           {...props}
         />
         {rightIcon && (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-white/50">
+          <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500">
             {rightIcon}
           </div>
         )}
       </div>
       {(error || helperText) && (
-        <p className={cn("text-xs", error ? "text-red-400" : "text-white/50")}>
+        <p className={cn("text-xs", error ? "text-red-400" : "text-slate-500")}>
           {error || helperText}
         </p>
       )}

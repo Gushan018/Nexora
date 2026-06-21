@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, User, Sparkles } from 'lucide-react';
+import { Menu, X, ChevronDown, User, Sparkles, Sun, Moon } from 'lucide-react';
 import { Button } from '../common/Button';
 import { cn } from '../../utils/cn';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { user, loading } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,15 +25,16 @@ export const Navbar = () => {
   const navLinks = [
     { name: 'Services', path: '/services' },
     { name: 'Marketplace', path: '/marketplace' },
-    { name: 'Event Packages', path: '/event-packages' },
-    { name: 'Directory', path: '/vendor-directory' },
+    { name: 'Packages', path: '/event-packages' },
   ];
+
+  const isTransparentDark = location.pathname === '/' && !isScrolled;
 
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-background/90 backdrop-blur-md border-b border-primary/20 py-4" : "bg-transparent py-6"
+        isScrolled ? "bg-background/90 backdrop-blur-md border-b border-primary/20 py-4 shadow-sm" : "bg-transparent py-6"
       )}
     >
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
@@ -52,8 +55,10 @@ export const Navbar = () => {
                 key={link.name}
                 to={link.path}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-white",
-                  location.pathname === link.path ? "text-white" : "text-white/60"
+                  "text-sm font-bold transition-colors",
+                  isTransparentDark 
+                    ? "text-white/90 hover:text-white drop-shadow-md"
+                    : location.pathname === link.path ? "text-primary" : "text-slate-600 hover:text-primary"
                 )}
               >
                 {link.name}
@@ -63,13 +68,26 @@ export const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className={cn("p-2 rounded-full transition-colors", 
+                isTransparentDark ? "text-white/90 hover:text-white hover:bg-white/10 drop-shadow-md" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+              )}
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+
             {!loading && user ? (
               <Link to={`/${user.role}/dashboard`}>
                 <Button>Go to Dashboard</Button>
               </Link>
             ) : (
               <>
-                <Link to="/login" className="text-sm font-medium text-white/80 hover:text-white transition-colors">
+                <Link to="/login" className={cn(
+                  "text-sm font-bold transition-colors",
+                  isTransparentDark ? "text-white/90 hover:text-white drop-shadow-md" : "text-slate-800 hover:text-primary"
+                )}>
                   Sign In
                 </Link>
                 <Link to="/register">
@@ -102,14 +120,25 @@ export const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className="text-lg font-medium text-white/80 hover:text-white p-2 rounded-lg hover:bg-white/5 transition-colors"
+                className="text-lg font-medium text-slate-800 hover:text-slate-900 p-2 rounded-lg hover:bg-slate-100 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.name}
               </Link>
             ))}
-            <div className="h-px bg-white/10 my-2" />
+            <div className="h-px bg-slate-200 my-2" />
             <div className="flex flex-col gap-3">
+              <button
+                onClick={() => {
+                  toggleTheme();
+                  setIsMobileMenuOpen(false);
+                }}
+                className="flex items-center gap-2 p-2 rounded-lg text-slate-800 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              >
+                {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                <span className="font-medium">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+              </button>
+              
               {!loading && user ? (
                 <Link to={`/${user.role}/dashboard`} onClick={() => setIsMobileMenuOpen(false)}>
                   <Button className="w-full">Go to Dashboard</Button>
