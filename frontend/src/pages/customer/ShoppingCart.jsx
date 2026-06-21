@@ -69,7 +69,7 @@ export const ShoppingCart = () => {
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background">
-      <div className="container mx-auto px-6 max-w-6xl">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
         
         <div className="mb-10">
           <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2">Your Cart</h1>

@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+
   url      = env("DATABASE_URL")
 }
 
@@ -51,8 +52,11 @@ enum OrderStatus {
 
 model Admin {
   adminId          Int      @id @default(autoincrement()) @map("admin_id")
+  name             String?  @map("name")
   email            String   @unique
   password         String
+  contactNumber    String?  @map("contact_number")
+  profileImage     String?  @map("profile_image")
   role             String   @default("admin")
   registrationDate DateTime @default(now()) @map("registration_date")
 
@@ -65,6 +69,7 @@ model Customer {
   email            String   @unique
   password         String
   contactNumber    String?  @map("contact_number")
+  isBlocked        Boolean  @default(false) @map("is_blocked")
   role             String   @default("customer")
   profileImage     String?  @map("profile_image")
   registrationDate DateTime @default(now()) @map("registration_date")

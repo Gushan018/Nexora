@@ -22,8 +22,19 @@ async function main() {
   await prisma.serviceCategory.deleteMany();
   await prisma.vendor.deleteMany();
   await prisma.customer.deleteMany();
+  await prisma.admin.deleteMany();
 
   const hashedPassword = await bcrypt.hash('password123', 10);
+
+  // 1.5. Create Admin User
+  const admin = await prisma.admin.create({
+    data: {
+      email: 'admin@example.com',
+      password: hashedPassword,
+      role: 'admin',
+    },
+  });
+  console.log('✅ Admin created:', admin.email);
 
   // 2. Create Customers
   const customer1 = await prisma.customer.create({

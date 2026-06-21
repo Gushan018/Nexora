@@ -34,14 +34,14 @@ export const Navbar = () => {
         isScrolled ? "bg-background/90 backdrop-blur-md border-b border-primary/20 py-4" : "bg-transparent py-6"
       )}
     >
-      <div className="container mx-auto px-6 max-w-7xl">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+        <div className="flex items-center justify-between gap-2">
           
           <Link to="/" className="flex items-center group">
             <img 
               src="/logo.png" 
               alt="Nexora" 
-              className="h-16 md:h-20 object-contain transition-transform duration-300 group-hover:scale-105" 
+              className="h-12 sm:h-16 md:h-20 object-contain transition-transform duration-300 group-hover:scale-105" 
             />
           </Link>
 
@@ -81,10 +81,10 @@ export const Navbar = () => {
 
           {/* Mobile Toggle */}
           <button
-            className="md:hidden text-white p-2"
+            className="md:hidden text-white p-2.5"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X /> : <Menu />}
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>

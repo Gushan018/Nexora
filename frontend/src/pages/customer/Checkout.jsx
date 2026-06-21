@@ -66,14 +66,14 @@ export const Checkout = () => {
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background">
-      <div className="container mx-auto px-6 max-w-6xl">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
         
         <div className="mb-12">
-          <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2">Checkout</h1>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">Checkout</h1>
           <p className="text-white/60">Complete your purchase securely.</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-12">
           
           <div className="lg:col-span-2 space-y-8">
             

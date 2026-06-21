@@ -26,7 +26,7 @@ export const Input = React.forwardRef(({
         <input
           ref={ref}
           className={cn(
-            "flex w-full rounded-xl border border-white/10 bg-surface/50 px-3 py-2 text-sm text-white placeholder:text-white/40",
+            "flex w-full rounded-xl border border-white/10 bg-surface/50 px-3 py-2.5 text-sm text-white placeholder:text-white/40",
             "focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-300",
             "disabled:cursor-not-allowed disabled:opacity-50",
             leftIcon && "pl-10",
