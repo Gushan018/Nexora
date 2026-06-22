@@ -31,6 +31,8 @@ export const AccountSettings = () => {
     }
   };
 
+  const profilePath = user?.role === 'admin' ? '/admin/profile' : '/customers/profile';
+
   const handleSave = async () => {
     setIsSaving(true);
     try {
@@ -45,11 +47,13 @@ export const AccountSettings = () => {
         profileImageUrl = uploadRes.data.url;
       }
 
-      const res = await api.put('/customers/profile', {
+      const res = await api.put(profilePath, {
         name: `${formFirst} ${formLast}`.trim(),
         profileImage: profileImageUrl
       });
-      const updatedUser = { ...user, ...res.data.customer };
+
+      const updatedProfile = res.data.customer || res.data.admin || {};
+      const updatedUser = { ...user, ...updatedProfile };
       setUser(updatedUser);
       localStorage.setItem('user', JSON.stringify(updatedUser));
       alert('Account settings saved successfully!');

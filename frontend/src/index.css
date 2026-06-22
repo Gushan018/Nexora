@@ -46,8 +46,7 @@
   }
 
   body {
-    background-color: var(--color-background);
-    color: var(--color-text-primary);
+    @apply bg-light-background dark:bg-background text-light-textPrimary dark:text-textPrimary;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
@@ -55,11 +54,11 @@
 
 @layer utilities {
   .glass {
-    @apply bg-surface/40 backdrop-blur-md border border-white/10;
+    @apply bg-light-surface/30 dark:bg-surface/40 backdrop-blur-md border border-gray-300 dark:border-white/10;
   }
   
   .glass-card {
-    @apply bg-card/60 backdrop-blur-lg border border-white/5 shadow-xl;
+    @apply bg-white/50 dark:bg-card/60 backdrop-blur-lg border border-gray-200 dark:border-white/5 shadow-lg;
   }
 
   .text-gradient {
@@ -76,14 +75,13 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #F8FAFC; 
+  @apply bg-light-background dark:bg-background;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1; 
-  border-radius: 4px;
+  @apply bg-gray-300 dark:bg-surface rounded;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8; 
+  @apply bg-gray-400 dark:bg-surface/80;
 }

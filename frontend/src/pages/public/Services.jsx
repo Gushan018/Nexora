@@ -11,7 +11,7 @@ export const Services = ({ isDashboard = false }) => {
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary/10 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-40 left-0 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="container mx-auto px-6 max-w-6xl relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative z-10">
         
         <div className="text-center mb-20">
           <motion.h1 

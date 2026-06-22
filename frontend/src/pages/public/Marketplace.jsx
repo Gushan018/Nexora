@@ -63,7 +63,7 @@ export const Marketplace = ({ isDashboard = false }) => {
 
   return (
     <div className={cn("pb-20 min-h-screen bg-background", !isDashboard ? "pt-32" : "pt-6")}>
-      <div className="container mx-auto px-6 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         
         {/* Header Section */}
         <div className="mb-12">

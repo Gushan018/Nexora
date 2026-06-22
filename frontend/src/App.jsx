@@ -80,6 +80,8 @@ import { UserManagement } from './pages/admin/UserManagement';
 import { AdminVendorManagement } from './pages/admin/AdminVendorManagement';
 import { AdminSellerManagement } from './pages/admin/AdminSellerManagement';
 import { AdminCustomerManagement } from './pages/admin/AdminCustomerManagement';
+import { AdminPaymentsEscrow } from './pages/admin/AdminPaymentsEscrow';
+import { ReviewsModeration } from './pages/admin/ReviewsModeration';
 import { VendorVerification } from './pages/admin/VendorVerification';
 import { BusinessApprovals } from './pages/admin/BusinessApprovals';
 import { ProductModeration } from './pages/admin/ProductModeration';
@@ -175,6 +177,7 @@ function App() {
           <Route path="performance-analytics" element={<PerformanceAnalytics />} />
           <Route path="vendor-booking-analytics" element={<VendorBookingAnalytics />} />
           <Route path="vendor-settings" element={<VendorSettings />} />
+          <Route path="account-settings" element={<AccountSettings />} />
         </Route>
 
         <Route path="/seller" element={<DashboardLayout role="seller" />}>
@@ -195,6 +198,7 @@ function App() {
           <Route path="seller-revenue-analytics" element={<SellerRevenueAnalytics />} />
           <Route path="product-reviews" element={<ProductReviews />} />
           <Route path="seller-settings" element={<SellerSettings />} />
+          <Route path="account-settings" element={<AccountSettings />} />
         </Route>
 
         <Route path="/admin" element={<DashboardLayout role="admin" />}>
@@ -209,6 +213,8 @@ function App() {
           <Route path="business-approvals" element={<BusinessApprovals />} />
           <Route path="product-moderation" element={<ProductModeration />} />
           <Route path="category-management" element={<CategoryManagement />} />
+          <Route path="admin-payments-escrow" element={<AdminPaymentsEscrow />} />
+          <Route path="reviews-moderation" element={<ReviewsModeration />} />
           <Route path="admin-booking-management" element={<AdminBookingManagement />} />
           <Route path="dispute-management" element={<DisputeManagement />} />
           <Route path="cmsmanagement" element={<CMSManagement />} />
@@ -221,6 +227,7 @@ function App() {
           <Route path="admin-notification-management" element={<AdminNotificationManagement />} />
           <Route path="audit-logs" element={<AuditLogs />} />
           <Route path="system-settings" element={<SystemSettings />} />
+          <Route path="account-settings" element={<AccountSettings />} />
           <Route path="roles-permissions" element={<RolesPermissions />} />
           <Route path="advanced-analytics-dashboard" element={<AdvancedAnalyticsDashboard />} />
         </Route>
