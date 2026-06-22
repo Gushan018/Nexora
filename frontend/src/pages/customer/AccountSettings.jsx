@@ -20,7 +20,7 @@ export const AccountSettings = () => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const res = await api.put('/customer/profile', {
+      const res = await api.put('/customers/profile', {
         name: `${formFirst} ${formLast}`.trim()
       });
       const updatedUser = { ...user, ...res.data.customer };
