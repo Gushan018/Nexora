@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const dotenv = require('dotenv');
 
 // ===================================
@@ -19,6 +20,7 @@ const notificationRoutes = require('./routes/notification.routes');
 const wishlistRoutes = require('./routes/wishlist.routes');
 const budgetRoutes = require('./routes/budget.routes');
 const chatRoutes = require('./routes/chat.routes');
+const uploadRoutes = require('./routes/upload.routes');
 
 // ===================================
 
@@ -27,6 +29,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // ===================================
 // Routes 
@@ -45,6 +48,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/budget', budgetRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // ===================================
 
