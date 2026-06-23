@@ -138,7 +138,7 @@ export const BudgetPlanner = () => {
                   style={{
                     background: `conic-gradient(
                       #5B7CFA 0% 53%, 
-                      #7C3AED 53% 74%, 
+                      #D4AF37 53% 74%, 
                       #22c55e 74% 90%, 
                       #eab308 90% 100%
                     )`,

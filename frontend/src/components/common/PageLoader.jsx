@@ -10,7 +10,7 @@ export const PageLoader = ({ text = "Loading..." }) => {
       <div className="relative w-24 h-24 flex items-center justify-center mb-8">
         {/* Outer Ring */}
         <motion.div 
-          className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary border-r-primary shadow-[0_0_15px_rgba(124,58,237,0.3)]"
+          className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary border-r-primary shadow-[0_0_15px_rgba(212,175,55,0.3)]"
           animate={{ rotate: 360 }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
         />
@@ -28,7 +28,7 @@ export const PageLoader = ({ text = "Loading..." }) => {
         />
         {/* Center Core */}
         <motion.div 
-          className="w-4 h-4 bg-primary rounded-full shadow-[0_0_15px_rgba(124,58,237,0.8)]"
+          className="w-4 h-4 bg-primary rounded-full shadow-[0_0_15px_rgba(212,175,55,0.8)]"
           animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         />

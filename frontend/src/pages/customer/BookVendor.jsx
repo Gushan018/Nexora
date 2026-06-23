@@ -124,7 +124,7 @@ export const BookVendor = () => {
                         className={cn(
                           "p-6 rounded-2xl border cursor-pointer transition-all duration-300 relative overflow-hidden group/item",
                           selectedPackage === pkg.packageId 
-                            ? "border-primary bg-primary/10 shadow-[0_0_30px_rgba(124,58,237,0.15)] -translate-y-1" 
+                            ? "border-primary bg-primary/10 shadow-[0_0_30px_rgba(212,175,55,0.15)] -translate-y-1" 
                             : "border-white/10 bg-black/40 hover:bg-black/60 hover:border-white/30 hover:-translate-y-1"
                         )}
                       >
