@@ -32,20 +32,20 @@ export const NotificationCenter = () => {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
               <Bell className="w-8 h-8 text-primary" />
               Notification Center
             </h1>
-            <p className="text-white/60 mt-2">Stay updated on your bookings, orders, and account activity.</p>
+            <p className="text-slate-600 mt-2">Stay updated on your bookings, orders, and account activity.</p>
           </div>
         </div>
 
         <div className="space-y-4">
-          {isLoading && <div className="text-center text-white py-12">Loading notifications...</div>}
+          {isLoading && <div className="text-center text-slate-900 py-12">Loading notifications...</div>}
           
           {!isLoading && notifications.length === 0 && (
-            <Card className="border-white/5 bg-surface/30">
-              <CardContent className="p-12 text-center text-white/60">
+            <Card className="border-slate-200 bg-surface/30">
+              <CardContent className="p-12 text-center text-slate-600">
                 <Bell className="w-12 h-12 mx-auto mb-4 opacity-20" />
                 <p>You have no notifications yet.</p>
               </CardContent>
@@ -56,7 +56,7 @@ export const NotificationCenter = () => {
             <Card 
               key={notification.notificationId} 
               className={cn(
-                "border-white/5 transition-all hover:bg-surface",
+                "border-slate-200 transition-all hover:bg-surface",
                 !notification.isRead ? "bg-primary/5 border-primary/20" : "bg-surface/30"
               )}
             >
@@ -66,14 +66,14 @@ export const NotificationCenter = () => {
                     {!notification.isRead && (
                       <div className="w-2 h-2 rounded-full bg-primary" />
                     )}
-                    <h3 className={cn("font-bold", !notification.isRead ? "text-white" : "text-white/80")}>
+                    <h3 className={cn("font-bold", !notification.isRead ? "text-slate-900" : "text-slate-800")}>
                       {notification.type}
                     </h3>
                   </div>
-                  <p className={cn("text-sm", !notification.isRead ? "text-white/90" : "text-white/60")}>
+                  <p className={cn("text-sm", !notification.isRead ? "text-slate-800" : "text-slate-600")}>
                     {notification.message}
                   </p>
-                  <p className="text-xs text-white/40 flex items-center gap-1 mt-2">
+                  <p className="text-xs text-slate-500 flex items-center gap-1 mt-2">
                     <Clock className="w-3 h-3" />
                     {new Date(notification.createdAt).toLocaleString()}
                   </p>
@@ -82,7 +82,7 @@ export const NotificationCenter = () => {
                 {!notification.isRead && (
                   <button 
                     onClick={() => markReadMutation.mutate(notification.notificationId)}
-                    className="p-2 bg-white/5 hover:bg-primary/20 text-white/60 hover:text-primary rounded-lg transition-colors shrink-0"
+                    className="p-2 bg-slate-100 hover:bg-primary/20 text-slate-600 hover:text-primary rounded-lg transition-colors shrink-0"
                     title="Mark as read"
                   >
                     <Check className="w-5 h-5" />

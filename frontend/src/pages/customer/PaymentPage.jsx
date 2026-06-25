@@ -110,8 +110,8 @@ export const PaymentPage = () => {
       <div className="container mx-auto px-6 max-w-4xl">
         
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-white mb-4">Secure Checkout</h1>
-          <p className="text-white/60">Complete your payment to confirm your {isOrder ? 'order' : 'booking'}.</p>
+          <h1 className="text-3xl font-bold text-slate-900 mb-4">Secure Checkout</h1>
+          <p className="text-slate-600">Complete your payment to confirm your {isOrder ? 'order' : 'booking'}.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -129,7 +129,7 @@ export const PaymentPage = () => {
                     onClick={() => setPaymentMethod('ONLINE')}
                     className={cn(
                       "p-4 rounded-xl border flex flex-col items-center gap-2 transition-all",
-                      paymentMethod === 'ONLINE' ? "border-primary bg-primary/10 text-white" : "border-white/10 bg-surface text-white/50 hover:bg-surface/80"
+                      paymentMethod === 'ONLINE' ? "border-primary bg-primary/10 text-slate-900" : "border-slate-300 bg-surface text-slate-500 hover:bg-surface/80"
                     )}
                   >
                     <CreditCard className="w-6 h-6" />
@@ -139,7 +139,7 @@ export const PaymentPage = () => {
                     onClick={() => setPaymentMethod('BANK_SLIP')}
                     className={cn(
                       "p-4 rounded-xl border flex flex-col items-center gap-2 transition-all",
-                      paymentMethod === 'BANK_SLIP' ? "border-primary bg-primary/10 text-white" : "border-white/10 bg-surface text-white/50 hover:bg-surface/80"
+                      paymentMethod === 'BANK_SLIP' ? "border-primary bg-primary/10 text-slate-900" : "border-slate-300 bg-surface text-slate-500 hover:bg-surface/80"
                     )}
                   >
                     <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 6.007 0h7.36c3.273 0 5.39 1.403 5.39 4.356 0 3.45-2.204 5.301-4.887 5.301h-2.14a.64.64 0 0 0-.632.535l-.76 4.79-.148.917a.641.641 0 0 1-.632.538H7.076z"/></svg>
@@ -150,11 +150,11 @@ export const PaymentPage = () => {
                 {paymentMethod === 'ONLINE' && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-4 pt-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-white/80">Cardholder Name</label>
+                      <label className="text-sm font-medium text-slate-800">Cardholder Name</label>
                       <input 
                         type="text" 
                         placeholder="John Doe" 
-                        className={cn("w-full bg-surface border rounded-xl px-4 py-3 text-white focus:outline-none transition-colors", cardErrors.name ? "border-red-500 focus:border-red-500" : "border-white/10 focus:border-primary")}
+                        className={cn("w-full bg-surface border rounded-xl px-4 py-3 text-slate-900 focus:outline-none transition-colors", cardErrors.name ? "border-red-500 focus:border-red-500" : "border-slate-300 focus:border-primary")}
                         value={cardDetails.name}
                         onChange={(e) => {
                           setCardDetails({...cardDetails, name: e.target.value});
@@ -165,13 +165,13 @@ export const PaymentPage = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-white/80">Card Number</label>
+                      <label className="text-sm font-medium text-slate-800">Card Number</label>
                       <div className="relative">
-                        <CreditCard className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
+                        <CreditCard className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                         <input 
                           type="text" 
                           placeholder="0000 0000 0000 0000" 
-                          className={cn("w-full bg-surface border rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none transition-colors font-mono", cardErrors.number ? "border-red-500 focus:border-red-500" : "border-white/10 focus:border-primary")}
+                          className={cn("w-full bg-surface border rounded-xl pl-12 pr-4 py-3 text-slate-900 focus:outline-none transition-colors font-mono", cardErrors.number ? "border-red-500 focus:border-red-500" : "border-slate-300 focus:border-primary")}
                           value={cardDetails.number}
                           onChange={handleNumberChange}
                         />
@@ -181,22 +181,22 @@ export const PaymentPage = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-white/80">Expiry Date</label>
+                        <label className="text-sm font-medium text-slate-800">Expiry Date</label>
                         <input 
                           type="text" 
                           placeholder="MM/YY" 
-                          className={cn("w-full bg-surface border rounded-xl px-4 py-3 text-white focus:outline-none transition-colors font-mono", cardErrors.expiry ? "border-red-500 focus:border-red-500" : "border-white/10 focus:border-primary")}
+                          className={cn("w-full bg-surface border rounded-xl px-4 py-3 text-slate-900 focus:outline-none transition-colors font-mono", cardErrors.expiry ? "border-red-500 focus:border-red-500" : "border-slate-300 focus:border-primary")}
                           value={cardDetails.expiry}
                           onChange={handleExpiryChange}
                         />
                         {cardErrors.expiry && <p className="text-red-400 text-xs mt-1">{cardErrors.expiry}</p>}
                       </div>
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-white/80">CVV</label>
+                        <label className="text-sm font-medium text-slate-800">CVV</label>
                         <input 
                           type="password" 
                           placeholder="123" 
-                          className={cn("w-full bg-surface border rounded-xl px-4 py-3 text-white focus:outline-none transition-colors font-mono", cardErrors.cvc ? "border-red-500 focus:border-red-500" : "border-white/10 focus:border-primary")}
+                          className={cn("w-full bg-surface border rounded-xl px-4 py-3 text-slate-900 focus:outline-none transition-colors font-mono", cardErrors.cvc ? "border-red-500 focus:border-red-500" : "border-slate-300 focus:border-primary")}
                           value={cardDetails.cvc}
                           onChange={handleCvcChange}
                         />
@@ -208,26 +208,26 @@ export const PaymentPage = () => {
 
                 {paymentMethod === 'BANK_SLIP' && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-4 pt-4">
-                    <div className="space-y-4 p-4 rounded-xl bg-surface border border-white/10">
+                    <div className="space-y-4 p-4 rounded-xl bg-surface border border-slate-300">
                       <div className="flex items-start gap-3 mb-2">
                         <AlertCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-white font-medium text-sm">Upload Payment Slip</p>
-                          <p className="text-white/60 text-xs mt-1">Please transfer the total amount to our bank account and upload the receipt here.</p>
+                          <p className="text-slate-900 font-medium text-sm">Upload Payment Slip</p>
+                          <p className="text-slate-600 text-xs mt-1">Please transfer the total amount to our bank account and upload the receipt here.</p>
                         </div>
                       </div>
-                      <div className="bg-background rounded-lg p-3 text-sm text-white/80 border border-white/5 mb-4">
+                      <div className="bg-background rounded-lg p-3 text-sm text-slate-800 border border-slate-200 mb-4">
                         <p><strong>Bank:</strong> Commercial Bank</p>
                         <p><strong>Account Name:</strong> Nexora Marketplace</p>
                         <p><strong>Account No:</strong> 1234567890</p>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-white/80 mb-2">Payment Slip Image</label>
+                        <label className="block text-sm font-medium text-slate-800 mb-2">Payment Slip Image</label>
                         <input 
                           type="file" 
                           accept="image/*,.pdf" 
                           onChange={(e) => setFile(e.target.files[0])}
-                          className="w-full text-sm text-white/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30" 
+                          className="w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30" 
                         />
                       </div>
                     </div>
@@ -253,16 +253,16 @@ export const PaymentPage = () => {
                 
                 <div className="space-y-4">
                   <div className="flex gap-4">
-                    <div className="w-16 h-16 rounded-lg bg-white/5 shrink-0" />
+                    <div className="w-16 h-16 rounded-lg bg-slate-100 shrink-0" />
                     <div>
-                      <h4 className="font-bold text-white text-sm">{itemName}</h4>
-                      <p className="text-xs text-white/50 mt-1">Total Payment</p>
+                      <h4 className="font-bold text-slate-900 text-sm">{itemName}</h4>
+                      <p className="text-xs text-slate-500 mt-1">Total Payment</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/10 flex justify-between items-end">
-                  <span className="font-bold text-white">Total Due</span>
+                <div className="pt-4 border-t border-slate-300 flex justify-between items-end">
+                  <span className="font-bold text-slate-900">Total Due</span>
                   <span className="text-2xl font-bold text-primary">LKR {Number(amount).toFixed(2)}</span>
                 </div>
 
@@ -279,7 +279,7 @@ export const PaymentPage = () => {
                   {paymentMutation.isPending ? 'Processing...' : `Pay LKR ${Number(amount).toFixed(2)}`}
                 </Button>
 
-                <p className="text-center text-xs text-white/40">
+                <p className="text-center text-xs text-slate-500">
                   By confirming, you agree to our Terms of Service and Cancellation Policy.
                 </p>
               </CardContent>

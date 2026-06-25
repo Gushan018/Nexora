@@ -40,7 +40,6 @@ import { OrderTracking } from './pages/customer/OrderTracking';
 import { EventDashboard } from './pages/customer/EventDashboard';
 import { CreateEvent } from './pages/customer/CreateEvent';
 import { ManageEvent } from './pages/customer/ManageEvent';
-import { BudgetPlanner } from './pages/customer/BudgetPlanner';
 import { BookVendor } from './pages/customer/BookVendor';
 import { BookingDetails } from './pages/customer/BookingDetails';
 import { BookingTracking } from './pages/customer/BookingTracking';
@@ -162,7 +161,6 @@ function App() {
           <Route path="event-dashboard" element={<EventDashboard />} />
           <Route path="create-event" element={<CreateEvent />} />
           <Route path="manage-event" element={<ManageEvent />} />
-          <Route path="budget-planner" element={<BudgetPlanner />} />
           <Route path="book-vendor" element={<BookVendor />} />
           <Route path="booking-details" element={<BookingDetails />} />
           <Route path="booking-tracking" element={<BookingTracking />} />

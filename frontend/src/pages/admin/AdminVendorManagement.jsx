@@ -18,37 +18,37 @@ export const AdminVendorManagement = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <Store className="w-7 h-7 text-primary" />
             Vendor Ecosystem
           </h1>
-          <p className="text-white/60">Monitor vendor performance, verification status, and quality control.</p>
+          <p className="text-slate-600">Monitor vendor performance, verification status, and quality control.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card className="border-white/10">
+        <Card className="border-slate-300">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-2">Total Vendors</h3>
+            <h3 className="text-sm font-medium text-slate-600 mb-2">Total Vendors</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">1,842</span>
+              <span className="text-3xl font-bold text-slate-900">1,842</span>
             </div>
           </CardContent>
         </Card>
         <Card className="border-accent/20 bg-accent/5">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/80 mb-2">Top Performers (4.8+ <Star className="w-3 h-3 inline"/>)</h3>
+            <h3 className="text-sm font-medium text-slate-800 mb-2">Top Performers (4.8+ <Star className="w-3 h-3 inline"/>)</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-accent">425</span>
             </div>
           </CardContent>
         </Card>
-        <Card className="border-white/10">
+        <Card className="border-slate-300">
           <CardContent className="p-6 flex justify-between items-center h-full">
             <div>
-              <h3 className="text-sm font-medium text-white/60 mb-2">Verification Queue</h3>
+              <h3 className="text-sm font-medium text-slate-600 mb-2">Verification Queue</h3>
               <div className="flex items-end gap-3">
-                <span className="text-3xl font-bold text-white">42</span>
+                <span className="text-3xl font-bold text-slate-900">42</span>
               </div>
             </div>
             <Button variant="outline" size="sm" className="text-primary border-primary/20 hover:bg-primary/10">
@@ -56,10 +56,10 @@ export const AdminVendorManagement = () => {
             </Button>
           </CardContent>
         </Card>
-        <Card className="border-white/10">
+        <Card className="border-slate-300">
           <CardContent className="p-6 flex justify-between items-center h-full">
             <div>
-              <h3 className="text-sm font-medium text-white/60 mb-2">At Risk (Quality)</h3>
+              <h3 className="text-sm font-medium text-slate-600 mb-2">At Risk (Quality)</h3>
               <div className="flex items-end gap-3">
                 <span className="text-3xl font-bold text-yellow-500">18</span>
               </div>
@@ -69,23 +69,23 @@ export const AdminVendorManagement = () => {
       </div>
 
       <Card>
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between">
+        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input 
               type="text" 
               placeholder="Search vendors by name or ID..." 
-              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors" 
+              className="w-full bg-surface border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
             />
           </div>
           <div className="flex gap-2">
-            <select className="bg-surface border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary/50 cursor-pointer">
+            <select className="bg-surface border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
               <option>All Categories</option>
               <option>Photography</option>
               <option>Venues</option>
               <option>Catering</option>
             </select>
-            <select className="bg-surface border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary/50 cursor-pointer">
+            <select className="bg-surface border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
               <option>Sort: Highest GMV</option>
               <option>Sort: Lowest Rating</option>
             </select>
@@ -95,7 +95,7 @@ export const AdminVendorManagement = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/5 text-sm font-medium text-white/50 bg-white/[0.02]">
+              <tr className="border-b border-slate-200 text-sm font-medium text-slate-500 bg-slate-50">
                 <th className="p-4 pl-6">Business</th>
                 <th className="p-4">Location</th>
                 <th className="p-4">Performance</th>
@@ -105,22 +105,22 @@ export const AdminVendorManagement = () => {
             </thead>
             <tbody className="text-sm">
               {VENDORS.map((vendor, i) => (
-                <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                <tr key={i} className="border-b border-slate-200 hover:bg-slate-50 transition-colors group">
                   <td className="p-4 pl-6">
                     <div className="flex flex-col">
-                      <span className="font-bold text-white">{vendor.name}</span>
-                      <span className="text-xs text-white/50">{vendor.category} • {vendor.id}</span>
+                      <span className="font-bold text-slate-900">{vendor.name}</span>
+                      <span className="text-xs text-slate-500">{vendor.category} • {vendor.id}</span>
                     </div>
                   </td>
                   <td className="p-4">
-                    <div className="flex items-center gap-1.5 text-white/80">
-                      <MapPin className="w-4 h-4 text-white/40" />
+                    <div className="flex items-center gap-1.5 text-slate-800">
+                      <MapPin className="w-4 h-4 text-slate-500" />
                       <span className="text-xs">{vendor.location}</span>
                     </div>
                   </td>
                   <td className="p-4">
                     <div className="flex flex-col gap-1">
-                      <span className="font-medium text-white flex items-center gap-1">
+                      <span className="font-medium text-slate-900 flex items-center gap-1">
                         <Star className={cn("w-3.5 h-3.5", vendor.rating >= 4.5 ? "text-yellow-400 fill-yellow-400" : vendor.rating < 3 ? "text-red-400" : "text-yellow-400")} /> 
                         {vendor.rating}
                       </span>
@@ -143,7 +143,7 @@ export const AdminVendorManagement = () => {
                     <Button variant="outline" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
                       Manage
                     </Button>
-                    <button className="p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-lg transition-colors" title="Actions">
+                    <button className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-200 rounded-lg transition-colors" title="Actions">
                       <MoreVertical className="w-5 h-5"/>
                     </button>
                   </td>

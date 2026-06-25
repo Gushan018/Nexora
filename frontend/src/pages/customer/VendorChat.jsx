@@ -50,12 +50,12 @@ export const VendorChat = () => {
 
   return (
     <div className="max-w-4xl mx-auto h-[calc(100vh-6rem)] pt-6 flex flex-col">
-      <Card className="flex-1 overflow-hidden flex flex-col border-white/10 bg-surface/30">
+      <Card className="flex-1 overflow-hidden flex flex-col border-slate-300 bg-surface/30">
         
         {/* Chat Header */}
-        <div className="p-4 border-b border-white/5 bg-surface/80 backdrop-blur-md flex justify-between items-center shrink-0 z-10">
+        <div className="p-4 border-b border-slate-200 bg-surface/80 backdrop-blur-md flex justify-between items-center shrink-0 z-10">
           <div className="flex items-center gap-4">
-            <Link to="/customer/chat" className="md:hidden p-2 -ml-2 text-white/60 hover:text-white">
+            <Link to="/customer/chat" className="md:hidden p-2 -ml-2 text-slate-600 hover:text-slate-900">
               <ChevronLeft className="w-5 h-5" />
             </Link>
             <div className="relative">
@@ -65,8 +65,8 @@ export const VendorChat = () => {
               <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-surface" />
             </div>
             <div>
-              <h2 className="font-bold text-white">Lumiere Photography</h2>
-              <p className="text-xs text-white/50 flex items-center gap-1">
+              <h2 className="font-bold text-slate-900">Lumiere Photography</h2>
+              <p className="text-xs text-slate-500 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" /> Online
               </p>
             </div>
@@ -74,7 +74,7 @@ export const VendorChat = () => {
           <div className="flex gap-2">
             <Button variant="outline" size="sm" className="hidden sm:flex" leftIcon={<Phone className="w-4 h-4"/>}>Call Vendor</Button>
             <Button variant="outline" size="sm" className="hidden sm:flex" leftIcon={<Calendar className="w-4 h-4"/>}>View Booking</Button>
-            <button className="p-2 text-white/40 hover:text-white rounded-lg">
+            <button className="p-2 text-slate-500 hover:text-slate-900 rounded-lg">
               <MoreVertical className="w-5 h-5" />
             </button>
           </div>
@@ -83,7 +83,7 @@ export const VendorChat = () => {
         {/* Message Thread */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar bg-gradient-to-b from-surface/30 to-background/50">
           <div className="text-center">
-            <span className="bg-white/5 text-white/40 text-xs px-3 py-1 rounded-full">Today</span>
+            <span className="bg-slate-100 text-slate-500 text-xs px-3 py-1 rounded-full">Today</span>
           </div>
 
           {messages.map((msg) => {
@@ -93,12 +93,12 @@ export const VendorChat = () => {
               <div key={msg.id} className={cn("flex w-full", isMe ? "justify-end" : "justify-start")}>
                 <div className={cn(
                   "max-w-[80%] sm:max-w-[70%] rounded-2xl p-4",
-                  isMe ? "bg-primary text-white rounded-tr-sm" : "bg-surface border border-white/5 text-white/90 rounded-tl-sm"
+                  isMe ? "bg-primary text-white rounded-tr-sm" : "bg-surface border border-slate-200 text-slate-800 rounded-tl-sm"
                 )}>
                   <p className="text-sm leading-relaxed">{msg.text}</p>
                   <div className={cn(
                     "text-[10px] mt-2 flex items-center gap-1",
-                    isMe ? "text-white/60 justify-end" : "text-white/40 justify-start"
+                    isMe ? "text-slate-600 justify-end" : "text-slate-500 justify-start"
                   )}>
                     {timeStr}
                   </div>
@@ -110,18 +110,18 @@ export const VendorChat = () => {
         </div>
 
         {/* Input Area */}
-        <div className="p-4 border-t border-white/5 bg-surface/80 backdrop-blur-md shrink-0">
-          <div className="flex items-center gap-3 bg-background border border-white/10 rounded-xl p-2 pr-3 focus-within:border-primary/50 transition-colors">
-            <button className="p-2 text-white/40 hover:text-primary transition-colors">
+        <div className="p-4 border-t border-slate-200 bg-surface/80 backdrop-blur-md shrink-0">
+          <div className="flex items-center gap-3 bg-background border border-slate-300 rounded-xl p-2 pr-3 focus-within:border-primary/50 transition-colors">
+            <button className="p-2 text-slate-500 hover:text-primary transition-colors">
               <Paperclip className="w-5 h-5" />
             </button>
-            <button className="p-2 text-white/40 hover:text-primary transition-colors">
+            <button className="p-2 text-slate-500 hover:text-primary transition-colors">
               <ImageIcon className="w-5 h-5" />
             </button>
             <input 
               type="text" 
               placeholder="Type your message..." 
-              className="flex-1 bg-transparent border-none text-white focus:outline-none text-sm px-2"
+              className="flex-1 bg-transparent border-none text-slate-900 focus:outline-none text-sm px-2"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
