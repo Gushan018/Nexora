@@ -15,7 +15,7 @@ export const AdminDashboard = () => {
             <LayoutDashboard className="w-7 h-7 text-primary" />
             Platform Overview
           </h1>
-          <p className="text-slate-600">Global metrics and system health for the Nexora Marketplace.</p>
+          <p className="text-slate-600">Global metrics and system health for the Event Nest Marketplace.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">Download Report</Button>

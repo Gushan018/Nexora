@@ -53,7 +53,7 @@ export const VendorSettings = () => {
           <Card>
             <CardHeader>
               <CardTitle>Business Preferences</CardTitle>
-              <CardDescription>Global rules for how you operate on Nexora.</CardDescription>
+              <CardDescription>Global rules for how you operate on Event Nest.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               

@@ -10,7 +10,7 @@ const MILESTONES = [
   { id: 2, title: 'Pre-Event Consultation', date: 'Oct 05, 2026', status: 'completed', desc: 'Discussed shot list and locations with the photographer.' },
   { id: 3, title: 'Final Balance Due', date: 'Oct 10, 2026', status: 'current', desc: 'Remaining LKR 2,560 is due 4 days prior to the event.' },
   { id: 4, title: 'Event Day Execution', date: 'Oct 14, 2026', status: 'upcoming', desc: 'Photographer arrives at 10:00 AM.' },
-  { id: 5, title: 'Gallery Delivery', date: 'Nov 01, 2026', status: 'upcoming', desc: 'High-resolution edited photos delivered via Nexora.' },
+  { id: 5, title: 'Gallery Delivery', date: 'Nov 01, 2026', status: 'upcoming', desc: 'High-resolution edited photos delivered via Event Nest.' },
 ];
 
 export const BookingTracking = () => {

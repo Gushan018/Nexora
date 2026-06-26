@@ -21,7 +21,7 @@ export const AboutUs = () => {
             transition={{ delay: 0.1 }}
             className="text-slate-600 text-lg max-w-2xl mx-auto"
           >
-            Nexora is Sri Lanka's first unified marketplace platform connecting premium event vendors, product sellers, and customers in one seamless ecosystem.
+            Event Nest is Sri Lanka's first unified marketplace platform connecting premium event vendors, product sellers, and customers in one seamless ecosystem.
           </motion.p>
         </div>
 
@@ -45,7 +45,7 @@ export const AboutUs = () => {
           >
             <h3 className="text-3xl font-bold text-slate-900">Our Mission</h3>
             <p className="text-slate-700 leading-relaxed">
-              We started Nexora because we saw how fragmented and stressful event planning had become. Our mission is to eliminate the chaos by bringing transparency, premium design, and verified professionals into a single, unified marketplace.
+              We started Event Nest because we saw how fragmented and stressful event planning had become. Our mission is to eliminate the chaos by bringing transparency, premium design, and verified professionals into a single, unified marketplace.
             </p>
             <div className="grid grid-cols-2 gap-6 pt-6">
               <div>

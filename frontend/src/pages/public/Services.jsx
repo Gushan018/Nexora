@@ -27,7 +27,7 @@ export const Services = ({ isDashboard = false }) => {
             transition={{ delay: 0.1 }}
             className="text-slate-600 text-lg max-w-2xl mx-auto"
           >
-            Nexora is built for three distinct types of users. Discover what our platform can do for you.
+            Event Nest is built for three distinct types of users. Discover what our platform can do for you.
           </motion.p>
         </div>
 

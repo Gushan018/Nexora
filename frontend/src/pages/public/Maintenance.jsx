@@ -28,7 +28,7 @@ export const Maintenance = () => {
           </div>
 
           <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-4">
-            We're upgrading Nexora.
+            We're upgrading Event Nest.
           </h1>
           
           <p className="text-lg text-slate-600 mb-8 max-w-lg mx-auto">

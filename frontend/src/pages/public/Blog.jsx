@@ -57,7 +57,7 @@ export const Blog = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
           >
-            The Nexora <span className="text-gradient">Journal</span>
+            The Event Nest <span className="text-gradient">Journal</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: -20 }}
