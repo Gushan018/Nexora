@@ -96,10 +96,10 @@ export const EventPackages = ({ isDashboard = false }) => {
               className="h-12 text-base"
             />
           </div>
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex overflow-x-auto pb-2 md:pb-0 md:flex-wrap items-center gap-3 scrollbar-hide w-full">
             <Button 
               variant={showFilters ? "primary" : "outline"} 
-              className="h-12 whitespace-nowrap" 
+              className="h-12 whitespace-nowrap shrink-0" 
               leftIcon={<Filter className="w-4 h-4" />}
               onClick={() => setShowFilters(!showFilters)}
             >
@@ -108,7 +108,7 @@ export const EventPackages = ({ isDashboard = false }) => {
             <select 
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="h-12 px-4 rounded-xl border border-slate-200 bg-surface/50 text-slate-600 focus:outline-none focus:border-primary/50"
+              className="h-12 px-4 rounded-xl border border-slate-200 bg-surface/50 text-slate-600 focus:outline-none focus:border-primary/50 shrink-0"
             >
               <option value="newest">Newest Packages</option>
               <option value="price-asc">Price: Low to High</option>
@@ -120,7 +120,7 @@ export const EventPackages = ({ isDashboard = false }) => {
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={cn(
-                  "px-4 h-12 rounded-xl text-sm font-medium transition-all duration-300 border",
+                  "px-4 h-12 rounded-xl text-sm font-medium transition-all duration-300 border shrink-0 whitespace-nowrap",
                   activeCategory === cat
                     ? "bg-primary/10 text-primary border-primary/30"
                     : "bg-surface/50 text-slate-600 border-slate-200 hover:border-primary/30 hover:text-primary"

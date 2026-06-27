@@ -70,7 +70,6 @@ export const DashboardLayout = ({ role = 'admin' }) => {
           { name: 'Dashboard', path: '/customer/dashboard', icon: <LayoutDashboard /> },
           { name: 'Marketplace', path: '/customer/marketplace', icon: <ShoppingBag /> },
           { name: 'Event Packages', path: '/customer/event-packages', icon: <Package /> },
-          { name: 'Directory', path: '/customer/vendor-directory', icon: <Search /> },
           { name: 'My Orders', path: '/customer/order-history', icon: <ShoppingBag /> },
           { name: 'My Events', path: '/customer/event-dashboard', icon: <Calendar /> },
           { name: 'Messages', path: '/customer/chat-inbox', icon: <MessageSquare /> },
@@ -114,23 +113,23 @@ export const DashboardLayout = ({ role = 'admin' }) => {
                 key={link.name}
                 to={link.path}
                 className={cn(
-                  "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 relative text-sm",
-                  location.pathname.startsWith(link.path) 
-                    ? "bg-primary/20 text-primary shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 relative text-sm",
+                  location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path))
+                    ? "bg-primary text-white shadow-[0_4px_20px_rgba(212,175,55,0.4)] font-semibold" 
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 font-medium"
                 )}
               >
-                {location.pathname.startsWith(link.path) && (
+                {location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path)) ? (
                   <motion.div 
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-primary/10 rounded-xl border border-primary/30"
+                    className="absolute inset-0 bg-primary rounded-xl"
                     initial={false}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
-                )}
+                ) : null}
                 <div className="relative z-10 flex items-center gap-3 w-full">
                   {React.cloneElement(link.icon, { className: 'w-5 h-5' })}
-                  <span className="font-medium">{link.name}</span>
+                  <span>{link.name}</span>
                 </div>
               </Link>
             ))}

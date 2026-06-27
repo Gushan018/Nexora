@@ -23,8 +23,7 @@ export const Navbar = () => {
   const navLinks = [
     { name: 'Services', path: '/services' },
     { name: 'Marketplace', path: '/marketplace' },
-    { name: 'Event Packages', path: '/event-packages' },
-    { name: 'Directory', path: '/vendor-directory' },
+    { name: 'Packages', path: '/event-packages' },
   ];
 
   return (

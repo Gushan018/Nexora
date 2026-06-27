@@ -38,7 +38,6 @@ export const Footer = () => {
             <ul className="flex flex-col gap-4">
               <li><Link to="/marketplace" className="text-slate-600 hover:text-primary text-sm transition-colors">Marketplace</Link></li>
               <li><Link to="/event-packages" className="text-slate-600 hover:text-primary text-sm transition-colors">Event Packages</Link></li>
-              <li><Link to="/vendor-directory" className="text-slate-600 hover:text-primary text-sm transition-colors">Vendor Directory</Link></li>
               <li><Link to="/services" className="text-slate-600 hover:text-primary text-sm transition-colors">Services</Link></li>
             </ul>
           </div>

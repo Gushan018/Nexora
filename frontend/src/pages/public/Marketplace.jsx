@@ -100,10 +100,10 @@ export const Marketplace = ({ isDashboard = false }) => {
               className="h-12 text-base"
             />
           </div>
-          <div className="flex flex-wrap items-center gap-3 pb-2 md:pb-0">
+          <div className="flex overflow-x-auto pb-2 md:pb-0 md:flex-wrap items-center gap-3 scrollbar-hide w-full">
             <Button 
               variant={showFilters ? "primary" : "outline"} 
-              className="h-12 whitespace-nowrap" 
+              className="h-12 whitespace-nowrap shrink-0" 
               leftIcon={<Filter className="w-4 h-4" />}
               onClick={() => setShowFilters(!showFilters)}
             >
@@ -112,23 +112,23 @@ export const Marketplace = ({ isDashboard = false }) => {
             <select 
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="h-12 px-4 rounded-xl border border-slate-200 bg-surface/50 text-slate-600 focus:outline-none focus:border-primary/50"
+              className="h-12 px-4 rounded-xl border border-slate-200 bg-surface/50 text-slate-600 focus:outline-none focus:border-primary/50 shrink-0"
             >
               <option value="newest">Newest</option>
               <option value="price-asc">Price: Low to High</option>
               <option value="price-desc">Price: High to Low</option>
               <option value="name-asc">Name: A to Z</option>
             </select>
-            <div className="h-8 w-px bg-slate-200 mx-2 hidden md:block" />
+            <div className="h-8 w-px bg-slate-200 mx-2 hidden md:block shrink-0" />
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={cn(
-                  "h-12 px-6 rounded-xl font-medium transition-all whitespace-nowrap border",
+                  "h-12 px-6 rounded-xl font-medium transition-all whitespace-nowrap border shrink-0",
                   activeCategory === cat 
                     ? "bg-primary/20 border-primary text-primary" 
-                    : "bg-surface/50 border-slate-200 text-slate-600 hover:bg-surface hover:text-slate-900"
+                    : "bg-surface border-slate-200 text-slate-600 hover:border-primary/50 hover:text-primary"
                 )}
               >
                 {cat}
