@@ -26,11 +26,13 @@ export const Navbar = () => {
     { name: 'Packages', path: '/event-packages' },
   ];
 
+  const isTransparentDark = location.pathname === '/' && !isScrolled;
+
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-background/90 backdrop-blur-md border-b border-primary/20 py-4" : "bg-transparent py-6"
+        isScrolled ? "bg-background/90 backdrop-blur-md border-b border-primary/20 py-4 shadow-sm" : "bg-transparent py-6"
       )}
     >
       <div className="container mx-auto px-6 max-w-7xl">
@@ -51,8 +53,10 @@ export const Navbar = () => {
                 key={link.name}
                 to={link.path}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-slate-900",
-                  location.pathname === link.path ? "text-slate-900" : "text-slate-600"
+                  "text-sm font-bold transition-colors",
+                  isTransparentDark 
+                    ? "text-white/90 hover:text-white drop-shadow-md"
+                    : location.pathname === link.path ? "text-primary" : "text-slate-600 hover:text-primary"
                 )}
               >
                 {link.name}
@@ -68,7 +72,10 @@ export const Navbar = () => {
               </Link>
             ) : (
               <>
-                <Link to="/login" className="text-sm font-medium text-slate-800 hover:text-slate-900 transition-colors">
+                <Link to="/login" className={cn(
+                  "text-sm font-bold transition-colors",
+                  isTransparentDark ? "text-white/90 hover:text-white drop-shadow-md" : "text-slate-800 hover:text-primary"
+                )}>
                   Sign In
                 </Link>
                 <Link to="/register">
@@ -80,7 +87,7 @@ export const Navbar = () => {
 
           {/* Mobile Toggle */}
           <button
-            className="md:hidden text-slate-900 p-2"
+            className={cn("md:hidden p-2", isTransparentDark ? "text-white" : "text-slate-900")}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X /> : <Menu />}
