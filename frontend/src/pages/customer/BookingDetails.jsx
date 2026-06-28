@@ -38,8 +38,8 @@ export const BookingDetails = () => {
   const type = booking.service?.category?.name || 'Event';
   const amount = Number(booking.service?.price || booking.package?.price || 0);
   const vendorName = booking.service?.vendor?.businessName || booking.package?.vendor?.businessName || 'Unknown Vendor';
-  const contactName = booking.service?.vendor?.user?.name || booking.package?.vendor?.user?.name || 'Vendor Contact';
-  const contactEmail = booking.service?.vendor?.user?.email || booking.package?.vendor?.user?.email || 'vendor@example.com';
+  const contactName = vendorName; // Usually the business name or we can use vendorName
+  const contactEmail = booking.service?.vendor?.email || booking.package?.vendor?.email || 'vendor@example.com';
   
   return (
     <div className="space-y-6 max-w-5xl mx-auto">

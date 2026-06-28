@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Package, Search, Filter, ChevronRight, CheckCircle2, Clock, MapPin } from 'lucide-react';
+import { Package, Search, Filter, ChevronRight, CheckCircle2, Clock, MapPin, ListOrdered, Truck, Archive } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Link } from 'react-router-dom';
@@ -22,6 +22,9 @@ const StatusIcon = ({ status }) => {
 };
 
 export const OrderHistory = () => {
+  const [activeTab, setActiveTab] = React.useState('ALL');
+  const [searchQuery, setSearchQuery] = React.useState('');
+  
   const { data: orders = [], isLoading } = useQuery({
     queryKey: ['orders'],
     queryFn: async () => {
@@ -29,6 +32,35 @@ export const OrderHistory = () => {
       return res.data;
     }
   });
+
+  const filteredOrders = React.useMemo(() => {
+    let result = orders;
+    
+    // Tab filtering
+    if (activeTab === 'PENDING') result = result.filter(o => ['PENDING', 'PROCESSING'].includes(o.status));
+    else if (activeTab === 'SHIPPING') result = result.filter(o => o.status === 'IN_TRANSIT');
+    else if (activeTab === 'COMPLETED') result = result.filter(o => o.status === 'DELIVERED');
+
+    // Search filtering
+    if (searchQuery.trim() !== '') {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(o => {
+        const matchesId = String(o.orderId).toLowerCase().includes(q);
+        const matchesProduct = o.orderItems?.some(item => 
+          item.product?.productName?.toLowerCase().includes(q)
+        );
+        return matchesId || matchesProduct;
+      });
+    }
+    return result;
+  }, [orders, activeTab, searchQuery]);
+
+  const tabs = [
+    { id: 'ALL', label: 'All Orders', icon: <ListOrdered className="w-4 h-4" /> },
+    { id: 'PENDING', label: 'Pending & Processing', icon: <Clock className="w-4 h-4" /> },
+    { id: 'SHIPPING', label: 'On Shipping', icon: <Truck className="w-4 h-4" /> },
+    { id: 'COMPLETED', label: 'Completed', icon: <CheckCircle2 className="w-4 h-4" /> },
+  ];
 
   const handleDownloadInvoice = (order) => {
     const printWindow = window.open('', '_blank');
@@ -111,12 +143,32 @@ export const OrderHistory = () => {
         </div>
       </div>
 
+      <div className="flex overflow-x-auto hide-scrollbar gap-2 pb-2 border-b border-slate-200">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              "px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2",
+              activeTab === tab.id 
+                ? "bg-primary text-slate-900 shadow-sm border border-primary/20" 
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-transparent"
+            )}
+          >
+            {tab.icon}
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <Card>
         <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input 
               type="text" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by order ID or product name..." 
               className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
             />
@@ -126,8 +178,11 @@ export const OrderHistory = () => {
       </Card>
 
       <div className="space-y-6">
-        {orders.map((order) => (
-          <Card key={order.orderId} className="overflow-hidden hover:border-slate-400 transition-colors">
+        {filteredOrders.length === 0 ? (
+          <div className="text-center text-slate-600 py-12">No orders found for this status.</div>
+        ) : (
+          filteredOrders.map((order) => (
+            <Card key={order.orderId} className="overflow-hidden hover:border-slate-400 transition-colors">
             {/* Order Header */}
             <div className="bg-surface/50 p-4 sm:p-6 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex flex-wrap gap-x-8 gap-y-2">
@@ -185,13 +240,7 @@ export const OrderHistory = () => {
               </div>
             </CardContent>
           </Card>
-        ))}
-        {orders.length === 0 && (
-          <div className="text-center py-20 border border-slate-300 rounded-2xl bg-surface/50">
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">No orders yet</h2>
-            <p className="text-slate-600">You haven't placed any orders.</p>
-          </div>
-        )}
+        )))}
       </div>
     </div>
   );

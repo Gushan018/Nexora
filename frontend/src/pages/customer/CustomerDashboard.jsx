@@ -145,7 +145,7 @@ export const CustomerDashboard = () => {
             <Button size="lg" className="px-8 bg-primary hover:bg-primary-hover transition-all text-white shadow-lg shadow-primary/30 font-bold" onClick={() => navigate('/customer/event-packages')}>
               Explore Packages
             </Button>
-            <Button variant="outline" size="lg" className="px-8 bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-slate-900 shadow-sm font-bold" onClick={() => navigate('/customer/marketplace')}>
+            <Button variant="outline" size="lg" className="px-8 bg-surface border-slate-300 hover:border-slate-400 hover:bg-surface/80 transition-all text-slate-900 shadow-sm font-bold" onClick={() => navigate('/customer/marketplace')}>
               Shop Marketplace
             </Button>
           </motion.div>
