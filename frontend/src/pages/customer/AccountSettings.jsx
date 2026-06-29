@@ -75,7 +75,7 @@ export const AccountSettings = () => {
           leftIcon={<Save className="w-4 h-4"/>} 
           className="px-6 h-12 text-base"
           onClick={handleSave}
-          disabled={isSaving}
+          disabled={isSaving || !formFirst.trim() || !formLast.trim()}
         >
           {isSaving ? 'Saving...' : 'Save Changes'}
         </Button>

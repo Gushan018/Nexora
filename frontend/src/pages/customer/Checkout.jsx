@@ -96,7 +96,7 @@ export const Checkout = () => {
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
                   />
-                  <Button onClick={() => setStep(2)} className="w-full mt-4" disabled={!shippingAddress.trim()}>Review Order</Button>
+                  <Button onClick={() => setStep(2)} className="w-full mt-4" disabled={shippingAddress.trim().length < 10}>Review Order (Requires Full Address)</Button>
                 </CardContent>
               )}
             </Card>
