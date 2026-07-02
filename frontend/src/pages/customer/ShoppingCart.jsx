@@ -116,7 +116,7 @@ export const ShoppingCart = () => {
                             <Minus className="w-4 h-4" />
                           </button>
                           <span className="w-8 text-center font-medium text-slate-900">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.cartItemId, item.quantity, 1)} className="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-900 flex items-center justify-center">
+                          <button onClick={() => updateQuantity(item.cartItemId, item.quantity, 1)} disabled={item.quantity >= item.product.quantity} className="w-8 h-8 rounded-lg hover:bg-slate-200 disabled:opacity-50 text-slate-900 flex items-center justify-center">
                             <Plus className="w-4 h-4" />
                           </button>
                         </div>

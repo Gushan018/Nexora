@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Star, Truck, ShieldCheck, Heart, Share2, Plus, Minus, CheckCircle2 } from 'lucide-react';
 import { Button } from '../../components/common/Button';
@@ -29,6 +29,12 @@ export const ProductDetails = () => {
     },
     enabled: !!id
   });
+
+  useEffect(() => {
+    if (product?.productName) {
+      document.title = `${product.productName} | Event Nest`;
+    }
+  }, [product?.productName]);
 
   const { data: wishlistItems = [] } = useQuery({
     queryKey: ['wishlist'],
@@ -168,7 +174,11 @@ export const ProductDetails = () => {
                 </div>
                 <span className="text-slate-500">({product.reviews?.length || 0} reviews)</span>
                 <span className="text-slate-300">|</span>
-                <span className="text-green-400 font-medium flex items-center gap-1"><CheckCircle2 className="w-4 h-4"/> In Stock ({product.quantity})</span>
+                {product.quantity > 0 ? (
+                  <span className="text-green-400 font-medium flex items-center gap-1"><CheckCircle2 className="w-4 h-4"/> In Stock ({product.quantity})</span>
+                ) : (
+                  <span className="text-red-400 font-medium flex items-center gap-1"> Out of Stock</span>
+                )}
               </div>
             </div>
 
@@ -193,20 +203,20 @@ export const ProductDetails = () => {
             <div className="mt-auto space-y-6 pt-8 border-t border-slate-300">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-4 bg-surface rounded-xl border border-slate-300 p-1">
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 rounded-lg hover:bg-slate-200 text-slate-900 flex items-center justify-center">
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} disabled={product.quantity === 0} className="w-10 h-10 rounded-lg hover:bg-slate-200 disabled:opacity-50 text-slate-900 flex items-center justify-center">
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="w-8 text-center font-bold text-slate-900">{quantity}</span>
-                  <button onClick={() => setQuantity(Math.min(product.quantity, quantity + 1))} className="w-10 h-10 rounded-lg hover:bg-slate-200 text-slate-900 flex items-center justify-center">
+                  <span className="w-8 text-center font-bold text-slate-900">{product.quantity === 0 ? 0 : quantity}</span>
+                  <button onClick={() => setQuantity(Math.min(product.quantity, quantity + 1))} disabled={product.quantity === 0 || quantity >= product.quantity} className="w-10 h-10 rounded-lg hover:bg-slate-200 disabled:opacity-50 text-slate-900 flex items-center justify-center">
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>
                 <Button 
-                  className="flex-1 h-14 text-lg" 
+                  className="flex-1 h-14 text-lg disabled:opacity-50" 
                   onClick={() => addToCartMutation.mutate()}
-                  disabled={addToCartMutation.isPending}
+                  disabled={addToCartMutation.isPending || product.quantity === 0}
                 >
-                  {addToCartMutation.isPending ? 'Adding...' : `Add to Cart - LKR ${(Number(product.price) * quantity).toFixed(2)}`}
+                  {product.quantity === 0 ? 'Out of Stock' : (addToCartMutation.isPending ? 'Adding...' : `Add to Cart - LKR ${(Number(product.price) * quantity).toFixed(2)}`)}
                 </Button>
               </div>
 

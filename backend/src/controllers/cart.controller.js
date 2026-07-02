@@ -37,12 +37,18 @@ const addItemToCart = async (req, res) => {
     });
 
     if (existingCartItem) {
-   
+      const newQuantity = existingCartItem.quantity + parseInt(quantity);
+      if (newQuantity > product.quantity) {
+        return res.status(400).json({ message: `Cannot add more than available stock (${product.quantity}).` });
+      }
       await prisma.cartItem.update({
         where: { cartItemId: existingCartItem.cartItemId },
-        data: { quantity: existingCartItem.quantity + parseInt(quantity) },
+        data: { quantity: newQuantity },
       });
     } else {
+      if (parseInt(quantity) > product.quantity) {
+        return res.status(400).json({ message: `Cannot add more than available stock (${product.quantity}).` });
+      }
   
       await prisma.cartItem.create({
         data: {
@@ -126,6 +132,19 @@ const updateCartItemQuantity = async (req, res) => {
 
     if (quantity < 1) {
        return res.status(400).json({ message: "Quantity must be at least 1." });
+    }
+
+    const cartItem = await prisma.cartItem.findUnique({
+      where: { cartItemId: parseInt(cartItemId) },
+      include: { product: true }
+    });
+
+    if (!cartItem) {
+      return res.status(404).json({ message: 'Cart item not found.' });
+    }
+
+    if (parseInt(quantity) > cartItem.product.quantity) {
+      return res.status(400).json({ message: `Cannot exceed available stock (${cartItem.product.quantity}).` });
     }
 
     const updatedItem = await prisma.cartItem.update({
