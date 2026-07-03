@@ -12,7 +12,7 @@ export const NotFound = () => {
       
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[400px] font-black text-white/[0.02] select-none tracking-tighter mix-blend-screen">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[400px] font-black text-slate-900/[0.02] select-none tracking-tighter mix-blend-screen">
           404
         </div>
         <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-primary/10 blur-[150px] rounded-full mix-blend-screen" />
@@ -25,15 +25,15 @@ export const NotFound = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="w-20 h-20 bg-surface/50 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-xl backdrop-blur-md">
-            <span className="text-3xl font-black text-white">?!</span>
+          <div className="w-20 h-20 bg-surface/50 border border-slate-300 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-xl backdrop-blur-md">
+            <span className="text-3xl font-black text-slate-900">?!</span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-4">
+          <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-4">
             Page not found
           </h1>
           
-          <p className="text-lg text-white/60 mb-8 max-w-md mx-auto">
+          <p className="text-lg text-slate-600 mb-8 max-w-md mx-auto">
             The page you are looking for doesn't exist, has been moved, or is temporarily unavailable.
           </p>
 

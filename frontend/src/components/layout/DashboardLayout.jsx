@@ -4,11 +4,12 @@ import { LayoutDashboard, Calendar, ShoppingBag, Settings, LogOut, Bell, Menu, X
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../utils/cn';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../utils/api';
 
-export const DashboardLayout = ({ role = 'admin' }) => {
+export const DashboardLayout = ({ role = 'customer' }) => {
   const { user, loading, logout } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ export const DashboardLayout = ({ role = 'admin' }) => {
   }, [user, loading, navigate]);
 
   if (loading || !user) {
-    return <div className="min-h-screen bg-background flex items-center justify-center"><motion.div className="w-16 h-16 rounded-full border-4 border-white/10 border-t-primary animate-spin" /></div>;
+    return <div className="min-h-screen bg-background flex items-center justify-center"><motion.div className="w-16 h-16 rounded-full border-4 border-slate-300 border-t-primary animate-spin" /></div>;
   }
 
   const getLinks = () => {
@@ -73,16 +74,12 @@ export const DashboardLayout = ({ role = 'admin' }) => {
       case 'customer':
         return [
           { name: 'Dashboard', path: '/customer/dashboard', icon: <LayoutDashboard /> },
-          { name: 'Services', path: '/customer/services', icon: <Briefcase /> },
           { name: 'Marketplace', path: '/customer/marketplace', icon: <ShoppingBag /> },
           { name: 'Event Packages', path: '/customer/event-packages', icon: <Package /> },
-          { name: 'Directory', path: '/customer/vendor-directory', icon: <Search /> },
           { name: 'My Orders', path: '/customer/order-history', icon: <ShoppingBag /> },
           { name: 'My Events', path: '/customer/event-dashboard', icon: <Calendar /> },
-          { name: 'Wishlist', path: '/customer/wishlist', icon: <Heart /> },
           { name: 'Messages', path: '/customer/chat-inbox', icon: <MessageSquare /> },
-          { name: 'Budget Planner', path: '/customer/budget-planner', icon: <List /> },
-          { name: 'Settings', path: '/customer/account-settings', icon: <Settings /> },
+          { name: 'My Profile', path: '/customer/account-settings', icon: <User /> },
         ];
       case 'seller':
         return [
@@ -128,17 +125,17 @@ export const DashboardLayout = ({ role = 'admin' }) => {
                     : "text-gray-600 dark:text-white/60 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
                 )}
               >
-                {location.pathname.startsWith(link.path) && (
+                {location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path)) ? (
                   <motion.div 
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-primary/10 rounded-xl border border-primary/30"
+                    className="absolute inset-0 bg-primary rounded-xl"
                     initial={false}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
-                )}
+                ) : null}
                 <div className="relative z-10 flex items-center gap-3 w-full">
                   {React.cloneElement(link.icon, { className: 'w-5 h-5' })}
-                  <span className="font-medium">{link.name}</span>
+                  <span>{link.name}</span>
                 </div>
               </Link>
             ))}
@@ -171,6 +168,25 @@ export const DashboardLayout = ({ role = 'admin' }) => {
           
           <div className="flex items-center gap-4 ml-auto relative" ref={dropdownRef}>
             
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-slate-100 text-slate-600 hover:text-slate-900 relative"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+
+            {/* Wishlist Link */}
+            {role === 'customer' && (
+              <Link
+                to="/customer/wishlist"
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-slate-100 text-slate-600 hover:text-slate-900 relative"
+              >
+                <Heart className="w-5 h-5" />
+              </Link>
+            )}
+
             {/* Cart Dropdown */}
             {role === 'customer' && (
               <div className="relative">
@@ -235,7 +251,6 @@ export const DashboardLayout = ({ role = 'admin' }) => {
                 className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'notifications' ? "bg-primary/20 text-primary" : "bg-gray-200 dark:bg-white/5 text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white")}
               >
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />
               </button>
               <AnimatePresence>
                 {activeDropdown === 'notifications' && (

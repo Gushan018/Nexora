@@ -89,16 +89,16 @@ export const SystemSettings = () => {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-white/80 block">Default Timezone</label>
-                <select className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
+                <label className="text-sm font-medium text-slate-800 block">Default Timezone</label>
+                <select className="w-full bg-surface border border-slate-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
                   <option>UTC (Coordinated Universal Time)</option>
                   <option>PST (Pacific Standard Time)</option>
                   <option>EST (Eastern Standard Time)</option>
                 </select>
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-white/80 block">Default Currency</label>
-                <select className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
+                <label className="text-sm font-medium text-slate-800 block">Default Currency</label>
+                <select className="w-full bg-surface border border-slate-300 rounded-lg px-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
                   <option>LKR (Rs)</option>
                   <option>EUR (€)</option>
                   <option>GBP (£)</option>

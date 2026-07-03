@@ -10,8 +10,8 @@ export const VendorDashboard = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Overview</h1>
-          <p className="text-white/60">Welcome back, here's what's happening with your business today.</p>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Overview</h1>
+          <p className="text-slate-600">Welcome back, here's what's happening with your business today.</p>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline">Download Report</Button>
@@ -60,8 +60,8 @@ export const VendorDashboard = () => {
               <CardTitle>Revenue Analytics</CardTitle>
               <CardDescription>Your earnings over the last 30 days.</CardDescription>
             </CardHeader>
-            <CardContent className="h-full flex items-center justify-center border-t border-white/5">
-              <span className="text-white/40">Chart visualization goes here (Recharts)</span>
+            <CardContent className="h-full flex items-center justify-center border-t border-slate-200">
+              <span className="text-slate-500">Chart visualization goes here (Recharts)</span>
             </CardContent>
           </Card>
         </div>
@@ -75,14 +75,14 @@ export const VendorDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4 pt-0">
               {[1,2,3].map(i => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-surface/50 border border-white/5 hover:border-white/10 transition-colors">
+                <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-surface/50 border border-slate-200 hover:border-slate-300 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
                       <span className="text-primary font-medium">JD</span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">John Doe</p>
-                      <p className="text-xs text-white/50">Wedding Photography</p>
+                      <p className="text-sm font-medium text-slate-900">John Doe</p>
+                      <p className="text-xs text-slate-500">Wedding Photography</p>
                     </div>
                   </div>
                   <Button variant="ghost" size="sm">Review</Button>
@@ -100,13 +100,13 @@ const StatCard = ({ title, value, trend, trendUp, icon }) => (
   <Card>
     <CardContent className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium text-white/60">{title}</h3>
-        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
+        <h3 className="text-sm font-medium text-slate-600">{title}</h3>
+        <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center border border-slate-300">
           {icon}
         </div>
       </div>
       <div className="flex items-end gap-3">
-        <div className="text-3xl font-bold text-white">{value}</div>
+        <div className="text-3xl font-bold text-slate-900">{value}</div>
         <div className={cn(
           "text-sm font-medium mb-1 flex items-center gap-1",
           trendUp ? "text-green-400" : "text-red-400"
