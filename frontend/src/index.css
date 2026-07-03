@@ -2,52 +2,8 @@
 @config "../tailwind.config.js";
 
 @layer base {
-  :root {
-    --color-background: #F8FAFC;
-    --color-surface: #FFFFFF;
-    --color-card: #FFFFFF;
-    --color-text-primary: #0F172A;
-    --color-muted: #64748B;
-    --color-border: #E2E8F0;
-    
-    --slate-50: #f8fafc;
-    --slate-100: #f1f5f9;
-    --slate-200: #e2e8f0;
-    --slate-300: #cbd5e1;
-    --slate-400: #94a3b8;
-    --slate-500: #64748b;
-    --slate-600: #475569;
-    --slate-700: #334155;
-    --slate-800: #1e293b;
-    --slate-900: #0f172a;
-    --slate-950: #020617;
-  }
-  
-  .dark {
-    --color-background: #0B1121;
-    --color-surface: #131B2F;
-    --color-card: #131B2F;
-    --color-text-primary: #F8FAFC;
-    --color-muted: #94A3B8;
-    --color-border: #334155;
-    
-    /* Inverted slate scale for seamless dark mode adaptation */
-    --slate-50: #020617;
-    --slate-100: #0f172a;
-    --slate-200: #1e293b;
-    --slate-300: #334155;
-    --slate-400: #475569;
-    --slate-500: #64748b;
-    --slate-600: #94a3b8;
-    --slate-700: #cbd5e1;
-    --slate-800: #e2e8f0;
-    --slate-900: #f1f5f9;
-    --slate-950: #f8fafc;
-  }
-
   body {
-    background-color: var(--color-background);
-    color: var(--color-text-primary);
+    @apply bg-light-background dark:bg-background text-light-textPrimary dark:text-textPrimary;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
@@ -55,11 +11,11 @@
 
 @layer utilities {
   .glass {
-    @apply bg-surface/40 backdrop-blur-md border border-white/10;
+    @apply bg-light-surface/30 dark:bg-surface/40 backdrop-blur-md border border-gray-300 dark:border-white/10;
   }
   
   .glass-card {
-    @apply bg-card/60 backdrop-blur-lg border border-white/5 shadow-xl;
+    @apply bg-white/50 dark:bg-card/60 backdrop-blur-lg border border-gray-200 dark:border-white/5 shadow-lg;
   }
 
   .text-gradient {
@@ -76,14 +32,13 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #F8FAFC; 
+  @apply bg-light-background dark:bg-background;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1; 
-  border-radius: 4px;
+  @apply bg-gray-300 dark:bg-surface rounded;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8; 
+  @apply bg-gray-400 dark:bg-surface/80;
 }

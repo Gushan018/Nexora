@@ -40,11 +40,11 @@ export const CustomerReviews = () => {
     <div className="space-y-6 max-w-5xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
             <Star className="w-7 h-7 text-yellow-400" />
             Customer Reviews
           </h1>
-          <p className="text-slate-600">Manage your reputation and respond to client feedback.</p>
+          <p className="text-white/60">Manage your reputation and respond to client feedback.</p>
         </div>
       </div>
 
@@ -54,19 +54,19 @@ export const CustomerReviews = () => {
         <Card className="md:col-span-2 border-yellow-500/20 bg-yellow-500/5">
           <CardContent className="p-6 flex items-center gap-6">
             <div className="text-center">
-              <span className="text-5xl font-bold text-slate-900">4.8</span>
+              <span className="text-5xl font-bold text-white">4.8</span>
               <div className="flex text-yellow-400 my-2 justify-center">
                 <Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current opacity-50"/>
               </div>
-              <span className="text-xs text-slate-500">Based on 128 reviews</span>
+              <span className="text-xs text-white/50">Based on 128 reviews</span>
             </div>
             
             <div className="flex-1 space-y-1.5">
               {[5,4,3,2,1].map(star => (
-                <div key={star} className="flex items-center gap-2 text-xs text-slate-600">
+                <div key={star} className="flex items-center gap-2 text-xs text-white/60">
                   <span className="w-2">{star}</span>
-                  <Star className="w-3 h-3 text-slate-500" />
-                  <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <Star className="w-3 h-3 text-white/40" />
+                  <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-yellow-400 rounded-full" 
                       style={{ width: star === 5 ? '85%' : star === 4 ? '10%' : star === 3 ? '3%' : '1%' }}
@@ -78,18 +78,18 @@ export const CustomerReviews = () => {
           </CardContent>
         </Card>
         
-        <Card className="border-slate-300">
+        <Card className="border-white/10">
           <CardContent className="p-6 flex flex-col justify-center h-full">
-            <h3 className="text-sm font-medium text-slate-600 mb-2">Response Rate</h3>
+            <h3 className="text-sm font-medium text-white/60 mb-2">Response Rate</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">92%</span>
+              <span className="text-3xl font-bold text-white">92%</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-300">
+        <Card className="border-white/10">
           <CardContent className="p-6 flex flex-col justify-center h-full">
-            <h3 className="text-sm font-medium text-slate-600 mb-2">Pending Replies</h3>
+            <h3 className="text-sm font-medium text-white/60 mb-2">Pending Replies</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-primary">2</span>
             </div>
@@ -98,17 +98,17 @@ export const CustomerReviews = () => {
       </div>
 
       <Card>
-        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
+        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
             <input 
               type="text" 
               placeholder="Search reviews by name or keyword..." 
-              className="w-full bg-surface border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
+              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors" 
             />
           </div>
           <div className="flex gap-2">
-            <select className="bg-surface border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
+            <select className="bg-surface border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary/50 cursor-pointer">
               <option>All Reviews</option>
               <option>5 Stars</option>
               <option>Needs Reply</option>
@@ -119,7 +119,7 @@ export const CustomerReviews = () => {
 
         <div className="divide-y divide-white/5">
           {REVIEWS.map((review) => (
-            <div key={review.id} className="p-6 hover:bg-slate-50 transition-colors">
+            <div key={review.id} className="p-6 hover:bg-white/[0.02] transition-colors">
               <div className="flex flex-col sm:flex-row gap-4">
                 
                 {/* Avatar */}
@@ -130,8 +130,8 @@ export const CustomerReviews = () => {
                 <div className="flex-1 space-y-3">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="font-bold text-slate-900">{review.customer}</h4>
-                      <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
+                      <h4 className="font-bold text-white">{review.customer}</h4>
+                      <div className="flex items-center gap-2 text-xs text-white/50 mt-1">
                         <span>{review.date}</span>
                         <span>•</span>
                         <span>{review.event}</span>
@@ -139,12 +139,12 @@ export const CustomerReviews = () => {
                     </div>
                     <div className="flex text-yellow-400">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className={cn("w-4 h-4", i < review.rating ? "fill-current" : "text-slate-300")} />
+                        <Star key={i} className={cn("w-4 h-4", i < review.rating ? "fill-current" : "text-white/20")} />
                       ))}
                     </div>
                   </div>
 
-                  <p className="text-slate-800 text-sm leading-relaxed">"{review.text}"</p>
+                  <p className="text-white/80 text-sm leading-relaxed">"{review.text}"</p>
 
                   {/* Vendor Reply Block */}
                   {review.reply ? (
@@ -153,7 +153,7 @@ export const CustomerReviews = () => {
                         <MessageSquare className="w-4 h-4 text-primary" />
                         <span className="text-xs font-bold text-primary">Your Reply</span>
                       </div>
-                      <p className="text-sm text-slate-700 italic">"{review.reply}"</p>
+                      <p className="text-sm text-white/70 italic">"{review.reply}"</p>
                     </div>
                   ) : (
                     <div className="pt-2">
@@ -163,10 +163,10 @@ export const CustomerReviews = () => {
                 </div>
                 
                 <div className="shrink-0 flex sm:flex-col gap-2">
-                  <button className="p-2 text-slate-500 hover:text-slate-900 rounded-lg transition-colors" title="Helpful">
+                  <button className="p-2 text-white/40 hover:text-white rounded-lg transition-colors" title="Helpful">
                     <ThumbsUp className="w-4 h-4" />
                   </button>
-                  <button className="p-2 text-slate-500 hover:text-red-400 rounded-lg transition-colors" title="Report">
+                  <button className="p-2 text-white/40 hover:text-red-400 rounded-lg transition-colors" title="Report">
                     <Flag className="w-4 h-4" />
                   </button>
                 </div>

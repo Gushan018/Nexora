@@ -17,11 +17,11 @@ export const BannerManagement = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
             <ImageIcon className="w-7 h-7 text-primary" />
             Banner & Ad Management
           </h1>
-          <p className="text-slate-600">Configure global announcements, hero carousels, and promotional banners.</p>
+          <p className="text-white/60">Configure global announcements, hero carousels, and promotional banners.</p>
         </div>
         <div className="flex gap-2">
           <Button leftIcon={<Plus className="w-4 h-4"/>}>Create Banner</Button>
@@ -40,20 +40,20 @@ export const BannerManagement = () => {
               {BANNERS.map((banner, i) => (
                 <div key={i} className={cn(
                   "p-4 rounded-xl border transition-all",
-                  banner.active ? "border-primary/30 bg-primary/5" : "border-slate-200 bg-surface/50 opacity-60"
+                  banner.active ? "border-primary/30 bg-primary/5" : "border-white/5 bg-surface/50 opacity-60"
                 )}>
                   <div className="flex flex-col sm:flex-row gap-4">
                     
                     {/* Visual Preview */}
-                    <div className="w-full sm:w-48 h-24 rounded-lg bg-surface border border-slate-300 overflow-hidden shrink-0 relative flex items-center justify-center">
+                    <div className="w-full sm:w-48 h-24 rounded-lg bg-surface border border-white/10 overflow-hidden shrink-0 relative flex items-center justify-center">
                       {banner.image ? (
                         <img src={banner.image} alt={banner.name} className="w-full h-full object-cover" />
                       ) : (
-                        <span className="text-xs text-slate-500 font-medium">Text Only Banner</span>
+                        <span className="text-xs text-white/40 font-medium">Text Only Banner</span>
                       )}
                       {!banner.active && (
                         <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
-                          <span className="text-xs font-bold text-slate-900 tracking-widest uppercase">Inactive</span>
+                          <span className="text-xs font-bold text-white tracking-widest uppercase">Inactive</span>
                         </div>
                       )}
                     </div>
@@ -63,8 +63,8 @@ export const BannerManagement = () => {
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="flex items-center gap-2">
-                            <h4 className="font-bold text-slate-900 text-lg">{banner.name}</h4>
-                            <span className="px-2 py-0.5 bg-surface border border-slate-300 rounded text-[10px] text-slate-600">
+                            <h4 className="font-bold text-white text-lg">{banner.name}</h4>
+                            <span className="px-2 py-0.5 bg-surface border border-white/10 rounded text-[10px] text-white/60">
                               {banner.type}
                             </span>
                           </div>
@@ -75,20 +75,20 @@ export const BannerManagement = () => {
                         
                         {/* Order Controls */}
                         <div className="flex flex-col gap-1">
-                          <button className="p-1 text-slate-500 hover:text-slate-900 bg-surface rounded"><MoveUp className="w-3 h-3"/></button>
-                          <button className="p-1 text-slate-500 hover:text-slate-900 bg-surface rounded"><MoveDown className="w-3 h-3"/></button>
+                          <button className="p-1 text-white/40 hover:text-white bg-surface rounded"><MoveUp className="w-3 h-3"/></button>
+                          <button className="p-1 text-white/40 hover:text-white bg-surface rounded"><MoveDown className="w-3 h-3"/></button>
                         </div>
                       </div>
                       
                       {/* Stats & Actions */}
-                      <div className="flex items-end justify-between mt-4 border-t border-slate-200 pt-3">
+                      <div className="flex items-end justify-between mt-4 border-t border-white/5 pt-3">
                         <div className="flex gap-4">
                           <div>
-                            <span className="text-xs text-slate-500 block">Total Clicks</span>
-                            <span className="text-sm font-bold text-slate-900">{banner.clicks.toLocaleString()}</span>
+                            <span className="text-xs text-white/40 block">Total Clicks</span>
+                            <span className="text-sm font-bold text-white">{banner.clicks.toLocaleString()}</span>
                           </div>
                           <div>
-                            <span className="text-xs text-slate-500 block">Avg. CTR</span>
+                            <span className="text-xs text-white/40 block">Avg. CTR</span>
                             <span className="text-sm font-bold text-green-400">{banner.ctr}</span>
                           </div>
                         </div>
@@ -110,22 +110,22 @@ export const BannerManagement = () => {
 
         {/* Right Col: Quick Stats */}
         <div className="space-y-6">
-          <Card className="border-slate-200 bg-gradient-to-br from-surface to-surface/50">
+          <Card className="border-white/5 bg-gradient-to-br from-surface to-surface/50">
             <CardHeader>
               <CardTitle>Banner Performance</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h4 className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Highest Converting</h4>
-                <p className="font-bold text-slate-900">Holiday Sale 2026</p>
+                <h4 className="text-xs text-white/40 uppercase font-bold tracking-wider mb-1">Highest Converting</h4>
+                <p className="font-bold text-white">Holiday Sale 2026</p>
                 <p className="text-sm text-green-400">8.4% Click-Through Rate</p>
               </div>
-              <div className="w-full h-px bg-slate-100" />
+              <div className="w-full h-px bg-white/5" />
               <div>
-                <h4 className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Lowest Converting</h4>
-                <p className="font-bold text-slate-900">Vendor Signup Push</p>
+                <h4 className="text-xs text-white/40 uppercase font-bold tracking-wider mb-1">Lowest Converting</h4>
+                <p className="font-bold text-white">Vendor Signup Push</p>
                 <p className="text-sm text-red-400">2.1% Click-Through Rate</p>
-                <p className="text-xs text-slate-500 mt-1 italic">Consider adding an image or changing copy.</p>
+                <p className="text-xs text-white/40 mt-1 italic">Consider adding an image or changing copy.</p>
               </div>
             </CardContent>
           </Card>

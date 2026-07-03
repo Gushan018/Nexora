@@ -8,7 +8,7 @@ export const PageTitleManager = () => {
     const pathname = location.pathname;
 
     if (pathname === '/') {
-      document.title = 'Event Nest - Premium Event Marketplace';
+      document.title = 'Nexora - Premium Event Marketplace';
       return;
     }
 
@@ -22,7 +22,7 @@ export const PageTitleManager = () => {
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
 
-      document.title = `${formattedTitle} | Event Nest`;
+      document.title = `${formattedTitle} | Nexora`;
     }
   }, [location]);
 

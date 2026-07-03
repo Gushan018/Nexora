@@ -38,8 +38,7 @@ const getAllProducts = async (req, res) => {
       include: {
         vendor: { 
           select: { businessName: true }
-        },
-        category: true
+        }
       }
     });
 

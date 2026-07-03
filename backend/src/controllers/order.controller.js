@@ -25,12 +25,9 @@ const placeOrder = async (req, res) => {
 
 
     let totalAmount = 0;
-    for (const item of cart.cartItems) {
-      if (item.quantity > item.product.quantity) {
-        return res.status(400).json({ message: `Not enough stock for ${item.product.productName}. Available: ${item.product.quantity}` });
-      }
+    cart.cartItems.forEach(item => {
       totalAmount += (item.quantity * parseFloat(item.product.price));
-    }
+    });
 
 
     const newOrder = await prisma.$transaction(async (prisma) => {
@@ -57,14 +54,6 @@ const placeOrder = async (req, res) => {
         data: orderItemsData
       });
 
-      // Decrement product stock
-      for (const item of cart.cartItems) {
-        await prisma.product.update({
-          where: { productId: item.productId },
-          data: { quantity: { decrement: item.quantity } }
-        });
-      }
-
  
       await prisma.cartItem.deleteMany({
         where: { cartId: cart.cartId }
@@ -89,7 +78,6 @@ const getMyOrders = async (req, res) => {
     const orders = await prisma.order.findMany({
       where: { customerId },
       include: {
-        customer: { select: { name: true, email: true } },
         orderItems: {
           include: {
             product: { select: { productName: true, imageUrl: true } }

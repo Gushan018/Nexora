@@ -49,12 +49,12 @@ export const ReviewSubmission = () => {
           <div className="w-24 h-24 rounded-full bg-green-500/20 border-4 border-green-500 flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-12 h-12 text-green-400" />
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-4">Review Submitted!</h1>
-          <p className="text-slate-600 mb-8">
+          <h1 className="text-3xl font-bold text-white mb-4">Review Submitted!</h1>
+          <p className="text-white/60 mb-8">
             Thank you for sharing your experience. Your feedback helps other planners make informed decisions and helps vendors improve their services.
           </p>
-          <Link to="/customer/event-dashboard">
-            <Button variant="outline" className="w-full mt-4">Return to Events</Button>
+          <Link to="/customer/booking-history">
+            <Button variant="outline">Return to Bookings</Button>
           </Link>
         </motion.div>
       </div>
@@ -66,21 +66,21 @@ export const ReviewSubmission = () => {
       <div className="container mx-auto px-6 max-w-2xl">
         
         <div className="mb-8">
-          <Link to="/customer/event-dashboard" className="text-sm text-slate-600 hover:text-slate-900 flex items-center gap-1 w-fit mb-4 transition-colors">
-            <ChevronLeft className="w-4 h-4" /> Back to Events
+          <Link to="/customer/booking-history" className="text-sm text-white/60 hover:text-white flex items-center gap-1 w-fit mb-4 transition-colors">
+            <ChevronLeft className="w-4 h-4" /> Back to History
           </Link>
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Leave a Review</h1>
-          <p className="text-slate-600">Share your experience with the vendor.</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Leave a Review</h1>
+          <p className="text-white/60">Share your experience with the vendor.</p>
         </div>
 
-        <Card className="mb-8 border-slate-200 bg-surface/30">
+        <Card className="mb-8 border-white/5 bg-surface/30">
           <CardContent className="p-6 flex items-center gap-4">
             <div className="w-16 h-16 rounded-xl bg-accent/20 flex items-center justify-center text-accent shrink-0">
               <Camera className="w-8 h-8" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-900">Reviewing Your Experience</h2>
-              <p className="text-sm text-slate-500">Your feedback is highly valued.</p>
+              <h2 className="text-xl font-bold text-white">Reviewing Your Experience</h2>
+              <p className="text-sm text-white/50">Your feedback is highly valued.</p>
             </div>
           </CardContent>
         </Card>
@@ -92,7 +92,7 @@ export const ReviewSubmission = () => {
           <CardContent className="p-6 space-y-8">
             
             <div className="flex flex-col items-center space-y-4 pt-4">
-              <p className="text-lg font-medium text-slate-900">How was your overall experience?</p>
+              <p className="text-lg font-medium text-white">How was your overall experience?</p>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -107,13 +107,13 @@ export const ReviewSubmission = () => {
                         "w-12 h-12 transition-colors",
                         (hoveredRating || rating) >= star 
                           ? "text-yellow-400 fill-yellow-400" 
-                          : "text-slate-300"
+                          : "text-white/20"
                       )} 
                     />
                   </button>
                 ))}
               </div>
-              <span className="text-sm font-medium text-slate-600 h-5">
+              <span className="text-sm font-medium text-white/60 h-5">
                 {rating === 1 && "Terrible"}
                 {rating === 2 && "Poor"}
                 {rating === 3 && "Average"}
@@ -122,29 +122,29 @@ export const ReviewSubmission = () => {
               </span>
             </div>
 
-            <div className="space-y-3 pt-6 border-t border-slate-200">
-              <label className="text-sm font-medium text-slate-800">Detailed Review</label>
+            <div className="space-y-3 pt-6 border-t border-white/5">
+              <label className="text-sm font-medium text-white/80">Detailed Review</label>
               <textarea 
                 rows="6" 
                 value={reviewText}
                 onChange={(e) => setReviewText(e.target.value)}
                 placeholder="What did you like? What could be improved? Describe your experience working with this vendor..." 
-                className="w-full bg-surface border border-slate-300 rounded-xl p-4 text-slate-900 focus:outline-none focus:border-primary transition-colors resize-none"
+                className="w-full bg-surface border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-primary transition-colors resize-none"
               />
-              <p className="text-xs text-slate-500 flex items-center justify-between">
+              <p className="text-xs text-white/40 flex items-center justify-between">
                 <span>Minimum 50 characters required for a public review.</span>
                 <span className={cn(
-                  reviewText.length >= 50 ? "text-green-400" : "text-slate-500"
+                  reviewText.length >= 50 ? "text-green-400" : "text-white/40"
                 )}>{reviewText.length}/500</span>
               </p>
             </div>
 
-            <div className="space-y-3 pt-6 border-t border-slate-200">
-              <label className="text-sm font-medium text-slate-800">Add Photos (Optional)</label>
-              <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors cursor-pointer bg-surface/50">
-                <Upload className="w-8 h-8 text-slate-500 mb-3" />
-                <p className="text-sm text-slate-900 mb-1">Click to upload photos</p>
-                <p className="text-xs text-slate-500">PNG, JPG up to 5MB</p>
+            <div className="space-y-3 pt-6 border-t border-white/5">
+              <label className="text-sm font-medium text-white/80">Add Photos (Optional)</label>
+              <div className="border-2 border-dashed border-white/10 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors cursor-pointer bg-surface/50">
+                <Upload className="w-8 h-8 text-white/40 mb-3" />
+                <p className="text-sm text-white mb-1">Click to upload photos</p>
+                <p className="text-xs text-white/40">PNG, JPG up to 5MB</p>
               </div>
             </div>
 

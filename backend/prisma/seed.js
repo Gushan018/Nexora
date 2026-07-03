@@ -22,8 +22,19 @@ async function main() {
   await prisma.serviceCategory.deleteMany();
   await prisma.vendor.deleteMany();
   await prisma.customer.deleteMany();
+  await prisma.admin.deleteMany();
 
   const hashedPassword = await bcrypt.hash('password123', 10);
+
+  // 1.5. Create Admin User
+  const admin = await prisma.admin.create({
+    data: {
+      email: 'admin@example.com',
+      password: hashedPassword,
+      role: 'admin',
+    },
+  });
+  console.log('✅ Admin created:', admin.email);
 
   // 2. Create Customers
   const customer1 = await prisma.customer.create({
@@ -82,11 +93,9 @@ async function main() {
   });
 
   // 4. Create Categories
-  const catCatering = await prisma.serviceCategory.create({ data: { categoryName: 'Catering' } });
-  const catDecor = await prisma.serviceCategory.create({ data: { categoryName: 'Decor' } });
-  const catMusic = await prisma.serviceCategory.create({ data: { categoryName: 'Entertainment' } });
-  const catVenueSupplies = await prisma.serviceCategory.create({ data: { categoryName: 'Venue Supplies' } });
-  const catLighting = await prisma.serviceCategory.create({ data: { categoryName: 'Lighting' } });
+  const catCatering = await prisma.serviceCategory.create({ data: { categoryName: 'Food & Catering' } });
+  const catDecor = await prisma.serviceCategory.create({ data: { categoryName: 'Decorations' } });
+  const catMusic = await prisma.serviceCategory.create({ data: { categoryName: 'Music & Entertainment' } });
 
   // 5. Create Services
   const service1 = await prisma.service.create({
@@ -118,31 +127,8 @@ async function main() {
     data: {
       packageName: 'Platinum Wedding Package',
       price: 5000.00,
-      description: 'Everything you need for a premium wedding setup including catering and decor.',
-      imageUrl: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=500&q=80',
+      description: 'Everything you need for a premium wedding setup.',
       vendorId: vendor2.vendorId,
-      isApproved: true,
-    },
-  });
-
-  const package2 = await prisma.eventPackage.create({
-    data: {
-      packageName: 'Corporate Gala Bundle',
-      price: 3500.00,
-      description: 'Professional setup for large scale corporate events and award ceremonies.',
-      imageUrl: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=500&q=80',
-      vendorId: vendor1.vendorId,
-      isApproved: true,
-    },
-  });
-
-  const package3 = await prisma.eventPackage.create({
-    data: {
-      packageName: 'Ultimate Party Experience',
-      price: 1500.00,
-      description: 'Full sound system, lighting rig, and DJ set for an unforgettable night.',
-      imageUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&q=80',
-      vendorId: vendor3.vendorId,
       isApproved: true,
     },
   });
@@ -157,7 +143,7 @@ async function main() {
       vendorId: vendor1.vendorId,
       categoryId: catCatering.categoryId,
       isApproved: true,
-      imageUrl: '/images/gold_cutlery.png',
+      imageUrl: 'https://images.unsplash.com/photo-1582283082596-f9f2d1e2e987?w=500&q=80',
     },
   });
 
@@ -168,48 +154,9 @@ async function main() {
       quantity: 100,
       description: 'Bright LED lights for ambient room lighting.',
       vendorId: vendor3.vendorId,
-      categoryId: catLighting.categoryId,
-      isApproved: true,
-      imageUrl: '/images/led_uplights.png',
-    },
-  });
-
-  const product3 = await prisma.product.create({
-    data: {
-      productName: 'Crystal Centerpiece Vases',
-      price: 85.00,
-      quantity: 40,
-      description: 'Elegant crystal vases perfect for wedding tablescapes.',
-      vendorId: vendor2.vendorId,
       categoryId: catDecor.categoryId,
       isApproved: true,
-      imageUrl: '/images/crystal_vases.png',
-    },
-  });
-
-  const product4 = await prisma.product.create({
-    data: {
-      productName: 'Vintage Photobooth',
-      price: 550.00,
-      quantity: 5,
-      description: 'Complete vintage-style photo booth with props and unlimited prints.',
-      vendorId: vendor3.vendorId,
-      categoryId: catMusic.categoryId,
-      isApproved: true,
-      imageUrl: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500&q=80',
-    },
-  });
-
-  const product5 = await prisma.product.create({
-    data: {
-      productName: 'Premium Banquet Chairs',
-      price: 15.00,
-      quantity: 500,
-      description: 'Comfortable and elegant seating for large events.',
-      vendorId: vendor1.vendorId,
-      categoryId: catVenueSupplies.categoryId,
-      isApproved: true,
-      imageUrl: '/images/banquet_chairs.png',
+      imageUrl: 'https://images.unsplash.com/photo-1505236858219-8359eb29e325?w=500&q=80',
     },
   });
 

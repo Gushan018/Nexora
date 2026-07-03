@@ -42,16 +42,8 @@ const getMyBookings = async (req, res) => {
     const bookings = await prisma.booking.findMany({
       where: { customerId },
       include: {
-        service: {
-          include: {
-            vendor: true
-          }
-        },
-        package: {
-          include: {
-            vendor: true
-          }
-        },
+        service: { select: { serviceName: true, price: true } },
+        package: { select: { packageName: true, price: true } },
       },
       orderBy: {
         eventDate: 'desc', 

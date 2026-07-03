@@ -29,25 +29,25 @@ export const ResetPassword = () => {
         
         <div className="text-center mb-8">
 
-          <h1 className="text-2xl font-bold text-slate-900 mb-2">Create new password</h1>
-          <p className="text-slate-600 max-w-sm mx-auto">Your new password must be different from previous used passwords.</p>
+          <h1 className="text-2xl font-bold text-white mb-2">Create new password</h1>
+          <p className="text-white/60 max-w-sm mx-auto">Your new password must be different from previous used passwords.</p>
         </div>
 
-        <div className="bg-surface/50 border border-slate-300 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+        <div className="bg-surface/50 border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
           {!submitted ? (
             <form onSubmit={handleSubmit} className="space-y-5">
               
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800 block">New Password</label>
+                <label className="text-sm font-medium text-white/80 block">New Password</label>
                 <div className="relative">
-                  <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                   <input 
                     type="password" 
                     placeholder="••••••••" 
                     required
-                    className="w-full bg-black/40 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-300"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/20"
                   />
                 </div>
                 {/* Password Strength Indicator */}
@@ -59,14 +59,14 @@ export const ResetPassword = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800 block">Confirm Password</label>
+                <label className="text-sm font-medium text-white/80 block">Confirm Password</label>
                 <div className="relative">
-                  <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                   <input 
                     type="password" 
                     placeholder="••••••••" 
                     required
-                    className="w-full bg-black/40 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-300"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/20"
                   />
                 </div>
               </div>
@@ -84,8 +84,8 @@ export const ResetPassword = () => {
               <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4 border border-green-500/20">
                 <CheckCircle2 className="w-8 h-8 text-green-400" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Password Reset</h3>
-              <p className="text-sm text-slate-600 mb-6">
+              <h3 className="text-xl font-bold text-white mb-2">Password Reset</h3>
+              <p className="text-sm text-white/60 mb-6">
                 Your password has been successfully reset. Redirecting you to login...
               </p>
             </motion.div>

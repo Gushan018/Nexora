@@ -18,6 +18,7 @@ const customerRoutes = require('./routes/customer.routes');
 const reviewRoutes = require('./routes/review.routes');
 const notificationRoutes = require('./routes/notification.routes');
 const wishlistRoutes = require('./routes/wishlist.routes');
+const budgetRoutes = require('./routes/budget.routes');
 const chatRoutes = require('./routes/chat.routes');
 const uploadRoutes = require('./routes/upload.routes');
 
@@ -45,6 +46,7 @@ app.use('/api/customers', customerRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/budget', budgetRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/upload', uploadRoutes);
 
@@ -52,7 +54,7 @@ app.use('/api/upload', uploadRoutes);
 
 // Test Route
 app.get('/', (req, res) => {
-  res.json({ message: '🚀 Event Nest API is Running Perfectly!' });
+  res.json({ message: '🚀 Nexora API is Running Perfectly!' });
 });
 
 // Server Start 

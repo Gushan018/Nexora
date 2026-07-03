@@ -26,16 +26,16 @@ export const StoreProfile = () => {
         {/* Profile Header */}
         <div className="flex flex-col md:flex-row gap-6 items-start md:items-end mb-12">
           <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl border-4 border-background overflow-hidden shrink-0 relative z-10 bg-surface flex items-center justify-center">
-            <Store className="w-16 h-16 text-slate-300" />
+            <Store className="w-16 h-16 text-white/20" />
             {/* If they have a logo, it would go here */}
           </div>
           
           <div className="flex-1 pb-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-2">Luxe Dining</h1>
-                <p className="text-slate-600 mb-3">Premium catering equipment and luxury tableware rentals.</p>
-                <div className="flex items-center gap-4 text-sm text-slate-500">
+                <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2">Luxe Dining</h1>
+                <p className="text-white/60 mb-3">Premium catering equipment and luxury tableware rentals.</p>
+                <div className="flex items-center gap-4 text-sm text-white/50">
                   <span className="flex items-center gap-1"><MapPin className="w-4 h-4"/> Colombo 03</span>
                   <span className="flex items-center gap-1 text-yellow-400"><Star className="w-4 h-4 fill-yellow-400"/> 4.8 (142 Reviews)</span>
                 </div>
@@ -59,26 +59,26 @@ export const StoreProfile = () => {
           <div className="lg:col-span-1 space-y-6">
             <Card>
               <CardContent className="p-6 space-y-4">
-                <h3 className="font-bold text-slate-900 mb-2">About Us</h3>
-                <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                <h3 className="font-bold text-white mb-2">About Us</h3>
+                <p className="text-sm text-white/60 leading-relaxed mb-4">
                   Luxe Dining is Sri Lanka's premier provider of luxury event equipment. We specialize in supplying high-end cutlery, premium linens, and elegant tableware for weddings and corporate events.
                 </p>
-                <div className="space-y-3 text-sm text-slate-700 pt-4 border-t border-slate-200">
-                  <div className="flex items-center gap-3"><Globe className="w-4 h-4 text-slate-500"/> luxedining.lk</div>
-                  <div className="flex items-center gap-3"><Phone className="w-4 h-4 text-slate-500"/> +94 77 123 4567</div>
-                  <div className="flex items-center gap-3"><Mail className="w-4 h-4 text-slate-500"/> contact@luxedining.lk</div>
+                <div className="space-y-3 text-sm text-white/70 pt-4 border-t border-white/5">
+                  <div className="flex items-center gap-3"><Globe className="w-4 h-4 text-white/40"/> luxedining.lk</div>
+                  <div className="flex items-center gap-3"><Phone className="w-4 h-4 text-white/40"/> +94 77 123 4567</div>
+                  <div className="flex items-center gap-3"><Mail className="w-4 h-4 text-white/40"/> contact@luxedining.lk</div>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="font-bold text-slate-900 mb-4">Categories</h3>
+                <h3 className="font-bold text-white mb-4">Categories</h3>
                 <div className="space-y-2">
                   <button className="w-full text-left px-3 py-2 rounded-lg text-sm bg-primary/20 text-primary font-medium">All Products (142)</button>
-                  <button className="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition-colors">Cutlery (45)</button>
-                  <button className="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition-colors">Glassware (32)</button>
-                  <button className="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition-colors">Linens (65)</button>
+                  <button className="w-full text-left px-3 py-2 rounded-lg text-sm text-white/60 hover:bg-white/5 transition-colors">Cutlery (45)</button>
+                  <button className="w-full text-left px-3 py-2 rounded-lg text-sm text-white/60 hover:bg-white/5 transition-colors">Glassware (32)</button>
+                  <button className="w-full text-left px-3 py-2 rounded-lg text-sm text-white/60 hover:bg-white/5 transition-colors">Linens (65)</button>
                 </div>
               </CardContent>
             </Card>
@@ -87,10 +87,10 @@ export const StoreProfile = () => {
           {/* Main Content */}
           <div className="lg:col-span-3">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-              <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2"><Grid className="w-5 h-5"/> Storefront</h2>
+              <h2 className="text-xl font-bold text-white flex items-center gap-2"><Grid className="w-5 h-5"/> Storefront</h2>
               <div className="relative w-full sm:w-64">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-                <input type="text" placeholder="Search this store..." className="w-full bg-surface/50 border border-slate-300 rounded-lg pl-9 pr-4 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary transition-colors" />
+                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+                <input type="text" placeholder="Search this store..." className="w-full bg-surface/50 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-primary transition-colors" />
               </div>
             </div>
 
@@ -101,14 +101,14 @@ export const StoreProfile = () => {
                     <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-md rounded-full px-2 py-0.5 flex items-center gap-1">
                       <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                      <span className="text-[10px] font-bold text-slate-900">{product.rating}</span>
+                      <span className="text-[10px] font-bold text-white">{product.rating}</span>
                     </div>
                   </div>
                   <CardContent className="p-4">
-                    <h3 className="text-sm font-bold text-slate-900 mb-2 line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
+                    <h3 className="text-sm font-bold text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
                     <div className="flex justify-between items-center mt-2">
-                      <span className="text-lg font-bold text-slate-900">LKR {product.price.toFixed(2)}</span>
-                      <button className="text-xs font-medium text-slate-600 hover:text-slate-900 px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded transition-colors">View Details</button>
+                      <span className="text-lg font-bold text-white">LKR {product.price.toFixed(2)}</span>
+                      <button className="text-xs font-medium text-white/60 hover:text-white px-2 py-1 bg-white/5 hover:bg-white/10 rounded transition-colors">View Details</button>
                     </div>
                   </CardContent>
                 </Card>

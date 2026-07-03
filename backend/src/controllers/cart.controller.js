@@ -11,21 +11,13 @@ const addItemToCart = async (req, res) => {
 
 
     let cart = await prisma.cart.findUnique({
-      where: { customerId: parseInt(customerId) },
+      where: { customerId },
     });
 
     if (!cart) {
       cart = await prisma.cart.create({
-        data: { customerId: parseInt(customerId) }
+        data: { customerId }
       });
-    }
-
-    const product = await prisma.product.findUnique({
-      where: { productId: parseInt(productId) }
-    });
-
-    if (!product) {
-      return res.status(404).json({ message: "Product not found. Please refresh the page." });
     }
 
 
@@ -37,18 +29,12 @@ const addItemToCart = async (req, res) => {
     });
 
     if (existingCartItem) {
-      const newQuantity = existingCartItem.quantity + parseInt(quantity);
-      if (newQuantity > product.quantity) {
-        return res.status(400).json({ message: `Cannot add more than available stock (${product.quantity}).` });
-      }
+   
       await prisma.cartItem.update({
         where: { cartItemId: existingCartItem.cartItemId },
-        data: { quantity: newQuantity },
+        data: { quantity: existingCartItem.quantity + parseInt(quantity) },
       });
     } else {
-      if (parseInt(quantity) > product.quantity) {
-        return res.status(400).json({ message: `Cannot add more than available stock (${product.quantity}).` });
-      }
   
       await prisma.cartItem.create({
         data: {
@@ -61,9 +47,6 @@ const addItemToCart = async (req, res) => {
 
     res.status(200).json({ message: "Product added to cart successfully." });
   } catch (error) {
-    if (error.code === 'P2003') {
-      return res.status(401).json({ message: "Your session is invalid because the database was reset. Please log out and log back in." });
-    }
     console.error("Add to cart error:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
@@ -132,19 +115,6 @@ const updateCartItemQuantity = async (req, res) => {
 
     if (quantity < 1) {
        return res.status(400).json({ message: "Quantity must be at least 1." });
-    }
-
-    const cartItem = await prisma.cartItem.findUnique({
-      where: { cartItemId: parseInt(cartItemId) },
-      include: { product: true }
-    });
-
-    if (!cartItem) {
-      return res.status(404).json({ message: 'Cart item not found.' });
-    }
-
-    if (parseInt(quantity) > cartItem.product.quantity) {
-      return res.status(400).json({ message: `Cannot exceed available stock (${cartItem.product.quantity}).` });
     }
 
     const updatedItem = await prisma.cartItem.update({

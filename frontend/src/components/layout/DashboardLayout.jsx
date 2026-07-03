@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, ShoppingBag, Settings, LogOut, Menu, User, Sparkles, X, Heart, Search, FileText, Bell, CheckCircle, PackageSearch, Image, Building2, Store, PlusCircle, CheckSquare, MessageSquare, TrendingUp, Briefcase, ChevronDown, Sun, Moon, ShoppingCart, DollarSign, Calendar, Package
-} from 'lucide-react';
+import { LayoutDashboard, Calendar, ShoppingBag, Settings, LogOut, Bell, Menu, X, User, Heart, MessageSquare, List, Package, Search, Briefcase, ShoppingCart, DollarSign, ShieldAlert, Flag, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -10,9 +8,9 @@ import { cn } from '../../utils/cn';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../utils/api';
 
-export const DashboardLayout = ({ role = 'customer' }) => {
+export const DashboardLayout = ({ role = 'admin' }) => {
   const { user, loading, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -50,7 +48,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
   }, [user, loading, navigate]);
 
   if (loading || !user) {
-    return <div className="min-h-screen bg-background flex items-center justify-center"><motion.div className="w-16 h-16 rounded-full border-4 border-slate-300 border-t-primary animate-spin" /></div>;
+    return <div className="min-h-screen bg-background flex items-center justify-center"><motion.div className="w-16 h-16 rounded-full border-4 border-white/10 border-t-primary animate-spin" /></div>;
   }
 
   const getLinks = () => {
@@ -60,6 +58,9 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard /> },
           { name: 'Users', path: '/admin/user-management', icon: <User /> },
           { name: 'Vendors', path: '/admin/admin-vendor-management', icon: <ShoppingBag /> },
+          { name: 'Disputes', path: '/admin/dispute-management', icon: <ShieldAlert /> },
+          { name: 'Reviews', path: '/admin/reviews-moderation', icon: <Flag /> },
+          { name: 'Payments', path: '/admin/admin-payments-escrow', icon: <DollarSign /> },
           { name: 'Settings', path: '/admin/system-settings', icon: <Settings /> },
         ];
       case 'vendor':
@@ -72,12 +73,16 @@ export const DashboardLayout = ({ role = 'customer' }) => {
       case 'customer':
         return [
           { name: 'Dashboard', path: '/customer/dashboard', icon: <LayoutDashboard /> },
+          { name: 'Services', path: '/customer/services', icon: <Briefcase /> },
           { name: 'Marketplace', path: '/customer/marketplace', icon: <ShoppingBag /> },
           { name: 'Event Packages', path: '/customer/event-packages', icon: <Package /> },
+          { name: 'Directory', path: '/customer/vendor-directory', icon: <Search /> },
           { name: 'My Orders', path: '/customer/order-history', icon: <ShoppingBag /> },
           { name: 'My Events', path: '/customer/event-dashboard', icon: <Calendar /> },
+          { name: 'Wishlist', path: '/customer/wishlist', icon: <Heart /> },
           { name: 'Messages', path: '/customer/chat-inbox', icon: <MessageSquare /> },
-          { name: 'My Profile', path: '/customer/account-settings', icon: <User /> },
+          { name: 'Budget Planner', path: '/customer/budget-planner', icon: <List /> },
+          { name: 'Settings', path: '/customer/account-settings', icon: <Settings /> },
         ];
       case 'seller':
         return [
@@ -92,21 +97,21 @@ export const DashboardLayout = ({ role = 'customer' }) => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-light-background dark:bg-background flex">
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed md:sticky top-0 left-0 z-40 w-64 h-[100dvh] bg-surface border-r border-slate-200 transition-transform duration-300 md:translate-x-0 overflow-y-auto",
+          "fixed md:sticky top-0 left-0 z-40 w-64 h-[100dvh] bg-white dark:bg-surface border-r border-gray-200 dark:border-white/5 transition-transform duration-300 md:translate-x-0 overflow-y-auto",
           !isSidebarOpen && "-translate-x-full"
         )}
       >
         <div className="flex flex-col h-full">
-          <div className="h-24 flex items-center justify-center px-6 border-b border-slate-200">
+          <div className="h-16 sm:h-20 md:h-24 flex items-center justify-center px-4 sm:px-6 border-b border-gray-200 dark:border-white/5">
             <Link to="/" className="flex items-center justify-center group w-full">
               <img 
                 src="/logo.png" 
-                alt="Event Nest" 
-                className="h-16 md:h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
+                alt="Nexora" 
+                className="h-12 sm:h-16 md:h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
               />
             </Link>
           </div>
@@ -117,35 +122,35 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                 key={link.name}
                 to={link.path}
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 relative text-sm",
-                  location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path))
-                    ? "bg-primary text-white shadow-[0_4px_20px_rgba(212,175,55,0.4)] font-semibold" 
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 font-medium"
+                  "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 relative text-sm",
+                  location.pathname.startsWith(link.path) 
+                    ? "bg-primary/20 text-primary shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
+                    : "text-gray-600 dark:text-white/60 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
                 )}
               >
-                {location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path)) ? (
+                {location.pathname.startsWith(link.path) && (
                   <motion.div 
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-primary rounded-xl"
+                    className="absolute inset-0 bg-primary/10 rounded-xl border border-primary/30"
                     initial={false}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
-                ) : null}
+                )}
                 <div className="relative z-10 flex items-center gap-3 w-full">
                   {React.cloneElement(link.icon, { className: 'w-5 h-5' })}
-                  <span>{link.name}</span>
+                  <span className="font-medium">{link.name}</span>
                 </div>
               </Link>
             ))}
           </nav>
           
-          <div className="p-4 border-t border-slate-200">
+          <div className="p-4 border-t border-gray-200 dark:border-white/5">
             <button 
               onClick={() => {
                 logout();
                 navigate('/login');
               }}
-              className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl text-red-400 hover:bg-red-500/10 transition-colors"
+              className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl text-red-500 hover:bg-red-500/10 transition-colors"
             >
               <LogOut className="w-5 h-5" />
               <span className="font-medium">Logout</span>
@@ -156,9 +161,9 @@ export const DashboardLayout = ({ role = 'customer' }) => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 flex items-center justify-between px-6 bg-surface/50 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30">
+        <header className="h-16 flex items-center justify-between px-4 sm:px-6 bg-light-surface/50 dark:bg-surface/50 backdrop-blur-md border-b border-gray-200 dark:border-white/5 sticky top-0 z-30">
           <button 
-            className="md:hidden text-slate-600 hover:text-slate-900"
+            className="md:hidden text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white p-2"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
             <Menu />
@@ -166,35 +171,16 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           
           <div className="flex items-center gap-4 ml-auto relative" ref={dropdownRef}>
             
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-slate-100 text-slate-600 hover:text-slate-900 relative"
-              aria-label="Toggle Theme"
-            >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-
-            {/* Wishlist Link */}
-            {role === 'customer' && (
-              <Link
-                to="/customer/wishlist"
-                className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-slate-100 text-slate-600 hover:text-slate-900 relative"
-              >
-                <Heart className="w-5 h-5" />
-              </Link>
-            )}
-
             {/* Cart Dropdown */}
             {role === 'customer' && (
               <div className="relative">
                 <button 
                   onClick={() => setActiveDropdown(activeDropdown === 'cart' ? null : 'cart')}
-                  className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'cart' ? "bg-primary/20 text-primary" : "bg-slate-100 text-slate-600 hover:text-slate-900")}
+                  className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'cart' ? "bg-primary/20 text-primary" : "bg-gray-200 dark:bg-white/5 text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white")}
                 >
                   <ShoppingCart className="w-5 h-5" />
                   {cart?.cartItems?.length > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-surface">
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-light-surface dark:border-surface">
                       {cart.cartItems.length}
                     </span>
                   )}
@@ -205,22 +191,22 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-4 w-80 bg-surface border border-slate-300 rounded-2xl shadow-xl overflow-hidden z-50"
+                      className="absolute right-0 mt-4 w-72 sm:w-80 max-w-[90vw] bg-white dark:bg-surface border border-gray-200 dark:border-white/10 rounded-2xl shadow-xl overflow-hidden z-50"
                     >
-                      <div className="p-4 border-b border-slate-300 flex justify-between items-center">
-                        <h3 className="font-bold text-slate-900">Your Cart</h3>
+                      <div className="p-4 border-b border-gray-200 dark:border-white/10 flex justify-between items-center">
+                        <h3 className="font-bold text-gray-900 dark:text-white">Your Cart</h3>
                         <span className="text-xs text-primary">{cart?.cartItems?.length || 0} items</span>
                       </div>
                       <div className="max-h-64 overflow-y-auto p-4 space-y-4">
                         {!cart?.cartItems?.length ? (
-                          <p className="text-slate-500 text-sm text-center py-4">Your cart is empty.</p>
+                          <p className="text-gray-500 dark:text-white/40 text-sm text-center py-4">Your cart is empty.</p>
                         ) : (
                           cart.cartItems.map((item) => (
                             <div key={item.cartItemId} className="flex gap-3">
                               <img src={item.product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100'} alt="" className="w-12 h-12 rounded-lg object-cover" />
                               <div className="flex-1">
-                                <h4 className="text-sm font-bold text-slate-900 line-clamp-1">{item.product.productName}</h4>
-                                <p className="text-xs text-slate-600">Qty: {item.quantity}</p>
+                                <h4 className="text-sm font-bold text-gray-900 dark:text-white line-clamp-1">{item.product.productName}</h4>
+                                <p className="text-xs text-gray-600 dark:text-white/60">Qty: {item.quantity}</p>
                               </div>
                               <div className="text-sm font-bold text-primary">
                                 LKR {(Number(item.product.price) * item.quantity).toFixed(2)}
@@ -229,7 +215,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                           ))
                         )}
                       </div>
-                      <div className="p-4 border-t border-slate-300 bg-slate-100">
+                      <div className="p-4 border-t border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5">
                         <Link to="/customer/shopping-cart" onClick={() => setActiveDropdown(null)}>
                           <button className="w-full py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
                             View Full Cart
@@ -246,9 +232,10 @@ export const DashboardLayout = ({ role = 'customer' }) => {
             <div className="relative">
               <button 
                 onClick={() => setActiveDropdown(activeDropdown === 'notifications' ? null : 'notifications')}
-                className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'notifications' ? "bg-primary/20 text-primary" : "bg-slate-100 text-slate-600 hover:text-slate-900")}
+                className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'notifications' ? "bg-primary/20 text-primary" : "bg-gray-200 dark:bg-white/5 text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white")}
               >
                 <Bell className="w-5 h-5" />
+                <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />
               </button>
               <AnimatePresence>
                 {activeDropdown === 'notifications' && (
@@ -256,12 +243,12 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute right-0 mt-4 w-80 bg-surface border border-slate-300 rounded-2xl shadow-xl overflow-hidden z-50"
+                    className="absolute right-0 mt-4 w-72 sm:w-80 max-w-[90vw] bg-white dark:bg-surface border border-gray-200 dark:border-white/10 rounded-2xl shadow-xl overflow-hidden z-50"
                   >
-                    <div className="p-4 border-b border-slate-300">
-                      <h3 className="font-bold text-slate-900">Notifications</h3>
+                    <div className="p-4 border-b border-gray-200 dark:border-white/10">
+                      <h3 className="font-bold text-gray-900 dark:text-white">Notifications</h3>
                     </div>
-                    <div className="p-4 text-center text-slate-500 text-sm py-8">
+                    <div className="p-4 text-center text-gray-500 dark:text-white/40 text-sm py-8">
                       No new notifications
                     </div>
                   </motion.div>
@@ -269,16 +256,25 @@ export const DashboardLayout = ({ role = 'customer' }) => {
               </AnimatePresence>
             </div>
 
+            {/* Theme Toggle */}
+            <button 
+              onClick={toggleTheme}
+              className="w-10 h-10 rounded-full bg-gray-200 dark:bg-white/5 text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white hover:bg-gray-300 dark:hover:bg-white/10 flex items-center justify-center transition-colors"
+              title="Toggle theme"
+            >
+              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+
             {/* Profile Dropdown */}
             <div className="relative">
               <div 
                 onClick={() => setActiveDropdown(activeDropdown === 'profile' ? null : 'profile')}
-                className="w-10 h-10 rounded-full bg-gradient-premium border border-slate-400 cursor-pointer flex items-center justify-center font-bold text-primary shadow-lg overflow-hidden bg-surface"
+                className="w-10 h-10 rounded-full bg-gradient-premium border border-primary/30 cursor-pointer flex items-center justify-center font-bold text-primary shadow-lg overflow-hidden dark:bg-surface"
               >
                 {user?.profileImage ? (
                   <img src={user.profileImage.startsWith('blob:') ? user.profileImage : `http://localhost:5000${user.profileImage}`} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-slate-900">{user?.name?.charAt(0) || 'U'}</span>
+                  <span className="text-white dark:text-white">{user?.name?.charAt(0) || 'U'}</span>
                 )}
               </div>
               <AnimatePresence>
@@ -287,15 +283,15 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute right-0 mt-4 w-48 bg-surface border border-slate-300 rounded-2xl shadow-xl overflow-hidden z-50"
+                    className="absolute right-0 mt-4 w-48 bg-white dark:bg-surface border border-gray-200 dark:border-white/10 rounded-2xl shadow-xl overflow-hidden z-50"
                   >
-                    <div className="p-4 border-b border-slate-300 bg-slate-100">
-                      <p className="font-bold text-slate-900 truncate">{user?.name || 'User'}</p>
-                      <p className="text-xs text-slate-600 truncate">{user?.email || 'user@example.com'}</p>
+                    <div className="p-4 border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5">
+                      <p className="font-bold text-gray-900 dark:text-white truncate">{user?.name || 'User'}</p>
+                      <p className="text-xs text-gray-600 dark:text-white/60 truncate">{user?.email || 'user@example.com'}</p>
                     </div>
                     <div className="p-2 flex flex-col">
-                      <Link to={`/${role}/account-settings`} onClick={() => setActiveDropdown(null)} className="px-4 py-2 text-sm text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors text-left flex items-center gap-2">
-                        <User className="w-4 h-4" /> My Profile
+                      <Link to={`/${role}/account-settings`} onClick={() => setActiveDropdown(null)} className="px-4 py-2 text-sm text-gray-700 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors text-left flex items-center gap-2">
+                        <Settings className="w-4 h-4" /> Settings
                       </Link>
                       <button 
                         onClick={() => {
@@ -303,7 +299,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                           logout();
                           navigate('/login');
                         }}
-                        className="px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-colors text-left flex items-center gap-2"
+                        className="px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-400/10 rounded-lg transition-colors text-left flex items-center gap-2"
                       >
                         <LogOut className="w-4 h-4" /> Logout
                       </button>
