@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -141,3 +142,16 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+=======
+node_modules
+dist
+*.local
+.env
+
+# Vite
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+>>>>>>> 731b231 (Intial commit)
