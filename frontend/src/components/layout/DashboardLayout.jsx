@@ -4,7 +4,6 @@ import { LayoutDashboard, Calendar, ShoppingBag, Settings, LogOut, Bell, Menu, X
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
-import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../utils/cn';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../utils/api';
@@ -121,8 +120,8 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                 className={cn(
                   "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 relative text-sm",
                   location.pathname.startsWith(link.path) 
-                    ? "bg-primary/20 text-primary shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
-                    : "text-gray-600 dark:text-white/60 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
+                    ? "bg-primary/20 text-white shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
+                    : "text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
                 )}
               >
                 {location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path)) ? (
@@ -168,14 +167,6 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           
           <div className="flex items-center gap-4 ml-auto relative" ref={dropdownRef}>
             
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-slate-100 text-slate-600 hover:text-slate-900 relative"
-              aria-label="Toggle Theme"
-            >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
 
             {/* Wishlist Link */}
             {role === 'customer' && (
