@@ -167,14 +167,6 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           
           <div className="flex items-center gap-4 ml-auto relative" ref={dropdownRef}>
             
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-slate-100 text-slate-600 hover:text-slate-900 relative"
-              aria-label="Toggle Theme"
-            >
-              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
 
             {/* Wishlist Link */}
             {role === 'customer' && (

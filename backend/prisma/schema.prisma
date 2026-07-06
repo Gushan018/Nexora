@@ -4,11 +4,328 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-
   url      = env("DATABASE_URL")
 }
 
-// ===== ENUMS =====
+model Admin {
+  adminId          Int      @id @default(autoincrement()) @map("admin_id")
+  name             String?  @map("name")
+  email            String   @unique
+  password         String
+  contactNumber    String?  @map("contact_number")
+  profileImage     String?  @map("profile_image")
+  role             String   @default("admin")
+  registrationDate DateTime @default(now()) @map("registration_date")
+
+  @@map("admin")
+}
+
+model Customer {
+  customerId       Int            @id @default(autoincrement()) @map("customer_id")
+  name             String
+  email            String         @unique
+  password         String
+  contactNumber    String?        @map("contact_number")
+  isBlocked        Boolean        @default(false) @map("is_blocked")
+  role             String         @default("customer")
+  registrationDate DateTime       @default(now()) @map("registration_date")
+  profileImage     String?        @map("profile_image")
+  bookings         Booking[]
+  budget           budget?
+  cart             Cart?
+  conversations    Conversation[]
+  notifications    Notification[]
+  orders           Order[]
+  reviews          Review[]
+  wishlists        Wishlist[]
+
+  @@map("customer")
+}
+
+model Vendor {
+  vendorId            Int            @id @default(autoincrement()) @map("vendor_id")
+  businessName        String         @map("business_name")
+  email               String         @unique
+  password            String
+  description         String?
+  contactNumber       String?        @map("contact_number")
+  location            String?
+  vendorType          VendorType     @map("vendor_type")
+  registrationDate    DateTime       @default(now()) @map("registration_date")
+  profileImage        String?        @map("profile_image")
+  booking_lead_time   String         @default("48h")
+  cancellation_policy String         @default("Moderate")
+  currency            String         @default("LKR")
+  instant_book        Boolean        @default(false)
+  require_deposits    Boolean        @default(false)
+  timezone            String         @default("UTC")
+  isApproved          Boolean        @default(false) @map("is_approved")
+  availability        Availability[]
+  conversations       Conversation[]
+  eventPackages       EventPackage[]
+  products            Product[]
+  reviews             Review[]
+  services            Service[]
+
+  @@map("vendor")
+}
+
+model ServiceCategory {
+  categoryId    Int            @id @default(autoincrement()) @map("category_id")
+  categoryName  String         @map("category_name")
+  event_package EventPackage[]
+  products      Product[]
+  services      Service[]
+
+  @@map("service_category")
+}
+
+model Service {
+  serviceId     Int              @id @default(autoincrement()) @map("service_id")
+  serviceName   String           @map("service_name")
+  price         Decimal          @db.Decimal(10, 2)
+  description   String?
+  imageUrl      String?          @map("image_url")
+  isApproved    Boolean          @default(false) @map("is_approved")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  vendorId      Int              @map("vendor_id")
+  categoryId    Int?             @map("category_id")
+  pricing_model String?
+  service_area  String?
+  bookings      Booking[]
+  reviews       Review[]
+  category      ServiceCategory? @relation(fields: [categoryId], references: [categoryId])
+  vendor        Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+  wishlists     Wishlist[]
+
+  @@map("service")
+}
+
+model Product {
+  productId   Int              @id @default(autoincrement()) @map("product_id")
+  productName String           @map("product_name")
+  price       Decimal          @db.Decimal(10, 2)
+  quantity    Int              @default(0)
+  imageUrl    String?          @map("image_url")
+  description String?
+  isApproved  Boolean          @default(false) @map("is_approved")
+  createdAt   DateTime         @default(now()) @map("created_at")
+  vendorId    Int              @map("vendor_id")
+  categoryId  Int?             @map("category_id")
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  category    ServiceCategory? @relation(fields: [categoryId], references: [categoryId])
+  vendor      Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+  reviews     Review[]
+  wishlists   Wishlist[]
+
+  @@map("product")
+}
+
+model EventPackage {
+  packageId        Int              @id @default(autoincrement()) @map("package_id")
+  packageName      String           @map("package_name")
+  description      String?
+  imageUrl         String?          @map("image_url")
+  price            Decimal          @db.Decimal(10, 2)
+  isApproved       Boolean          @default(false) @map("is_approved")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  vendorId         Int              @map("vendor_id")
+  category_id      Int?
+  bookings         Booking[]
+  service_category ServiceCategory? @relation(fields: [category_id], references: [categoryId])
+  vendor           Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+  wishlists        Wishlist[]
+
+  @@map("event_package")
+}
+
+model Availability {
+  availabilityId Int      @id @default(autoincrement()) @map("availability_id")
+  date           DateTime @db.Date
+  startTime      String   @map("start_time")
+  endTime        String   @map("end_time")
+  isAvailable    Boolean  @default(true) @map("is_available")
+  vendorId       Int      @map("vendor_id")
+  vendor         Vendor   @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+
+  @@map("availability")
+}
+
+model Booking {
+  bookingId          Int           @id @default(autoincrement()) @map("booking_id")
+  bookingDate        DateTime      @default(now()) @map("booking_date")
+  eventDate          DateTime      @map("event_date") @db.Date
+  status             BookingStatus @default(PENDING)
+  location           String?
+  vendorResponseDate DateTime?     @map("vendor_response_date")
+  customerId         Int           @map("customer_id")
+  serviceId          Int?          @map("service_id")
+  packageId          Int?          @map("package_id")
+  customer           Customer      @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  package            EventPackage? @relation(fields: [packageId], references: [packageId])
+  service            Service?      @relation(fields: [serviceId], references: [serviceId])
+  payment            Payment?
+
+  @@map("booking")
+}
+
+model Cart {
+  cartId     Int        @id @default(autoincrement()) @map("cart_id")
+  customerId Int        @unique @map("customer_id")
+  customer   Customer   @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  cartItems  CartItem[]
+
+  @@map("cart")
+}
+
+model CartItem {
+  cartItemId Int     @id @default(autoincrement()) @map("cart_item_id")
+  quantity   Int     @default(1)
+  cartId     Int     @map("cart_id")
+  productId  Int     @map("product_id")
+  cart       Cart    @relation(fields: [cartId], references: [cartId], onDelete: Cascade)
+  product    Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
+
+  @@map("cart_item")
+}
+
+model Order {
+  orderId         Int         @id @default(autoincrement()) @map("order_id")
+  orderDate       DateTime    @default(now()) @map("order_date")
+  totalAmount     Decimal     @map("total_amount") @db.Decimal(10, 2)
+  status          OrderStatus @default(PENDING)
+  shippingAddress String      @map("shipping_address")
+  customerId      Int         @map("customer_id")
+  customer        Customer    @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  orderItems      OrderItem[]
+  payment         Payment?
+
+  @@map("order")
+}
+
+model OrderItem {
+  orderItemId Int     @id @default(autoincrement()) @map("order_item_id")
+  quantity    Int
+  unitPrice   Decimal @map("unit_price") @db.Decimal(10, 2)
+  orderId     Int     @map("order_id")
+  productId   Int     @map("product_id")
+  order       Order   @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+  product     Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
+
+  @@map("order_item")
+}
+
+model Payment {
+  paymentId     Int           @id @default(autoincrement()) @map("payment_id")
+  amount        Decimal       @db.Decimal(10, 2)
+  paymentMethod PaymentMethod @map("payment_method")
+  status        PaymentStatus @default(PENDING)
+  transactionId String?       @map("transaction_id")
+  paidAt        DateTime?     @map("paid_at")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  bookingId     Int?          @unique @map("booking_id")
+  orderId       Int?          @unique @map("order_id")
+  receiptUrl    String?       @map("receipt_url")
+  booking       Booking?      @relation(fields: [bookingId], references: [bookingId])
+  order         Order?        @relation(fields: [orderId], references: [orderId])
+
+  @@map("payment")
+}
+
+model Review {
+  reviewId   Int      @id @default(autoincrement()) @map("review_id")
+  rating     Int
+  comment    String?
+  reviewDate DateTime @default(now()) @map("review_date")
+  customerId Int      @map("customer_id")
+  vendorId   Int?     @map("vendor_id")
+  serviceId  Int?     @map("service_id")
+  productId  Int?     @map("product_id")
+  customer   Customer @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  product    Product? @relation(fields: [productId], references: [productId])
+  service    Service? @relation(fields: [serviceId], references: [serviceId])
+  vendor     Vendor?  @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+
+  @@map("review")
+}
+
+model Notification {
+  notificationId Int       @id @default(autoincrement()) @map("notification_id")
+  userId         Int       @map("user_id")
+  userType       String    @map("user_type")
+  type           String
+  message        String
+  isRead         Boolean   @default(false) @map("is_read")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  customerId     Int?      @map("customer_id_fk")
+  customer       Customer? @relation(fields: [customerId], references: [customerId])
+
+  @@map("notification")
+}
+
+model Wishlist {
+  wishlistId Int           @id @default(autoincrement()) @map("wishlist_id")
+  createdAt  DateTime      @default(now()) @map("created_at")
+  customerId Int           @map("customer_id")
+  productId  Int?          @map("product_id")
+  serviceId  Int?          @map("service_id")
+  packageId  Int?          @map("package_id")
+  customer   Customer      @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  package    EventPackage? @relation(fields: [packageId], references: [packageId], onDelete: Cascade)
+  product    Product?      @relation(fields: [productId], references: [productId], onDelete: Cascade)
+  service    Service?      @relation(fields: [serviceId], references: [serviceId], onDelete: Cascade)
+
+  @@unique([customerId, productId])
+  @@unique([customerId, serviceId])
+  @@unique([customerId, packageId])
+  @@map("wishlist")
+}
+
+model Conversation {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  customerId Int       @map("customer_id")
+  vendorId   Int       @map("vendor_id")
+  customer   Customer  @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  vendor     Vendor    @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+  messages   Message[]
+
+  @@unique([customerId, vendorId])
+  @@map("conversation")
+}
+
+model Message {
+  id             Int          @id @default(autoincrement())
+  text           String
+  senderType     String       @map("sender_type")
+  isRead         Boolean      @default(false) @map("is_read")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  conversationId Int          @map("conversation_id")
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@map("message")
+}
+
+model budget {
+  id              Int               @id @default(autoincrement())
+  customer_id     Int               @unique
+  total_budget    Decimal           @default(0) @db.Decimal(10, 2)
+  customer        Customer          @relation(fields: [customer_id], references: [customerId], onDelete: Cascade)
+  budget_category budget_category[]
+}
+
+model budget_category {
+  id        Int     @id @default(autoincrement())
+  name      String
+  allocated Decimal @default(0) @db.Decimal(10, 2)
+  spent     Decimal @default(0) @db.Decimal(10, 2)
+  color     String?
+  budget_id Int
+  budget    budget  @relation(fields: [budget_id], references: [id], onDelete: Cascade)
+}
+
 enum VendorType {
   PHOTOGRAPHER
   SALON
@@ -46,312 +363,4 @@ enum OrderStatus {
   SHIPPED
   DELIVERED
   CANCELLED
-}
-
-// ===== MODELS (TABLES) =====
-
-model Admin {
-  adminId          Int      @id @default(autoincrement()) @map("admin_id")
-  name             String?  @map("name")
-  email            String   @unique
-  password         String
-  contactNumber    String?  @map("contact_number")
-  profileImage     String?  @map("profile_image")
-  role             String   @default("admin")
-  registrationDate DateTime @default(now()) @map("registration_date")
-
-  @@map("admin")
-}
-
-model Customer {
-  customerId       Int      @id @default(autoincrement()) @map("customer_id")
-  name             String
-  email            String   @unique
-  password         String
-  contactNumber    String?  @map("contact_number")
-  isBlocked        Boolean  @default(false) @map("is_blocked")
-  role             String   @default("customer")
-  profileImage     String?  @map("profile_image")
-  registrationDate DateTime @default(now()) @map("registration_date")
-
-  bookings      Booking[]
-  cart          Cart?
-  orders        Order[]
-  reviews       Review[]
-  notifications Notification[]
-  wishlists     Wishlist[]
-  conversations Conversation[]
-
-  @@map("customer")
-}
-
-model Vendor {
-  vendorId         Int        @id @default(autoincrement()) @map("vendor_id")
-  businessName     String     @map("business_name")
-  email            String     @unique
-  password         String
-  description      String?
-  contactNumber    String?    @map("contact_number")
-  location         String?
-  vendorType       VendorType @map("vendor_type")
-  isApproved       Boolean    @default(false) @map("is_approved")
-  profileImage     String?    @map("profile_image")
-  registrationDate DateTime   @default(now()) @map("registration_date")
-
-  services      Service[]
-  products      Product[]
-  eventPackages EventPackage[]
-  availability  Availability[]
-  reviews       Review[]
-  conversations Conversation[]
-
-  @@map("vendor")
-}
-
-model ServiceCategory {
-  categoryId   Int       @id @default(autoincrement()) @map("category_id")
-  categoryName String    @map("category_name")
-  services     Service[]
-  products     Product[]
-
-  @@map("service_category")
-}
-
-model Service {
-  serviceId   Int      @id @default(autoincrement()) @map("service_id")
-  serviceName String   @map("service_name")
-  price       Decimal  @db.Decimal(10, 2)
-  description String?
-  imageUrl    String?  @map("image_url")
-  isApproved  Boolean  @default(false) @map("is_approved")
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  vendorId   Int              @map("vendor_id")
-  categoryId Int?             @map("category_id")
-  vendor     Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  category   ServiceCategory? @relation(fields: [categoryId], references: [categoryId], onDelete: SetNull)
-  bookings   Booking[]
-  reviews    Review[]
-  wishlists  Wishlist[]
-
-  @@map("service")
-}
-
-model Product {
-  productId   Int      @id @default(autoincrement()) @map("product_id")
-  productName String   @map("product_name")
-  price       Decimal  @db.Decimal(10, 2)
-  quantity    Int      @default(0)
-  imageUrl    String?  @map("image_url")
-  description String?
-  isApproved  Boolean  @default(false) @map("is_approved")
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  vendorId   Int              @map("vendor_id")
-  categoryId Int?             @map("category_id")
-  vendor     Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  category   ServiceCategory? @relation(fields: [categoryId], references: [categoryId], onDelete: SetNull)
-  cartItems  CartItem[]
-  orderItems OrderItem[]
-  reviews    Review[]
-  wishlists  Wishlist[]
-
-  @@map("product")
-}
-
-model EventPackage {
-  packageId   Int      @id @default(autoincrement()) @map("package_id")
-  packageName String   @map("package_name")
-  description String?
-  imageUrl    String?
-  price       Decimal  @db.Decimal(10, 2)
-  isApproved  Boolean  @default(false) @map("is_approved")
-  createdAt   DateTime @default(now()) @map("created_at")
-
-  vendorId Int      @map("vendor_id")
-  vendor   Vendor   @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  bookings Booking[]
-  wishlists Wishlist[]
-
-  @@map("event_package")
-}
-
-model Availability {
-  availabilityId Int     @id @default(autoincrement()) @map("availability_id")
-  date           DateTime @db.Date
-  startTime      String  @map("start_time")
-  endTime        String  @map("end_time")
-  isAvailable    Boolean @default(true) @map("is_available")
-
-  vendorId Int    @map("vendor_id")
-  vendor   Vendor @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-
-  @@map("availability")
-}
-
-model Booking {
-  bookingId          Int           @id @default(autoincrement()) @map("booking_id")
-  bookingDate        DateTime      @default(now()) @map("booking_date")
-  eventDate          DateTime      @map("event_date") @db.Date
-  status             BookingStatus @default(PENDING)
-  location           String?
-  vendorResponseDate DateTime?     @map("vendor_response_date")
-
-  customerId Int          @map("customer_id")
-  serviceId  Int?         @map("service_id")
-  packageId  Int?         @map("package_id")
-  customer   Customer     @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  service    Service?     @relation(fields: [serviceId], references: [serviceId], onDelete: SetNull)
-  package    EventPackage? @relation(fields: [packageId], references: [packageId], onDelete: SetNull)
-  payment    Payment?
-
-  @@map("booking")
-}
-
-model Cart {
-  cartId     Int        @id @default(autoincrement()) @map("cart_id")
-  customerId Int        @unique @map("customer_id")
-  customer   Customer   @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  cartItems  CartItem[]
-
-  @@map("cart")
-}
-
-model CartItem {
-  cartItemId Int     @id @default(autoincrement()) @map("cart_item_id")
-  quantity   Int     @default(1)
-  cartId     Int     @map("cart_id")
-  productId  Int     @map("product_id")
-  cart       Cart    @relation(fields: [cartId], references: [cartId], onDelete: Cascade)
-  product    Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
-
-  @@map("cart_item")
-}
-
-model Order {
-  orderId         Int         @id @default(autoincrement()) @map("order_id")
-  orderDate       DateTime    @default(now()) @map("order_date")
-  totalAmount     Decimal     @map("total_amount") @db.Decimal(10, 2)
-  status          OrderStatus @default(PENDING)
-  shippingAddress String      @map("shipping_address")
-
-  customerId Int         @map("customer_id")
-  customer   Customer    @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  orderItems OrderItem[]
-  payment    Payment?
-
-  @@map("order")
-}
-
-model OrderItem {
-  orderItemId Int     @id @default(autoincrement()) @map("order_item_id")
-  quantity    Int
-  unitPrice   Decimal @map("unit_price") @db.Decimal(10, 2)
-  orderId     Int     @map("order_id")
-  productId   Int     @map("product_id")
-  order       Order   @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
-  product     Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
-
-  @@map("order_item")
-}
-
-model Payment {
-  paymentId     Int           @id @default(autoincrement()) @map("payment_id")
-  amount        Decimal       @db.Decimal(10, 2)
-  paymentMethod PaymentMethod @map("payment_method")
-  status        PaymentStatus @default(PENDING)
-  transactionId String?       @map("transaction_id")
-  receiptUrl    String?       @map("receipt_url")
-  paidAt        DateTime?     @map("paid_at")
-  createdAt     DateTime      @default(now()) @map("created_at")
-
-  bookingId Int?     @unique @map("booking_id")
-  orderId   Int?     @unique @map("order_id")
-  booking   Booking? @relation(fields: [bookingId], references: [bookingId], onDelete: SetNull)
-  order     Order?   @relation(fields: [orderId], references: [orderId], onDelete: SetNull)
-
-  @@map("payment")
-}
-
-model Review {
-  reviewId   Int      @id @default(autoincrement()) @map("review_id")
-  rating     Int
-  comment    String?
-  reviewDate DateTime @default(now()) @map("review_date")
-
-  customerId Int      @map("customer_id")
-  vendorId   Int?     @map("vendor_id")
-  serviceId  Int?     @map("service_id")
-  productId  Int?     @map("product_id")
-  customer   Customer @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  vendor     Vendor?  @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  service    Service? @relation(fields: [serviceId], references: [serviceId], onDelete: SetNull)
-  product    Product? @relation(fields: [productId], references: [productId], onDelete: SetNull)
-
-  @@map("review")
-}
-
-model Notification {
-  notificationId Int      @id @default(autoincrement()) @map("notification_id")
-  userId         Int      @map("user_id")
-  userType       String   @map("user_type")
-  type           String
-  message        String
-  isRead         Boolean  @default(false) @map("is_read")
-  createdAt      DateTime @default(now()) @map("created_at")
-
-  customerId Int?      @map("customer_id_fk")
-  customer   Customer? @relation(fields: [customerId], references: [customerId], onDelete: SetNull)
-
-  @@map("notification")
-}
-
-model Wishlist {
-  wishlistId Int      @id @default(autoincrement()) @map("wishlist_id")
-  createdAt  DateTime @default(now()) @map("created_at")
-
-  customerId Int      @map("customer_id")
-  productId  Int?     @map("product_id")
-  serviceId  Int?     @map("service_id")
-  packageId  Int?     @map("package_id")
-
-  customer Customer      @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  product  Product?      @relation(fields: [productId], references: [productId], onDelete: Cascade)
-  service  Service?      @relation(fields: [serviceId], references: [serviceId], onDelete: Cascade)
-  package  EventPackage? @relation(fields: [packageId], references: [packageId], onDelete: Cascade)
-
-  @@unique([customerId, productId])
-  @@unique([customerId, serviceId])
-  @@unique([customerId, packageId])
-
-  @@map("wishlist")
-}
-
-model Conversation {
-  id           Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  
-  customerId   Int       @map("customer_id")
-  vendorId     Int       @map("vendor_id")
-  
-  customer     Customer  @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  vendor       Vendor    @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  messages     Message[]
-  
-  @@unique([customerId, vendorId])
-  @@map("conversation")
-}
-
-model Message {
-  id             Int          @id @default(autoincrement())
-  text           String
-  senderType     String       @map("sender_type") // 'customer' or 'vendor'
-  isRead         Boolean      @default(false) @map("is_read")
-  createdAt      DateTime     @default(now()) @map("created_at")
-  
-  conversationId Int          @map("conversation_id")
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-
-  @@map("message")
 }
