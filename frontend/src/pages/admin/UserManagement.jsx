@@ -1,13 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Users, Lock, Unlock, Eye, AlertTriangle, X, Trash2, Plus, Edit } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Users, Lock, Unlock, Eye, AlertTriangle, X, Trash2, Plus, Edit, LogIn } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Modal } from '../../components/common/Modal';
 import { cn } from '../../utils/cn';
 import { api } from '../../utils/api';
+import { useAuth } from '../../context/AuthContext';
 
 export const UserManagement = () => {
+  const { loginAsUser } = useAuth();
+  const navigate = useNavigate();
+  const [impersonating, setImpersonating] = useState(false);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [statusFilter, setStatusFilter] = useState('All Status');
@@ -145,6 +150,18 @@ export const UserManagement = () => {
       }
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleLoginAsUser = async (userId) => {
+    setImpersonating(true);
+    try {
+      const response = await api.post(`/admin/impersonate/customer/${userId}`);
+      loginAsUser(response.data.token, response.data.user);
+      navigate('/customer/dashboard');
+    } catch (error) {
+      console.error(error);
+      setImpersonating(false);
     }
   };
 
@@ -329,14 +346,26 @@ export const UserManagement = () => {
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{selectedUser.name}</h2>
                   <p className="text-sm text-gray-500 dark:text-white/50">Customer profile overview</p>
                 </div>
-                <button
-                  type="button"
-                  className="rounded-full p-2 text-gray-500 hover:bg-gray-100 dark:text-white/60 dark:hover:bg-white/5"
-                  onClick={() => setSelectedUser(null)}
-                  aria-label="Close drawer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    leftIcon={<LogIn className="w-4 h-4" />}
+                    onClick={() => handleLoginAsUser(selectedUser.id)}
+                    isLoading={impersonating}
+                    title="Temporarily view the platform as this user, without their password"
+                  >
+                    Login as User
+                  </Button>
+                  <button
+                    type="button"
+                    className="rounded-full p-2 text-gray-500 hover:bg-gray-100 dark:text-white/60 dark:hover:bg-white/5"
+                    onClick={() => setSelectedUser(null)}
+                    aria-label="Close drawer"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-6 p-5">

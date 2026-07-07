@@ -5,13 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../utils/cn';
-import { useQuery } from '@tanstack/react-query';
-import { api } from '../../utils/api';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { api, resolveAssetUrl } from '../../utils/api';
+import { ImpersonationBanner } from './ImpersonationBanner';
 
 export const DashboardLayout = ({ role = 'customer' }) => {
   const { user, loading, logout } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const location = useLocation();
@@ -41,6 +43,35 @@ export const DashboardLayout = ({ role = 'customer' }) => {
     enabled: role === 'customer'
   });
 
+  const { data: systemSettings } = useQuery({
+    queryKey: ['systemSettings'],
+    queryFn: async () => {
+      const res = await api.get('/admin/settings');
+      return res.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  const canReceiveNotifications = role === 'customer' || role === 'vendor';
+
+  const { data: notifications = [] } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: async () => {
+      const res = await api.get('/notifications/my');
+      return res.data;
+    },
+    enabled: canReceiveNotifications,
+    refetchInterval: 60000,
+  });
+
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
+
+  const markAsReadMutation = useMutation({
+    mutationFn: (id) => api.put(`/notifications/${id}/read`),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications'] }),
+  });
+
   React.useEffect(() => {
     if (!loading && !user) {
       navigate('/login');
@@ -61,6 +92,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           { name: 'Disputes', path: '/admin/dispute-management', icon: <ShieldAlert /> },
           { name: 'Reviews', path: '/admin/reviews-moderation', icon: <Flag /> },
           { name: 'Payments', path: '/admin/admin-payments-escrow', icon: <DollarSign /> },
+          { name: 'Broadcasts', path: '/admin/admin-notification-management', icon: <Bell /> },
           { name: 'Settings', path: '/admin/system-settings', icon: <Settings /> },
         ];
       case 'vendor':
@@ -93,7 +125,9 @@ export const DashboardLayout = ({ role = 'customer' }) => {
   };
 
   return (
-    <div className="min-h-screen bg-light-background dark:bg-background flex">
+    <div className="min-h-screen bg-light-background dark:bg-background flex flex-col">
+      <ImpersonationBanner />
+    <div className="flex-1 flex min-h-0">
       {/* Sidebar */}
       <aside
         className={cn(
@@ -104,10 +138,10 @@ export const DashboardLayout = ({ role = 'customer' }) => {
         <div className="flex flex-col h-full">
           <div className="h-16 sm:h-20 md:h-24 flex items-center justify-center px-4 sm:px-6 border-b border-gray-200 dark:border-white/5">
             <Link to="/" className="flex items-center justify-center group w-full">
-              <img 
-                src="/logo.png" 
-                alt="Nexora" 
-                className="h-12 sm:h-16 md:h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
+              <img
+                src={resolveAssetUrl(systemSettings?.logoUrl)}
+                alt="Nexora"
+                className="h-12 sm:h-16 md:h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
               />
             </Link>
           </div>
@@ -120,8 +154,8 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                 className={cn(
                   "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 relative text-sm",
                   location.pathname.startsWith(link.path) 
-                    ? "bg-primary/20 text-white shadow-[0_0_15px_rgba(212,175,55,0.3)]" 
-                    : "text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
+                    ? "text-white font-medium shadow-[0_0_15px_rgba(212,175,55,0.3)]"  
+                    : "text-gray-600 dark:text-white/60 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
                 )}
               >
                 {location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path)) ? (
@@ -167,6 +201,14 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           
           <div className="flex items-center gap-4 ml-auto relative" ref={dropdownRef}>
             
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-slate-100 text-slate-600 hover:text-slate-900 relative"
+              aria-label="Toggle Theme"
+            >
+              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
 
             {/* Wishlist Link */}
             {role === 'customer' && (
@@ -237,15 +279,20 @@ export const DashboardLayout = ({ role = 'customer' }) => {
 
             {/* Notifications Dropdown */}
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setActiveDropdown(activeDropdown === 'notifications' ? null : 'notifications')}
                 className={cn("w-10 h-10 rounded-full flex items-center justify-center transition-colors relative", activeDropdown === 'notifications' ? "bg-primary/20 text-primary" : "bg-gray-200 dark:bg-white/5 text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white")}
               >
                 <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-light-surface dark:border-surface">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
               </button>
               <AnimatePresence>
                 {activeDropdown === 'notifications' && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
@@ -254,22 +301,40 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                     <div className="p-4 border-b border-gray-200 dark:border-white/10">
                       <h3 className="font-bold text-gray-900 dark:text-white">Notifications</h3>
                     </div>
-                    <div className="p-4 text-center text-gray-500 dark:text-white/40 text-sm py-8">
-                      No new notifications
-                    </div>
+                    {!notifications.length ? (
+                      <div className="p-4 text-center text-gray-500 dark:text-white/40 text-sm py-8">
+                        No new notifications
+                      </div>
+                    ) : (
+                      <div className="max-h-80 overflow-y-auto divide-y divide-gray-100 dark:divide-white/5">
+                        {notifications.map((n) => (
+                          <button
+                            key={n.notificationId}
+                            onClick={() => !n.isRead && markAsReadMutation.mutate(n.notificationId)}
+                            className={cn(
+                              "w-full text-left p-4 transition-colors hover:bg-gray-50 dark:hover:bg-white/5",
+                              !n.isRead && "bg-primary/5"
+                            )}
+                          >
+                            <div className="flex items-start gap-2">
+                              {!n.isRead && <span className="w-2 h-2 mt-1.5 rounded-full bg-primary shrink-0" />}
+                              <div className="min-w-0">
+                                <p className="text-sm text-gray-800 dark:text-white/80 break-words">{n.message}</p>
+                                <p className="text-[10px] text-gray-400 dark:text-white/40 mt-1">
+                                  {new Date(n.createdAt).toLocaleString()}
+                                </p>
+                              </div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
-            {/* Theme Toggle */}
-            <button 
-              onClick={toggleTheme}
-              className="w-10 h-10 rounded-full bg-gray-200 dark:bg-white/5 text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white hover:bg-gray-300 dark:hover:bg-white/10 flex items-center justify-center transition-colors"
-              title="Toggle theme"
-            >
-              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
+            
 
             {/* Profile Dropdown */}
             <div className="relative">
@@ -333,6 +398,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           </AnimatePresence>
         </main>
       </div>
+    </div>
 
       {/* Mobile overlay */}
       {isSidebarOpen && (
