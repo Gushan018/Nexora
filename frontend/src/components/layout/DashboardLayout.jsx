@@ -153,8 +153,8 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                 to={link.path}
                 className={cn(
                   "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 relative text-sm",
-                  location.pathname.startsWith(link.path) 
-                    ? "text-white font-medium shadow-[0_0_15px_rgba(212,175,55,0.3)]"  
+                  location.pathname.startsWith(link.path)
+                    ? "text-white font-medium shadow-[0_0_15px_rgba(212,175,55,0.3)]"
                     : "text-gray-600 dark:text-white/60 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
                 )}
               >
@@ -200,7 +200,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           </button>
           
           <div className="flex items-center gap-4 ml-auto relative" ref={dropdownRef}>
-            
+
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
