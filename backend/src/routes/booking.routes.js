@@ -14,7 +14,7 @@ router.post('/', protect, restrictTo('customer'), createBooking);
 router.get('/my', protect, restrictTo('customer'), getMyBookings);
 
 // ====== Vendor Routes  ======
-router.get('/vendor', protect, restrictTo('vendor', 'seller'), getVendorBookings);
-router.put('/:id/status', protect, restrictTo('vendor', 'seller'), updateBookingStatus);
+router.get('/vendor', protect, restrictTo('vendor'), getVendorBookings);
+router.put('/:id/status', protect, restrictTo('vendor'), updateBookingStatus);
 
 module.exports = router;

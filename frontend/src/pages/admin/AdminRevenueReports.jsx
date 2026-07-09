@@ -11,16 +11,6 @@ export const AdminRevenueReports = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <DollarSign className="w-7 h-7 text-green-400" />
-            Platform Revenue Reports
-          </h1>
-          <p className="text-textPrimary/60">Analyze Nexora's top-line revenue, commission splits, and payment processing fees.</p>
-        </div>
-        <div className="flex gap-2">
-          <select className="bg-surface/50 border border-white/10 rounded-lg px-4 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 cursor-pointer">
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <DollarSign className="w-7 h-7 text-green-400" />
             Platform Revenue Reports
@@ -29,7 +19,6 @@ export const AdminRevenueReports = () => {
         </div>
         <div className="flex gap-2">
           <select className="bg-surface/50 border border-slate-300 rounded-lg px-4 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <option>Year to Date</option>
             <option>Last Quarter</option>
             <option>Last 12 Months</option>
@@ -41,17 +30,10 @@ export const AdminRevenueReports = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-4">
         <Card className="md:col-span-2 border-green-500/20 bg-green-500/5">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Net Platform Revenue</h3>
-            <div className="flex justify-between items-end">
-              <div>
-                <span className="text-5xl font-bold text-textPrimary">LKR 1.24M</span>
-=======
             <h3 className="text-sm font-medium text-slate-800 mb-2">Net Platform Revenue</h3>
             <div className="flex justify-between items-end">
               <div>
                 <span className="text-5xl font-bold text-slate-900">LKR 1.24M</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <p className="text-sm text-green-400 flex items-center gap-1 mt-2 font-bold">
                   <TrendingUp className="w-4 h-4" /> +18.2% vs last period
                 </p>
@@ -65,34 +47,20 @@ export const AdminRevenueReports = () => {
         
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Commission Revenue</h3>
-            <div className="flex flex-col justify-end h-full">
-              <span className="text-3xl font-bold text-textPrimary">LKR 842.5K</span>
-              <p className="text-xs text-textPrimary/40 mt-1">From 5% transaction fees</p>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Commission Revenue</h3>
             <div className="flex flex-col justify-end h-full">
               <span className="text-3xl font-bold text-slate-900">LKR 842.5K</span>
               <p className="text-xs text-slate-500 mt-1">From 5% transaction fees</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Subscription Revenue</h3>
-            <div className="flex flex-col justify-end h-full">
-              <span className="text-3xl font-bold text-textPrimary">LKR 397.5K</span>
-              <p className="text-xs text-textPrimary/40 mt-1">From Pro Vendor Tiers</p>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Subscription Revenue</h3>
             <div className="flex flex-col justify-end h-full">
               <span className="text-3xl font-bold text-slate-900">LKR 397.5K</span>
               <p className="text-xs text-slate-500 mt-1">From Pro Vendor Tiers</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
@@ -114,13 +82,8 @@ export const AdminRevenueReports = () => {
             </div>
             <div className="text-center z-10">
               <Activity className="w-16 h-16 text-green-400/20 mx-auto mb-4" />
-<<<<<<< HEAD
-              <p className="text-textPrimary/40 font-medium">Recharts Stacked Bar Chart</p>
-              <p className="text-xs text-textPrimary/30">Visualizing monthly revenue sources</p>
-=======
               <p className="text-slate-500 font-medium">Recharts Stacked Bar Chart</p>
               <p className="text-xs text-slate-400">Visualizing monthly revenue sources</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
@@ -141,13 +104,8 @@ export const AdminRevenueReports = () => {
               ].map((item, i) => (
                 <div key={i} className="space-y-2">
                   <div className="flex justify-between text-sm">
-<<<<<<< HEAD
-                    <span className="text-textPrimary/80">{item.source}</span>
-                    <span className="text-textPrimary font-medium">{item.amount}</span>
-=======
                     <span className="text-slate-800">{item.source}</span>
                     <span className="text-slate-900 font-medium">{item.amount}</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
                   <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                     <motion.div 

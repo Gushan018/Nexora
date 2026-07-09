@@ -17,19 +17,11 @@ export const Button = React.forwardRef(({
   const baseStyles = "inline-flex items-center justify-center rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-light-background dark:focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variants = {
-<<<<<<< HEAD
-    primary: "bg-primary text-[#131A26] hover:bg-primaryHover hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] border border-transparent",
-    secondary: "bg-surface text-textPrimary hover:bg-surface/80 border border-border/20 hover:border-border/40",
-    outline: "bg-transparent text-primary border border-primary/50 hover:bg-primary/10",
-    ghost: "bg-transparent text-textPrimary hover:bg-textPrimary/5",
-    danger: "bg-red-500/10 text-red-500 border border-red-500/20 hover:bg-red-500/20",
-=======
     primary: "bg-primary text-gray-900 dark:text-gray-900 hover:bg-primaryHover hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] border border-transparent",
     secondary: "bg-light-surface dark:bg-surface text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-surface/80 border border-gray-300 dark:border-white/10 hover:border-gray-400 dark:hover:border-white/20",
     outline: "bg-transparent text-primary border border-primary/50 hover:bg-primary/10 dark:hover:bg-primary/10",
     ghost: "bg-transparent text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5",
     danger: "bg-red-500/10 text-red-600 dark:text-red-500 border border-red-500/20 hover:bg-red-500/20",
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
   };
 
   const sizes = {

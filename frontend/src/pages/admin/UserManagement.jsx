@@ -1,30 +1,11 @@
-<<<<<<< HEAD
-import React, { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Users, Search, Filter, MoreVertical, UserCheck, UserX, Shield, Mail, Loader2, AlertCircle, RefreshCcw } from 'lucide-react';
-import { Card, CardContent } from '../../components/common/Card';
-=======
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Users, Lock, Unlock, Eye, AlertTriangle, X, Trash2, Plus, Edit, LogIn } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 import { Button } from '../../components/common/Button';
 import { Modal } from '../../components/common/Modal';
 import { cn } from '../../utils/cn';
-<<<<<<< HEAD
-import { useNavigate } from 'react-router-dom';
-import { api } from '../../utils/api';
-
-export const UserManagement = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [roleFilter, setRoleFilter] = useState('All');
-  const navigate = useNavigate();
-=======
 import { api } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 
@@ -62,25 +43,11 @@ export const UserManagement = () => {
       setIsLoading(false);
     }
   };
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-<<<<<<< HEAD
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await api.get('/admin/users');
-      setUsers(Array.isArray(response.data) ? response.data : []);
-    } catch (err) {
-      setError('Failed to load users. Please try again.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-=======
   const openCreateModal = () => {
     setIsEditMode(false);
     setFormState({ name: '', email: '', contactNumber: '', isBlocked: false });
@@ -195,35 +162,10 @@ export const UserManagement = () => {
     } catch (error) {
       console.error(error);
       setImpersonating(false);
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
     }
   };
 
   const filteredUsers = useMemo(() => {
-<<<<<<< HEAD
-    return users.filter(user => {
-      const query = searchTerm.trim().toLowerCase();
-      if (roleFilter !== 'All' && user.role?.toLowerCase() !== roleFilter.toLowerCase()) {
-        return false;
-      }
-      if (!query) return true;
-      return [user.name, user.email, user.id].some(val => val?.toString().toLowerCase().includes(query));
-    });
-  }, [users, searchTerm, roleFilter]);
-
-  const stats = useMemo(() => {
-    const total = users.length;
-    const customers = users.filter(u => u.type === 'customer').length;
-    const vendors = users.filter(u => u.type === 'vendor').length;
-    const suspended = users.filter(u => u.status === 'Suspended').length;
-    return { total, customers, vendors, suspended };
-  }, [users]);
-
-  const getStatusIcon = (status) => {
-    if (status === 'Active') return <UserCheck className="w-3.5 h-3.5" />;
-    return <UserX className="w-3.5 h-3.5" />;
-  };
-=======
     return users.filter((user) => {
       const matchesSearch = [user.name, user.email, user.phone].some((value) =>
         value.toLowerCase().includes(searchQuery.toLowerCase())
@@ -247,176 +189,15 @@ export const UserManagement = () => {
   const pendingEscrowOrders = selectedUserOrders.filter(
     (order) => order.status === 'PROCESSING' && order.escrow === 'HELD'
   );
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-=======
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <Users className="w-7 h-7 text-primary" />
             User Management
           </h1>
-<<<<<<< HEAD
-          <p className="text-textPrimary/60">View, modify, and enforce policies across all platform accounts.</p>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" leftIcon={<RefreshCcw className="w-4 h-4"/>} onClick={fetchUsers}>Refresh</Button>
-          <Button leftIcon={<Shield className="w-4 h-4"/>}>Add Admin</Button>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card className="border-white/10">
-          <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Total Users</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">{stats.total.toLocaleString()}</span>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="border-white/10">
-          <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Customers</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">{stats.customers.toLocaleString()}</span>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="border-white/10">
-          <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Vendors</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">{stats.vendors.toLocaleString()}</span>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="border-red-500/20 bg-red-500/5">
-          <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Inactive / Pending</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-red-400">{stats.suspended}</span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between">
-          <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
-            <input
-              type="text"
-              placeholder="Search by name, email, or ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
-            />
-          </div>
-          <div className="flex gap-2">
-            <select
-              value={roleFilter}
-              onChange={(e) => setRoleFilter(e.target.value)}
-              className="bg-surface border border-white/10 rounded-lg px-3 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 cursor-pointer"
-            >
-              <option value="All">All Types</option>
-              <option value="admin">Admin</option>
-              <option value="vendor">Vendor</option>
-              <option value="customer">Customer</option>
-            </select>
-            <Button variant="outline" leftIcon={<Filter className="w-4 h-4"/>}>Filters</Button>
-          </div>
-        </div>
-
-        <div className="overflow-x-auto">
-          {loading ? (
-            <div className="p-12 flex flex-col items-center justify-center text-textPrimary/40 gap-3">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              <p>Loading users...</p>
-            </div>
-          ) : error ? (
-            <div className="p-12 flex flex-col items-center justify-center text-red-400 gap-3 text-center">
-              <AlertCircle className="w-8 h-8" />
-              <p>{error}</p>
-              <Button onClick={fetchUsers} variant="outline" size="sm">Try Again</Button>
-            </div>
-          ) : filteredUsers.length === 0 ? (
-            <div className="p-12 flex flex-col items-center justify-center text-textPrimary/40 gap-3 text-center">
-              <Users className="w-12 h-12 opacity-20" />
-              <p>No users found.</p>
-            </div>
-          ) : (
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-white/5 text-sm font-medium text-textPrimary/50 bg-white/[0.02]">
-                  <th className="p-4 pl-6">User / Email</th>
-                  <th className="p-4">Type</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Joined</th>
-                  <th className="p-4 pr-6 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm">
-                {filteredUsers.map((user, i) => (
-                  <tr key={user.id || i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
-                    <td className="p-4 pl-6">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary shrink-0">
-                          {user.name?.charAt(0) || '?'}
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="font-bold text-textPrimary">{user.name}</span>
-                          <span className="text-xs text-textPrimary/50">{user.email} • {user.id}</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <span className={cn(
-                        "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider",
-                        user.type === 'admin' ? "bg-accent/20 text-accent border border-accent/20" :
-                        user.type === 'vendor' ? "bg-primary/20 text-primary border border-primary/20" :
-                        "bg-white/10 text-textPrimary/70 border border-white/10"
-                      )}>
-                        {user.type || user.role}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <span className={cn(
-                        "flex items-center gap-1.5 text-xs font-medium w-fit",
-                        user.status === 'Active' ? "text-green-400" :
-                        user.status === 'Pending' ? "text-yellow-500" :
-                        "text-red-400"
-                      )}>
-                        {getStatusIcon(user.status)}
-                        {user.status}
-                      </span>
-                    </td>
-                    <td className="p-4 text-textPrimary/80">{user.joined ? new Date(user.joined).toLocaleDateString() : 'N/A'}</td>
-                    <td className="p-4 pr-6 text-right space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="opacity-0 group-hover:opacity-100 transition-opacity"
-                        onClick={() => navigate(`/admin/user/${user.originalId || user.id}?type=${user.type}`)}
-                      >
-                        Manage
-                      </Button>
-                      <button className="p-2 text-textPrimary/40 hover:text-textPrimary hover:bg-white/10 rounded-lg transition-colors" title="Actions">
-                        <MoreVertical className="w-5 h-5"/>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      </Card>
-=======
           <p className="text-gray-600 dark:text-white/60">Review customer accounts, manage access, and view booking history.</p>
         </div>
         <div className="flex gap-2">
@@ -727,7 +508,6 @@ export const UserManagement = () => {
           </div>
         </div>
       </Modal>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
     </div>
   );
 };

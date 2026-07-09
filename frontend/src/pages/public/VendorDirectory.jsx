@@ -39,7 +39,7 @@ export const VendorDirectory = ({ isDashboard = false }) => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl lg:text-5xl font-bold text-textPrimary mb-4"
+            className="text-4xl lg:text-5xl font-bold text-white mb-4"
           >
             Vendor <span className="text-gradient">Directory</span>
           </motion.h1>
@@ -47,7 +47,7 @@ export const VendorDirectory = ({ isDashboard = false }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-textPrimary/60 text-lg max-w-2xl"
+            className="text-white/60 text-lg max-w-2xl"
           >
             Find and connect with Sri Lanka's top-rated event professionals.
           </motion.p>
@@ -78,7 +78,7 @@ export const VendorDirectory = ({ isDashboard = false }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {isLoading && <PageLoader text="Loading vendors..." />}
           {!isLoading && filteredVendors.length === 0 && (
-             <div className="col-span-2 text-center text-textPrimary/60 py-12">No vendors match your search.</div>
+             <div className="col-span-2 text-center text-white/60 py-12">No vendors match your search.</div>
           )}
           {filteredVendors.map((vendor, index) => {
             const avgRating = vendor.reviews?.length 
@@ -93,11 +93,13 @@ export const VendorDirectory = ({ isDashboard = false }) => {
                   transition={{ delay: Math.min(index * 0.1, 1) }}
                   className="glass-card rounded-2xl p-6 border border-white/5 hover:border-primary/50 transition-all duration-300 group cursor-pointer flex flex-col sm:flex-row gap-6 h-full"
                 >
-                  <div className="w-full sm:w-40 h-40 shrink-0 rounded-xl overflow-hidden bg-surface relative flex items-center justify-center text-textPrimary/20">
+                  <div className="w-full sm:w-40 h-40 shrink-0 rounded-xl overflow-hidden bg-surface relative flex items-center justify-center text-white/20">
                     <span className="text-4xl font-bold">{vendor.businessName.charAt(0)}</span>
-                    <div className="absolute top-2 left-2 bg-green-500 text-textPrimary rounded-full p-1 shadow-lg" title="Verified Vendor">
-                      <ShieldCheck className="w-4 h-4" />
-                    </div>
+                    {vendor.isApproved && (
+                      <div className="absolute top-2 left-2 bg-green-500 text-white rounded-full p-1 shadow-lg" title="Verified Vendor">
+                        <ShieldCheck className="w-4 h-4" />
+                      </div>
+                    )}
                   </div>
                   
                   <div className="flex-1 flex flex-col">
@@ -106,22 +108,22 @@ export const VendorDirectory = ({ isDashboard = false }) => {
                         <span className="text-xs font-semibold text-primary uppercase tracking-wider mb-1 block">
                           {vendor.vendorType}
                         </span>
-                        <h3 className="text-xl font-bold text-textPrimary group-hover:text-primary transition-colors">{vendor.businessName}</h3>
+                        <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{vendor.businessName}</h3>
                       </div>
                     </div>
                     
-                    <p className="text-textPrimary/60 text-sm mb-4 line-clamp-2">
+                    <p className="text-white/60 text-sm mb-4 line-clamp-2">
                       {vendor.description || 'No description available.'}
                     </p>
                     
                     <div className="mt-auto flex items-center justify-between">
                       <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center gap-1 text-textPrimary/80">
+                        <div className="flex items-center gap-1 text-white/80">
                           <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                           <span className="font-medium">{avgRating}</span>
-                          <span className="text-textPrimary/40">({vendor.reviews?.length || 0})</span>
+                          <span className="text-white/40">({vendor.reviews?.length || 0})</span>
                         </div>
-                        <div className="flex items-center gap-1 text-textPrimary/60">
+                        <div className="flex items-center gap-1 text-white/60">
                           <MapPin className="w-4 h-4" />
                           {vendor.location || 'Anywhere'}
                         </div>

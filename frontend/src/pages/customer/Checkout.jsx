@@ -62,24 +62,15 @@ export const Checkout = () => {
   const total = subtotal + tax + shipping;
 
   if (isLoading) return <PageLoader text="Loading checkout..." />;
-<<<<<<< HEAD
-  if (items.length === 0) return <div className="pt-32 pb-20 text-center text-textPrimary">Your cart is empty. Please add items to checkout.</div>;
-=======
   if (items.length === 0) return <div className="pt-32 pb-20 text-center text-slate-900">Your cart is empty. Please add items to checkout.</div>;
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background">
       <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
         
         <div className="mb-12">
-<<<<<<< HEAD
-          <h1 className="text-3xl lg:text-4xl font-bold text-textPrimary mb-2">Checkout</h1>
-          <p className="text-textPrimary/60">Complete your purchase securely.</p>
-=======
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">Checkout</h1>
           <p className="text-white/60">Complete your purchase securely.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-12">
@@ -91,11 +82,7 @@ export const Checkout = () => {
               <CardHeader className="flex flex-row items-center gap-4 pb-2">
                 <div className={cn(
                   "w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm",
-<<<<<<< HEAD
-                  step === 1 ? "bg-primary text-textPrimary" : step > 1 ? "bg-green-500 text-textPrimary" : "bg-white/10 text-textPrimary/50"
-=======
                   step === 1 ? "bg-primary text-white" : step > 1 ? "bg-green-500 text-slate-900" : "bg-slate-200 text-slate-500"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 )}>
                   {step > 1 ? <CheckCircle2 className="w-5 h-5" /> : "1"}
                 </div>
@@ -128,31 +115,13 @@ export const Checkout = () => {
                        <img src={item.product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100&q=80'} alt={item.product.productName} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1">
-<<<<<<< HEAD
-                      <p className="text-textPrimary font-medium text-sm line-clamp-2">{item.product.productName}</p>
-                      <p className="text-textPrimary/60 text-xs mt-1">Qty: {item.quantity}</p>
-                      <p className="text-textPrimary font-bold mt-1">LKR {(Number(item.product.price) * item.quantity).toFixed(2)}</p>
-=======
                       <p className="text-slate-900 font-medium text-sm line-clamp-2">{item.product.productName}</p>
                       <p className="text-slate-600 text-xs mt-1">Qty: {item.quantity}</p>
                       <p className="text-slate-900 font-bold mt-1">LKR {(Number(item.product.price) * item.quantity).toFixed(2)}</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     </div>
                   </div>
                 ))}
                 
-<<<<<<< HEAD
-                <div className="space-y-3 text-sm border-b border-white/10 pb-6">
-                  <div className="flex justify-between text-textPrimary/80">
-                    <span>Subtotal</span>
-                    <span>LKR {subtotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-textPrimary/80">
-                    <span>Shipping</span>
-                    <span>LKR {shipping.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-textPrimary/80">
-=======
                 <div className="space-y-3 text-sm border-b border-slate-300 pb-6">
                   <div className="flex justify-between text-slate-800">
                     <span>Subtotal</span>
@@ -163,17 +132,12 @@ export const Checkout = () => {
                     <span>LKR {shipping.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-slate-800">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     <span>Tax (VAT)</span>
                     <span>LKR {tax.toFixed(2)}</span>
                   </div>
                 </div>
 
-<<<<<<< HEAD
-                <div className="flex justify-between items-center text-lg font-bold text-textPrimary">
-=======
                 <div className="flex justify-between items-center text-lg font-bold text-slate-900">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   <span>Total</span>
                   <span>LKR {total.toFixed(2)}</span>
                 </div>
@@ -186,11 +150,7 @@ export const Checkout = () => {
                   {placeOrderMutation.isPending ? 'Placing Order...' : 'Place Order'}
                 </Button>
                 
-<<<<<<< HEAD
-                <div className="flex items-center justify-center gap-2 text-xs text-textPrimary/40 mt-4">
-=======
                 <div className="flex items-center justify-center gap-2 text-xs text-slate-500 mt-4">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   <ShieldCheck className="w-4 h-4 text-green-400" /> Secure encrypted checkout
                 </div>
               </CardContent>

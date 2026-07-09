@@ -41,13 +41,8 @@ export const EmailVerification = () => {
             >
               <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto" />
               <div>
-<<<<<<< HEAD
-                <h2 className="text-xl font-bold text-textPrimary mb-2">Verifying your email...</h2>
-                <p className="text-sm text-textPrimary/60">Please wait while we confirm your account.</p>
-=======
                 <h2 className="text-xl font-bold text-slate-900 mb-2">Verifying your email...</h2>
                 <p className="text-sm text-slate-600">Please wait while we confirm your account.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </motion.div>
           ) : (
@@ -60,13 +55,8 @@ export const EmailVerification = () => {
                 <MailCheck className="w-10 h-10 text-green-400" />
               </div>
               <div>
-<<<<<<< HEAD
-                <h2 className="text-2xl font-bold text-textPrimary mb-2">Email Verified!</h2>
-                <p className="text-sm text-textPrimary/60">
-=======
                 <h2 className="text-2xl font-bold text-slate-900 mb-2">Email Verified!</h2>
                 <p className="text-sm text-slate-600">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   Thank you for verifying your email address. Your account is now fully active.
                 </p>
               </div>

@@ -11,19 +11,11 @@ export const VendorBookingAnalytics = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <CalendarDays className="w-7 h-7 text-primary" />
-            Booking Analytics
-          </h1>
-          <p className="text-textPrimary/60">Deep dive into your event volume, seasonality, and client demographics.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <CalendarDays className="w-7 h-7 text-primary" />
             Booking Analytics
           </h1>
           <p className="text-slate-600">Deep dive into your event volume, seasonality, and client demographics.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <div className="flex gap-2">
           <Button variant="outline" leftIcon={<Filter className="w-4 h-4"/>}>Advanced Filters</Button>
@@ -37,25 +29,15 @@ export const VendorBookingAnalytics = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-start">
               <div>
-<<<<<<< HEAD
-                <p className="text-sm text-textPrimary/50 mb-1">Total Bookings YTD</p>
-                <h3 className="text-3xl font-bold text-textPrimary">84</h3>
-=======
                 <p className="text-sm text-slate-500 mb-1">Total Bookings YTD</p>
                 <h3 className="text-3xl font-bold text-slate-900">84</h3>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                 <Briefcase className="w-5 h-5 text-primary" />
               </div>
             </div>
-<<<<<<< HEAD
-            <div className="mt-4 pt-4 border-t border-white/5">
-              <p className="text-xs text-textPrimary/40"><span className="text-green-400 font-bold">+12%</span> vs last year</p>
-=======
             <div className="mt-4 pt-4 border-t border-slate-200">
               <p className="text-xs text-slate-500"><span className="text-green-400 font-bold">+12%</span> vs last year</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
@@ -64,25 +46,15 @@ export const VendorBookingAnalytics = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-start">
               <div>
-<<<<<<< HEAD
-                <p className="text-sm text-textPrimary/50 mb-1">Busiest Month</p>
-                <h3 className="text-3xl font-bold text-textPrimary">October</h3>
-=======
                 <p className="text-sm text-slate-500 mb-1">Busiest Month</p>
                 <h3 className="text-3xl font-bold text-slate-900">October</h3>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
               <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
                 <CalendarDays className="w-5 h-5 text-accent" />
               </div>
             </div>
-<<<<<<< HEAD
-            <div className="mt-4 pt-4 border-t border-white/5">
-              <p className="text-xs text-textPrimary/40">18 bookings scheduled</p>
-=======
             <div className="mt-4 pt-4 border-t border-slate-200">
               <p className="text-xs text-slate-500">18 bookings scheduled</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
@@ -91,25 +63,15 @@ export const VendorBookingAnalytics = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-start">
               <div>
-<<<<<<< HEAD
-                <p className="text-sm text-textPrimary/50 mb-1">Avg. Booking Lead Time</p>
-                <h3 className="text-3xl font-bold text-textPrimary">4.2 <span className="text-lg text-textPrimary/50 font-normal">months</span></h3>
-=======
                 <p className="text-sm text-slate-500 mb-1">Avg. Booking Lead Time</p>
                 <h3 className="text-3xl font-bold text-slate-900">4.2 <span className="text-lg text-slate-500 font-normal">months</span></h3>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
               <div className="w-10 h-10 rounded-lg bg-yellow-500/10 flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-yellow-500" />
               </div>
             </div>
-<<<<<<< HEAD
-            <div className="mt-4 pt-4 border-t border-white/5">
-              <p className="text-xs text-textPrimary/40">Clients book you well in advance</p>
-=======
             <div className="mt-4 pt-4 border-t border-slate-200">
               <p className="text-xs text-slate-500">Clients book you well in advance</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
@@ -138,11 +100,7 @@ export const VendorBookingAnalytics = () => {
                     transition={{ duration: 1, delay: i * 0.05 }}
                     className="w-full bg-primary/20 group-hover:bg-primary rounded-t-sm transition-colors"
                   />
-<<<<<<< HEAD
-                  <span className="text-[10px] text-textPrimary/40 mt-2">{month}</span>
-=======
                   <span className="text-[10px] text-slate-500 mt-2">{month}</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               );
             })}
@@ -165,13 +123,8 @@ export const VendorBookingAnalytics = () => {
               ].map((loc, i) => (
                 <div key={i}>
                   <div className="flex justify-between text-sm mb-1">
-<<<<<<< HEAD
-                    <span className="text-textPrimary/80">{loc.city}</span>
-                    <span className="text-textPrimary font-bold">{loc.count}</span>
-=======
                     <span className="text-slate-800">{loc.city}</span>
                     <span className="text-slate-900 font-bold">{loc.count}</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
                   <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
                     <div className="h-full bg-accent rounded-full" style={{ width: `${loc.pct}%` }} />
@@ -180,13 +133,8 @@ export const VendorBookingAnalytics = () => {
               ))}
             </div>
             <div className="w-1/2 flex items-center justify-center bg-surface/30 opacity-50 relative overflow-hidden">
-<<<<<<< HEAD
-              <Map className="w-32 h-32 text-textPrimary/10 absolute" />
-              <p className="text-xs text-textPrimary/40 z-10 text-center px-4">Interactive Map visualization goes here</p>
-=======
               <Map className="w-32 h-32 text-slate-200 absolute" />
               <p className="text-xs text-slate-500 z-10 text-center px-4">Interactive Map visualization goes here</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>

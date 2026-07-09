@@ -2,18 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, User, Sparkles, Sun, Moon } from 'lucide-react';
-<<<<<<< HEAD
-=======
 import { useQuery } from '@tanstack/react-query';
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 import { Button } from '../common/Button';
 import { cn } from '../../utils/cn';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
-<<<<<<< HEAD
-=======
 import { api, resolveAssetUrl } from '../../utils/api';
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,8 +42,6 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const { theme, toggleTheme } = useTheme();
-
   const navLinks = [
     { name: 'Services', path: '/services' },
     { name: 'Marketplace', path: '/marketplace' },
@@ -83,15 +75,10 @@ export const Navbar = () => {
                 key={link.name}
                 to={link.path}
                 className={cn(
-<<<<<<< HEAD
-                  "text-sm font-medium transition-colors hover:text-textPrimary",
-                  location.pathname === link.path ? "text-textPrimary" : "text-muted"
-=======
                   "text-sm font-bold transition-colors",
                   isTransparentDark 
                     ? "text-white/90 hover:text-white drop-shadow-md"
                     : location.pathname === link.path ? "text-primary" : "text-slate-600 hover:text-primary"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 )}
               >
                 {link.name}
@@ -101,20 +88,12 @@ export const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
-<<<<<<< HEAD
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 text-primary hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]"
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-=======
             <button
               onClick={toggleTheme}
               className={cn("p-2 rounded-full transition-colors", 
                 isTransparentDark ? "text-white/90 hover:text-white hover:bg-white/10 drop-shadow-md" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               )}
               aria-label="Toggle Theme"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             >
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
@@ -125,14 +104,10 @@ export const Navbar = () => {
               </Link>
             ) : (
               <>
-<<<<<<< HEAD
-                <Link to="/login" className="text-sm font-medium text-textPrimary/80 hover:text-textPrimary transition-colors">
-=======
                 <Link to="/login" className={cn(
                   "text-sm font-bold transition-colors",
                   isTransparentDark ? "text-white/90 hover:text-white drop-shadow-md" : "text-slate-800 hover:text-primary"
                 )}>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   Sign In
                 </Link>
                 <Link to="/register">
@@ -144,11 +119,7 @@ export const Navbar = () => {
 
           {/* Mobile Toggle */}
           <button
-<<<<<<< HEAD
-            className="md:hidden text-textPrimary p-2"
-=======
             className="md:hidden text-white p-2.5"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -169,31 +140,13 @@ export const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-<<<<<<< HEAD
-                className="text-lg font-medium text-textPrimary/80 hover:text-textPrimary p-2 rounded-lg hover:bg-textPrimary/5 transition-colors"
-=======
                 className="text-lg font-medium text-slate-800 hover:text-slate-900 p-2 rounded-lg hover:bg-slate-100 transition-colors"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.name}
               </Link>
             ))}
-<<<<<<< HEAD
-            <div className="h-px bg-border my-2" />
-            <div className="flex items-center gap-3 px-2">
-              <button
-                onClick={toggleTheme}
-                className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 text-primary hover:bg-primary/10"
-                aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-              >
-                {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              </button>
-              <span className="text-sm text-muted">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-            </div>
-=======
             <div className="h-px bg-slate-200 my-2" />
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <div className="flex flex-col gap-3">
               <button
                 onClick={() => {

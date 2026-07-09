@@ -20,7 +20,6 @@ const notificationRoutes = require('./routes/notification.routes');
 const wishlistRoutes = require('./routes/wishlist.routes');
 const chatRoutes = require('./routes/chat.routes');
 const uploadRoutes = require('./routes/upload.routes');
-const categoryRoutes = require('./routes/category.routes');
 
 // ===================================
 
@@ -76,7 +75,6 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/upload', uploadRoutes);
-app.use('/api/categories', categoryRoutes);
 
 // ===================================
 

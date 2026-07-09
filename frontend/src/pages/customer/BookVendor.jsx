@@ -52,11 +52,7 @@ export const BookVendor = () => {
   const PACKAGES = vendor?.eventPackages || [];
 
   if (isLoading) return <PageLoader text="Loading vendor details..." />;
-<<<<<<< HEAD
-  if (!vendor) return <div className="pt-32 pb-20 text-center text-textPrimary">Vendor not found.</div>;
-=======
   if (!vendor) return <div className="pt-32 pb-20 text-center text-slate-900">Vendor not found.</div>;
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
   const selectedPkgData = PACKAGES.find(p => p.packageId === selectedPackage);
 
@@ -72,11 +68,7 @@ export const BookVendor = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-<<<<<<< HEAD
-            className="text-4xl md:text-5xl font-black text-textPrimary mb-4 tracking-tight"
-=======
             className="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Book with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">{vendor.businessName}</span>
           </motion.h1>
@@ -84,11 +76,7 @@ export const BookVendor = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-<<<<<<< HEAD
-            className="text-textPrimary/60 text-lg"
-=======
             className="text-slate-600 text-lg"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Configure your booking details and secure your date.
           </motion.p>
@@ -100,11 +88,7 @@ export const BookVendor = () => {
             <React.Fragment key={num}>
               <div className={cn(
                 "w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors relative",
-<<<<<<< HEAD
-                step >= num ? "bg-primary text-textPrimary shadow-[0_0_20px_rgba(91,124,250,0.4)]" : "bg-surface border border-white/10 text-textPrimary/40"
-=======
                 step >= num ? "bg-primary text-white shadow-[0_0_20px_rgba(91,124,250,0.4)]" : "bg-surface border border-slate-300 text-slate-500"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               )}>
                 {step > num ? <Check className="w-5 h-5"/> : num}
               </div>
@@ -132,11 +116,7 @@ export const BookVendor = () => {
                   </CardHeader>
                   <CardContent className="p-6 pt-0 space-y-4">
                     {PACKAGES.length === 0 && (
-<<<<<<< HEAD
-                      <div className="text-center text-textPrimary/60 py-8">This vendor has no packages available.</div>
-=======
                       <div className="text-center text-slate-600 py-8">This vendor has no packages available.</div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     )}
                     {PACKAGES.map(pkg => (
                       <div 
@@ -155,19 +135,11 @@ export const BookVendor = () => {
                         <div className="flex justify-between items-start mb-2">
                           <h3 className={cn(
                             "font-bold text-lg",
-<<<<<<< HEAD
-                            selectedPackage === pkg.packageId ? "text-primary" : "text-textPrimary"
-                          )}>{pkg.packageName}</h3>
-                          <span className="font-bold text-textPrimary">LKR {Number(pkg.price).toFixed(2)}</span>
-                        </div>
-                        <p className="text-sm text-textPrimary/60 mb-4">{pkg.description || 'No description available.'}</p>
-=======
                             selectedPackage === pkg.packageId ? "text-primary" : "text-slate-900"
                           )}>{pkg.packageName}</h3>
                           <span className="font-bold text-slate-900">LKR {Number(pkg.price).toFixed(2)}</span>
                         </div>
                         <p className="text-sm text-slate-600 mb-4">{pkg.description || 'No description available.'}</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                       </div>
                     ))}
 
@@ -192,33 +164,20 @@ export const BookVendor = () => {
                   <CardContent className="p-6 pt-0 space-y-6">
                     
                     <div className="space-y-2">
-<<<<<<< HEAD
-                      <label className="text-sm font-medium text-textPrimary/80">Event Date</label>
-                      <div className="relative">
-                        <CalendarIcon className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-textPrimary/40" />
-=======
                       <label className="text-sm font-medium text-slate-800">Event Date</label>
                       <div className="relative">
                         <CalendarIcon className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                         <input 
                           type="date" 
                           min={new Date().toISOString().split('T')[0]}
                           value={eventDate}
                           onChange={(e) => setEventDate(e.target.value)}
-<<<<<<< HEAD
-                          className="w-full bg-surface border border-white/10 rounded-xl pl-12 pr-4 py-3 text-textPrimary focus:outline-none focus:border-primary transition-colors [color-scheme:dark]" 
-=======
                           className="w-full bg-surface border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary transition-colors [color-scheme:dark]" 
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-<<<<<<< HEAD
-                      <label className="text-sm font-medium text-textPrimary/80">Message to Vendor (Optional)</label>
-=======
                       <label className="text-sm font-medium text-slate-800">Event Location</label>
                       <div className="relative">
                         <MapPin className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
@@ -234,17 +193,12 @@ export const BookVendor = () => {
 
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-slate-800">Message to Vendor (Optional)</label>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                       <textarea 
                         rows="3" 
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Tell them a bit about your vision..." 
-<<<<<<< HEAD
-                        className="w-full bg-surface border border-white/10 rounded-xl p-4 text-textPrimary focus:outline-none focus:border-primary transition-colors resize-none"
-=======
                         className="w-full bg-surface border border-slate-300 rounded-xl p-4 text-slate-900 focus:outline-none focus:border-primary transition-colors resize-none"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                       />
                     </div>
 
@@ -263,15 +217,9 @@ export const BookVendor = () => {
                   </CardHeader>
                   <CardContent className="p-6 pt-0 space-y-6">
                     
-<<<<<<< HEAD
-                    <div className="bg-surface border border-white/10 rounded-xl p-6 text-center space-y-2">
-                      <p className="text-textPrimary/60">Total Amount Due</p>
-                      <h2 className="text-4xl font-bold text-textPrimary">LKR {selectedPkgData ? Number(selectedPkgData.price).toFixed(2) : '0.00'}</h2>
-=======
                     <div className="bg-surface border border-slate-300 rounded-xl p-6 text-center space-y-2">
                       <p className="text-slate-600">Total Amount Due</p>
                       <h2 className="text-4xl font-bold text-slate-900">LKR {selectedPkgData ? Number(selectedPkgData.price).toFixed(2) : '0.00'}</h2>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     </div>
 
                     <div className="pt-6 flex justify-between">
@@ -290,39 +238,18 @@ export const BookVendor = () => {
           <div className="space-y-6">
             <Card className="sticky top-24 bg-surface/40 backdrop-blur-xl border-slate-300 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
               <CardContent className="p-6">
-<<<<<<< HEAD
-                <div className="flex items-center gap-4 mb-6 pb-6 border-b border-white/5">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 border border-white/10 shrink-0 flex items-center justify-center">
-                    <span className="text-xl font-bold text-textPrimary">{vendor.businessName.charAt(0)}</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-textPrimary text-lg">{vendor.businessName}</h3>
-=======
                 <div className="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 border border-slate-300 shrink-0 flex items-center justify-center">
                     <span className="text-xl font-bold text-slate-900">{vendor.businessName.charAt(0)}</span>
                   </div>
                   <div>
                     <h3 className="font-bold text-slate-900 text-lg">{vendor.businessName}</h3>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     <p className="text-xs text-primary font-medium tracking-wider uppercase">{vendor.vendorType}</p>
                   </div>
                 </div>
 
                 <div className="space-y-4 text-sm">
                   <div>
-<<<<<<< HEAD
-                    <span className="block text-textPrimary/40 mb-1 text-xs">Selected Package</span>
-                    {selectedPkgData ? (
-                      <span className="font-medium text-textPrimary">{selectedPkgData.packageName}</span>
-                    ) : (
-                      <span className="text-textPrimary/20 italic">None selected</span>
-                    )}
-                  </div>
-                  <div>
-                    <span className="block text-textPrimary/40 mb-1 text-xs">Base Price</span>
-                    <span className="font-medium text-textPrimary">LKR {selectedPkgData ? Number(selectedPkgData.price).toFixed(2) : '0.00'}
-=======
                     <span className="block text-slate-500 mb-1 text-xs">Selected Package</span>
                     {selectedPkgData ? (
                       <span className="font-medium text-slate-900">{selectedPkgData.packageName}</span>
@@ -333,7 +260,6 @@ export const BookVendor = () => {
                   <div>
                     <span className="block text-slate-500 mb-1 text-xs">Base Price</span>
                     <span className="font-medium text-slate-900">LKR {selectedPkgData ? Number(selectedPkgData.price).toFixed(2) : '0.00'}
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     </span>
                   </div>
                 </div>

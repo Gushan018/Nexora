@@ -17,11 +17,7 @@ const StatusIcon = ({ status }) => {
     case 'IN_TRANSIT': return <MapPin className="w-5 h-5 text-blue-400" />;
     case 'PROCESSING': 
     case 'PENDING': return <Clock className="w-5 h-5 text-yellow-400" />;
-<<<<<<< HEAD
-    default: return <Package className="w-5 h-5 text-textPrimary/40" />;
-=======
     default: return <Package className="w-5 h-5 text-slate-500" />;
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
   }
 };
 
@@ -183,13 +179,8 @@ export const OrderHistory = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary">Order History</h1>
-          <p className="text-textPrimary/60">Track, return, or repurchase items from past orders.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900">Order History</h1>
           <p className="text-slate-600">Track, return, or repurchase items from past orders.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
       </div>
 
@@ -212,15 +203,6 @@ export const OrderHistory = () => {
       </div>
 
       <Card>
-<<<<<<< HEAD
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
-            <input 
-              type="text" 
-              placeholder="Search by order ID or product name..." 
-              className="w-full bg-surface/50 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors" 
-=======
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 p-4">
           <div className="relative w-full md:w-96">
             <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -230,7 +212,6 @@ export const OrderHistory = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-surface border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary transition-colors"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             />
           </div>
         </div>
@@ -246,17 +227,6 @@ export const OrderHistory = () => {
             <div className="bg-surface/50 p-4 sm:p-6 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex flex-wrap gap-x-8 gap-y-2">
                 <div>
-<<<<<<< HEAD
-                  <p className="text-xs text-textPrimary/40 font-medium uppercase tracking-wider mb-1">Order Placed</p>
-                  <p className="text-sm text-textPrimary/90">{new Date(order.orderDate).toLocaleDateString()}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-textPrimary/40 font-medium uppercase tracking-wider mb-1">Total</p>
-                  <p className="text-sm text-textPrimary/90">LKR {Number(order.totalAmount).toFixed(2)}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-textPrimary/40 font-medium uppercase tracking-wider mb-1">Order #</p>
-=======
                   <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Order Placed</p>
                   <p className="text-sm text-slate-800">{new Date(order.orderDate).toLocaleDateString()}</p>
                 </div>
@@ -266,7 +236,6 @@ export const OrderHistory = () => {
                 </div>
                 <div>
                   <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Order #</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   <p className="text-sm font-medium text-primary">#{order.orderId}</p>
                 </div>
               </div>
@@ -278,13 +247,8 @@ export const OrderHistory = () => {
               <div className="mb-6 flex items-center gap-3">
                 <StatusIcon status={order.status} />
                 <div>
-<<<<<<< HEAD
-                  <h4 className="font-bold text-textPrimary text-lg">{order.status}</h4>
-                  <p className="text-sm text-textPrimary/60">Shipped to: {order.shippingAddress}</p>
-=======
                   <h4 className="font-bold text-slate-900 text-lg">{order.status}</h4>
                   <p className="text-sm text-slate-600">Shipped to: {order.shippingAddress}</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               </div>
 
@@ -296,13 +260,6 @@ export const OrderHistory = () => {
                     </div>
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
-<<<<<<< HEAD
-                        <h5 className="font-medium text-textPrimary text-sm sm:text-base line-clamp-1">{item.product.productName}</h5>
-                        <p className="text-sm text-textPrimary/50 mt-1">Qty: {item.quantity}</p>
-                      </div>
-                      <div className="flex gap-3 mt-2 sm:mt-0">
-                        <span className="text-xs font-medium text-textPrimary/60">LKR {Number(item.unitPrice).toFixed(2)} each</span>
-=======
                         <h5 className="font-medium text-slate-900 text-sm sm:text-base line-clamp-1">{item.product.productName}</h5>
                         <p className="text-sm text-slate-500 mt-1">Qty: {item.quantity}</p>
                       </div>
@@ -316,7 +273,6 @@ export const OrderHistory = () => {
                             Write Review
                           </Link>
                         )}
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                       </div>
                     </div>
                   </div>
@@ -324,17 +280,7 @@ export const OrderHistory = () => {
               </div>
             </CardContent>
           </Card>
-<<<<<<< HEAD
-        ))}
-        {orders.length === 0 && (
-          <div className="text-center py-20 border border-white/10 rounded-2xl bg-surface/50">
-            <h2 className="text-2xl font-bold text-textPrimary mb-2">No orders yet</h2>
-            <p className="text-textPrimary/60">You haven't placed any orders.</p>
-          </div>
-        )}
-=======
         )))}
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
       </div>
     </div>
   );

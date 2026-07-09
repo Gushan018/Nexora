@@ -11,19 +11,11 @@ export const AdvancedAnalyticsDashboard = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <BrainCircuit className="w-7 h-7 text-primary" />
-            AI Analytics & Forecasting
-          </h1>
-          <p className="text-textPrimary/60">Machine learning models for revenue prediction, churn forecasting, and cohort analysis.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <BrainCircuit className="w-7 h-7 text-primary" />
             AI Analytics & Forecasting
           </h1>
           <p className="text-slate-600">Machine learning models for revenue prediction, churn forecasting, and cohort analysis.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
       </div>
 
@@ -36,13 +28,8 @@ export const AdvancedAnalyticsDashboard = () => {
               <Zap className="w-6 h-6 text-primary" />
             </div>
             <div>
-<<<<<<< HEAD
-              <h3 className="text-lg font-bold text-textPrimary">Nexora AI Insight</h3>
-              <p className="text-sm text-textPrimary/80 mt-1 max-w-2xl">
-=======
               <h3 className="text-lg font-bold text-slate-900">Event Nest AI Insight</h3>
               <p className="text-sm text-slate-800 mt-1 max-w-2xl">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 Our predictive model indicates a <strong>15% surge in Photography bookings</strong> for the upcoming spring season in the Los Angeles metro area. Consider launching targeted ad campaigns to acquire more photography vendors in this region.
               </p>
             </div>
@@ -54,56 +41,34 @@ export const AdvancedAnalyticsDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Q4 Revenue Forecast</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">LKR 4.2M</span>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Q4 Revenue Forecast</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-slate-900">LKR 4.2M</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
             <p className="text-xs text-green-400 font-bold mt-2">High Confidence (92%)</p>
           </CardContent>
         </Card>
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Predicted Churn Risk</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">124</span>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Predicted Churn Risk</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-slate-900">124</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
             <p className="text-xs text-red-400 font-bold mt-2">Vendors at risk next 30d</p>
           </CardContent>
         </Card>
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">LTV Projection</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">LKR 2,850</span>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">LTV Projection</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-slate-900">LKR 2,850</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
             <p className="text-xs text-green-400 font-bold mt-2">+15% over historical avg</p>
           </CardContent>
         </Card>
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Demand Anomalies</h3>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Demand Anomalies</h3>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-yellow-500">3</span>
             </div>
@@ -128,13 +93,8 @@ export const AdvancedAnalyticsDashboard = () => {
             </div>
             <div className="text-center z-10">
               <LineChart className="w-16 h-16 text-primary/20 mx-auto mb-4" />
-<<<<<<< HEAD
-              <p className="text-textPrimary/40 font-medium">Recharts Predictive Line Graph</p>
-              <p className="text-xs text-textPrimary/30">Showing confidence intervals (Upper/Lower bounds)</p>
-=======
               <p className="text-slate-500 font-medium">Recharts Predictive Line Graph</p>
               <p className="text-xs text-slate-400">Showing confidence intervals (Upper/Lower bounds)</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
@@ -149,11 +109,7 @@ export const AdvancedAnalyticsDashboard = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
                 <thead>
-<<<<<<< HEAD
-                  <tr className="text-textPrimary/40 pb-2">
-=======
                   <tr className="text-slate-500 pb-2">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     <th className="font-medium pb-4">Cohort</th>
                     <th className="font-medium pb-4">Month 1</th>
                     <th className="font-medium pb-4">Month 2</th>
@@ -163,34 +119,6 @@ export const AdvancedAnalyticsDashboard = () => {
                 </thead>
                 <tbody className="font-bold">
                   <tr>
-<<<<<<< HEAD
-                    <td className="py-2 text-textPrimary/80">Jan 2026</td>
-                    <td className="py-2"><div className="bg-primary/80 text-textPrimary px-2 py-1 rounded w-fit">100%</div></td>
-                    <td className="py-2"><div className="bg-primary/60 text-textPrimary px-2 py-1 rounded w-fit">42%</div></td>
-                    <td className="py-2"><div className="bg-primary/40 text-textPrimary/80 px-2 py-1 rounded w-fit">28%</div></td>
-                    <td className="py-2"><div className="bg-primary/20 text-textPrimary/60 px-2 py-1 rounded w-fit">21%</div></td>
-                  </tr>
-                  <tr>
-                    <td className="py-2 text-textPrimary/80">Feb 2026</td>
-                    <td className="py-2"><div className="bg-primary/80 text-textPrimary px-2 py-1 rounded w-fit">100%</div></td>
-                    <td className="py-2"><div className="bg-primary/60 text-textPrimary px-2 py-1 rounded w-fit">45%</div></td>
-                    <td className="py-2"><div className="bg-primary/40 text-textPrimary/80 px-2 py-1 rounded w-fit">31%</div></td>
-                    <td className="py-2"><div className="bg-surface text-textPrimary/40 px-2 py-1 rounded w-fit border border-white/5">-</div></td>
-                  </tr>
-                  <tr>
-                    <td className="py-2 text-textPrimary/80">Mar 2026</td>
-                    <td className="py-2"><div className="bg-primary/80 text-textPrimary px-2 py-1 rounded w-fit">100%</div></td>
-                    <td className="py-2"><div className="bg-primary/60 text-textPrimary px-2 py-1 rounded w-fit">48%</div></td>
-                    <td className="py-2"><div className="bg-surface text-textPrimary/40 px-2 py-1 rounded w-fit border border-white/5">-</div></td>
-                    <td className="py-2"><div className="bg-surface text-textPrimary/40 px-2 py-1 rounded w-fit border border-white/5">-</div></td>
-                  </tr>
-                  <tr>
-                    <td className="py-2 text-textPrimary/80">Apr 2026</td>
-                    <td className="py-2"><div className="bg-primary/80 text-textPrimary px-2 py-1 rounded w-fit">100%</div></td>
-                    <td className="py-2"><div className="bg-surface text-textPrimary/40 px-2 py-1 rounded w-fit border border-white/5">-</div></td>
-                    <td className="py-2"><div className="bg-surface text-textPrimary/40 px-2 py-1 rounded w-fit border border-white/5">-</div></td>
-                    <td className="py-2"><div className="bg-surface text-textPrimary/40 px-2 py-1 rounded w-fit border border-white/5">-</div></td>
-=======
                     <td className="py-2 text-slate-800">Jan 2026</td>
                     <td className="py-2"><div className="bg-primary/80 text-slate-900 px-2 py-1 rounded w-fit">100%</div></td>
                     <td className="py-2"><div className="bg-primary/60 text-slate-900 px-2 py-1 rounded w-fit">42%</div></td>
@@ -217,16 +145,11 @@ export const AdvancedAnalyticsDashboard = () => {
                     <td className="py-2"><div className="bg-surface text-slate-500 px-2 py-1 rounded w-fit border border-slate-200">-</div></td>
                     <td className="py-2"><div className="bg-surface text-slate-500 px-2 py-1 rounded w-fit border border-slate-200">-</div></td>
                     <td className="py-2"><div className="bg-surface text-slate-500 px-2 py-1 rounded w-fit border border-slate-200">-</div></td>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </tr>
                 </tbody>
               </table>
             </div>
-<<<<<<< HEAD
-            <p className="text-xs text-textPrimary/40 mt-4 italic text-center">Reading this chart: Cohorts are improving over time, with Feb & Mar showing better Month 2 retention than Jan.</p>
-=======
             <p className="text-xs text-slate-500 mt-4 italic text-center">Reading this chart: Cohorts are improving over time, with Feb & Mar showing better Month 2 retention than Jan.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </CardContent>
         </Card>
 

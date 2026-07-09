@@ -133,13 +133,8 @@ export const SystemSettings = () => {
     <div className="space-y-6 max-w-7xl mx-auto pb-12 flex flex-col lg:flex-row gap-6 lg:gap-8">
       
       {/* Sidebar Navigation */}
-<<<<<<< HEAD
-      <div className="w-full md:w-64 shrink-0 space-y-2">
-        <h1 className="text-2xl font-bold text-textPrimary mb-6">Settings</h1>
-=======
       <div className="w-full lg:w-64 shrink-0 space-y-2">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6">Settings</h1>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         
         <nav className="space-y-1">
           {tabs.map((item) => (
@@ -149,15 +144,9 @@ export const SystemSettings = () => {
               onClick={() => setActiveTab(item.id)}
               className={cn(
                 "w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors text-left",
-<<<<<<< HEAD
-                item.active 
-                  ? "bg-primary/20 text-primary border border-primary/20" 
-                  : "text-textPrimary/60 hover:text-textPrimary hover:bg-white/5"
-=======
                 item.id === activeTab
                   ? "bg-primary/20 text-primary border border-primary/20"
                   : "text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               )}
             >
               <item.icon className="w-4 h-4" />
@@ -171,42 +160,6 @@ export const SystemSettings = () => {
       <div className="flex-1 space-y-6">
         
         <div>
-<<<<<<< HEAD
-          <h2 className="text-xl font-bold text-textPrimary">General Settings</h2>
-          <p className="text-sm text-textPrimary/60 mt-1">Manage global platform configurations and branding.</p>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Platform Identity</CardTitle>
-            <CardDescription>Public-facing details for the marketplace.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-textPrimary/80 block">Platform Name</label>
-                <input 
-                  type="text" 
-                  defaultValue="Nexora Marketplace" 
-                  className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-textPrimary/80 block">Support Email</label>
-                <input 
-                  type="email" 
-                  defaultValue="support@nexora.com" 
-                  className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
-                />
-              </div>
-            </div>
-            
-            <div className="space-y-1.5 pt-2">
-              <label className="text-sm font-medium text-textPrimary/80 block">Platform Logo (Dark Mode)</label>
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded bg-surface border border-white/10 flex items-center justify-center">
-                  <span className="font-bold text-textPrimary tracking-widest text-xs">NEXORA</span>
-=======
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">{tabs.find((tab) => tab.id === activeTab)?.label}</h2>
           <p className="text-sm text-gray-600 dark:text-white/60 mt-1">{tabs.find((tab) => tab.id === activeTab)?.description}</p>
         </div>
@@ -236,7 +189,6 @@ export const SystemSettings = () => {
                     onChange={handleChange('supportEmail')}
                     className="w-full bg-light-surface dark:bg-surface border border-gray-300 dark:border-white/10 rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors"
                   />
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               </div>
               <div className="pt-2">
@@ -305,22 +257,6 @@ export const SystemSettings = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-1.5">
-<<<<<<< HEAD
-                <label className="text-sm font-medium text-textPrimary/80 block">Default Timezone</label>
-                <select className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
-                  <option>UTC (Coordinated Universal Time)</option>
-                  <option>PST (Pacific Standard Time)</option>
-                  <option>EST (Eastern Standard Time)</option>
-                </select>
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-textPrimary/80 block">Default Currency</label>
-                <select className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
-                  <option>LKR (Rs)</option>
-                  <option>EUR (€)</option>
-                  <option>GBP (£)</option>
-                </select>
-=======
                 <label className="text-sm font-medium text-gray-700 dark:text-white/80 block">SMTP Host</label>
                 <input
                   type="text"
@@ -349,7 +285,6 @@ export const SystemSettings = () => {
                     className="w-full bg-light-surface dark:bg-surface border border-gray-300 dark:border-white/10 rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors"
                   />
                 </div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
@@ -385,18 +320,6 @@ export const SystemSettings = () => {
           </Card>
         )}
 
-<<<<<<< HEAD
-        <Card>
-          <CardHeader>
-            <CardTitle>System Maintenance</CardTitle>
-            <CardDescription>Toggle platform availability.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-surface/50">
-              <div>
-                <h4 className="font-bold text-textPrimary text-sm">Maintenance Mode</h4>
-                <p className="text-xs text-textPrimary/50 mt-1 max-w-md">When enabled, the public marketplace is disabled and shows a "Down for Maintenance" page. Admins can still log in.</p>
-=======
         {activeTab === 'security' && (
           <Card>
             <CardHeader>
@@ -425,7 +348,6 @@ export const SystemSettings = () => {
                   />
                   <label htmlFor="authTwoFactorEnabled" className="text-sm text-gray-700 dark:text-white/80">Enable two-factor auth</label>
                 </div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">

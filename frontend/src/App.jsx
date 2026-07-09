@@ -76,19 +76,14 @@ import { SellerRevenueAnalytics } from './pages/seller/SellerRevenueAnalytics';
 import { ProductReviews } from './pages/seller/ProductReviews';
 import { SellerSettings } from './pages/seller/SellerSettings';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
-import { UserDetail } from './pages/admin/UserDetail';
-import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { UserManagement } from './pages/admin/UserManagement';
 import { AdminVendorManagement } from './pages/admin/AdminVendorManagement';
 import { AdminSellerManagement } from './pages/admin/AdminSellerManagement';
 import { AdminCustomerManagement } from './pages/admin/AdminCustomerManagement';
-<<<<<<< HEAD
-=======
 import { AdminPaymentsEscrow } from './pages/admin/AdminPaymentsEscrow';
 import { ReviewsModeration } from './pages/admin/ReviewsModeration';
 import { VendorVerification } from './pages/admin/VendorVerification';
 import { BusinessApprovals } from './pages/admin/BusinessApprovals';
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 import { ProductModeration } from './pages/admin/ProductModeration';
 import { CategoryManagement } from './pages/admin/CategoryManagement';
 import { AdminBookingManagement } from './pages/admin/AdminBookingManagement';
@@ -110,7 +105,6 @@ function App() {
   return (
     <Router>
       <PageTitleManager />
-      <ErrorBoundary>
       <Routes>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<LandingPage />} />
@@ -169,7 +163,7 @@ function App() {
           <Route path="portfolio-management" element={<PortfolioManagement />} />
           <Route path="gallery-management" element={<GalleryManagement />} />
           <Route path="create-service" element={<CreateService />} />
-          <Route path="edit-service/:serviceId" element={<EditService />} />
+          <Route path="edit-service" element={<EditService />} />
           <Route path="service-listing" element={<ServiceListing />} />
           <Route path="package-management" element={<PackageManagement />} />
           <Route path="incoming-requests" element={<IncomingRequests />} />
@@ -191,7 +185,7 @@ function App() {
           <Route path="dashboard" element={<SellerDashboard />} />
           <Route path="seller-dashboard" element={<SellerDashboard />} />
           <Route path="store-management" element={<StoreManagement />} />
-          <Route path="store-profile/:id" element={<StoreProfile />} />
+          <Route path="store-profile" element={<StoreProfile />} />
           <Route path="seller-product-management" element={<SellerProductManagement />} />
           <Route path="add-product" element={<AddProduct />} />
           <Route path="edit-product" element={<EditProduct />} />
@@ -215,6 +209,8 @@ function App() {
           <Route path="admin-vendor-management" element={<AdminVendorManagement />} />
           <Route path="admin-seller-management" element={<AdminSellerManagement />} />
           <Route path="admin-customer-management" element={<AdminCustomerManagement />} />
+          <Route path="vendor-verification" element={<VendorVerification />} />
+          <Route path="business-approvals" element={<BusinessApprovals />} />
           <Route path="product-moderation" element={<ProductModeration />} />
           <Route path="category-management" element={<CategoryManagement />} />
           <Route path="admin-payments-escrow" element={<AdminPaymentsEscrow />} />
@@ -234,10 +230,8 @@ function App() {
           <Route path="account-settings" element={<AccountSettings />} />
           <Route path="roles-permissions" element={<RolesPermissions />} />
           <Route path="advanced-analytics-dashboard" element={<AdvancedAnalyticsDashboard />} />
-          <Route path="user/:id" element={<UserDetail />} />
         </Route>
       </Routes>
-      </ErrorBoundary>
     </Router>
   );
 }

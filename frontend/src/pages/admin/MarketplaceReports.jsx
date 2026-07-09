@@ -11,19 +11,11 @@ export const MarketplaceReports = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <Globe className="w-7 h-7 text-primary" />
-            Marketplace Liquidity & Health
-          </h1>
-          <p className="text-textPrimary/60">Analyze supply vs demand, search intent, and geographic coverage.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <Globe className="w-7 h-7 text-primary" />
             Marketplace Liquidity & Health
           </h1>
           <p className="text-slate-600">Analyze supply vs demand, search intent, and geographic coverage.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <div className="flex gap-2">
           <Button variant="outline" leftIcon={<Download className="w-4 h-4"/>}>Export Dataset</Button>
@@ -33,11 +25,7 @@ export const MarketplaceReports = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
         <Card className="border-primary/20 bg-primary/5">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Supply/Demand Ratio</h3>
-=======
             <h3 className="text-sm font-medium text-slate-800 mb-2">Supply/Demand Ratio</h3>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <div className="flex items-end gap-3">
               <span className="text-4xl font-bold text-primary">1 : 24</span>
             </div>
@@ -47,16 +35,6 @@ export const MarketplaceReports = () => {
 
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Zero-Result Searches</h3>
-            <div className="flex justify-between items-end">
-              <div>
-                <span className="text-3xl font-bold text-textPrimary">4.2%</span>
-                <p className="text-xs text-red-400 font-medium mt-1">Slight increase in missed searches</p>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                <Search className="w-5 h-5 text-textPrimary/40" />
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Zero-Result Searches</h3>
             <div className="flex justify-between items-end">
               <div>
@@ -65,7 +43,6 @@ export const MarketplaceReports = () => {
               </div>
               <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
                 <Search className="w-5 h-5 text-slate-500" />
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </div>
           </CardContent>
@@ -73,16 +50,6 @@ export const MarketplaceReports = () => {
 
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Vendor Density</h3>
-            <div className="flex justify-between items-end">
-              <div>
-                <span className="text-3xl font-bold text-textPrimary">High</span>
-                <p className="text-xs text-green-400 font-medium mt-1">In Top 5 Metro Areas</p>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                <Map className="w-5 h-5 text-textPrimary/40" />
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Vendor Density</h3>
             <div className="flex justify-between items-end">
               <div>
@@ -91,7 +58,6 @@ export const MarketplaceReports = () => {
               </div>
               <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
                 <Map className="w-5 h-5 text-slate-500" />
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </div>
           </CardContent>
@@ -116,11 +82,7 @@ export const MarketplaceReports = () => {
               ].map((cat, i) => (
                 <div key={i} className="space-y-2">
                   <div className="flex justify-between items-center text-sm">
-<<<<<<< HEAD
-                    <span className="font-bold text-textPrimary">{cat.name}</span>
-=======
                     <span className="font-bold text-slate-900">{cat.name}</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     <span className={cn("text-xs font-bold px-2 py-0.5 rounded-full border", 
                       cat.status === 'Underserved' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
                       cat.status === 'Oversupplied' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
@@ -160,24 +122,14 @@ export const MarketplaceReports = () => {
               ].map((search, i) => (
                 <div key={i} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
                   <div>
-<<<<<<< HEAD
-                    <h4 className="text-sm font-bold text-textPrimary">"{search.term}"</h4>
-                    <p className="text-xs text-textPrimary/50 flex items-center gap-1 mt-1">
-=======
                     <h4 className="text-sm font-bold text-slate-900">"{search.term}"</h4>
                     <p className="text-xs text-slate-500 flex items-center gap-1 mt-1">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                       <Map className="w-3 h-3" /> {search.location}
                     </p>
                   </div>
                   <div className="text-right">
-<<<<<<< HEAD
-                    <span className="font-bold text-textPrimary">{search.volume}</span>
-                    <p className="text-[10px] text-textPrimary/40">Searches</p>
-=======
                     <span className="font-bold text-slate-900">{search.volume}</span>
                     <p className="text-[10px] text-slate-500">Searches</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
                 </div>
               ))}
