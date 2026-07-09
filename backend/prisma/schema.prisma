@@ -47,52 +47,16 @@ enum OrderStatus {
   CANCELLED
 }
 
-enum DisputeStatus {
-  OPEN
-  INVESTIGATING
-  RESOLVED
-  REJECTED
-}
-
 // ===== MODELS (TABLES) =====
 
 model Admin {
   adminId          Int      @id @default(autoincrement()) @map("admin_id")
-  name             String?  @map("name")
   email            String   @unique
   password         String
-  contactNumber    String?  @map("contact_number")
-  profileImage     String?  @map("profile_image")
   role             String   @default("admin")
   registrationDate DateTime @default(now()) @map("registration_date")
 
   @@map("admin")
-}
-
-model SystemSetting {
-  id                       Int      @id @default(autoincrement()) @map("id")
-  platformName             String   @default("Nexora Marketplace") @map("platformName")
-  supportEmail             String   @default("support@nexora.com") @map("supportEmail")
-  logoUrl                  String?  @map("logoUrl")
-  defaultTimezone          String   @default("UTC") @map("defaultTimezone")
-  defaultCurrency          String   @default("LKR") @map("defaultCurrency")
-  maintenanceMode          Boolean  @default(false) @map("maintenanceMode")
-  commissionPercent        Int      @default(10) @map("commissionPercent")
-  paymentGateway           String   @default("Stripe") @map("paymentGateway")
-  smtpHost                 String?  @map("smtpHost")
-  smtpPort                 Int?     @map("smtpPort")
-  smtpUser                 String?  @map("smtpUser")
-  smtpPassword             String?  @map("smtpPassword")
-  smtpFromEmail            String?  @map("smtpFromEmail")
-  smtpSecure               Boolean  @default(false) @map("smtpSecure")
-  authLockoutEnabled       Boolean  @default(false) @map("authLockoutEnabled")
-  authFailedAttemptsLimit  Int      @default(5) @map("authFailedAttemptsLimit")
-  authPasswordMinLength    Int      @default(8) @map("authPasswordMinLength")
-  authTwoFactorEnabled     Boolean  @default(false) @map("authTwoFactorEnabled")
-  createdAt                DateTime @default(now()) @map("createdAt")
-  updatedAt                DateTime @updatedAt @map("updatedAt")
-
-  @@map("system_setting")
 }
 
 model Customer {
@@ -101,43 +65,42 @@ model Customer {
   email            String   @unique
   password         String
   contactNumber    String?  @map("contact_number")
-  isBlocked        Boolean  @default(false) @map("is_blocked")
   role             String   @default("customer")
   profileImage     String?  @map("profile_image")
   registrationDate DateTime @default(now()) @map("registration_date")
 
   bookings      Booking[]
-  budget        budget?
   cart          Cart?
   orders        Order[]
   reviews       Review[]
   notifications Notification[]
   wishlists     Wishlist[]
   conversations Conversation[]
-  disputes      Dispute[]
+  budget        Budget?
 
   @@map("customer")
 }
 
 model Vendor {
-  vendorId            Int        @id @default(autoincrement()) @map("vendor_id")
-  businessName        String     @map("business_name")
-  email               String     @unique
-  password            String
-  description         String?
-  contactNumber       String?    @map("contact_number")
-  location            String?
-  vendorType          VendorType @map("vendor_type")
-  isApproved          Boolean    @default(false) @map("is_approved")
-  isBlocked           Boolean    @default(false) @map("is_blocked")
-  profileImage        String?    @map("profile_image")
-  registrationDate    DateTime   @default(now()) @map("registration_date")
-  booking_lead_time   String     @default("48h")
-  cancellation_policy String     @default("Moderate")
-  currency            String     @default("LKR")
-  instant_book        Boolean    @default(false)
-  require_deposits    Boolean    @default(false)
-  timezone            String     @default("UTC")
+  vendorId         Int        @id @default(autoincrement()) @map("vendor_id")
+  businessName     String     @map("business_name")
+  email            String     @unique
+  password         String
+  description      String?
+  contactNumber    String?    @map("contact_number")
+  location         String?
+  vendorType       VendorType @map("vendor_type")
+  profileImage     String?    @map("profile_image")
+  currency         String     @default("LKR")
+  timezone         String     @default("UTC")
+  bookingLeadTime  String     @default("48h") @map("booking_lead_time")
+  instantBook      Boolean    @default(false) @map("instant_book")
+  requireDeposits  Boolean    @default(false) @map("require_deposits")
+  cancellationPolicy String   @default("Moderate") @map("cancellation_policy")
+  bankName          String?  @map("bank_name")
+  bankAccountNo     String?  @map("bank_account_no")
+  taxId             String?  @map("tax_id")
+  registrationDate DateTime   @default(now()) @map("registration_date")
 
   services      Service[]
   products      Product[]
@@ -145,17 +108,16 @@ model Vendor {
   availability  Availability[]
   reviews       Review[]
   conversations Conversation[]
-  disputes      Dispute[]
 
   @@map("vendor")
 }
 
 model ServiceCategory {
-  categoryId    Int            @id @default(autoincrement()) @map("category_id")
-  categoryName  String         @map("category_name")
-  services      Service[]
-  products      Product[]
-  event_package EventPackage[]
+  categoryId   Int            @id @default(autoincrement()) @map("category_id")
+  categoryName String         @map("category_name")
+  services     Service[]
+  products     Product[]
+  eventPackages EventPackage[]
 
   @@map("service_category")
 }
@@ -165,11 +127,10 @@ model Service {
   serviceName   String   @map("service_name")
   price         Decimal  @db.Decimal(10, 2)
   description   String?
+  pricingModel  String?  @map("pricing_model")
+  serviceArea   String?  @map("service_area")
   imageUrl      String?  @map("image_url")
-  isApproved    Boolean  @default(false) @map("is_approved")
   createdAt     DateTime @default(now()) @map("created_at")
-  pricing_model String?
-  service_area  String?
 
   vendorId   Int              @map("vendor_id")
   categoryId Int?             @map("category_id")
@@ -189,7 +150,6 @@ model Product {
   quantity    Int      @default(0)
   imageUrl    String?  @map("image_url")
   description String?
-  isApproved  Boolean  @default(false) @map("is_approved")
   createdAt   DateTime @default(now()) @map("created_at")
 
   vendorId   Int              @map("vendor_id")
@@ -208,27 +168,25 @@ model EventPackage {
   packageId   Int      @id @default(autoincrement()) @map("package_id")
   packageName String   @map("package_name")
   description String?
-  imageUrl    String?
   price       Decimal  @db.Decimal(10, 2)
-  isApproved  Boolean  @default(false) @map("is_approved")
   createdAt   DateTime @default(now()) @map("created_at")
-  category_id Int?
 
-  vendorId         Int              @map("vendor_id")
-  vendor           Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  service_category ServiceCategory? @relation(fields: [category_id], references: [categoryId])
-  bookings         Booking[]
-  wishlists        Wishlist[]
+  vendorId   Int              @map("vendor_id")
+  categoryId Int?             @map("category_id")
+  vendor     Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+  category   ServiceCategory? @relation(fields: [categoryId], references: [categoryId], onDelete: SetNull)
+  bookings   Booking[]
+  wishlists  Wishlist[]
 
   @@map("event_package")
 }
 
 model Availability {
-  availabilityId Int      @id @default(autoincrement()) @map("availability_id")
+  availabilityId Int     @id @default(autoincrement()) @map("availability_id")
   date           DateTime @db.Date
-  startTime      String   @map("start_time")
-  endTime        String   @map("end_time")
-  isAvailable    Boolean  @default(true) @map("is_available")
+  startTime      String  @map("start_time")
+  endTime        String  @map("end_time")
+  isAvailable    Boolean @default(true) @map("is_available")
 
   vendorId Int    @map("vendor_id")
   vendor   Vendor @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
@@ -244,37 +202,15 @@ model Booking {
   location           String?
   vendorResponseDate DateTime?     @map("vendor_response_date")
 
-  customerId Int           @map("customer_id")
-  serviceId  Int?          @map("service_id")
-  packageId  Int?          @map("package_id")
-  customer   Customer      @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  service    Service?      @relation(fields: [serviceId], references: [serviceId], onDelete: SetNull)
+  customerId Int          @map("customer_id")
+  serviceId  Int?         @map("service_id")
+  packageId  Int?         @map("package_id")
+  customer   Customer     @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  service    Service?     @relation(fields: [serviceId], references: [serviceId], onDelete: SetNull)
   package    EventPackage? @relation(fields: [packageId], references: [packageId], onDelete: SetNull)
   payment    Payment?
-  disputes   Dispute[]
 
   @@map("booking")
-}
-
-model Dispute {
-  disputeId   Int           @id @default(autoincrement()) @map("dispute_id")
-  bookingId   Int?          @map("booking_id")
-  customerId  Int?          @map("customer_id")
-  vendorId    Int?          @map("vendor_id")
-  raisedBy    String        @map("raised_by")
-  reporter    String?
-  subject     String
-  description String
-  status      DisputeStatus @default(OPEN)
-  adminNotes  String?       @map("admin_notes")
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
-
-  booking  Booking?  @relation(fields: [bookingId], references: [bookingId], onDelete: SetNull)
-  customer Customer? @relation(fields: [customerId], references: [customerId], onDelete: SetNull)
-  vendor   Vendor?   @relation(fields: [vendorId], references: [vendorId], onDelete: SetNull)
-
-  @@map("dispute")
 }
 
 model Cart {
@@ -347,6 +283,10 @@ model Review {
   rating     Int
   comment    String?
   reviewDate DateTime @default(now()) @map("review_date")
+  vendorReply     String?  @map("vendor_reply")
+  vendorReplyDate DateTime? @map("vendor_reply_date")
+  isReported      Boolean  @default(false) @map("is_reported")
+  reportReason    String?  @map("report_reason")
 
   customerId Int      @map("customer_id")
   vendorId   Int?     @map("vendor_id")
@@ -375,28 +315,6 @@ model Notification {
   @@map("notification")
 }
 
-model Broadcast {
-  broadcastId    Int      @id @default(autoincrement()) @map("broadcast_id")
-  title          String
-  message        String
-  type           String   @default("info") @map("type")
-  targetRole     String   @map("target_role")
-  recipientCount Int      @default(0) @map("recipient_count")
-  createdAt      DateTime @default(now()) @map("created_at")
-
-  @@map("broadcast")
-}
-
-model ImpersonationLog {
-  id         Int      @id @default(autoincrement())
-  adminId    Int      @map("admin_id")
-  targetRole String   @map("target_role")
-  targetId   Int      @map("target_id")
-  createdAt  DateTime @default(now()) @map("created_at")
-
-  @@map("impersonation_log")
-}
-
 model Wishlist {
   wishlistId Int      @id @default(autoincrement()) @map("wishlist_id")
   createdAt  DateTime @default(now()) @map("created_at")
@@ -419,48 +337,54 @@ model Wishlist {
 }
 
 model Conversation {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  customerId Int @map("customer_id")
-  vendorId   Int @map("vendor_id")
-
-  customer Customer  @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  vendor   Vendor    @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  messages Message[]
-
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  
+  customerId   Int       @map("customer_id")
+  vendorId     Int       @map("vendor_id")
+  
+  customer     Customer  @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  vendor       Vendor    @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+  messages     Message[]
+  
   @@unique([customerId, vendorId])
   @@map("conversation")
 }
 
 model Message {
-  id         Int      @id @default(autoincrement())
-  text       String
-  senderType String   @map("sender_type") // 'customer' or 'vendor'
-  isRead     Boolean  @default(false) @map("is_read")
-  createdAt  DateTime @default(now()) @map("created_at")
-
+  id             Int          @id @default(autoincrement())
+  text           String
+  senderType     String       @map("sender_type") // 'customer' or 'vendor'
+  isRead         Boolean      @default(false) @map("is_read")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  
   conversationId Int          @map("conversation_id")
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@map("message")
 }
 
-model budget {
-  id              Int               @id @default(autoincrement())
-  customer_id     Int               @unique
-  total_budget    Decimal           @default(0) @db.Decimal(10, 2)
-  customer        Customer          @relation(fields: [customer_id], references: [customerId], onDelete: Cascade)
-  budget_category budget_category[]
+model Budget {
+  id           Int      @id @default(autoincrement())
+  customerId   Int      @unique @map("customer_id")
+  totalBudget  Decimal  @db.Decimal(10, 2) @default(0) @map("total_budget")
+  
+  customer     Customer @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  categories   BudgetCategory[]
+
+  @@map("budget")
 }
 
-model budget_category {
-  id        Int     @id @default(autoincrement())
-  name      String
-  allocated Decimal @default(0) @db.Decimal(10, 2)
-  spent     Decimal @default(0) @db.Decimal(10, 2)
-  color     String?
-  budget_id Int
-  budget    budget  @relation(fields: [budget_id], references: [id], onDelete: Cascade)
+model BudgetCategory {
+  id           Int      @id @default(autoincrement())
+  name         String
+  allocated    Decimal  @db.Decimal(10, 2) @default(0)
+  spent        Decimal  @db.Decimal(10, 2) @default(0)
+  color        String?
+  
+  budgetId     Int      @map("budget_id")
+  budget       Budget   @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+
+  @@map("budget_category")
 }

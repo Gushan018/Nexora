@@ -4,12 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/app.js",
-    "start": "node src/app.js",
-    "seed": "node prisma/seed.js",
-    "prisma:seed": "node prisma/seed.js"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
+    "start": "node src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +20,9 @@
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.1.1",
     "prisma": "^5.22.0"
+  },
+  "prisma": {
+"seed": "node prisma/seed.js"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

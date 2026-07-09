@@ -47,7 +47,6 @@ CREATE TABLE "vendor" (
     "contact_number" TEXT,
     "location" TEXT,
     "vendor_type" "VendorType" NOT NULL,
-    "is_approved" BOOLEAN NOT NULL DEFAULT false,
     "registration_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "vendor_pkey" PRIMARY KEY ("vendor_id")
@@ -68,7 +67,6 @@ CREATE TABLE "service" (
     "price" DECIMAL(10,2) NOT NULL,
     "description" TEXT,
     "image_url" TEXT,
-    "is_approved" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "vendor_id" INTEGER NOT NULL,
     "category_id" INTEGER,
@@ -84,7 +82,6 @@ CREATE TABLE "product" (
     "quantity" INTEGER NOT NULL DEFAULT 0,
     "image_url" TEXT,
     "description" TEXT,
-    "is_approved" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "vendor_id" INTEGER NOT NULL,
     "category_id" INTEGER,
@@ -98,7 +95,6 @@ CREATE TABLE "event_package" (
     "package_name" TEXT NOT NULL,
     "description" TEXT,
     "price" DECIMAL(10,2) NOT NULL,
-    "is_approved" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "vendor_id" INTEGER NOT NULL,
 

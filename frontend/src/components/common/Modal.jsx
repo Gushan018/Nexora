@@ -33,10 +33,10 @@ export const Modal = ({ isOpen, onClose, title, children }) => {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className="relative w-full max-w-md z-10"
           >
-            <Card className="border-slate-300 shadow-2xl bg-surface/95 backdrop-blur-xl">
-              <div className="flex items-center justify-between p-6 border-b border-slate-300">
-                <h2 className="text-xl font-bold text-slate-900">{title}</h2>
-                <button onClick={onClose} className="p-2 text-slate-500 hover:text-slate-900 transition-colors rounded-full hover:bg-slate-100">
+            <Card className="shadow-2xl bg-surface/95 backdrop-blur-xl">
+              <div className="flex items-center justify-between p-6 border-b border-border/20">
+                <h2 className="text-xl font-bold text-textPrimary">{title}</h2>
+                <button onClick={onClose} className="p-2 text-muted hover:text-textPrimary transition-colors rounded-full hover:bg-textPrimary/5">
                   <X className="w-5 h-5" />
                 </button>
               </div>

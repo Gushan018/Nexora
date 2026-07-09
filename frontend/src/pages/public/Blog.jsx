@@ -55,15 +55,15 @@ export const Blog = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
+            className="text-4xl lg:text-5xl font-bold text-textPrimary mb-6"
           >
-            The Event Nest <span className="text-gradient">Journal</span>
+            The Nexora <span className="text-gradient">Journal</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-slate-600 text-lg max-w-2xl mx-auto"
+            className="text-textPrimary/60 text-lg max-w-2xl mx-auto"
           >
             Expert advice, event inspiration, and industry news curated by top professionals.
           </motion.p>
@@ -76,17 +76,17 @@ export const Blog = () => {
           transition={{ delay: 0.2 }}
           className="mb-16"
         >
-          <div className="group relative rounded-3xl overflow-hidden glass-card border border-slate-300 flex flex-col md:flex-row cursor-pointer hover:border-primary/50 transition-colors">
+          <div className="group relative rounded-3xl overflow-hidden glass-card border border-white/10 flex flex-col md:flex-row cursor-pointer hover:border-primary/50 transition-colors">
             <div className="md:w-3/5 h-64 md:h-96 relative overflow-hidden">
               <img src={featuredPost.image} alt={featuredPost.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             </div>
             <div className="md:w-2/5 p-8 md:p-12 flex flex-col justify-center">
               <span className="text-primary font-semibold text-sm mb-4 uppercase tracking-wider">{featuredPost.category}</span>
-              <h2 className="text-3xl font-bold text-slate-900 mb-4 group-hover:text-primary transition-colors leading-tight">{featuredPost.title}</h2>
-              <p className="text-slate-600 mb-6 leading-relaxed">{featuredPost.excerpt}</p>
+              <h2 className="text-3xl font-bold text-textPrimary mb-4 group-hover:text-primary transition-colors leading-tight">{featuredPost.title}</h2>
+              <p className="text-textPrimary/60 mb-6 leading-relaxed">{featuredPost.excerpt}</p>
               
               <div className="flex items-center justify-between mt-auto">
-                <div className="flex items-center gap-4 text-xs text-slate-500">
+                <div className="flex items-center gap-4 text-xs text-textPrimary/40">
                   <span className="flex items-center gap-1"><Calendar className="w-4 h-4"/> {featuredPost.date}</span>
                   <span className="flex items-center gap-1"><User className="w-4 h-4"/> {featuredPost.author}</span>
                 </div>
@@ -105,18 +105,18 @@ export const Blog = () => {
               transition={{ delay: 0.3 + (i * 0.1) }}
               className="group cursor-pointer"
             >
-              <div className="rounded-2xl overflow-hidden bg-surface border border-slate-200 aspect-[4/3] mb-4 relative">
+              <div className="rounded-2xl overflow-hidden bg-surface border border-white/5 aspect-[4/3] mb-4 relative">
                 <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100" />
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-medium text-slate-800 border border-slate-300">
+                  <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-medium text-white/90 border border-white/10">
                     {post.category}
                   </span>
                 </div>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
-              <p className="text-slate-600 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
-              <div className="flex items-center justify-between border-t border-slate-200 pt-4">
-                <span className="text-xs text-slate-500">{post.date}</span>
+              <h3 className="text-xl font-bold text-textPrimary mb-2 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
+              <p className="text-textPrimary/60 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+              <div className="flex items-center justify-between border-t border-white/5 pt-4">
+                <span className="text-xs text-textPrimary/40">{post.date}</span>
                 <span className="text-primary text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">Read More <ArrowRight className="w-4 h-4" /></span>
               </div>
             </motion.div>

@@ -62,18 +62,18 @@ export const Checkout = () => {
   const total = subtotal + tax + shipping;
 
   if (isLoading) return <PageLoader text="Loading checkout..." />;
-  if (items.length === 0) return <div className="pt-32 pb-20 text-center text-slate-900">Your cart is empty. Please add items to checkout.</div>;
+  if (items.length === 0) return <div className="pt-32 pb-20 text-center text-textPrimary">Your cart is empty. Please add items to checkout.</div>;
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background">
-      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+      <div className="container mx-auto px-6 max-w-6xl">
         
         <div className="mb-12">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">Checkout</h1>
-          <p className="text-white/60">Complete your purchase securely.</p>
+          <h1 className="text-3xl lg:text-4xl font-bold text-textPrimary mb-2">Checkout</h1>
+          <p className="text-textPrimary/60">Complete your purchase securely.</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           
           <div className="lg:col-span-2 space-y-8">
             
@@ -82,7 +82,7 @@ export const Checkout = () => {
               <CardHeader className="flex flex-row items-center gap-4 pb-2">
                 <div className={cn(
                   "w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm",
-                  step === 1 ? "bg-primary text-white" : step > 1 ? "bg-green-500 text-slate-900" : "bg-slate-200 text-slate-500"
+                  step === 1 ? "bg-primary text-textPrimary" : step > 1 ? "bg-green-500 text-textPrimary" : "bg-white/10 text-textPrimary/50"
                 )}>
                   {step > 1 ? <CheckCircle2 className="w-5 h-5" /> : "1"}
                 </div>
@@ -96,7 +96,7 @@ export const Checkout = () => {
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
                   />
-                  <Button onClick={() => setStep(2)} className="w-full mt-4" disabled={shippingAddress.trim().length < 10}>Review Order (Requires Full Address)</Button>
+                  <Button onClick={() => setStep(2)} className="w-full mt-4" disabled={!shippingAddress.trim()}>Review Order</Button>
                 </CardContent>
               )}
             </Card>
@@ -110,34 +110,34 @@ export const Checkout = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 {items.map((item) => (
-                  <div key={item.cartItemId} className="flex gap-4 pb-4 border-b border-slate-300">
-                    <div className="w-16 h-16 rounded-lg bg-slate-100 overflow-hidden shrink-0">
+                  <div key={item.cartItemId} className="flex gap-4 pb-4 border-b border-white/10">
+                    <div className="w-16 h-16 rounded-lg bg-white/5 overflow-hidden shrink-0">
                        <img src={item.product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100&q=80'} alt={item.product.productName} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-slate-900 font-medium text-sm line-clamp-2">{item.product.productName}</p>
-                      <p className="text-slate-600 text-xs mt-1">Qty: {item.quantity}</p>
-                      <p className="text-slate-900 font-bold mt-1">LKR {(Number(item.product.price) * item.quantity).toFixed(2)}</p>
+                      <p className="text-textPrimary font-medium text-sm line-clamp-2">{item.product.productName}</p>
+                      <p className="text-textPrimary/60 text-xs mt-1">Qty: {item.quantity}</p>
+                      <p className="text-textPrimary font-bold mt-1">LKR {(Number(item.product.price) * item.quantity).toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
                 
-                <div className="space-y-3 text-sm border-b border-slate-300 pb-6">
-                  <div className="flex justify-between text-slate-800">
+                <div className="space-y-3 text-sm border-b border-white/10 pb-6">
+                  <div className="flex justify-between text-textPrimary/80">
                     <span>Subtotal</span>
                     <span>LKR {subtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-slate-800">
+                  <div className="flex justify-between text-textPrimary/80">
                     <span>Shipping</span>
                     <span>LKR {shipping.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-slate-800">
+                  <div className="flex justify-between text-textPrimary/80">
                     <span>Tax (VAT)</span>
                     <span>LKR {tax.toFixed(2)}</span>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center text-lg font-bold text-slate-900">
+                <div className="flex justify-between items-center text-lg font-bold text-textPrimary">
                   <span>Total</span>
                   <span>LKR {total.toFixed(2)}</span>
                 </div>
@@ -150,7 +150,7 @@ export const Checkout = () => {
                   {placeOrderMutation.isPending ? 'Placing Order...' : 'Place Order'}
                 </Button>
                 
-                <div className="flex items-center justify-center gap-2 text-xs text-slate-500 mt-4">
+                <div className="flex items-center justify-center gap-2 text-xs text-textPrimary/40 mt-4">
                   <ShieldCheck className="w-4 h-4 text-green-400" /> Secure encrypted checkout
                 </div>
               </CardContent>

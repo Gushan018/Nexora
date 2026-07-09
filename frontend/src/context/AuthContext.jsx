@@ -9,17 +9,15 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isImpersonating, setIsImpersonating] = useState(false);
 
   useEffect(() => {
     // Check for token on mount
     const token = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
-
+    
     if (token && storedUser) {
       setUser(JSON.parse(storedUser));
     }
-    setIsImpersonating(!!localStorage.getItem('adminToken'));
     setLoading(false);
   }, []);
 
@@ -56,39 +54,11 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('adminUser');
     setUser(null);
-    setIsImpersonating(false);
-  };
-
-  // Admin support tool: temporarily assume a user's session without their password.
-  const loginAsUser = (token, impersonatedUser) => {
-    if (!localStorage.getItem('adminToken')) {
-      localStorage.setItem('adminToken', localStorage.getItem('token'));
-      localStorage.setItem('adminUser', localStorage.getItem('user'));
-    }
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(impersonatedUser));
-    setUser(impersonatedUser);
-    setIsImpersonating(true);
-  };
-
-  const returnToAdmin = () => {
-    const adminToken = localStorage.getItem('adminToken');
-    const adminUser = localStorage.getItem('adminUser');
-    if (!adminToken || !adminUser) return;
-
-    localStorage.setItem('token', adminToken);
-    localStorage.setItem('user', adminUser);
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('adminUser');
-    setUser(JSON.parse(adminUser));
-    setIsImpersonating(false);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading, setUser, isImpersonating, loginAsUser, returnToAdmin }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading, setUser }}>
       {children}
     </AuthContext.Provider>
   );

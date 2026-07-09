@@ -65,22 +65,22 @@ export const ShoppingCart = () => {
   const tax = subtotal * 0.10; // 10% tax
   const total = subtotal + tax;
 
-  if (isLoading) return <div className="pt-32 pb-20 text-center text-slate-900">Loading cart...</div>;
+  if (isLoading) return <div className="pt-32 pb-20 text-center text-textPrimary">Loading cart...</div>;
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background">
-      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+      <div className="container mx-auto px-6 max-w-6xl">
         
         <div className="mb-10">
-          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-2">Your Cart</h1>
-          <p className="text-slate-600">Review your items before checkout.</p>
+          <h1 className="text-3xl lg:text-4xl font-bold text-textPrimary mb-2">Your Cart</h1>
+          <p className="text-textPrimary/60">Review your items before checkout.</p>
         </div>
 
         {items.length === 0 ? (
-          <div className="text-center py-20 border border-slate-300 rounded-2xl bg-surface/50">
-            <ShoppingBag className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">Your cart is empty</h2>
-            <p className="text-slate-600 mb-6">Looks like you haven't added anything to your cart yet.</p>
+          <div className="text-center py-20 border border-white/10 rounded-2xl bg-surface/50">
+            <ShoppingBag className="w-16 h-16 text-textPrimary/20 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-textPrimary mb-2">Your cart is empty</h2>
+            <p className="text-textPrimary/60 mb-6">Looks like you haven't added anything to your cart yet.</p>
             <Link to="/marketplace">
               <Button>Start Shopping</Button>
             </Link>
@@ -99,28 +99,28 @@ export const ShoppingCart = () => {
                       <div className="flex justify-between items-start mb-4">
                         <div>
                           <p className="text-sm text-primary mb-1">Product ID: {item.productId}</p>
-                          <h3 className="text-lg font-bold text-slate-900 leading-tight">{item.product.productName}</h3>
+                          <h3 className="text-lg font-bold text-textPrimary leading-tight">{item.product.productName}</h3>
                         </div>
                         <button 
                           onClick={() => removeItem(item.cartItemId)}
-                          className="text-slate-500 hover:text-red-400 transition-colors p-2"
+                          className="text-textPrimary/40 hover:text-red-400 transition-colors p-2"
                           disabled={removeItemMutation.isPending}
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
                       </div>
                       
-                      <div className="flex justify-between items-center mt-auto pt-4 border-t border-slate-200">
-                        <div className="flex items-center gap-4 bg-surface rounded-xl border border-slate-300 p-1">
-                          <button onClick={() => updateQuantity(item.cartItemId, item.quantity, -1)} className="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-900 flex items-center justify-center">
+                      <div className="flex justify-between items-center mt-auto pt-4 border-t border-white/5">
+                        <div className="flex items-center gap-4 bg-surface rounded-xl border border-white/10 p-1">
+                          <button onClick={() => updateQuantity(item.cartItemId, item.quantity, -1)} className="w-8 h-8 rounded-lg hover:bg-white/10 text-textPrimary flex items-center justify-center">
                             <Minus className="w-4 h-4" />
                           </button>
-                          <span className="w-8 text-center font-medium text-slate-900">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.cartItemId, item.quantity, 1)} disabled={item.quantity >= item.product.quantity} className="w-8 h-8 rounded-lg hover:bg-slate-200 disabled:opacity-50 text-slate-900 flex items-center justify-center">
+                          <span className="w-8 text-center font-medium text-textPrimary">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.cartItemId, item.quantity, 1)} className="w-8 h-8 rounded-lg hover:bg-white/10 text-textPrimary flex items-center justify-center">
                             <Plus className="w-4 h-4" />
                           </button>
                         </div>
-                        <div className="text-xl font-bold text-slate-900">LKR {(Number(item.product.price) * item.quantity).toFixed(2)}
+                        <div className="text-xl font-bold text-textPrimary">LKR {(Number(item.product.price) * item.quantity).toFixed(2)}
                         </div>
                       </div>
                     </div>
@@ -132,24 +132,24 @@ export const ShoppingCart = () => {
             <div className="lg:col-span-1">
               <Card className="sticky top-24">
                 <CardContent className="p-6">
-                  <h3 className="text-xl font-bold text-slate-900 mb-6">Order Summary</h3>
+                  <h3 className="text-xl font-bold text-textPrimary mb-6">Order Summary</h3>
                   
-                  <div className="space-y-4 text-sm border-b border-slate-300 pb-6 mb-6">
-                    <div className="flex justify-between text-slate-800">
+                  <div className="space-y-4 text-sm border-b border-white/10 pb-6 mb-6">
+                    <div className="flex justify-between text-textPrimary/80">
                       <span>Subtotal ({items.length} items)</span>
                       <span>LKR {subtotal.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-slate-800">
+                    <div className="flex justify-between text-textPrimary/80">
                       <span>Estimated Tax (10%)</span>
                       <span>LKR {tax.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-slate-800">
+                    <div className="flex justify-between text-textPrimary/80">
                       <span>Shipping</span>
                       <span className="text-green-400">Calculated at checkout</span>
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center text-xl font-bold text-slate-900 mb-8">
+                  <div className="flex justify-between items-center text-xl font-bold text-textPrimary mb-8">
                     <span>Total</span>
                     <span>LKR {total.toFixed(2)}</span>
                   </div>

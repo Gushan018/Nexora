@@ -8,6 +8,7 @@ import { AboutUs } from './pages/public/AboutUs';
 import { Services } from './pages/public/Services';
 import { Marketplace } from './pages/public/Marketplace';
 import { EventPackages } from './pages/public/EventPackages';
+import { VendorDirectory } from './pages/public/VendorDirectory';
 import { SellerDirectory } from './pages/public/SellerDirectory';
 import { Blog } from './pages/public/Blog';
 import { ContactUs } from './pages/public/ContactUs';
@@ -22,22 +23,31 @@ import { EmailVerification } from './pages/public/EmailVerification';
 import { NotFound } from './pages/public/NotFound';
 import { Maintenance } from './pages/public/Maintenance';
 import { CustomerDashboard } from './pages/customer/CustomerDashboard';
-
+import { ProfileManagement } from './pages/customer/ProfileManagement';
 import { AccountSettings } from './pages/customer/AccountSettings';
-
+import { NotificationCenter } from './pages/customer/NotificationCenter';
 import { Wishlist } from './pages/customer/Wishlist';
+import { ProductListing } from './pages/customer/ProductListing';
 import { ProductDetails } from './pages/customer/ProductDetails';
+import { CategoryView } from './pages/customer/CategoryView';
+import { AdvancedSearch } from './pages/customer/AdvancedSearch';
 import { ShoppingCart } from './pages/customer/ShoppingCart';
 import { Checkout } from './pages/customer/Checkout';
 import { PaymentPage } from './pages/customer/PaymentPage';
 import { OrderSuccess } from './pages/customer/OrderSuccess';
 import { OrderHistory } from './pages/customer/OrderHistory';
+import { OrderTracking } from './pages/customer/OrderTracking';
 import { EventDashboard } from './pages/customer/EventDashboard';
-
-
+import { CreateEvent } from './pages/customer/CreateEvent';
+import { ManageEvent } from './pages/customer/ManageEvent';
+import { BudgetPlanner } from './pages/customer/BudgetPlanner';
 import { BookVendor } from './pages/customer/BookVendor';
 import { BookingDetails } from './pages/customer/BookingDetails';
+import { BookingTracking } from './pages/customer/BookingTracking';
+import { BookingHistory } from './pages/customer/BookingHistory';
+import { BookingCancellation } from './pages/customer/BookingCancellation';
 import { ReviewSubmission } from './pages/customer/ReviewSubmission';
+import { ReviewManagement } from './pages/customer/ReviewManagement';
 import { ChatInbox } from './pages/customer/ChatInbox';
 import { VendorChat } from './pages/customer/VendorChat';
 import { VendorDashboard } from './pages/vendor/VendorDashboard';
@@ -76,14 +86,12 @@ import { SellerRevenueAnalytics } from './pages/seller/SellerRevenueAnalytics';
 import { ProductReviews } from './pages/seller/ProductReviews';
 import { SellerSettings } from './pages/seller/SellerSettings';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { UserDetail } from './pages/admin/UserDetail';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { UserManagement } from './pages/admin/UserManagement';
 import { AdminVendorManagement } from './pages/admin/AdminVendorManagement';
 import { AdminSellerManagement } from './pages/admin/AdminSellerManagement';
 import { AdminCustomerManagement } from './pages/admin/AdminCustomerManagement';
-import { AdminPaymentsEscrow } from './pages/admin/AdminPaymentsEscrow';
-import { ReviewsModeration } from './pages/admin/ReviewsModeration';
-import { VendorVerification } from './pages/admin/VendorVerification';
-import { BusinessApprovals } from './pages/admin/BusinessApprovals';
 import { ProductModeration } from './pages/admin/ProductModeration';
 import { CategoryManagement } from './pages/admin/CategoryManagement';
 import { AdminBookingManagement } from './pages/admin/AdminBookingManagement';
@@ -105,6 +113,7 @@ function App() {
   return (
     <Router>
       <PageTitleManager />
+      <ErrorBoundary>
       <Routes>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<LandingPage />} />
@@ -112,6 +121,7 @@ function App() {
           <Route path="services" element={<Services />} />
           <Route path="marketplace" element={<Marketplace />} />
           <Route path="event-packages" element={<EventPackages />} />
+          <Route path="vendor-directory" element={<VendorDirectory />} />
           <Route path="seller-directory" element={<SellerDirectory />} />
           <Route path="blog" element={<Blog />} />
           <Route path="contact-us" element={<ContactUs />} />
@@ -135,22 +145,32 @@ function App() {
           <Route path="services" element={<Services isDashboard />} />
           <Route path="marketplace" element={<Marketplace isDashboard />} />
           <Route path="event-packages" element={<EventPackages isDashboard />} />
-
+          <Route path="vendor-directory" element={<VendorDirectory isDashboard />} />
+          <Route path="profile-management" element={<ProfileManagement />} />
           <Route path="account-settings" element={<AccountSettings />} />
-
+          <Route path="notification-center" element={<NotificationCenter />} />
           <Route path="wishlist" element={<Wishlist />} />
+          <Route path="product-listing" element={<ProductListing />} />
           <Route path="product-details/:id" element={<ProductDetails />} />
+          <Route path="category-view" element={<CategoryView />} />
+          <Route path="advanced-search" element={<AdvancedSearch />} />
           <Route path="shopping-cart" element={<ShoppingCart />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="payment-page" element={<PaymentPage />} />
           <Route path="order-success" element={<OrderSuccess />} />
           <Route path="order-history" element={<OrderHistory />} />
+          <Route path="order-tracking" element={<OrderTracking />} />
           <Route path="event-dashboard" element={<EventDashboard />} />
-
-
+          <Route path="create-event" element={<CreateEvent />} />
+          <Route path="manage-event" element={<ManageEvent />} />
+          <Route path="budget-planner" element={<BudgetPlanner />} />
           <Route path="book-vendor" element={<BookVendor />} />
           <Route path="booking-details" element={<BookingDetails />} />
+          <Route path="booking-tracking" element={<BookingTracking />} />
+          <Route path="booking-history" element={<BookingHistory />} />
+          <Route path="booking-cancellation" element={<BookingCancellation />} />
           <Route path="review-submission" element={<ReviewSubmission />} />
+          <Route path="review-management" element={<ReviewManagement />} />
           <Route path="chat-inbox" element={<ChatInbox />} />
           <Route path="vendor-chat/:conversationId?" element={<VendorChat />} />
         </Route>
@@ -163,7 +183,7 @@ function App() {
           <Route path="portfolio-management" element={<PortfolioManagement />} />
           <Route path="gallery-management" element={<GalleryManagement />} />
           <Route path="create-service" element={<CreateService />} />
-          <Route path="edit-service" element={<EditService />} />
+          <Route path="edit-service/:serviceId" element={<EditService />} />
           <Route path="service-listing" element={<ServiceListing />} />
           <Route path="package-management" element={<PackageManagement />} />
           <Route path="incoming-requests" element={<IncomingRequests />} />
@@ -177,7 +197,6 @@ function App() {
           <Route path="performance-analytics" element={<PerformanceAnalytics />} />
           <Route path="vendor-booking-analytics" element={<VendorBookingAnalytics />} />
           <Route path="vendor-settings" element={<VendorSettings />} />
-          <Route path="account-settings" element={<AccountSettings />} />
         </Route>
 
         <Route path="/seller" element={<DashboardLayout role="seller" />}>
@@ -185,7 +204,7 @@ function App() {
           <Route path="dashboard" element={<SellerDashboard />} />
           <Route path="seller-dashboard" element={<SellerDashboard />} />
           <Route path="store-management" element={<StoreManagement />} />
-          <Route path="store-profile" element={<StoreProfile />} />
+          <Route path="store-profile/:id" element={<StoreProfile />} />
           <Route path="seller-product-management" element={<SellerProductManagement />} />
           <Route path="add-product" element={<AddProduct />} />
           <Route path="edit-product" element={<EditProduct />} />
@@ -198,7 +217,6 @@ function App() {
           <Route path="seller-revenue-analytics" element={<SellerRevenueAnalytics />} />
           <Route path="product-reviews" element={<ProductReviews />} />
           <Route path="seller-settings" element={<SellerSettings />} />
-          <Route path="account-settings" element={<AccountSettings />} />
         </Route>
 
         <Route path="/admin" element={<DashboardLayout role="admin" />}>
@@ -209,12 +227,8 @@ function App() {
           <Route path="admin-vendor-management" element={<AdminVendorManagement />} />
           <Route path="admin-seller-management" element={<AdminSellerManagement />} />
           <Route path="admin-customer-management" element={<AdminCustomerManagement />} />
-          <Route path="vendor-verification" element={<VendorVerification />} />
-          <Route path="business-approvals" element={<BusinessApprovals />} />
           <Route path="product-moderation" element={<ProductModeration />} />
           <Route path="category-management" element={<CategoryManagement />} />
-          <Route path="admin-payments-escrow" element={<AdminPaymentsEscrow />} />
-          <Route path="reviews-moderation" element={<ReviewsModeration />} />
           <Route path="admin-booking-management" element={<AdminBookingManagement />} />
           <Route path="dispute-management" element={<DisputeManagement />} />
           <Route path="cmsmanagement" element={<CMSManagement />} />
@@ -227,11 +241,12 @@ function App() {
           <Route path="admin-notification-management" element={<AdminNotificationManagement />} />
           <Route path="audit-logs" element={<AuditLogs />} />
           <Route path="system-settings" element={<SystemSettings />} />
-          <Route path="account-settings" element={<AccountSettings />} />
           <Route path="roles-permissions" element={<RolesPermissions />} />
           <Route path="advanced-analytics-dashboard" element={<AdvancedAnalyticsDashboard />} />
+          <Route path="user/:id" element={<UserDetail />} />
         </Route>
       </Routes>
+      </ErrorBoundary>
     </Router>
   );
 }

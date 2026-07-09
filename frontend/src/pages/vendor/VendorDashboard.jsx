@@ -1,21 +1,127 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { DollarSign, Calendar, Star, TrendingUp, Users } from 'lucide-react';
+import { DollarSign, Calendar, Star, TrendingUp, Users, Briefcase, Package, Loader2, AlertCircle, Download } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
+import { ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, AreaChart, Area } from 'recharts';
+import { Link } from 'react-router-dom';
+import { api } from '../../utils/api';
+
+const REVENUE_DATA = [
+  { day: '01 Oct', amount: 4500 },
+  { day: '05 Oct', amount: 5200 },
+  { day: '10 Oct', amount: 4800 },
+  { day: '15 Oct', amount: 6100 },
+  { day: '20 Oct', amount: 5900 },
+  { day: '25 Oct', amount: 7200 },
+  { day: '30 Oct', amount: 8450 },
+];
 
 export const VendorDashboard = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [downloadLoading, setDownloadLoading] = useState(false);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get('/vendors/stats');
+      setData(response.data);
+      setError(null);
+    } catch (err) {
+      setError('Failed to load dashboard data.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDownloadReport = async (format = 'json') => {
+    try {
+      setDownloadLoading(true);
+      const response = await api.get(`/vendors/report?format=${format}`, {
+        responseType: 'blob'
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `vendor-report-${Date.now()}.${format === 'csv' ? 'csv' : 'json'}`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to download report:', error);
+      alert('Failed to download report. Please try again.');
+    } finally {
+      setDownloadLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="h-[60vh] flex flex-col items-center justify-center text-textPrimary/40 gap-4">
+        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        <p className="text-lg">Preparing your dashboard...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="h-[60vh] flex flex-col items-center justify-center text-red-400 gap-4 text-center p-6">
+        <AlertCircle className="w-12 h-12" />
+        <p className="text-lg">{error}</p>
+        <Button onClick={fetchStats} variant="outline">Try Again</Button>
+      </div>
+    );
+  }
+
+  const { stats, recentRequests } = data;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Overview</h1>
-          <p className="text-slate-600">Welcome back, here's what's happening with your business today.</p>
+          <h1 className="text-2xl font-bold text-textPrimary tracking-tight">Overview</h1>
+          <p className="text-textPrimary/60">Welcome back, here's what's happening with your business today.</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline">Download Report</Button>
-          <Button>Create Service</Button>
+          <div className="relative group">
+            <Button
+              variant="outline"
+              leftIcon={<Download className="w-4 h-4" />}
+              disabled={downloadLoading}
+            >
+              {downloadLoading ? 'Downloading...' : 'Download Report'}
+            </Button>
+            <div className="absolute right-0 mt-2 w-40 rounded-lg bg-surface border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all shadow-xl z-10">
+              <button
+                onClick={() => handleDownloadReport('json')}
+                disabled={downloadLoading}
+                className="w-full text-left px-4 py-2 text-sm text-textPrimary hover:bg-primary/10 transition-colors first:rounded-t-lg"
+              >
+                Download as JSON
+              </button>
+              <button
+                onClick={() => handleDownloadReport('csv')}
+                disabled={downloadLoading}
+                className="w-full text-left px-4 py-2 text-sm text-textPrimary hover:bg-primary/10 transition-colors last:rounded-b-lg border-t border-white/5"
+              >
+                Download as CSV
+              </button>
+            </div>
+          </div>
+          <Link to="/vendor/create-service">
+            <Button>Create Service</Button>
+          </Link>
         </div>
       </div>
 
@@ -23,29 +129,29 @@ export const VendorDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard 
           title="Total Revenue" 
-          value="LKR 12,450" 
+          value={`LKR ${stats.totalRevenue.toLocaleString()}`} 
           trend="+15%" 
           trendUp={true}
           icon={<DollarSign className="w-5 h-5 text-primary" />} 
         />
         <StatCard 
           title="Active Bookings" 
-          value="24" 
-          trend="+5%" 
+          value={stats.activeBookings.toString()} 
+          trend={`+${stats.pendingBookings} pending`} 
           trendUp={true}
           icon={<Calendar className="w-5 h-5 text-accent" />} 
         />
         <StatCard 
-          title="Profile Views" 
-          value="1,245" 
-          trend="-2%" 
-          trendUp={false}
-          icon={<Users className="w-5 h-5 text-secondary" />} 
+          title="Services & Packages" 
+          value={(stats.totalServices + stats.totalPackages).toString()} 
+          trend={`${stats.totalServices} Svcs / ${stats.totalPackages} Pkgs`} 
+          trendUp={true}
+          icon={<Briefcase className="w-5 h-5 text-primary" />} 
         />
         <StatCard 
-          title="Average Rating" 
-          value="4.9" 
-          trend="+0.1" 
+          title="Completed" 
+          value={stats.completedBookings.toString()} 
+          trend="Total" 
           trendUp={true}
           icon={<Star className="w-5 h-5 text-yellow-500" />} 
         />
@@ -55,13 +161,50 @@ export const VendorDashboard = () => {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Charts/Main Data */}
         <div className="xl:col-span-2 space-y-6">
-          <Card className="h-[400px]">
+          <Card className="h-[450px] overflow-hidden">
             <CardHeader>
               <CardTitle>Revenue Analytics</CardTitle>
               <CardDescription>Your earnings over the last 30 days.</CardDescription>
             </CardHeader>
-            <CardContent className="h-full flex items-center justify-center border-t border-slate-200">
-              <span className="text-slate-500">Chart visualization goes here (Recharts)</span>
+            <CardContent className="h-full pt-4 pb-12 border-t border-white/5">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={REVENUE_DATA}>
+                  <defs>
+                    <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#D4AF37" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                  <XAxis 
+                    dataKey="day" 
+                    stroke="rgba(255,255,255,0.4)" 
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    dy={10}
+                  />
+                  <YAxis 
+                    stroke="rgba(255,255,255,0.4)" 
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `LKR ${value}`}
+                  />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#1A1A1A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                    itemStyle={{ color: '#D4AF37' }}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="amount" 
+                    stroke="#D4AF37" 
+                    strokeWidth={3}
+                    fillOpacity={1} 
+                    fill="url(#colorRev)" 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
         </div>
@@ -71,23 +214,35 @@ export const VendorDashboard = () => {
           <Card>
             <CardHeader>
               <CardTitle>Recent Requests</CardTitle>
-              <CardDescription>You have 3 pending booking requests.</CardDescription>
+              <CardDescription>You have {stats.pendingBookings} pending booking requests.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 pt-0">
-              {[1,2,3].map(i => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-surface/50 border border-slate-200 hover:border-slate-300 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                      <span className="text-primary font-medium">JD</span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-slate-900">John Doe</p>
-                      <p className="text-xs text-slate-500">Wedding Photography</p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="sm">Review</Button>
+              {recentRequests.length === 0 ? (
+                <div className="py-8 text-center text-textPrimary/40">
+                  <p>No pending requests.</p>
                 </div>
-              ))}
+              ) : (
+                recentRequests.map(request => (
+                  <div key={request.bookingId} className="flex items-center justify-between p-3 rounded-lg bg-surface/50 border border-white/5 hover:border-white/10 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                        <span className="text-primary font-medium">
+                          {request.customer.name.split(' ').map(n => n[0]).join('')}
+                        </span>
+                      </div>
+                      <div className="max-w-[120px]">
+                        <p className="text-sm font-medium text-textPrimary truncate">{request.customer.name}</p>
+                        <p className="text-xs text-textPrimary/50 truncate">
+                          {request.service?.serviceName || request.package?.packageName}
+                        </p>
+                      </div>
+                    </div>
+                    <Link to="/vendor/booking-management">
+                      <Button variant="ghost" size="sm">Review</Button>
+                    </Link>
+                  </div>
+                ))
+              )}
             </CardContent>
           </Card>
         </div>
@@ -100,18 +255,17 @@ const StatCard = ({ title, value, trend, trendUp, icon }) => (
   <Card>
     <CardContent className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium text-slate-600">{title}</h3>
-        <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center border border-slate-300">
+        <h3 className="text-sm font-medium text-textPrimary/60">{title}</h3>
+        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
           {icon}
         </div>
       </div>
-      <div className="flex items-end gap-3">
-        <div className="text-3xl font-bold text-slate-900">{value}</div>
+      <div className="flex items-end gap-3 flex-wrap">
+        <div className="text-2xl font-bold text-textPrimary">{value}</div>
         <div className={cn(
-          "text-sm font-medium mb-1 flex items-center gap-1",
+          "text-xs font-medium mb-1 flex items-center gap-1",
           trendUp ? "text-green-400" : "text-red-400"
         )}>
-          {trendUp ? <TrendingUp className="w-4 h-4" /> : <TrendingUp className="w-4 h-4 rotate-180" />}
           {trend}
         </div>
       </div>

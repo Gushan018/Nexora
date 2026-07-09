@@ -1,40 +1,37 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const ThemeContext = createContext();
 
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Check localStorage first
-    const saved = localStorage.getItem('theme');
-    if (saved) return saved === 'dark';
-    
-    // Then check system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('nexora-theme');
+    if (saved === 'dark' || saved === 'light') return saved;
+
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? 'dark' : 'light';
   });
 
   useEffect(() => {
-    // Apply theme to HTML element
-    const htmlElement = document.documentElement;
-    if (isDarkMode) {
-      htmlElement.classList.add('dark');
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
     } else {
-      htmlElement.classList.remove('dark');
+      root.classList.remove('dark');
     }
-    
-    // Save preference
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
+    localStorage.setItem('nexora-theme', theme);
+  }, [theme]);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  const theme = isDarkMode ? 'dark' : 'light';
+  const toggleTheme = useCallback(() => {
+    const root = document.documentElement;
+    root.classList.add('theme-transition');
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+    setTimeout(() => root.classList.remove('theme-transition'), 350);
+  }, []);
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -17,18 +17,18 @@ export const ProductModeration = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <Package className="w-7 h-7 text-primary" />
             Product Moderation
           </h1>
-          <p className="text-slate-600">Review flagged physical products for policy violations (counterfeits, banned items, copyright).</p>
+          <p className="text-textPrimary/60">Review flagged physical products for policy violations (counterfeits, banned items, copyright).</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <Card className="border-red-500/20 bg-red-500/5">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-slate-800 mb-2">High Risk Flags</h3>
+            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">High Risk Flags</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-red-400">14</span>
             </div>
@@ -37,27 +37,27 @@ export const ProductModeration = () => {
         </Card>
         <Card className="border-yellow-500/20 bg-yellow-500/5">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-slate-800 mb-2">Total Pending Review</h3>
+            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Total Pending Review</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-yellow-500">142</span>
             </div>
             <p className="text-xs text-yellow-500/60 mt-2">AI-flagged or User-reported</p>
           </CardContent>
         </Card>
-        <Card className="border-slate-300">
+        <Card className="border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-slate-600 mb-2">Items Removed (YTD)</h3>
+            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Items Removed (YTD)</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">4,215</span>
+              <span className="text-3xl font-bold text-textPrimary">4,215</span>
             </div>
           </CardContent>
         </Card>
-        <Card className="border-slate-300">
+        <Card className="border-white/10">
           <CardContent className="p-6 flex justify-between items-center h-full">
             <div>
-              <h3 className="text-sm font-medium text-slate-600 mb-2">AI Accuracy Score</h3>
+              <h3 className="text-sm font-medium text-textPrimary/60 mb-2">AI Accuracy Score</h3>
               <div className="flex items-end gap-3">
-                <span className="text-3xl font-bold text-slate-900">94.2%</span>
+                <span className="text-3xl font-bold text-textPrimary">94.2%</span>
               </div>
             </div>
           </CardContent>
@@ -65,17 +65,17 @@ export const ProductModeration = () => {
       </div>
 
       <Card>
-        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
+        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
             <input 
               type="text" 
               placeholder="Search by Product Name, ID, or Seller..." 
-              className="w-full bg-surface border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
+              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors" 
             />
           </div>
           <div className="flex gap-2">
-            <select className="bg-surface border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
+            <select className="bg-surface border border-white/10 rounded-lg px-3 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 cursor-pointer">
               <option>Filter by Risk: All</option>
               <option>Risk: High</option>
               <option>Risk: Medium</option>
@@ -88,7 +88,7 @@ export const ProductModeration = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 text-sm font-medium text-slate-500 bg-slate-50">
+              <tr className="border-b border-white/5 text-sm font-medium text-textPrimary/50 bg-white/[0.02]">
                 <th className="p-4 pl-6">Product Details</th>
                 <th className="p-4">Seller Info</th>
                 <th className="p-4">Violation Flag</th>
@@ -99,8 +99,8 @@ export const ProductModeration = () => {
             <tbody className="text-sm">
               {PRODUCTS.map((product, i) => (
                 <tr key={i} className={cn(
-                  "border-b border-slate-200 transition-colors group",
-                  product.risk === 'High' && product.status === 'Pending Review' ? "bg-red-500/5 hover:bg-red-500/10" : "hover:bg-slate-50"
+                  "border-b border-white/5 transition-colors group",
+                  product.risk === 'High' && product.status === 'Pending Review' ? "bg-red-500/5 hover:bg-red-500/10" : "hover:bg-white/[0.02]"
                 )}>
                   <td className="p-4 pl-6">
                     <div className="flex items-center gap-3">
@@ -108,17 +108,17 @@ export const ProductModeration = () => {
                         <img src={`https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&q=80`} alt="Product" className="w-full h-full object-cover opacity-50 mix-blend-luminosity" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-bold text-slate-900">{product.name}</span>
-                        <span className="text-xs text-slate-500">{product.id} • {product.price}</span>
+                        <span className="font-bold text-textPrimary">{product.name}</span>
+                        <span className="text-xs text-textPrimary/50">{product.id} • {product.price}</span>
                       </div>
                     </div>
                   </td>
-                  <td className="p-4 text-slate-800">
+                  <td className="p-4 text-textPrimary/80">
                     <span className="block font-medium">{product.seller}</span>
-                    <span className="text-xs text-slate-500">ID: SEL-{Math.floor(Math.random() * 900) + 100}</span>
+                    <span className="text-xs text-textPrimary/40">ID: SEL-{Math.floor(Math.random() * 900) + 100}</span>
                   </td>
                   <td className="p-4">
-                    <span className="px-2.5 py-1 bg-surface border border-slate-300 rounded text-xs text-slate-800 font-medium whitespace-nowrap">
+                    <span className="px-2.5 py-1 bg-surface border border-white/10 rounded text-xs text-textPrimary/80 font-medium whitespace-nowrap">
                       {product.flag}
                     </span>
                   </td>
@@ -137,9 +137,6 @@ export const ProductModeration = () => {
                   <td className="p-4 pr-6 text-right">
                     {product.status === 'Pending Review' ? (
                       <div className="flex justify-end gap-2">
-                        <Button variant="outline" size="sm" className="text-green-400 border-green-400/20 hover:bg-green-400/10" title="Approve & Ignore Flag">
-                          <Check className="w-4 h-4"/>
-                        </Button>
                         <Button variant="outline" size="sm" className="text-red-400 border-red-400/20 hover:bg-red-400/10" title="Delete Product">
                           <Trash2 className="w-4 h-4"/>
                         </Button>
@@ -148,7 +145,7 @@ export const ProductModeration = () => {
                         </Button>
                       </div>
                     ) : (
-                      <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Resolved</span>
+                      <span className="text-xs font-bold text-textPrimary/40 uppercase tracking-wider">Resolved</span>
                     )}
                   </td>
                 </tr>

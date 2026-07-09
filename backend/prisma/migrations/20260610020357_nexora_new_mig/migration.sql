@@ -1,21 +1,11 @@
 -- AlterTable
-ALTER TABLE "admin" ADD COLUMN     "contact_number" TEXT,
-ADD COLUMN     "name" TEXT,
-ADD COLUMN     "profile_image" TEXT;
-
--- AlterTable
-ALTER TABLE "customer" ADD COLUMN     "is_blocked" BOOLEAN NOT NULL DEFAULT false,
-ADD COLUMN     "profile_image" TEXT;
-
--- AlterTable
-ALTER TABLE "event_package" ADD COLUMN     "imageUrl" TEXT;
+ALTER TABLE "customer" ADD COLUMN     "profile_image" TEXT;
 
 -- AlterTable
 ALTER TABLE "payment" ADD COLUMN     "receipt_url" TEXT;
 
 -- AlterTable
-ALTER TABLE "vendor" ADD COLUMN     "is_blocked" BOOLEAN NOT NULL DEFAULT false,
-ADD COLUMN     "profile_image" TEXT;
+ALTER TABLE "vendor" ADD COLUMN     "profile_image" TEXT;
 
 -- CreateTable
 CREATE TABLE "wishlist" (
@@ -52,6 +42,27 @@ CREATE TABLE "message" (
     CONSTRAINT "message_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "budget" (
+    "id" SERIAL NOT NULL,
+    "customer_id" INTEGER NOT NULL,
+    "total_budget" DECIMAL(10,2) NOT NULL DEFAULT 0,
+
+    CONSTRAINT "budget_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "budget_category" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "allocated" DECIMAL(10,2) NOT NULL DEFAULT 0,
+    "spent" DECIMAL(10,2) NOT NULL DEFAULT 0,
+    "color" TEXT,
+    "budget_id" INTEGER NOT NULL,
+
+    CONSTRAINT "budget_category_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "wishlist_customer_id_product_id_key" ON "wishlist"("customer_id", "product_id");
 
@@ -63,6 +74,9 @@ CREATE UNIQUE INDEX "wishlist_customer_id_package_id_key" ON "wishlist"("custome
 
 -- CreateIndex
 CREATE UNIQUE INDEX "conversation_customer_id_vendor_id_key" ON "conversation"("customer_id", "vendor_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "budget_customer_id_key" ON "budget"("customer_id");
 
 -- AddForeignKey
 ALTER TABLE "wishlist" ADD CONSTRAINT "wishlist_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("customer_id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -84,3 +98,9 @@ ALTER TABLE "conversation" ADD CONSTRAINT "conversation_vendor_id_fkey" FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE "message" ADD CONSTRAINT "message_conversation_id_fkey" FOREIGN KEY ("conversation_id") REFERENCES "conversation"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "budget" ADD CONSTRAINT "budget_customer_id_fkey" FOREIGN KEY ("customer_id") REFERENCES "customer"("customer_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "budget_category" ADD CONSTRAINT "budget_category_budget_id_fkey" FOREIGN KEY ("budget_id") REFERENCES "budget"("id") ON DELETE CASCADE ON UPDATE CASCADE;

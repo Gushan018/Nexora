@@ -91,7 +91,6 @@ const getDashboardStats = async (req, res) => {
     });
 
     const recommendedVendors = await prisma.vendor.findMany({
-      where: { isApproved: true },
       take: 2,
     });
 

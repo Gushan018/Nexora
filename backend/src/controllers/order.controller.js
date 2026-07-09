@@ -25,12 +25,9 @@ const placeOrder = async (req, res) => {
 
 
     let totalAmount = 0;
-    for (const item of cart.cartItems) {
-      if (item.quantity > item.product.quantity) {
-        return res.status(400).json({ message: `Not enough stock for ${item.product.productName}. Available: ${item.product.quantity}` });
-      }
+    cart.cartItems.forEach(item => {
       totalAmount += (item.quantity * parseFloat(item.product.price));
-    }
+    });
 
 
     const newOrder = await prisma.$transaction(async (prisma) => {
@@ -57,14 +54,6 @@ const placeOrder = async (req, res) => {
         data: orderItemsData
       });
 
-      // Decrement product stock
-      for (const item of cart.cartItems) {
-        await prisma.product.update({
-          where: { productId: item.productId },
-          data: { quantity: { decrement: item.quantity } }
-        });
-      }
-
  
       await prisma.cartItem.deleteMany({
         where: { cartId: cart.cartId }
@@ -89,7 +78,6 @@ const getMyOrders = async (req, res) => {
     const orders = await prisma.order.findMany({
       where: { customerId },
       include: {
-        customer: { select: { name: true, email: true } },
         orderItems: {
           include: {
             product: { select: { productName: true, imageUrl: true } }
@@ -105,7 +93,119 @@ const getMyOrders = async (req, res) => {
   }
 };
 
+// ===========================================
+// 3. GET SELLER ORDERS (Seller)
+// ===========================================
+const getSellerOrders = async (req, res) => {
+  try {
+    const vendorId = req.user.id;
+
+    // Find all order items that belong to this seller's products
+    const orderItems = await prisma.orderItem.findMany({
+      where: {
+        product: {
+          vendorId: vendorId
+        }
+      },
+      include: {
+        order: {
+          include: {
+            customer: {
+              select: { name: true, email: true, contactNumber: true }
+            }
+          },
+          select: {
+            orderId: true,
+            orderDate: true,
+            status: true,
+            shippingAddress: true,
+            totalAmount: true,
+            customer: true
+          }
+        },
+        product: {
+          select: { productName: true, imageUrl: true, price: true }
+        }
+      },
+      orderBy: {
+        order: {
+          orderDate: 'desc'
+        }
+      }
+    });
+
+    // Group items by orderId for better UI representation if needed
+    // But for now, returning raw items is fine as well.
+    res.status(200).json(orderItems);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+// ===========================================
+// 4. UPDATE ORDER STATUS (Seller/Admin)
+// ===========================================
+const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const vendorId = req.user.id;
+
+    // Security Check: Verify that the seller owns at least one product in this order
+    // (Admins can bypass this if we wanted, but for now we stick to seller/vendor role)
+    if (req.user.role !== 'admin') {
+      const sellerItem = await prisma.orderItem.findFirst({
+        where: {
+          orderId: parseInt(id),
+          product: {
+            vendorId: vendorId
+          }
+        }
+      });
+
+      if (!sellerItem) {
+        return res.status(403).json({ message: "You are not authorized to update this order's status as it contains none of your products." });
+      }
+    }
+
+    const updatedOrder = await prisma.order.update({
+      where: { orderId: parseInt(id) },
+      data: { status }
+    });
+
+    if (status === 'DELIVERED') {
+      const payment = await prisma.payment.findUnique({
+        where: { orderId: parseInt(id) }
+      });
+
+      if (payment && payment.status === 'HELD_IN_ESCROW') {
+        await prisma.payment.update({
+          where: { paymentId: payment.paymentId },
+          data: { status: 'RELEASED' }
+        });
+      }
+    } else if (status === 'CANCELLED') {
+      const payment = await prisma.payment.findUnique({
+        where: { orderId: parseInt(id) }
+      });
+
+      if (payment && (payment.status === 'HELD_IN_ESCROW' || payment.status === 'PENDING')) {
+        await prisma.payment.update({
+          where: { paymentId: payment.paymentId },
+          data: { status: 'REFUNDED' }
+        });
+      }
+    }
+
+    res.status(200).json({ message: "Order status updated successfully", order: updatedOrder });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
 module.exports = {
   placeOrder,
-  getMyOrders
+  getMyOrders,
+  getSellerOrders,
+  updateOrderStatus
 };

@@ -5,7 +5,7 @@ export const Card = ({ className, children, ...props }) => {
   return (
     <div
       className={cn(
-        "glass-card rounded-2xl overflow-hidden bg-white dark:bg-surface/80 shadow-sm dark:shadow-lg",
+        "glass-card rounded-2xl overflow-hidden",
         className
       )}
       {...props}
@@ -17,7 +17,7 @@ export const Card = ({ className, children, ...props }) => {
 
 export const CardHeader = ({ className, children, ...props }) => {
   return (
-    <div className={cn("px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-white/5", className)} {...props}>
+    <div className={cn("px-6 py-4 border-b border-border/10", className)} {...props}>
       {children}
     </div>
   );
@@ -25,7 +25,7 @@ export const CardHeader = ({ className, children, ...props }) => {
 
 export const CardTitle = ({ className, children, ...props }) => {
   return (
-    <h3 className={cn("text-base sm:text-lg font-semibold text-gray-900 dark:text-white", className)} {...props}>
+    <h3 className={cn("text-lg font-semibold text-textPrimary", className)} {...props}>
       {children}
     </h3>
   );
@@ -33,7 +33,7 @@ export const CardTitle = ({ className, children, ...props }) => {
 
 export const CardDescription = ({ className, children, ...props }) => {
   return (
-    <p className={cn("text-sm text-gray-600 dark:text-white/60 mt-1", className)} {...props}>
+    <p className={cn("text-sm text-muted mt-1", className)} {...props}>
       {children}
     </p>
   );
@@ -41,7 +41,7 @@ export const CardDescription = ({ className, children, ...props }) => {
 
 export const CardContent = ({ className, children, ...props }) => {
   return (
-    <div className={cn("p-4 sm:p-6", className)} {...props}>
+    <div className={cn("p-6", className)} {...props}>
       {children}
     </div>
   );
@@ -49,7 +49,7 @@ export const CardContent = ({ className, children, ...props }) => {
 
 export const CardFooter = ({ className, children, ...props }) => {
   return (
-    <div className={cn("px-6 py-4 border-t border-gray-200 dark:border-white/5 flex items-center", className)} {...props}>
+    <div className={cn("px-6 py-4 border-t border-border/10 flex items-center", className)} {...props}>
       {children}
     </div>
   );
