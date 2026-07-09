@@ -108,6 +108,7 @@ export const OrderManagement = () => {
     <div className="space-y-6 pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
+<<<<<<< HEAD
           <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <Package className="w-7 h-7 text-primary" />
             Order Management
@@ -131,6 +132,13 @@ export const OrderManagement = () => {
               </button>
             ))}
           </div>
+=======
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Package className="w-7 h-7 text-primary" />
+            Order Management
+          </h1>
+          <p className="text-slate-600">Process physical orders, print labels, and track shipments.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
       </div>
 
@@ -145,25 +153,41 @@ export const OrderManagement = () => {
         </Card>
         <Card className="border-blue-500/20 bg-blue-500/5">
           <CardContent className="p-6">
+<<<<<<< HEAD
             <h3 className="text-sm font-medium text-blue-400/80 mb-2">Processing</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-blue-400">{stats.processing}</span>
+=======
+            <h3 className="text-sm font-medium text-slate-600 mb-2">In Transit</h3>
+            <div className="flex items-end gap-3">
+              <span className="text-3xl font-bold text-slate-900">1</span>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
         <Card className="border-green-500/20 bg-green-500/5">
           <CardContent className="p-6">
+<<<<<<< HEAD
             <h3 className="text-sm font-medium text-green-400/80 mb-2">Delivered</h3>
+=======
+            <h3 className="text-sm font-medium text-slate-600 mb-2">Delivered (30d)</h3>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-green-400">{stats.delivered}</span>
             </div>
           </CardContent>
         </Card>
-        <Card className="border-white/10">
+        <Card className="border-slate-300">
           <CardContent className="p-6">
+<<<<<<< HEAD
             <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Total My Revenue</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-textPrimary">LKR {stats.totalRevenue.toLocaleString()}</span>
+=======
+            <h3 className="text-sm font-medium text-slate-600 mb-2">Return Requests</h3>
+            <div className="flex items-end gap-3">
+              <span className="text-3xl font-bold text-slate-900">0</span>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
@@ -171,8 +195,9 @@ export const OrderManagement = () => {
 
       <Card>
         {/* Toolbar */}
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between">
+        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
+<<<<<<< HEAD
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
             <input 
               type="text" 
@@ -180,6 +205,13 @@ export const OrderManagement = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-surface/50 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors" 
+=======
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <input 
+              type="text" 
+              placeholder="Search by order ID or customer name..." 
+              className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             />
           </div>
           <div className="flex gap-2">
@@ -189,6 +221,7 @@ export const OrderManagement = () => {
         
         {/* Data Table */}
         <div className="overflow-x-auto">
+<<<<<<< HEAD
           {isLoading ? (
             <div className="p-12 flex flex-col items-center justify-center gap-4">
               <Loader2 className="w-8 h-8 text-primary animate-spin" />
@@ -214,6 +247,57 @@ export const OrderManagement = () => {
                   <th className="p-4">My Share Value</th>
                   <th className="p-4">Status</th>
                   <th className="p-4 pr-6"></th>
+=======
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-slate-200 text-sm font-medium text-slate-500 bg-slate-50">
+                <th className="p-4 pl-6">Order ID / Date</th>
+                <th className="p-4">Customer</th>
+                <th className="p-4">Items</th>
+                <th className="p-4">Total Value</th>
+                <th className="p-4">Fulfillment Status</th>
+                <th className="p-4 pr-6"></th>
+              </tr>
+            </thead>
+            <tbody className="text-sm">
+              {ORDERS.map((order, i) => (
+                <tr key={i} className="border-b border-slate-200 hover:bg-slate-50 transition-colors group">
+                  <td className="p-4 pl-6">
+                    <div className="flex flex-col">
+                      <span className="font-medium text-slate-900">{order.id}</span>
+                      <span className="text-xs text-slate-500">{order.date}</span>
+                    </div>
+                  </td>
+                  <td className="p-4 text-slate-800">{order.customer}</td>
+                  <td className="p-4 text-slate-800">{order.items} items</td>
+                  <td className="p-4 font-bold text-slate-900">{order.total}</td>
+                  <td className="p-4">
+                    <div className="flex items-center gap-1.5">
+                      {order.status === 'Delivered' && <CheckCircle2 className="w-4 h-4 text-green-400" />}
+                      {order.status === 'Pending Fulfillment' && <Clock className="w-4 h-4 text-yellow-400" />}
+                      {order.status === 'In Transit' && <MapPin className="w-4 h-4 text-blue-400" />}
+                      <span className={cn(
+                        order.status === 'Delivered' ? "text-green-400" : 
+                        order.status === 'Pending Fulfillment' ? "text-yellow-400" : 
+                        "text-blue-400"
+                      )}>
+                        {order.status}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="p-4 pr-6 text-right">
+                    <div className="flex justify-end gap-2">
+                      {order.status === 'Pending Fulfillment' && (
+                        <button className="px-3 py-1.5 text-xs font-medium text-slate-900 bg-primary/20 hover:bg-primary/30 text-primary rounded-lg transition-colors border border-primary/20">
+                          Ship Order
+                        </button>
+                      )}
+                      <button className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-200 rounded-lg transition-colors opacity-0 group-hover:opacity-100">
+                        <MoreVertical className="w-5 h-5"/>
+                      </button>
+                    </div>
+                  </td>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </tr>
               </thead>
               <tbody className="text-sm">

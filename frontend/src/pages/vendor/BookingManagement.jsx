@@ -80,11 +80,19 @@ export const BookingManagement = () => {
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
+<<<<<<< HEAD
           <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <Calendar className="w-7 h-7 text-primary" />
             Booking Management
           </h1>
           <p className="text-textPrimary/60">Manage your active pipeline and past events.</p>
+=======
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Calendar className="w-7 h-7 text-primary" />
+            Booking Management
+          </h1>
+          <p className="text-slate-600">Manage your active pipeline and past events.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <Link to="/vendor/vendor-booking-calendar">
           <Button variant="outline" leftIcon={<Calendar className="w-4 h-4"/>}>View Calendar</Button>
@@ -94,6 +102,7 @@ export const BookingManagement = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <Card className="border-primary/20 bg-primary/5">
           <CardContent className="p-6">
+<<<<<<< HEAD
             <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Upcoming Events</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-textPrimary">
@@ -110,11 +119,18 @@ export const BookingManagement = () => {
               <span className="text-3xl font-bold text-textPrimary">
                 {bookings.filter(b => b.status === 'PENDING').length}
               </span>
+=======
+            <h3 className="text-sm font-medium text-slate-800 mb-2">Upcoming Events</h3>
+            <div className="flex items-end gap-3">
+              <span className="text-3xl font-bold text-slate-900">12</span>
+              <span className="text-sm text-slate-500 mb-1">Next 30 Days</span>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
-        <Card className="border-white/10">
+        <Card className="border-slate-300">
           <CardContent className="p-6">
+<<<<<<< HEAD
             <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Completed</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-textPrimary">
@@ -130,6 +146,11 @@ export const BookingManagement = () => {
               <span className="text-3xl font-bold text-textPrimary">
                 LKR {bookings.reduce((sum, b) => { try { return sum + parseFloat(b.service?.price || b.package?.price || 0); } catch { return sum; } }, 0).toLocaleString()}
               </span>
+=======
+            <h3 className="text-sm font-medium text-slate-600 mb-2">Pending Balance</h3>
+            <div className="flex items-end gap-3">
+              <span className="text-3xl font-bold text-slate-900">LKR 14,500</span>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
@@ -137,6 +158,7 @@ export const BookingManagement = () => {
 
       <Card>
         {/* Toolbar */}
+<<<<<<< HEAD
         <div className="p-4 border-b border-white/5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex-1 min-w-0">
             <div className="relative max-w-md">
@@ -149,6 +171,16 @@ export const BookingManagement = () => {
                 className="w-full bg-surface/50 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
               />
             </div>
+=======
+        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
+          <div className="relative flex-1 max-w-md">
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <input 
+              type="text" 
+              placeholder="Search by customer name or ID..." 
+              className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
+            />
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -171,6 +203,7 @@ export const BookingManagement = () => {
         
         {/* Data Table */}
         <div className="overflow-x-auto">
+<<<<<<< HEAD
           {loading ? (
             <div className="p-12 flex flex-col items-center justify-center text-textPrimary/40 gap-3">
               <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -197,6 +230,59 @@ export const BookingManagement = () => {
                   <th className="p-4">Price</th>
                   <th className="p-4">Status</th>
                   <th className="p-4 pr-6"></th>
+=======
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-slate-200 text-sm font-medium text-slate-500 bg-slate-50">
+                <th className="p-4 pl-6">Client & Event</th>
+                <th className="p-4">Date</th>
+                <th className="p-4">Financials</th>
+                <th className="p-4">Status</th>
+                <th className="p-4 pr-6"></th>
+              </tr>
+            </thead>
+            <tbody className="text-sm">
+              {BOOKINGS.map((booking, i) => (
+                <tr key={i} className="border-b border-slate-200 hover:bg-slate-50 transition-colors group">
+                  <td className="p-4 pl-6">
+                    <div className="flex flex-col">
+                      <span className="font-bold text-slate-900">{booking.customer}</span>
+                      <span className="text-xs text-slate-500">{booking.eventType} • {booking.id}</span>
+                    </div>
+                  </td>
+                  <td className="p-4 text-slate-800">{booking.date}</td>
+                  <td className="p-4">
+                    <div className="flex flex-col">
+                      <span className="font-medium text-slate-900">{booking.amount}</span>
+                      <span className={cn(
+                        "text-xs",
+                        booking.paid === booking.amount ? "text-green-400" : "text-primary"
+                      )}>
+                        {booking.paid === booking.amount ? 'Fully Paid' : `${booking.paid} Paid`}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    <span className={cn(
+                      "px-2.5 py-1 rounded-full text-xs font-medium border border-current/20 flex items-center gap-1.5 w-fit",
+                      booking.status === 'Confirmed' ? "text-primary bg-primary/10" : 
+                      booking.status === 'Completed' ? "text-green-400 bg-green-400/10" :
+                      "text-red-400 bg-red-400/10"
+                    )}>
+                      {booking.status === 'Confirmed' && <Clock className="w-3.5 h-3.5" />}
+                      {booking.status === 'Completed' && <CheckCircle2 className="w-3.5 h-3.5" />}
+                      {booking.status}
+                    </span>
+                  </td>
+                  <td className="p-4 pr-6 text-right space-x-2">
+                    <Button variant="outline" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      Manage
+                    </Button>
+                    <button className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-200 rounded-lg transition-colors" title="Actions">
+                      <MoreVertical className="w-5 h-5"/>
+                    </button>
+                  </td>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </tr>
               </thead>
               <tbody className="text-sm">

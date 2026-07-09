@@ -132,13 +132,22 @@ export const CustomerReviews = () => {
     <div className="space-y-6 max-w-5xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
+<<<<<<< HEAD
           <h1 className="text-2xl font-bold text-textPrimary tracking-tight flex items-center gap-3">
             <Star className="w-7 h-7 text-yellow-400" />
             Customer Reviews
           </h1>
           <p className="text-textPrimary/60">See all feedback left for your products and services.</p>
+=======
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Star className="w-7 h-7 text-yellow-400" />
+            Customer Reviews
+          </h1>
+          <p className="text-slate-600">Manage your reputation and respond to client feedback.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
 
+<<<<<<< HEAD
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <div className="p-5 bg-surface border border-white/10 rounded-3xl text-center">
             <p className="text-sm uppercase tracking-[0.2em] text-textPrimary/50">Average rating</p>
@@ -182,16 +191,139 @@ export const CustomerReviews = () => {
               <option value="1">1 Star</option>
               <option value="product">Product Reviews</option>
               <option value="service">Service Reviews</option>
+=======
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        
+        {/* Rating Overview */}
+        <Card className="md:col-span-2 border-yellow-500/20 bg-yellow-500/5">
+          <CardContent className="p-6 flex items-center gap-6">
+            <div className="text-center">
+              <span className="text-5xl font-bold text-slate-900">4.8</span>
+              <div className="flex text-yellow-400 my-2 justify-center">
+                <Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current opacity-50"/>
+              </div>
+              <span className="text-xs text-slate-500">Based on 128 reviews</span>
+            </div>
+            
+            <div className="flex-1 space-y-1.5">
+              {[5,4,3,2,1].map(star => (
+                <div key={star} className="flex items-center gap-2 text-xs text-slate-600">
+                  <span className="w-2">{star}</span>
+                  <Star className="w-3 h-3 text-slate-500" />
+                  <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-yellow-400 rounded-full" 
+                      style={{ width: star === 5 ? '85%' : star === 4 ? '10%' : star === 3 ? '3%' : '1%' }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="border-slate-300">
+          <CardContent className="p-6 flex flex-col justify-center h-full">
+            <h3 className="text-sm font-medium text-slate-600 mb-2">Response Rate</h3>
+            <div className="flex items-end gap-3">
+              <span className="text-3xl font-bold text-slate-900">92%</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-slate-300">
+          <CardContent className="p-6 flex flex-col justify-center h-full">
+            <h3 className="text-sm font-medium text-slate-600 mb-2">Pending Replies</h3>
+            <div className="flex items-end gap-3">
+              <span className="text-3xl font-bold text-primary">2</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
+          <div className="relative flex-1 max-w-md">
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <input 
+              type="text" 
+              placeholder="Search reviews by name or keyword..." 
+              className="w-full bg-surface border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
+            />
+          </div>
+          <div className="flex gap-2">
+            <select className="bg-surface border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
+              <option>All Reviews</option>
+              <option>5 Stars</option>
+              <option>Needs Reply</option>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </select>
 
           </div>
         </div>
 
+<<<<<<< HEAD
         <div className="p-6 space-y-6">
           {filteredReviews.length === 0 ? (
             <div className="text-center py-16 text-textPrimary/60">
               <AlertTriangle className="mx-auto mb-4 w-12 h-12 opacity-40" />
               <p>No reviews match your search or filters.</p>
+=======
+        <div className="divide-y divide-white/5">
+          {REVIEWS.map((review) => (
+            <div key={review.id} className="p-6 hover:bg-slate-50 transition-colors">
+              <div className="flex flex-col sm:flex-row gap-4">
+                
+                {/* Avatar */}
+                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary shrink-0">
+                  {review.customer.charAt(0)}
+                </div>
+
+                <div className="flex-1 space-y-3">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-bold text-slate-900">{review.customer}</h4>
+                      <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
+                        <span>{review.date}</span>
+                        <span>•</span>
+                        <span>{review.event}</span>
+                      </div>
+                    </div>
+                    <div className="flex text-yellow-400">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className={cn("w-4 h-4", i < review.rating ? "fill-current" : "text-slate-300")} />
+                      ))}
+                    </div>
+                  </div>
+
+                  <p className="text-slate-800 text-sm leading-relaxed">"{review.text}"</p>
+
+                  {/* Vendor Reply Block */}
+                  {review.reply ? (
+                    <div className="mt-4 bg-surface/50 border-l-2 border-primary p-4 rounded-r-lg">
+                      <div className="flex items-center gap-2 mb-2">
+                        <MessageSquare className="w-4 h-4 text-primary" />
+                        <span className="text-xs font-bold text-primary">Your Reply</span>
+                      </div>
+                      <p className="text-sm text-slate-700 italic">"{review.reply}"</p>
+                    </div>
+                  ) : (
+                    <div className="pt-2">
+                      <Button variant="outline" size="sm" leftIcon={<Reply className="w-4 h-4"/>}>Reply to Review</Button>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="shrink-0 flex sm:flex-col gap-2">
+                  <button className="p-2 text-slate-500 hover:text-slate-900 rounded-lg transition-colors" title="Helpful">
+                    <ThumbsUp className="w-4 h-4" />
+                  </button>
+                  <button className="p-2 text-slate-500 hover:text-red-400 rounded-lg transition-colors" title="Report">
+                    <Flag className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           ) : (
             filteredReviews.map((review) => (

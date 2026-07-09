@@ -4,11 +4,13 @@ import { Save, User, Mail, Shield, Camera } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../utils/cn';
 import { api } from '../../utils/api';
 
 export const AccountSettings = () => {
   const { user, setUser } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   
   const [firstName, ...lastNameArr] = (user?.name || ' ').split(' ');
   const defaultLastName = lastNameArr.join(' ');
@@ -29,6 +31,8 @@ export const AccountSettings = () => {
     }
   };
 
+  const profilePath = user?.role === 'admin' ? '/admin/profile' : '/customers/profile';
+
   const handleSave = async () => {
     setIsSaving(true);
     try {
@@ -43,11 +47,13 @@ export const AccountSettings = () => {
         profileImageUrl = uploadRes.data.url;
       }
 
-      const res = await api.put('/customers/profile', {
+      const res = await api.put(profilePath, {
         name: `${formFirst} ${formLast}`.trim(),
         profileImage: profileImageUrl
       });
-      const updatedUser = { ...user, ...res.data.customer };
+
+      const updatedProfile = res.data.customer || res.data.admin || {};
+      const updatedUser = { ...user, ...updatedProfile };
       setUser(updatedUser);
       localStorage.setItem('user', JSON.stringify(updatedUser));
       alert('Account settings saved successfully!');
@@ -66,14 +72,19 @@ export const AccountSettings = () => {
     >
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
+<<<<<<< HEAD
           <h1 className="text-3xl font-bold text-textPrimary mb-2">Account Settings</h1>
           <p className="text-textPrimary/60 text-lg">Manage your personal information and preferences.</p>
+=======
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">Account Settings</h1>
+          <p className="text-slate-600 text-lg">Manage your personal information and preferences.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <Button 
           leftIcon={<Save className="w-4 h-4"/>} 
           className="px-6 h-12 text-base"
           onClick={handleSave}
-          disabled={isSaving}
+          disabled={isSaving || !formFirst.trim() || !formLast.trim()}
         >
           {isSaving ? 'Saving...' : 'Save Changes'}
         </Button>
@@ -81,7 +92,7 @@ export const AccountSettings = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Profile Avatar Card */}
-        <Card className="md:col-span-1 border-white/5 bg-surface/40 hover:border-primary/30 transition-colors">
+        <Card className="md:col-span-1 border-slate-200 bg-surface/40 hover:border-primary/30 transition-colors">
           <CardContent className="p-8 flex flex-col items-center text-center space-y-4">
             <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
               <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
@@ -95,18 +106,26 @@ export const AccountSettings = () => {
                 </div>
               </div>
               <div className="absolute inset-0 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center border-4 border-transparent">
+<<<<<<< HEAD
                 <Camera className="w-8 h-8 text-textPrimary" />
               </div>
             </div>
             <div>
               <h3 className="text-xl font-bold text-textPrimary">{user?.name || 'User Name'}</h3>
+=======
+                <Camera className="w-8 h-8 text-slate-900" />
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-slate-900">{user?.name || 'User Name'}</h3>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               <p className="text-primary font-medium text-sm">{user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1) || 'Customer'}</p>
             </div>
           </CardContent>
         </Card>
 
         {/* General Info Card */}
-        <Card className="md:col-span-2 border-white/5 bg-surface/40 hover:border-primary/30 transition-colors">
+        <Card className="md:col-span-2 border-slate-200 bg-surface/40 hover:border-primary/30 transition-colors">
           <CardHeader>
             <CardTitle className="text-xl flex items-center gap-2">
               <User className="w-5 h-5 text-primary" />
@@ -117,19 +136,33 @@ export const AccountSettings = () => {
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
+<<<<<<< HEAD
                 <label className="text-sm font-medium text-textPrimary/80">First Name</label>
                 <input 
                   type="text" 
                   className="w-full bg-background/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
+=======
+                <label className="text-sm font-medium text-slate-800">First Name</label>
+                <input 
+                  type="text" 
+                  className="w-full bg-background/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   value={formFirst} 
                   onChange={(e) => setFormFirst(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
+<<<<<<< HEAD
                 <label className="text-sm font-medium text-textPrimary/80">Last Name</label>
                 <input 
                   type="text" 
                   className="w-full bg-background/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
+=======
+                <label className="text-sm font-medium text-slate-800">Last Name</label>
+                <input 
+                  type="text" 
+                  className="w-full bg-background/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   value={formLast} 
                   onChange={(e) => setFormLast(e.target.value)}
                 />
@@ -137,6 +170,7 @@ export const AccountSettings = () => {
             </div>
             
             <div className="space-y-2">
+<<<<<<< HEAD
               <label className="text-sm font-medium text-textPrimary/80">Email Address</label>
               <div className="relative">
                 <Mail className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-textPrimary/40" />
@@ -144,23 +178,79 @@ export const AccountSettings = () => {
                   type="email" 
                   disabled
                   className="w-full bg-background/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-textPrimary/50 cursor-not-allowed focus:outline-none transition-all" 
+=======
+              <label className="text-sm font-medium text-slate-800">Email Address</label>
+              <div className="relative">
+                <Mail className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                <input 
+                  type="email" 
+                  disabled
+                  className="w-full bg-background/50 border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-slate-500 cursor-not-allowed focus:outline-none transition-all" 
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   value={user?.email || ''} 
                 />
               </div>
             </div>
             
             <div className="space-y-2">
+<<<<<<< HEAD
               <label className="text-sm font-medium text-textPrimary/80">Bio / Description</label>
               <textarea 
                 rows="4" 
                 placeholder="Tell vendors a bit about yourself..."
                 className="w-full bg-background/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
+=======
+              <label className="text-sm font-medium text-slate-800">Bio / Description</label>
+              <textarea 
+                rows="4" 
+                placeholder="Tell vendors a bit about yourself..."
+                className="w-full bg-background/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               ></textarea>
             </div>
             
           </CardContent>
         </Card>
       </div>
+
+      {/* Theme Preferences Card */}
+      <Card className="border-slate-200 bg-surface/40 hover:border-primary/30 transition-colors mt-8">
+        <CardHeader>
+          <CardTitle className="text-xl flex items-center gap-2">
+            <Shield className="w-5 h-5 text-primary" />
+            Appearance
+          </CardTitle>
+          <CardDescription>Customize how Event Nest looks for you.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className={cn(
+                "flex-1 p-6 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-4",
+                theme === 'light' ? "border-primary bg-primary/5 text-primary" : "border-slate-200 hover:border-slate-300 text-slate-600 hover:bg-slate-50"
+              )}
+            >
+              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
+                <div className="w-6 h-6 bg-yellow-400 rounded-full" />
+              </div>
+              <span className="font-bold">Light Mode</span>
+            </button>
+            <button
+              onClick={toggleTheme}
+              className={cn(
+                "flex-1 p-6 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-4",
+                theme === 'dark' ? "border-primary bg-primary/5 text-primary" : "border-slate-200 hover:border-slate-300 text-slate-600 hover:bg-slate-50"
+              )}
+            >
+              <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center">
+                <div className="w-4 h-4 bg-transparent rounded-full shadow-[inset_4px_-4px_0_0_#cbd5e1]" />
+              </div>
+              <span className="font-bold">Dark Mode</span>
+            </button>
+          </div>
+        </CardContent>
+      </Card>
 
     </motion.div>
   );

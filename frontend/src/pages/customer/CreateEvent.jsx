@@ -19,7 +19,7 @@ export const CreateEvent = () => {
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background flex flex-col items-center">
-      <div className="container mx-auto px-6 max-w-3xl">
+      <div className="container mx-auto px-4 sm:px-6 max-w-3xl">
         
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-textPrimary mb-4">Let's plan something amazing.</h1>

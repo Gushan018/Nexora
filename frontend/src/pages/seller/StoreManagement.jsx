@@ -98,11 +98,19 @@ export const StoreManagement = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
+<<<<<<< HEAD
           <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <Store className="w-7 h-7 text-primary" />
             Store Management
           </h1>
           <p className="text-textPrimary/60">Customize your public marketplace storefront appearance and details.</p>
+=======
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Store className="w-7 h-7 text-primary" />
+            Store Management
+          </h1>
+          <p className="text-slate-600">Customize your public marketplace storefront appearance and details.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <Button 
           onClick={handleSave} 
@@ -124,6 +132,7 @@ export const StoreManagement = () => {
             <CardContent className="space-y-6">
               
               <div className="flex flex-col sm:flex-row gap-6 items-start">
+<<<<<<< HEAD
                 <div 
                   onClick={() => document.getElementById('logo-upload').click()}
                   className="w-32 h-32 rounded-2xl bg-surface border-2 border-dashed border-white/20 flex flex-col items-center justify-center hover:border-primary/50 hover:bg-surface/50 cursor-pointer transition-all group shrink-0 overflow-hidden relative"
@@ -137,6 +146,11 @@ export const StoreManagement = () => {
                     </>
                   )}
                   <input id="logo-upload" type="file" className="hidden" accept="image/*" onChange={handleLogoChange} />
+=======
+                <div className="w-32 h-32 rounded-2xl bg-surface border-2 border-dashed border-slate-400 flex flex-col items-center justify-center hover:border-primary/50 hover:bg-surface/50 cursor-pointer transition-all group shrink-0">
+                  <ImageIcon className="w-8 h-8 text-slate-500 group-hover:text-primary mb-2" />
+                  <span className="text-xs text-slate-600 font-medium">Upload Logo</span>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
                 <div className="flex-1 space-y-4 w-full">
                   <Input 
@@ -150,14 +164,23 @@ export const StoreManagement = () => {
               </div>
 
               <div className="space-y-1.5">
+<<<<<<< HEAD
                 <label className="text-sm font-medium text-textPrimary/90">About Us / Store Description</label>
+=======
+                <label className="text-sm font-medium text-slate-800">About Us / Store Description</label>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <textarea 
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
                   rows="5" 
+<<<<<<< HEAD
                   className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
                   placeholder="Tell customers about your business..."
+=======
+                  className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors"
+                  defaultValue="Luxe Dining is Sri Lanka's premier provider of luxury event equipment. We specialize in supplying high-end cutlery, premium linens, and elegant tableware for weddings and corporate events."
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 />
               </div>
 
@@ -196,6 +219,7 @@ export const StoreManagement = () => {
         <div className="lg:col-span-1 space-y-6">
           <Card>
             <CardHeader>
+<<<<<<< HEAD
               <CardTitle>Store Status</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -203,6 +227,31 @@ export const StoreManagement = () => {
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="text-textPrimary font-medium text-sm">Account Status</h4>
                   <span className="px-2 py-0.5 rounded text-[10px] bg-green-500/20 text-green-400 font-bold">ACTIVE</span>
+=======
+              <CardTitle>Store Cover Photo</CardTitle>
+              <CardDescription>Appears at the top of your profile.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="w-full h-40 rounded-xl bg-surface border-2 border-dashed border-slate-400 flex flex-col items-center justify-center hover:border-primary/50 hover:bg-surface/50 cursor-pointer transition-all group overflow-hidden relative">
+                <img src="https://images.unsplash.com/photo-1555244162-803834f70033?w=500&q=80" alt="Cover" className="w-full h-full object-cover opacity-60" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ImageIcon className="w-8 h-8 text-slate-900 mb-2" />
+                  <span className="text-sm text-slate-900 font-medium">Change Cover</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Store Status</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <label className="flex items-center justify-between p-4 rounded-xl border border-slate-300 bg-surface/30 cursor-pointer">
+                <div>
+                  <h4 className="text-slate-900 font-medium text-sm">Store Visibility</h4>
+                  <p className="text-xs text-slate-500">Turn on to appear in search</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
                 <p className="text-xs text-textPrimary/50">Your store is currently visible to all users on Nexora.</p>
               </div>
@@ -214,7 +263,20 @@ export const StoreManagement = () => {
                   <Button variant="outline" size="sm" className="flex-1 text-xs">Vacation</Button>
                   <Button size="sm" className="flex-1 text-xs">Active</Button>
                 </div>
+<<<<<<< HEAD
               </div>
+=======
+              </label>
+              <label className="flex items-center justify-between p-4 rounded-xl border border-slate-300 bg-surface/30 cursor-pointer">
+                <div>
+                  <h4 className="text-slate-900 font-medium text-sm">Accepting New Orders</h4>
+                  <p className="text-xs text-slate-500">Allow customers to buy</p>
+                </div>
+                <div className="w-12 h-6 bg-primary rounded-full relative cursor-pointer">
+                  <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5" />
+                </div>
+              </label>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </CardContent>
           </Card>
         </div>

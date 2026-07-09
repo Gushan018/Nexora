@@ -11,13 +11,17 @@ export const Services = ({ isDashboard = false }) => {
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary/10 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-40 left-0 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="container mx-auto px-6 max-w-6xl relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative z-10">
         
         <div className="text-center mb-20">
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
+<<<<<<< HEAD
             className="text-4xl lg:text-5xl font-bold text-textPrimary mb-6"
+=======
+            className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Platform <span className="text-gradient">Services</span>
           </motion.h1>
@@ -25,9 +29,13 @@ export const Services = ({ isDashboard = false }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
+<<<<<<< HEAD
             className="text-textPrimary/60 text-lg max-w-2xl mx-auto"
+=======
+            className="text-slate-600 text-lg max-w-2xl mx-auto"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
-            Nexora is built for three distinct types of users. Discover what our platform can do for you.
+            Event Nest is built for three distinct types of users. Discover what our platform can do for you.
           </motion.p>
         </div>
 
@@ -44,20 +52,29 @@ export const Services = ({ isDashboard = false }) => {
               <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mb-6">
                 <CalendarDays className="w-8 h-8 text-primary" />
               </div>
+<<<<<<< HEAD
               <h2 className="text-3xl font-bold text-textPrimary">For Event Planners</h2>
               <p className="text-textPrimary/60 text-lg leading-relaxed">
+=======
+              <h2 className="text-3xl font-bold text-slate-900">For Event Planners</h2>
+              <p className="text-slate-600 text-lg leading-relaxed">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 Whether you're planning a massive corporate gala or an intimate backyard wedding, our tools give you absolute control. Build custom itineraries, manage budgets in real-time, and hire verified vendors seamlessly.
               </p>
               <ul className="space-y-3 pt-4">
                 {['Smart AI Vendor Matching', 'Real-time Budget Tracking', 'Collaborative Guest Lists'].map((item, i) => (
+<<<<<<< HEAD
                   <li key={i} className="flex items-center gap-3 text-textPrimary/80">
+=======
+                  <li key={i} className="flex items-center gap-3 text-slate-800">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     <Zap className="w-5 h-5 text-primary" /> {item}
                   </li>
                 ))}
               </ul>
             </div>
             <div className="md:w-1/2">
-              <div className="aspect-video rounded-3xl overflow-hidden bg-surface border border-white/10 p-2">
+              <div className="aspect-video rounded-3xl overflow-hidden bg-surface border border-slate-300 p-2">
                 <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80" alt="Planners" className="w-full h-full object-cover rounded-2xl" />
               </div>
             </div>
@@ -74,20 +91,29 @@ export const Services = ({ isDashboard = false }) => {
               <div className="w-16 h-16 bg-accent/20 rounded-2xl flex items-center justify-center mb-6">
                 <Store className="w-8 h-8 text-accent" />
               </div>
+<<<<<<< HEAD
               <h2 className="text-3xl font-bold text-textPrimary">For Service Vendors</h2>
               <p className="text-textPrimary/60 text-lg leading-relaxed">
+=======
+              <h2 className="text-3xl font-bold text-slate-900">For Service Vendors</h2>
+              <p className="text-slate-600 text-lg leading-relaxed">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 Photographers, Caterers, DJs, and Decorators: scale your business with a premium digital storefront. Manage inquiries, accept secure payments, and build a verified reputation.
               </p>
               <ul className="space-y-3 pt-4">
                 {['Automated Booking Calendar', 'Tiered Package Creation', 'Secure Payment Escrow'].map((item, i) => (
+<<<<<<< HEAD
                   <li key={i} className="flex items-center gap-3 text-textPrimary/80">
+=======
+                  <li key={i} className="flex items-center gap-3 text-slate-800">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     <ShieldCheck className="w-5 h-5 text-accent" /> {item}
                   </li>
                 ))}
               </ul>
             </div>
             <div className="md:w-1/2">
-              <div className="aspect-video rounded-3xl overflow-hidden bg-surface border border-white/10 p-2">
+              <div className="aspect-video rounded-3xl overflow-hidden bg-surface border border-slate-300 p-2">
                 <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80" alt="Vendors" className="w-full h-full object-cover rounded-2xl" />
               </div>
             </div>
@@ -104,20 +130,29 @@ export const Services = ({ isDashboard = false }) => {
               <div className="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center mb-6">
                 <ShoppingBag className="w-8 h-8 text-green-400" />
               </div>
+<<<<<<< HEAD
               <h2 className="text-3xl font-bold text-textPrimary">For Product Sellers</h2>
               <p className="text-textPrimary/60 text-lg leading-relaxed">
+=======
+              <h2 className="text-3xl font-bold text-slate-900">For Product Sellers</h2>
+              <p className="text-slate-600 text-lg leading-relaxed">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 List physical goods in our dedicated event marketplace. From bulk cutlery and silk linens to custom lighting rigs, reach customers exactly when they are buying for their events.
               </p>
               <ul className="space-y-3 pt-4">
                 {['Inventory Stock Management', 'Integrated Shipping Tools', 'Deep Analytics Dashboard'].map((item, i) => (
+<<<<<<< HEAD
                   <li key={i} className="flex items-center gap-3 text-textPrimary/80">
+=======
+                  <li key={i} className="flex items-center gap-3 text-slate-800">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     <HeartHandshake className="w-5 h-5 text-green-400" /> {item}
                   </li>
                 ))}
               </ul>
             </div>
             <div className="md:w-1/2">
-              <div className="aspect-video rounded-3xl overflow-hidden bg-surface border border-white/10 p-2">
+              <div className="aspect-video rounded-3xl overflow-hidden bg-surface border border-slate-300 p-2">
                 <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80" alt="Sellers" className="w-full h-full object-cover rounded-2xl" />
               </div>
             </div>

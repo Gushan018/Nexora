@@ -199,8 +199,8 @@ const loginAdmin = async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password." });
     }
 
-
-    if (password !== admin.password) {
+    const isPasswordMatch = await bcrypt.compare(password, admin.password);
+    if (!isPasswordMatch) {
       return res.status(400).json({ message: "Invalid email or password." });
     }
 
@@ -226,13 +226,16 @@ const loginUnified = async (req, res) => {
 
     // 1. Check Admin
     const admin = await prisma.admin.findUnique({ where: { email } });
-    if (admin && password === admin.password) {
-      const token = generateToken(admin.adminId, 'admin');
-      return res.status(200).json({
-        message: "Login successful!",
-        token,
-        user: { id: admin.adminId, email: admin.email, role: 'admin' }
-      });
+    if (admin) {
+      const isMatch = await bcrypt.compare(password, admin.password);
+      if (isMatch) {
+        const token = generateToken(admin.adminId, 'admin');
+        return res.status(200).json({
+          message: "Login successful!",
+          token,
+          user: { id: admin.adminId, email: admin.email, role: 'admin' }
+        });
+      }
     }
 
     // 2. Check Vendor
