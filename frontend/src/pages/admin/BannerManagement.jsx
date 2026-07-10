@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { Image as ImageIcon, Plus, Power, Trash2, Edit2, Link as LinkIcon, ExternalLink, MoveUp, MoveDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -17,19 +17,11 @@ export const BannerManagement = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <ImageIcon className="w-7 h-7 text-primary" />
-            Banner & Ad Management
-          </h1>
-          <p className="text-textPrimary/60">Configure global announcements, hero carousels, and promotional banners.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <ImageIcon className="w-7 h-7 text-primary" />
             Banner & Ad Management
           </h1>
           <p className="text-slate-600">Configure global announcements, hero carousels, and promotional banners.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <div className="flex gap-2">
           <Button leftIcon={<Plus className="w-4 h-4"/>}>Create Banner</Button>
@@ -57,19 +49,11 @@ export const BannerManagement = () => {
                       {banner.image ? (
                         <img src={banner.image} alt={banner.name} className="w-full h-full object-cover" />
                       ) : (
-<<<<<<< HEAD
-                        <span className="text-xs text-textPrimary/40 font-medium">Text Only Banner</span>
-                      )}
-                      {!banner.active && (
-                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
-                          <span className="text-xs font-bold text-textPrimary tracking-widest uppercase">Inactive</span>
-=======
                         <span className="text-xs text-slate-500 font-medium">Text Only Banner</span>
                       )}
                       {!banner.active && (
                         <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
                           <span className="text-xs font-bold text-slate-900 tracking-widest uppercase">Inactive</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                         </div>
                       )}
                     </div>
@@ -79,13 +63,8 @@ export const BannerManagement = () => {
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="flex items-center gap-2">
-<<<<<<< HEAD
-                            <h4 className="font-bold text-textPrimary text-lg">{banner.name}</h4>
-                            <span className="px-2 py-0.5 bg-surface border border-white/10 rounded text-[10px] text-textPrimary/60">
-=======
                             <h4 className="font-bold text-slate-900 text-lg">{banner.name}</h4>
                             <span className="px-2 py-0.5 bg-surface border border-slate-300 rounded text-[10px] text-slate-600">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                               {banner.type}
                             </span>
                           </div>
@@ -96,13 +75,8 @@ export const BannerManagement = () => {
                         
                         {/* Order Controls */}
                         <div className="flex flex-col gap-1">
-<<<<<<< HEAD
-                          <button className="p-1 text-textPrimary/40 hover:text-textPrimary bg-surface rounded"><MoveUp className="w-3 h-3"/></button>
-                          <button className="p-1 text-textPrimary/40 hover:text-textPrimary bg-surface rounded"><MoveDown className="w-3 h-3"/></button>
-=======
                           <button className="p-1 text-slate-500 hover:text-slate-900 bg-surface rounded"><MoveUp className="w-3 h-3"/></button>
                           <button className="p-1 text-slate-500 hover:text-slate-900 bg-surface rounded"><MoveDown className="w-3 h-3"/></button>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                         </div>
                       </div>
                       
@@ -110,19 +84,11 @@ export const BannerManagement = () => {
                       <div className="flex items-end justify-between mt-4 border-t border-slate-200 pt-3">
                         <div className="flex gap-4">
                           <div>
-<<<<<<< HEAD
-                            <span className="text-xs text-textPrimary/40 block">Total Clicks</span>
-                            <span className="text-sm font-bold text-textPrimary">{banner.clicks.toLocaleString()}</span>
-                          </div>
-                          <div>
-                            <span className="text-xs text-textPrimary/40 block">Avg. CTR</span>
-=======
                             <span className="text-xs text-slate-500 block">Total Clicks</span>
                             <span className="text-sm font-bold text-slate-900">{banner.clicks.toLocaleString()}</span>
                           </div>
                           <div>
                             <span className="text-xs text-slate-500 block">Avg. CTR</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                             <span className="text-sm font-bold text-green-400">{banner.ctr}</span>
                           </div>
                         </div>
@@ -150,28 +116,16 @@ export const BannerManagement = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-<<<<<<< HEAD
-                <h4 className="text-xs text-textPrimary/40 uppercase font-bold tracking-wider mb-1">Highest Converting</h4>
-                <p className="font-bold text-textPrimary">Holiday Sale 2026</p>
-=======
                 <h4 className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Highest Converting</h4>
                 <p className="font-bold text-slate-900">Holiday Sale 2026</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <p className="text-sm text-green-400">8.4% Click-Through Rate</p>
               </div>
               <div className="w-full h-px bg-slate-100" />
               <div>
-<<<<<<< HEAD
-                <h4 className="text-xs text-textPrimary/40 uppercase font-bold tracking-wider mb-1">Lowest Converting</h4>
-                <p className="font-bold text-textPrimary">Vendor Signup Push</p>
-                <p className="text-sm text-red-400">2.1% Click-Through Rate</p>
-                <p className="text-xs text-textPrimary/40 mt-1 italic">Consider adding an image or changing copy.</p>
-=======
                 <h4 className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Lowest Converting</h4>
                 <p className="font-bold text-slate-900">Vendor Signup Push</p>
                 <p className="text-sm text-red-400">2.1% Click-Through Rate</p>
                 <p className="text-xs text-slate-500 mt-1 italic">Consider adding an image or changing copy.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </CardContent>
           </Card>

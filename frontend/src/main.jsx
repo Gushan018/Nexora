@@ -17,7 +17,6 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-<<<<<<< HEAD
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
@@ -25,14 +24,5 @@ createRoot(document.getElementById('root')).render(
         </AuthProvider>
       </QueryClientProvider>
     </ThemeProvider>
-=======
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
   </StrictMode>,
 )

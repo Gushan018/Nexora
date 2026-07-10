@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { DollarSign, Calendar, Star, TrendingUp, Users, Briefcase, Package, Loader2, AlertCircle, Download } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -90,13 +90,8 @@ export const VendorDashboard = () => {
     <div className="space-y-6 pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary tracking-tight">Overview</h1>
-          <p className="text-textPrimary/60">Welcome back, here's what's happening with your business today.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Overview</h1>
           <p className="text-slate-600">Welcome back, here's what's happening with your business today.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <div className="flex items-center gap-3">
           <div className="relative group">
@@ -171,50 +166,8 @@ export const VendorDashboard = () => {
               <CardTitle>Revenue Analytics</CardTitle>
               <CardDescription>Your earnings over the last 30 days.</CardDescription>
             </CardHeader>
-<<<<<<< HEAD
-            <CardContent className="h-full pt-4 pb-12 border-t border-white/5">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={REVENUE_DATA}>
-                  <defs>
-                    <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#D4AF37" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                  <XAxis 
-                    dataKey="day" 
-                    stroke="rgba(255,255,255,0.4)" 
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                    dy={10}
-                  />
-                  <YAxis 
-                    stroke="rgba(255,255,255,0.4)" 
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(value) => `LKR ${value}`}
-                  />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#1A1A1A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                    itemStyle={{ color: '#D4AF37' }}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="amount" 
-                    stroke="#D4AF37" 
-                    strokeWidth={3}
-                    fillOpacity={1} 
-                    fill="url(#colorRev)" 
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-=======
             <CardContent className="h-full flex items-center justify-center border-t border-slate-200">
               <span className="text-slate-500">Chart visualization goes here (Recharts)</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </CardContent>
           </Card>
         </div>
@@ -227,46 +180,27 @@ export const VendorDashboard = () => {
               <CardDescription>You have {stats.pendingBookings} pending booking requests.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 pt-0">
-<<<<<<< HEAD
-              {recentRequests.length === 0 ? (
-                <div className="py-8 text-center text-textPrimary/40">
-                  <p>No pending requests.</p>
-=======
-              {[1,2,3].map(i => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-surface/50 border border-slate-200 hover:border-slate-300 transition-colors">
+              {recentRequests?.length ? recentRequests.map(request => (
+                <div key={request.bookingId} className="flex items-center justify-between p-3 rounded-lg bg-surface/50 border border-white/5 hover:border-white/10 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                      <span className="text-primary font-medium">JD</span>
+                      <span className="text-primary font-medium">
+                        {request.customer.name.split(' ').map(n => n[0]).join('')}
+                      </span>
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-slate-900">John Doe</p>
-                      <p className="text-xs text-slate-500">Wedding Photography</p>
+                    <div className="max-w-[120px]">
+                      <p className="text-sm font-medium text-textPrimary truncate">{request.customer.name}</p>
+                      <p className="text-xs text-textPrimary/50 truncate">
+                        {request.service?.serviceName || request.package?.packageName}
+                      </p>
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm">Review</Button>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+                  <Link to="/vendor/booking-management">
+                    <Button variant="ghost" size="sm">Review</Button>
+                  </Link>
                 </div>
-              ) : (
-                recentRequests.map(request => (
-                  <div key={request.bookingId} className="flex items-center justify-between p-3 rounded-lg bg-surface/50 border border-white/5 hover:border-white/10 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                        <span className="text-primary font-medium">
-                          {request.customer.name.split(' ').map(n => n[0]).join('')}
-                        </span>
-                      </div>
-                      <div className="max-w-[120px]">
-                        <p className="text-sm font-medium text-textPrimary truncate">{request.customer.name}</p>
-                        <p className="text-xs text-textPrimary/50 truncate">
-                          {request.service?.serviceName || request.package?.packageName}
-                        </p>
-                      </div>
-                    </div>
-                    <Link to="/vendor/booking-management">
-                      <Button variant="ghost" size="sm">Review</Button>
-                    </Link>
-                  </div>
-                ))
+              )) : (
+                <p className="text-sm text-gray-500 dark:text-white/40 text-center py-4">No pending requests</p>
               )}
             </CardContent>
           </Card>
@@ -280,15 +214,6 @@ const StatCard = ({ title, value, trend, trendUp, icon }) => (
   <Card>
     <CardContent className="p-6">
       <div className="flex items-center justify-between mb-4">
-<<<<<<< HEAD
-        <h3 className="text-sm font-medium text-textPrimary/60">{title}</h3>
-        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
-          {icon}
-        </div>
-      </div>
-      <div className="flex items-end gap-3 flex-wrap">
-        <div className="text-2xl font-bold text-textPrimary">{value}</div>
-=======
         <h3 className="text-sm font-medium text-slate-600">{title}</h3>
         <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center border border-slate-300">
           {icon}
@@ -296,7 +221,6 @@ const StatCard = ({ title, value, trend, trendUp, icon }) => (
       </div>
       <div className="flex items-end gap-3">
         <div className="text-3xl font-bold text-slate-900">{value}</div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         <div className={cn(
           "text-xs font-medium mb-1 flex items-center gap-1",
           trendUp ? "text-green-400" : "text-red-400"

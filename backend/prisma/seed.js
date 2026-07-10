@@ -7,6 +7,8 @@ async function main() {
   console.log('Seeding database...');
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   // 1. Clear existing data
   await prisma.review.deleteMany();
   await prisma.notification.deleteMany();
@@ -39,6 +41,7 @@ async function main() {
 
 =======
 >>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
   const hashedPassword = await bcrypt.hash('password123', 10);
 
   // ============ ADMIN ============
@@ -81,14 +84,20 @@ async function main() {
   });
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   const customer3 = await prisma.customer.create({
     data: {
 =======
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
   await prisma.customer.upsert({
     where: { email: 'sarath@example.com' },
     update: {},
     create: {
+<<<<<<< HEAD
+=======
 >>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
       name: 'Sarath Fonseka',
       email: 'sarath@example.com',
       password: hashedPassword,
@@ -97,14 +106,20 @@ async function main() {
   });
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   const customer4 = await prisma.customer.create({
     data: {
 =======
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
   await prisma.customer.upsert({
     where: { email: 'ravee@example.com' },
     update: {},
     create: {
+<<<<<<< HEAD
+=======
 >>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
       name: 'Ravee Fernando',
       email: 'ravee@example.com',
       password: hashedPassword,
@@ -113,14 +128,20 @@ async function main() {
   });
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   const customer5 = await prisma.customer.create({
     data: {
 =======
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
   await prisma.customer.upsert({
     where: { email: 'dinith@example.com' },
     update: {},
     create: {
+<<<<<<< HEAD
+=======
 >>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
       name: 'Dinith Lakgama',
       email: 'dinith@example.com',
       password: hashedPassword,
@@ -129,14 +150,20 @@ async function main() {
   });
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   const customer6 = await prisma.customer.create({
     data: {
 =======
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
   await prisma.customer.upsert({
     where: { email: 'nimal@example.com' },
     update: {},
     create: {
+<<<<<<< HEAD
+=======
 >>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
       name: 'Nimal Perera',
       email: 'nimal@example.com',
       password: hashedPassword,
@@ -145,14 +172,20 @@ async function main() {
   });
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   const customer7 = await prisma.customer.create({
     data: {
 =======
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
   await prisma.customer.upsert({
     where: { email: 'kumari@example.com' },
     update: {},
     create: {
+<<<<<<< HEAD
+=======
 >>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
       name: 'Kumari Jayawardena',
       email: 'kumari@example.com',
       password: hashedPassword,
@@ -161,10 +194,13 @@ async function main() {
   });
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   // 3. Create Vendors
   const vendor1 = await prisma.vendor.create({
     data: {
 =======
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
   // ============ VENDORS ============
   console.log('Creating vendors...');
 
@@ -172,7 +208,10 @@ async function main() {
     where: { email: 'vendor1@example.com' },
     update: {},
     create: {
+<<<<<<< HEAD
+=======
 >>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
       businessName: 'Luxe Dining Catering',
       email: 'vendor1@example.com',
       password: hashedPassword,
@@ -279,11 +318,14 @@ async function main() {
       price: 2500.00,
       description: 'A 5-course buffet for up to 100 guests.',
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
       pricingModel: 'fixed',
       serviceArea: 'New York, NY',
       vendorId: vendor1.vendorId,
       categoryId: catCatering.categoryId,
 =======
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
       vendorId: v1.vendorId,
       categoryId: cat1.categoryId,
       isApproved: true,
@@ -302,11 +344,14 @@ async function main() {
       price: 800.00,
       description: '4 hours of live DJ performance with lighting.',
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
       pricingModel: 'hourly',
       serviceArea: 'Miami, FL',
       vendorId: vendor3.vendorId,
       categoryId: catMusic.categoryId,
 =======
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
       vendorId: v3.vendorId,
       categoryId: cat3.categoryId,
       isApproved: true,
@@ -326,12 +371,15 @@ async function main() {
     create: {
       packageName: 'Platinum Wedding Package',
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
       description: 'Complete wedding decoration package including premium floral arrangements, stage setup, lighting, and coordination. Perfect for a grand celebration.',
       price: 5000,
       categoryId: catDecor.categoryId,
       vendorId: vendor2.vendorId,
     }
 =======
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
       price: 5000.00,
       description: 'Complete wedding decoration package including premium floral arrangements, stage setup, lighting, and coordination.',
       imageUrl: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=500&q=80',
@@ -354,6 +402,11 @@ async function main() {
       quantity: 50,
       description: 'Set of 100 premium gold-plated cutlery.',
 <<<<<<< HEAD
+      vendorId: v1.vendorId,
+      categoryId: cat1.categoryId,
+      isApproved: true,
+=======
+<<<<<<< HEAD
       vendorId: vendor1.vendorId,
       categoryId: catCatering.categoryId,
 =======
@@ -361,6 +414,7 @@ async function main() {
       categoryId: cat1.categoryId,
       isApproved: true,
 >>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
       imageUrl: 'https://images.unsplash.com/photo-1582283082596-f9f2d1e2e987?w=500&q=80',
     },
   });
@@ -373,6 +427,18 @@ async function main() {
       price: 45.00,
       quantity: 100,
       description: 'Bright LED lights for ambient room lighting.',
+<<<<<<< HEAD
+      vendorId: v3.vendorId,
+      categoryId: cat2.categoryId,
+      isApproved: true,
+      imageUrl: 'https://images.unsplash.com/photo-1505236858219-8359eb29e325?w=500&q=80',
+    },
+  });
+
+  // ============ ORDERS ============
+  console.log('Creating orders...');
+
+=======
 <<<<<<< HEAD
       vendorId: vendor3.vendorId,
       categoryId: catDecor.categoryId,
@@ -388,6 +454,7 @@ async function main() {
   // ============ ORDERS ============
   console.log('Creating orders...');
 
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
   const existingOrder = await prisma.order.findUnique({ where: { orderId: 1 } });
   if (!existingOrder) {
     await prisma.order.create({
@@ -410,6 +477,72 @@ async function main() {
     });
   }
 
+<<<<<<< HEAD
+  // ============ BOOKINGS ============
+  console.log('Creating bookings...');
+  const upcomingDate = new Date();
+  upcomingDate.setDate(upcomingDate.getDate() + 45);
+
+  const bookDates = {
+    aug7: new Date('2026-08-07'),
+    aug22: new Date('2026-08-22'),
+    may24: new Date('2026-05-24'),
+    sep21: new Date('2026-09-21'),
+    sep11: new Date('2026-09-11'),
+    jun8: new Date('2026-06-08'),
+    oct21: new Date('2026-10-21'),
+    jul23: new Date('2026-07-23'),
+    jan9: new Date('2027-01-09'),
+    apr24: new Date('2026-04-24'),
+    jul3: new Date('2026-07-03'),
+  };
+
+  const existingBooking = await prisma.booking.findFirst();
+  if (!existingBooking) {
+    const bookingsData = [
+      { customerId: c1.customerId, serviceId: service1.serviceId, eventDate: bookDates.aug7, status: 'ACCEPTED', location: 'New York, NY' },
+      { customerId: c6.customerId, serviceId: service1.serviceId, eventDate: bookDates.aug22, status: 'PENDING', location: 'Brooklyn, NY' },
+      { customerId: c7.customerId, serviceId: service1.serviceId, eventDate: bookDates.may24, status: 'COMPLETED', location: 'Manhattan, NY' },
+      { customerId: c3.customerId, serviceId: service1.serviceId, eventDate: bookDates.sep21, status: 'REJECTED', location: 'Queens, NY' },
+      { customerId: c1.customerId, packageId: package1.packageId, eventDate: bookDates.aug7, status: 'ACCEPTED', location: 'Los Angeles, CA' },
+      { customerId: c5.customerId, packageId: package1.packageId, eventDate: bookDates.sep11, status: 'PENDING', location: 'Santa Monica, CA' },
+      { customerId: c4.customerId, packageId: package1.packageId, eventDate: bookDates.jun8, status: 'COMPLETED', location: 'Beverly Hills, CA' },
+      { customerId: c3.customerId, serviceId: service2.serviceId, eventDate: bookDates.oct21, status: 'PENDING', location: 'Miami Beach, FL' },
+      { customerId: c1.customerId, serviceId: service2.serviceId, eventDate: bookDates.jul23, status: 'ACCEPTED', location: 'Orlando, FL' },
+      { customerId: c2.customerId, serviceId: service2.serviceId, eventDate: bookDates.jan9, status: 'REJECTED', location: 'Tampa, FL' },
+      { customerId: c5.customerId, serviceId: service2.serviceId, eventDate: bookDates.apr24, status: 'COMPLETED', location: 'Fort Lauderdale, FL' },
+      { customerId: c7.customerId, serviceId: service2.serviceId, eventDate: bookDates.jul3, status: 'CANCELLED', location: 'Key West, FL' },
+    ];
+
+    for (const b of bookingsData) {
+      await prisma.booking.create({ data: b });
+    }
+  }
+
+  // ============ REVIEWS ============
+  console.log('Creating reviews...');
+
+  const existingReview = await prisma.review.findFirst();
+  if (!existingReview) {
+    const reviewsData = [
+      { rating: 5, comment: 'Absolutely phenomenal service! The catering was world-class and our guests were blown away.', customerId: c2.customerId, vendorId: v1.vendorId, serviceId: service1.serviceId },
+      { rating: 5, comment: 'Incredible attention to detail! The floral arrangements at our wedding were breathtaking.', customerId: c1.customerId, vendorId: v2.vendorId },
+      { rating: 5, comment: 'The DJ kept the energy high all night. Everyone loved the music selection!', customerId: c1.customerId, vendorId: v3.vendorId, serviceId: service2.serviceId },
+      { rating: 4, comment: 'Good quality cutlery set, but shipping took longer than expected.', customerId: c1.customerId, productId: product1.productId },
+      { rating: 4, comment: 'Excellent spread! The kottu and rice dishes were authentic and delicious.', customerId: c3.customerId, vendorId: v1.vendorId, serviceId: service1.serviceId },
+      { rating: 2, comment: 'Two units arrived damaged. Could have been packaged better. The ones that worked were fine though.', customerId: c3.customerId, productId: product2.productId },
+      { rating: 4, comment: 'Beautiful arrangements, exactly what we wanted for the wedding. The team was very responsive.', customerId: c4.customerId, vendorId: v2.vendorId },
+      { rating: 1, comment: 'Very disappointed. The service was unprofessional and they showed up late. Would not recommend.', customerId: c4.customerId, vendorId: v3.vendorId },
+      { rating: 4, comment: 'Beautiful design work. The platinum package made our wedding truly special!', customerId: c5.customerId, vendorId: v2.vendorId },
+      { rating: 3, comment: 'Decent food but portion sizes were smaller than advertised. Taste was good though.', customerId: c6.customerId, vendorId: v1.vendorId, serviceId: service1.serviceId },
+      { rating: 4, comment: 'Great playlist selection, kept the party going all night! Really knew how to read the crowd.', customerId: c6.customerId, vendorId: v3.vendorId, serviceId: service2.serviceId },
+      { rating: 5, comment: 'The buffet was the highlight of our wedding! Everyone raved about the food. Truly authentic Sri Lankan flavours.', customerId: c7.customerId, vendorId: v1.vendorId, serviceId: service1.serviceId },
+      { rating: 3, comment: 'Decent but they arrived late for setup. Music was okay but could have been better.', customerId: c7.customerId, vendorId: v3.vendorId },
+    ];
+
+    for (const r of reviewsData) {
+      await prisma.review.create({ data: r });
+=======
 <<<<<<< HEAD
   // 9. Create Bookings
   const today = new Date();
@@ -549,8 +682,9 @@ async function main() {
       customerId: customer2.customerId,
       vendorId: vendor1.vendorId,
       serviceId: service1.serviceId,
+>>>>>>> b140e761a11216b90838762b7cd64bed41ea5750
     }
-  });
+  }
 
   // Sarah Customer on Bloom Designs
   await prisma.review.create({

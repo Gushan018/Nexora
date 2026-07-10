@@ -96,12 +96,7 @@ html.theme-transition *::after {
   }
 
   body {
-<<<<<<< HEAD
-    background-color: rgb(var(--color-background));
-    color: rgb(var(--color-text-primary));
-=======
     @apply bg-light-background dark:bg-background text-light-textPrimary dark:text-textPrimary;
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
@@ -109,19 +104,11 @@ html.theme-transition *::after {
 
 @layer utilities {
   .glass {
-<<<<<<< HEAD
-    @apply bg-surface/40 backdrop-blur-md border border-border/20;
-  }
-  
-  .glass-card {
-    @apply bg-card/60 backdrop-blur-lg border border-border/10 shadow-xl;
-=======
     @apply bg-light-surface/30 dark:bg-surface/40 backdrop-blur-md border border-gray-300 dark:border-white/10;
   }
   
   .glass-card {
     @apply bg-white/50 dark:bg-card/60 backdrop-blur-lg border border-gray-200 dark:border-white/5 shadow-lg;
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
   }
 
   .text-gradient {
@@ -144,18 +131,6 @@ html.theme-transition *::after {
 }
 
 ::-webkit-scrollbar-track {
-<<<<<<< HEAD
-  background: rgb(var(--color-background));
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgb(var(--color-border));
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--color-muted));
-=======
   @apply bg-light-background dark:bg-background;
 }
 
@@ -167,7 +142,6 @@ html.theme-transition *::after {
   @apply bg-gray-400 dark:bg-surface/80;
 }
 
-/* Isolate a single element when printing (e.g. receipts) */
 @media print {
   body * {
     visibility: hidden;
@@ -182,5 +156,4 @@ html.theme-transition *::after {
     left: 0;
     width: 100%;
   }
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 }

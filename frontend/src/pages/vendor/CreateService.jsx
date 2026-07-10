@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, ArrowLeft, Image as ImageIcon, MapPin, DollarSign, Upload, Info, X, Check } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
@@ -161,15 +161,6 @@ export const CreateService = () => {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <Link to="/vendor/service-listing" className="text-sm text-textPrimary/60 hover:text-textPrimary flex items-center gap-1 w-fit mb-2 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Back to Services
-          </Link>
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            Create New Service
-          </h1>
-          <p className="text-textPrimary/60">Define a new service offering to showcase to customers.</p>
-=======
           <Link to="/vendor/service-listing" className="text-sm text-slate-600 hover:text-slate-900 flex items-center gap-1 w-fit mb-2 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to Services
           </Link>
@@ -181,7 +172,6 @@ export const CreateService = () => {
         <div className="flex gap-2">
           <Button variant="outline">Save Draft</Button>
           <Button leftIcon={<Plus className="w-4 h-4"/>}>Publish Service</Button>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
       </div>
 
@@ -203,22 +193,6 @@ export const CreateService = () => {
 
         {/* Main Form */}
         <div className="lg:col-span-2 space-y-6">
-<<<<<<< HEAD
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Basic Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-
-                <Input
-                  label="Service Title"
-                  placeholder="e.g. Premium Wedding Videography"
-                  name="serviceName"
-                  value={formData.serviceName}
-                  onChange={handleInputChange}
-                  required
-=======
           <Card>
             <CardHeader>
               <CardTitle>Basic Information</CardTitle>
@@ -244,26 +218,8 @@ export const CreateService = () => {
                   rows="6" 
                   placeholder="Describe what makes this service special..."
                   className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors resize-none"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 />
 
-<<<<<<< HEAD
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-textPrimary/90">Category *</label>
-                  <select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                    className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
-                    required
-                  >
-                    <option value="">Select a category...</option>
-                    {categories.map(cat => (
-                      <option key={cat.categoryId} value={cat.categoryId}>
-                        {cat.categoryName}
-                      </option>
-                    ))}
-=======
             </CardContent>
           </Card>
 
@@ -313,23 +269,9 @@ export const CreateService = () => {
                     <option value="fixed">Fixed Package</option>
                     <option value="hourly">Hourly Rate</option>
                     <option value="custom">Custom Quote Required</option>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </select>
                 </div>
 
-<<<<<<< HEAD
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-textPrimary/90">Detailed Description</label>
-                  <textarea
-                    rows="6"
-                    placeholder="Describe what makes this service special..."
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors resize-none"
-                  />
-                </div>
-=======
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-800">Service Area (Locations)</label>
                 <div className="relative">
@@ -342,7 +284,6 @@ export const CreateService = () => {
                 </div>
                 <p className="text-xs text-slate-500 mt-1">Separate multiple locations with commas.</p>
               </div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
               </CardContent>
             </Card>
@@ -491,17 +432,10 @@ export const CreateService = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-<<<<<<< HEAD
-              <div className="space-y-2 text-sm text-textPrimary/80 leading-relaxed">
-                <p><strong className="text-textPrimary">Use High-Quality Photos:</strong> Listings with at least 5 high-resolution photos receive 60% more inquiries.</p>
-                <p><strong className="text-textPrimary">Be Transparent with Pricing:</strong> Even if you require custom quotes, providing a realistic "Starting at" price helps filter qualified leads.</p>
-                <p><strong className="text-textPrimary">Write a Clear Description:</strong> Clearly state what is included in the base rate and what costs extra.</p>
-=======
               <div className="space-y-2 text-sm text-slate-800 leading-relaxed">
                 <p><strong className="text-slate-900">Use High-Quality Photos:</strong> Listings with at least 5 high-resolution photos receive 60% more inquiries.</p>
                 <p><strong className="text-slate-900">Be Transparent with Pricing:</strong> Even if you require custom quotes, providing a realistic "Starting at" price helps filter qualified leads.</p>
                 <p><strong className="text-slate-900">Write a Clear Description:</strong> Clearly state what is included in the base rate and what costs extra.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </CardContent>
           </Card>

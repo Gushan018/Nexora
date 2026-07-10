@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Store, MapPin, Globe, Phone, Mail, Star, Heart, Grid, Search, Loader2 } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -64,34 +64,18 @@ export const StoreProfile = () => {
         {/* Profile Header */}
         <div className="flex flex-col md:flex-row gap-6 items-start md:items-end mb-12">
           <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl border-4 border-background overflow-hidden shrink-0 relative z-10 bg-surface flex items-center justify-center">
-<<<<<<< HEAD
-            {vendor.profileImage ? (
-              <img src={vendor.profileImage} alt={vendor.businessName} className="w-full h-full object-cover" />
-            ) : (
-              <Store className="w-16 h-16 text-textPrimary/20" />
-            )}
-=======
             <Store className="w-16 h-16 text-slate-300" />
             {/* If they have a logo, it would go here */}
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </div>
           
           <div className="flex-1 pb-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-<<<<<<< HEAD
-                <h1 className="text-3xl sm:text-4xl font-bold text-textPrimary tracking-tight mb-2">{vendor.businessName}</h1>
-                <p className="text-textPrimary/60 mb-3 line-clamp-2 max-w-2xl">{vendor.description || "No description provided."}</p>
-                <div className="flex items-center gap-4 text-sm text-textPrimary/50">
-                  <span className="flex items-center gap-1"><MapPin className="w-4 h-4"/> {vendor.location || "Location not specified"}</span>
-                  <span className="flex items-center gap-1 text-yellow-400"><Star className="w-4 h-4 fill-yellow-400"/> {vendor.reviews?.length > 0 ? (vendor.reviews.reduce((a, b) => a + b.rating, 0) / vendor.reviews.length).toFixed(1) : "5.0"} ({vendor.reviews?.length || 0} Reviews)</span>
-=======
                 <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-2">Luxe Dining</h1>
                 <p className="text-slate-600 mb-3">Premium catering equipment and luxury tableware rentals.</p>
                 <div className="flex items-center gap-4 text-sm text-slate-500">
                   <span className="flex items-center gap-1"><MapPin className="w-4 h-4"/> Colombo 03</span>
                   <span className="flex items-center gap-1 text-yellow-400"><Star className="w-4 h-4 fill-yellow-400"/> 4.8 (142 Reviews)</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               </div>
               
@@ -115,15 +99,6 @@ export const StoreProfile = () => {
           <div className="lg:col-span-1 space-y-6">
             <Card>
               <CardContent className="p-6 space-y-4">
-<<<<<<< HEAD
-                <h3 className="font-bold text-textPrimary mb-2">About Us</h3>
-                <p className="text-sm text-textPrimary/60 leading-relaxed mb-4">
-                  {vendor.description || `${vendor.businessName} hasn't provided a detailed description yet.`}
-                </p>
-                <div className="space-y-3 text-sm text-textPrimary/70 pt-4 border-t border-white/5">
-                  <div className="flex items-center gap-3"><Mail className="w-4 h-4 text-textPrimary/40"/> {vendor.email}</div>
-                  {vendor.contactNumber && <div className="flex items-center gap-3"><Phone className="w-4 h-4 text-textPrimary/40"/> {vendor.contactNumber}</div>}
-=======
                 <h3 className="font-bold text-slate-900 mb-2">About Us</h3>
                 <p className="text-sm text-slate-600 leading-relaxed mb-4">
                   Luxe Dining is Sri Lanka's premier provider of luxury event equipment. We specialize in supplying high-end cutlery, premium linens, and elegant tableware for weddings and corporate events.
@@ -144,7 +119,6 @@ export const StoreProfile = () => {
                   <button className="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition-colors">Cutlery (45)</button>
                   <button className="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition-colors">Glassware (32)</button>
                   <button className="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition-colors">Linens (65)</button>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               </CardContent>
             </Card>
@@ -153,51 +127,14 @@ export const StoreProfile = () => {
           {/* Main Content */}
           <div className="lg:col-span-3">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-<<<<<<< HEAD
-              <h2 className="text-xl font-bold text-textPrimary flex items-center gap-2"><Grid className="w-5 h-5"/> Storefront</h2>
-              <div className="relative w-full sm:w-64">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
-                <input 
-                  type="text" 
-                  placeholder="Search this store..." 
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-surface/50 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary transition-colors" 
-                />
-=======
               <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2"><Grid className="w-5 h-5"/> Storefront</h2>
               <div className="relative w-full sm:w-64">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input type="text" placeholder="Search this store..." className="w-full bg-surface/50 border border-slate-300 rounded-lg pl-9 pr-4 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary transition-colors" />
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-<<<<<<< HEAD
-              {filteredProducts.length === 0 ? (
-                <div className="col-span-full py-12 text-center text-textPrimary/20 italic">
-                  No products found in this store.
-                </div>
-              ) : (
-                filteredProducts.map((product) => (
-                  <Link key={product.productId} to={`/customer/product-details/${product.productId}`}>
-                    <Card className="overflow-hidden group hover:border-primary/50 transition-colors cursor-pointer h-full">
-                      <div className="h-40 relative overflow-hidden bg-surface">
-                        <img src={product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=400'} alt={product.productName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      </div>
-                      <CardContent className="p-4">
-                        <h3 className="text-sm font-bold text-textPrimary mb-2 line-clamp-1 group-hover:text-primary transition-colors">{product.productName}</h3>
-                        <div className="flex justify-between items-center mt-2">
-                          <span className="text-lg font-bold text-textPrimary">LKR {parseFloat(product.price).toLocaleString()}</span>
-                          <span className="text-[10px] text-textPrimary/40">{product.quantity > 0 ? 'In Stock' : 'Out of Stock'}</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))
-              )}
-=======
               {PRODUCTS.map((product) => (
                 <Card key={product.id} className="overflow-hidden group hover:border-primary/50 transition-colors cursor-pointer">
                   <div className="h-40 relative overflow-hidden bg-surface">
@@ -220,7 +157,6 @@ export const StoreProfile = () => {
             
             <div className="mt-8 text-center">
               <Button variant="outline">View Full Catalog</Button>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </div>
 

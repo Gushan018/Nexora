@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import { Button } from '../../components/common/Button';
@@ -55,11 +55,7 @@ export const Blog = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-<<<<<<< HEAD
-            className="text-4xl lg:text-5xl font-bold text-textPrimary mb-6"
-=======
             className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             The Event Nest <span className="text-gradient">Journal</span>
           </motion.h1>
@@ -67,11 +63,7 @@ export const Blog = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-<<<<<<< HEAD
-            className="text-textPrimary/60 text-lg max-w-2xl mx-auto"
-=======
             className="text-slate-600 text-lg max-w-2xl mx-auto"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Expert advice, event inspiration, and industry news curated by top professionals.
           </motion.p>
@@ -90,19 +82,11 @@ export const Blog = () => {
             </div>
             <div className="md:w-2/5 p-8 md:p-12 flex flex-col justify-center">
               <span className="text-primary font-semibold text-sm mb-4 uppercase tracking-wider">{featuredPost.category}</span>
-<<<<<<< HEAD
-              <h2 className="text-3xl font-bold text-textPrimary mb-4 group-hover:text-primary transition-colors leading-tight">{featuredPost.title}</h2>
-              <p className="text-textPrimary/60 mb-6 leading-relaxed">{featuredPost.excerpt}</p>
-              
-              <div className="flex items-center justify-between mt-auto">
-                <div className="flex items-center gap-4 text-xs text-textPrimary/40">
-=======
               <h2 className="text-3xl font-bold text-slate-900 mb-4 group-hover:text-primary transition-colors leading-tight">{featuredPost.title}</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">{featuredPost.excerpt}</p>
               
               <div className="flex items-center justify-between mt-auto">
                 <div className="flex items-center gap-4 text-xs text-slate-500">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   <span className="flex items-center gap-1"><Calendar className="w-4 h-4"/> {featuredPost.date}</span>
                   <span className="flex items-center gap-1"><User className="w-4 h-4"/> {featuredPost.author}</span>
                 </div>
@@ -129,17 +113,10 @@ export const Blog = () => {
                   </span>
                 </div>
               </div>
-<<<<<<< HEAD
-              <h3 className="text-xl font-bold text-textPrimary mb-2 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
-              <p className="text-textPrimary/60 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
-              <div className="flex items-center justify-between border-t border-white/5 pt-4">
-                <span className="text-xs text-textPrimary/40">{post.date}</span>
-=======
               <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
               <p className="text-slate-600 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
               <div className="flex items-center justify-between border-t border-slate-200 pt-4">
                 <span className="text-xs text-slate-500">{post.date}</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <span className="text-primary text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">Read More <ArrowRight className="w-4 h-4" /></span>
               </div>
             </motion.div>

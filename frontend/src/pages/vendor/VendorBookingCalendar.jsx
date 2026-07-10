@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+﻿import React, { useEffect, useMemo, useState } from 'react';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, MapPin, User } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
@@ -106,19 +106,11 @@ export const VendorBookingCalendar = () => {
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <CalendarIcon className="w-7 h-7 text-primary" />
-            Booking Calendar
-          </h1>
-          <p className="text-textPrimary/60">Manage your schedule and availability for upcoming events.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <CalendarIcon className="w-7 h-7 text-primary" />
             Booking Calendar
           </h1>
           <p className="text-slate-600">Manage your schedule and availability for upcoming events.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => alert('Integration coming soon')}>
@@ -133,34 +125,6 @@ export const VendorBookingCalendar = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <Card className="lg:col-span-3">
           <CardContent className="p-0">
-<<<<<<< HEAD
-            <div className="p-4 border-b border-white/5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h2 className="text-lg font-bold text-textPrimary">{currentMonthLabel}</h2>
-                <p className="text-sm text-textPrimary/60">View your vendor bookings by day and manage event load.</p>
-              </div>
-
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => changeMonth(-1)}
-                  className="p-2 bg-surface border border-white/10 rounded-lg text-textPrimary hover:bg-white/5 transition-colors"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewDate(new Date())}
-                  className="px-4 py-2 bg-surface border border-white/10 rounded-lg text-textPrimary text-sm font-medium hover:bg-white/5 transition-colors"
-                >
-                  Today
-                </button>
-                <button
-                  type="button"
-                  onClick={() => changeMonth(1)}
-                  className="p-2 bg-surface border border-white/10 rounded-lg text-textPrimary hover:bg-white/5 transition-colors"
-                >
-=======
             {/* Calendar Header */}
             <div className="p-4 border-b border-slate-200 flex items-center justify-between">
               <h2 className="text-lg font-bold text-slate-900">October 2026</h2>
@@ -172,50 +136,19 @@ export const VendorBookingCalendar = () => {
                   Today
                 </button>
                 <button className="p-2 bg-surface border border-slate-300 rounded-lg text-slate-900 hover:bg-slate-100 transition-colors">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
-<<<<<<< HEAD
-            <div className="grid grid-cols-7 border-b border-white/5 bg-surface/10">
-              {DAYS.map((day) => (
-                <div key={day} className="p-3 text-center text-sm font-medium text-textPrimary/50 border-r border-white/5 last:border-0">
-=======
             {/* Calendar Grid */}
             <div className="grid grid-cols-7 border-b border-slate-200">
               {DAYS.map(day => (
                 <div key={day} className="p-3 text-center text-sm font-medium text-slate-500 border-r border-slate-200 last:border-0">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   {day}
                 </div>
               ))}
             </div>
-<<<<<<< HEAD
-
-            <div className="grid grid-cols-7 gap-px bg-white/5">
-              {calendarGrid.map((cell) => (
-                <div
-                  key={cell.date.toISOString()}
-                  className={cn(
-                    'min-h-[110px] p-3 bg-surface/60 text-textPrimary transition-colors',
-                    !cell.isCurrentMonth && 'opacity-30 bg-black/20 text-white/40',
-                    cell.isToday && 'ring-2 ring-primary/40',
-                  )}
-                >
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <span className={cn(
-                      'inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold',
-                      cell.isToday ? 'bg-primary text-slate-950' : 'text-textPrimary/80'
-                    )}>
-                      {cell.date.getDate()}
-                    </span>
-                    {cell.events.length > 0 && (
-                      <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold text-primary">
-                        {cell.events.length} {cell.events.length === 1 ? 'event' : 'events'}
-                      </span>
-=======
             
             <div className="grid grid-cols-7 grid-rows-5 bg-surface/30">
               {[...Array(35)].map((_, i) => {
@@ -244,7 +177,6 @@ export const VendorBookingCalendar = () => {
                           </div>
                         ))}
                       </>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     )}
                   </div>
 
@@ -270,13 +202,6 @@ export const VendorBookingCalendar = () => {
         </Card>
 
         <div className="space-y-4">
-<<<<<<< HEAD
-          <div className="rounded-3xl border border-white/5 bg-surface/50 p-5">
-            <div className="flex items-center justify-between gap-2 mb-4">
-              <div>
-                <p className="text-sm font-medium text-textPrimary/70">Month summary</p>
-                <h3 className="text-xl font-bold text-textPrimary">{viewDate.toLocaleString('default', { month: 'long' })} stats</h3>
-=======
           <h3 className="font-bold text-slate-900 mb-2">Upcoming this week</h3>
           
           <Card className="border-primary/50 relative overflow-hidden group hover:border-primary transition-colors cursor-pointer">
@@ -287,7 +212,6 @@ export const VendorBookingCalendar = () => {
                 <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-500"/> Oct 14, 18:00 - 23:00</div>
                 <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-slate-500"/> Grand Hyatt Ballroom</div>
                 <div className="flex items-center gap-2"><User className="w-4 h-4 text-slate-500"/> Contact: Michael Chen</div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
               <span className="text-xs text-textPrimary/50">{monthStats.total} bookings</span>
             </div>
@@ -310,39 +234,6 @@ export const VendorBookingCalendar = () => {
             </div>
           </div>
 
-<<<<<<< HEAD
-          <div className="rounded-3xl border border-white/5 bg-surface/50 p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-textPrimary">Upcoming bookings</h3>
-              <span className="text-xs text-textPrimary/50">Next 5</span>
-            </div>
-
-            {loading ? (
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-center text-textPrimary/60">Loading bookings…</div>
-            ) : error ? (
-              <div className="rounded-3xl border border-red-400/20 bg-red-500/5 p-6 text-center text-red-200">{error}</div>
-            ) : upcomingBookings.length === 0 ? (
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-center text-textPrimary/60">No upcoming bookings found.</div>
-            ) : (
-              <div className="space-y-3">
-                {upcomingBookings.map((booking) => (
-                  <Card key={booking.bookingId} className="border-white/10 bg-white/5">
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="space-y-1">
-                          <p className="font-semibold text-textPrimary">{booking.customer?.name || 'Customer'}</p>
-                          <p className="text-sm text-textPrimary/60">{booking.service?.serviceName || booking.package?.packageName || 'Booking'}</p>
-                        </div>
-                        <span className="text-sm text-textPrimary/50">{new Date(booking.eventDate).toLocaleDateString()}</span>
-                      </div>
-                      <div className="mt-3 flex items-center gap-3 text-sm text-textPrimary/60">
-                        <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{formatTime(booking.eventDate)}</span>
-                        <span className="inline-flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{booking.location || 'No location'}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-=======
           <Card className="border-slate-300 hover:border-slate-400 transition-colors cursor-pointer">
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-slate-300" />
             <CardContent className="p-4 pl-5">
@@ -351,7 +242,6 @@ export const VendorBookingCalendar = () => {
                 <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-500"/> Oct 18, 14:00 - 22:00</div>
                 <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-slate-500"/> Beachfront Resort</div>
                 <div className="flex items-center gap-2"><User className="w-4 h-4 text-slate-500"/> Contact: Sarah Jenkins</div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             )}
           </div>

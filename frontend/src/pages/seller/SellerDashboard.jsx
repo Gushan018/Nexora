@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Package, DollarSign, TrendingUp, AlertTriangle, ArrowUpRight, Loader2, Briefcase } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -70,13 +70,8 @@ export const SellerDashboard = () => {
       {/* Welcome & Quick Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-3xl font-bold text-textPrimary tracking-tight">Storefront Overview</h1>
-          <p className="text-textPrimary/60">Manage your products, track orders, and monitor sales.</p>
-=======
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Storefront Overview</h1>
           <p className="text-slate-600">Manage your products, track orders, and monitor sales.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <div className="flex items-center gap-3">
           <Link to={`/seller/store-profile/${user?.id}`}>
@@ -111,30 +106,6 @@ export const SellerDashboard = () => {
               <Button variant="ghost" size="sm" rightIcon={<ArrowUpRight className="w-4 h-4"/>}>Detailed Analytics</Button>
             </Link>
           </CardHeader>
-<<<<<<< HEAD
-          <CardContent className="h-80 pt-4">
-            {chartData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData}>
-                  <defs>
-                    <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#D4AF37" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                  <XAxis dataKey="date" stroke="rgba(255,255,255,0.4)" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="rgba(255,255,255,0.4)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `LKR ${v}`} />
-                  <Tooltip contentStyle={{ backgroundColor: '#1A1A1A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }} />
-                  <Area type="monotone" dataKey="amount" stroke="#D4AF37" strokeWidth={3} fillOpacity={1} fill="url(#colorSales)" />
-                </AreaChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="h-full flex items-center justify-center text-textPrimary/20 italic">
-                Insufficient data to generate sales chart.
-              </div>
-            )}
-=======
           <CardContent>
             <div className="overflow-x-auto">
               <table className="w-full text-left">
@@ -168,7 +139,6 @@ export const SellerDashboard = () => {
                 </tbody>
               </table>
             </div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </CardContent>
         </Card>
 
@@ -182,22 +152,6 @@ export const SellerDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 pt-0">
-<<<<<<< HEAD
-              {products?.filter(p => p.quantity < 5).length === 0 ? (
-                <p className="text-sm text-textPrimary/40 italic">All products are well stocked.</p>
-              ) : (
-                products?.filter(p => p.quantity < 5).slice(0, 4).map((item) => (
-                  <div key={item.productId} className="flex justify-between items-center p-3 rounded-xl bg-surface/50 border border-white/5">
-                    <div>
-                      <p className="font-medium text-textPrimary text-sm line-clamp-1">{item.productName}</p>
-                      <p className={cn("text-xs", item.quantity === 0 ? "text-red-400" : "text-yellow-400/70")}>
-                        {item.quantity === 0 ? 'Out of Stock' : `Only ${item.quantity} remaining`}
-                      </p>
-                    </div>
-                    <Link to={`/seller/edit-product/${item.productId}`}>
-                      <Button size="sm" variant="outline" className="text-xs h-8">Restock</Button>
-                    </Link>
-=======
               {[
                 { name: 'Crystal Wine Glasses', left: 12 },
                 { name: 'Silk Chair Covers', left: 5 },
@@ -207,7 +161,6 @@ export const SellerDashboard = () => {
                   <div>
                     <p className="font-medium text-slate-900 text-sm">{item.name}</p>
                     <p className="text-xs text-yellow-400/70">Only {item.left} remaining</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
                 ))
               )}
@@ -277,22 +230,13 @@ const SellerStatCard = ({ title, value, trend, isWarning, icon }) => (
   <Card className={cn("hover:-translate-y-1 transition-transform duration-300", isWarning && "border-yellow-500/30")}>
     <CardContent className="p-6">
       <div className="flex items-start justify-between mb-2">
-<<<<<<< HEAD
-        <p className="text-sm font-medium text-textPrimary/60">{title}</p>
-        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
-=======
         <p className="text-sm font-medium text-slate-600">{title}</p>
         <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center border border-slate-300">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           {icon}
         </div>
       </div>
       <div className="flex items-end gap-3 mt-2">
-<<<<<<< HEAD
-        <h3 className="text-3xl font-bold text-textPrimary">{value}</h3>
-=======
         <h3 className="text-3xl font-bold text-slate-900">{value}</h3>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         {trend && (
           <span className="text-sm font-medium mb-1 flex items-center text-green-400 bg-green-400/10 px-2 py-0.5 rounded-md">
             <TrendingUp className="w-3 h-3 mr-1" />

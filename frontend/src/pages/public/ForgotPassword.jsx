@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -24,13 +24,8 @@ export const ForgotPassword = () => {
         
         <div className="text-center mb-8">
 
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary mb-2">Reset your password</h1>
-          <p className="text-textPrimary/60 max-w-sm mx-auto">Enter the email address associated with your account and we'll send you a link to reset your password.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 mb-2">Reset your password</h1>
           <p className="text-slate-600 max-w-sm mx-auto">Enter the email address associated with your account and we'll send you a link to reset your password.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
 
         <div className="bg-surface/50 border border-slate-300 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
@@ -39,11 +34,7 @@ export const ForgotPassword = () => {
           {!submitted ? (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-<<<<<<< HEAD
-                <label className="text-sm font-medium text-textPrimary/80 block">Email Address</label>
-=======
                 <label className="text-sm font-medium text-slate-800 block">Email Address</label>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <div className="relative">
                   <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input 
@@ -68,13 +59,8 @@ export const ForgotPassword = () => {
               <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4 border border-green-500/20">
                 <CheckCircle2 className="w-8 h-8 text-green-400" />
               </div>
-<<<<<<< HEAD
-              <h3 className="text-xl font-bold text-textPrimary mb-2">Check your email</h3>
-              <p className="text-sm text-textPrimary/60 mb-6">
-=======
               <h3 className="text-xl font-bold text-slate-900 mb-2">Check your email</h3>
               <p className="text-sm text-slate-600 mb-6">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 We've sent a password reset link to your email address. Please check your inbox and spam folder.
               </p>
               <Button variant="outline" className="w-full" onClick={() => setSubmitted(false)}>
@@ -83,13 +69,8 @@ export const ForgotPassword = () => {
             </motion.div>
           )}
 
-<<<<<<< HEAD
-          <div className="mt-6 pt-6 border-t border-white/10 text-center">
-            <Link to="/login" className="text-sm text-textPrimary/60 hover:text-textPrimary flex items-center justify-center gap-1 transition-colors">
-=======
           <div className="mt-6 pt-6 border-t border-slate-300 text-center">
             <Link to="/login" className="text-sm text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1 transition-colors">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               <ArrowLeft className="w-4 h-4" /> Back to login
             </Link>
           </div>

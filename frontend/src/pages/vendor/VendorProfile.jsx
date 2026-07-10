@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Store, Camera, Edit2, MapPin, Globe, Star, Users, Briefcase, Eye, Loader2, AlertCircle, Check, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
@@ -121,19 +121,11 @@ export const VendorProfile = () => {
       {/* Header Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <Store className="w-7 h-7 text-primary" />
-            Vendor Profile
-          </h1>
-          <p className="text-textPrimary/60">Manage how customers see your business on Nexora.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <Store className="w-7 h-7 text-primary" />
             Vendor Profile
           </h1>
           <p className="text-slate-600">Manage how customers see your business on Event Nest.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <div className="flex gap-2">
           <Button variant="outline" leftIcon={<Eye className="w-4 h-4"/>}>Preview Public Profile</Button>
@@ -167,15 +159,9 @@ export const VendorProfile = () => {
             className="w-full h-full object-cover opacity-60 transition-opacity group-hover:opacity-40"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-<<<<<<< HEAD
-            <Camera className="w-8 h-8 text-textPrimary mb-2" />
-            <span className="text-sm font-bold text-textPrimary">Change Cover Photo</span>
-            <span className="text-xs text-textPrimary/60">Recommended: 1200x400px</span>
-=======
             <Camera className="w-8 h-8 text-slate-900 mb-2" />
             <span className="text-sm font-bold text-slate-900">Change Cover Photo</span>
             <span className="text-xs text-slate-600">Recommended: 1200x400px</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </div>
         </div>
 
@@ -183,19 +169,6 @@ export const VendorProfile = () => {
         <div className="absolute left-8 bottom-[-40px] flex items-end gap-6">
           <div className="relative group cursor-pointer">
             <div className="w-32 h-32 rounded-2xl bg-surface border-4 border-background flex items-center justify-center overflow-hidden">
-<<<<<<< HEAD
-              {previewImage ? (
-                <img 
-                  src={previewImage} 
-                  alt="Logo" 
-                  className="w-full h-full object-cover group-hover:opacity-50 transition-opacity"
-                />
-              ) : (
-                <div className="w-full h-full bg-primary/20 flex items-center justify-center text-primary font-bold text-2xl group-hover:opacity-50 transition-opacity">
-                  {formData.businessName[0] || 'V'}
-                </div>
-              )}
-=======
               <img 
                 src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&q=80" 
                 alt="Logo" 
@@ -204,7 +177,6 @@ export const VendorProfile = () => {
             </div>
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <Camera className="w-6 h-6 text-slate-900" />
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
             <label className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
               <Camera className="w-6 h-6 text-textPrimary" />
@@ -242,19 +214,6 @@ export const VendorProfile = () => {
                   />
                 </div>
 
-<<<<<<< HEAD
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-textPrimary/90">About the Business</label>
-                  <textarea 
-                    rows="6" 
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors resize-none"
-                    placeholder="Describe your services, experience, and what makes you unique..."
-                  />
-                </div>
-=======
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-800">About the Business</label>
                 <textarea 
@@ -263,7 +222,6 @@ export const VendorProfile = () => {
                   defaultValue="Lumiere Photography is a premium wedding and event photography studio based in California. With over 10 years of experience, our team specializes in candid, documentary-style captures blended with stunning editorial portraits. We believe every event has a unique story, and our goal is to preserve those memories in the most authentic way possible."
                 />
               </div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
               </CardContent>
             </Card>
@@ -301,13 +259,8 @@ export const VendorProfile = () => {
                   <Check className="w-6 h-6" />
                 </div>
                 <div>
-<<<<<<< HEAD
-                  <h3 className="font-bold text-textPrimary text-lg">Verified Vendor</h3>
-                  <p className="text-xs text-textPrimary/60">Your business is live on Nexora.</p>
-=======
                   <h3 className="font-bold text-slate-900 text-lg">Top Rated Vendor</h3>
                   <p className="text-xs text-slate-600">Maintained 4.8+ rating for 6 months</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               </div>
             </CardContent>
@@ -320,18 +273,6 @@ export const VendorProfile = () => {
             <CardContent className="p-0">
               <div className="divide-y divide-white/5">
                 <div className="p-4 flex items-center justify-between">
-<<<<<<< HEAD
-                  <div className="flex items-center gap-3 text-textPrimary/60">
-                    <Users className="w-4 h-4" /> <span className="text-sm">Vendor Type</span>
-                  </div>
-                  <span className="font-bold text-textPrimary uppercase">{vendor.vendorType}</span>
-                </div>
-                <div className="p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-textPrimary/60">
-                    <Calendar className="w-4 h-4" /> <span className="text-sm">Joined Nexora</span>
-                  </div>
-                  <span className="font-bold text-textPrimary">{new Date(vendor.registrationDate).toLocaleDateString()}</span>
-=======
                   <div className="flex items-center gap-3 text-slate-600">
                     <Users className="w-4 h-4" /> <span className="text-sm">Profile Views (30d)</span>
                   </div>
@@ -348,13 +289,10 @@ export const VendorProfile = () => {
                     <Star className="w-4 h-4" /> <span className="text-sm">Average Rating</span>
                   </div>
                   <span className="font-bold text-yellow-400">4.9 / 5.0</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               </div>
             </CardContent>
           </Card>
-<<<<<<< HEAD
-=======
 
           <Card>
             <CardHeader>
@@ -370,7 +308,6 @@ export const VendorProfile = () => {
             </CardContent>
           </Card>
 
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
       </div>
     </div>

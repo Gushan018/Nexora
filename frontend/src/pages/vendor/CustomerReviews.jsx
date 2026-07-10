@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+﻿import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Star, MessageSquare, Filter, Search, Flag, Loader2, AlertTriangle, Package, Send, Edit3, Trash2 } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -132,66 +132,13 @@ export const CustomerReviews = () => {
     <div className="space-y-6 max-w-5xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary tracking-tight flex items-center gap-3">
-            <Star className="w-7 h-7 text-yellow-400" />
-            Customer Reviews
-          </h1>
-          <p className="text-textPrimary/60">See all feedback left for your products and services.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <Star className="w-7 h-7 text-yellow-400" />
             Customer Reviews
           </h1>
           <p className="text-slate-600">Manage your reputation and respond to client feedback.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
 
-<<<<<<< HEAD
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <div className="p-5 bg-surface border border-white/10 rounded-3xl text-center">
-            <p className="text-sm uppercase tracking-[0.2em] text-textPrimary/50">Average rating</p>
-            <p className="mt-3 text-3xl font-semibold text-textPrimary">{averageRating}</p>
-          </div>
-          <div className="p-5 bg-surface border border-white/10 rounded-3xl text-center">
-            <p className="text-sm uppercase tracking-[0.2em] text-textPrimary/50">Total reviews</p>
-            <p className="mt-3 text-3xl font-semibold text-textPrimary">{totalReviews}</p>
-          </div>
-          <div className="p-5 bg-surface border border-white/10 rounded-3xl text-center">
-            <p className="text-sm uppercase tracking-[0.2em] text-textPrimary/50">Positive feedback</p>
-            <p className="mt-3 text-3xl font-semibold text-textPrimary">{positiveFeedback}%</p>
-          </div>
-        </div>
-      </div>
-
-      <Card>
-        <div className="p-4 border-b border-white/5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search reviews by name, product, or keyword..."
-              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
-            />
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="bg-surface border border-white/10 rounded-lg px-3 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 cursor-pointer"
-            >
-              <option value="all">All Reviews</option>
-              <option value="5">5 Stars</option>
-              <option value="4">4 Stars</option>
-              <option value="3">3 Stars</option>
-              <option value="2">2 Stars</option>
-              <option value="1">1 Star</option>
-              <option value="product">Product Reviews</option>
-              <option value="service">Service Reviews</option>
-=======
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         
         {/* Rating Overview */}
@@ -256,19 +203,11 @@ export const CustomerReviews = () => {
               <option>All Reviews</option>
               <option>5 Stars</option>
               <option>Needs Reply</option>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </select>
 
           </div>
         </div>
 
-<<<<<<< HEAD
-        <div className="p-6 space-y-6">
-          {filteredReviews.length === 0 ? (
-            <div className="text-center py-16 text-textPrimary/60">
-              <AlertTriangle className="mx-auto mb-4 w-12 h-12 opacity-40" />
-              <p>No reviews match your search or filters.</p>
-=======
         <div className="divide-y divide-white/5">
           {REVIEWS.map((review) => (
             <div key={review.id} className="p-6 hover:bg-slate-50 transition-colors">
@@ -285,7 +224,7 @@ export const CustomerReviews = () => {
                       <h4 className="font-bold text-slate-900">{review.customer}</h4>
                       <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
                         <span>{review.date}</span>
-                        <span>•</span>
+                        <span>â€¢</span>
                         <span>{review.event}</span>
                       </div>
                     </div>
@@ -323,7 +262,6 @@ export const CustomerReviews = () => {
                   </button>
                 </div>
               </div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           ) : (
             filteredReviews.map((review) => (

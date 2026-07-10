@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+﻿import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ShieldAlert, Search, MessageSquare, Gavel, Download, FileText, CheckCircle2, AlertTriangle, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
@@ -7,10 +7,10 @@ import { api } from '../../utils/api';
 import { cn } from '../../utils/cn';
 
 const TABS = [
-  { id: 'open', label: '🔴 Open / Action Required' },
-  { id: 'investigating', label: '🟡 Under Investigation' },
-  { id: 'resolved', label: '🟢 Resolved / Closed' },
-  { id: 'rejected', label: '⚫ Rejected' },
+  { id: 'open', label: 'ðŸ”´ Open / Action Required' },
+  { id: 'investigating', label: 'ðŸŸ¡ Under Investigation' },
+  { id: 'resolved', label: 'ðŸŸ¢ Resolved / Closed' },
+  { id: 'rejected', label: 'âš« Rejected' },
 ];
 
 const badgeStyles = {
@@ -107,72 +107,33 @@ export const DisputeManagement = () => {
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 sm:px-0">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <Gavel className="w-7 h-7 text-red-400" />
-            Dispute Resolution Center
-          </h1>
-          <p className="text-textPrimary/60">Mediate conflicts, review evidence, and issue refunds.</p>
-=======
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
             <Gavel className="w-7 h-7 text-red-500" />
             Disputes & Resolution
           </h1>
           <p className="text-gray-600 dark:text-gray-400">Track open cases, review evidence, and decide escrow outcomes with confidence.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6">
         <Card className="border-red-500/20 bg-red-500/5">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Active Disputes</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-red-400">12</span>
-            </div>
-            <p className="text-xs text-red-400/60 mt-2">Requires mediation</p>
-=======
             <p className="text-sm font-medium text-red-500">Active Disputes</p>
             <p className="mt-4 text-3xl font-semibold text-gray-900 dark:text-white">{stats.activeDisputes}</p>
             <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">New issues currently open.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </CardContent>
         </Card>
 
         <Card className="border-gray-200 dark:border-gray-800 dark:bg-gray-900/50">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Value at Risk</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">LKR 14,250</span>
-            </div>
-=======
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Disputed Funds</p>
             <p className="mt-4 text-3xl font-semibold text-gray-900 dark:text-white">{stats.disputedFunds}</p>
             <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">Escrow frozen until resolution.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </CardContent>
         </Card>
 
         <Card className="border-gray-200 dark:border-gray-800 dark:bg-gray-900/50">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Avg. Resolution Time</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">4.2 days</span>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="border-white/10">
-          <CardContent className="p-6 flex justify-between items-center h-full">
-            <div>
-              <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Resolved (YTD)</h3>
-              <div className="flex items-end gap-3">
-                <span className="text-3xl font-bold text-textPrimary">184</span>
-              </div>
-            </div>
-=======
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Resolved (This Month)</p>
             <p className="mt-4 text-3xl font-semibold text-gray-900 dark:text-white">{stats.resolvedThisMonth}</p>
             <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">Closed disputes this month.</p>
@@ -184,31 +145,10 @@ export const DisputeManagement = () => {
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Avg. Resolution Time</p>
             <p className="mt-4 text-3xl font-semibold text-gray-900 dark:text-white">{stats.avgResolutionTime}</p>
             <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">Average admin decision time.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </CardContent>
         </Card>
       </div>
 
-<<<<<<< HEAD
-      <Card>
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between">
-          <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
-            <input 
-              type="text" 
-              placeholder="Search by Dispute ID, Booking ID, or parties..." 
-              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors" 
-            />
-          </div>
-          <div className="flex gap-2">
-            <select className="bg-surface border border-white/10 rounded-lg px-3 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 cursor-pointer">
-              <option>Status: All Active</option>
-              <option>Status: Open</option>
-              <option>Status: In Review</option>
-              <option>Status: Resolved</option>
-            </select>
-            <Button variant="outline" leftIcon={<Filter className="w-4 h-4"/>}>Filter</Button>
-=======
       <Card className="border-gray-200 dark:border-gray-800 dark:bg-gray-900/50">
         <CardHeader className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 p-5 border-b border-gray-200/70 dark:border-gray-800">
           <div>
@@ -231,56 +171,9 @@ export const DisputeManagement = () => {
                 {tab.label}
               </button>
             ))}
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </div>
         </CardHeader>
 
-<<<<<<< HEAD
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-white/5 text-sm font-medium text-textPrimary/50 bg-white/[0.02]">
-                <th className="p-4 pl-6">Dispute Info</th>
-                <th className="p-4">Customer vs Vendor</th>
-                <th className="p-4">Disputed Amount</th>
-                <th className="p-4">Status & Urgency</th>
-                <th className="p-4 pr-6 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="text-sm">
-              {DISPUTES.map((dispute, i) => (
-                <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
-                  <td className="p-4 pl-6">
-                    <div className="flex flex-col">
-                      <span className="font-bold text-textPrimary">{dispute.id}</span>
-                      <span className="text-xs text-textPrimary/50 mt-0.5">Booking: {dispute.bookingId}</span>
-                      <p className="text-xs text-textPrimary/80 mt-1 truncate max-w-[200px]" title={dispute.reason}>"{dispute.reason}"</p>
-                    </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-textPrimary font-medium">{dispute.customer}</span>
-                      <ArrowRight className="w-3 h-3 text-textPrimary/40" />
-                      <span className="text-textPrimary/80">{dispute.vendor}</span>
-                    </div>
-                  </td>
-                  <td className="p-4 font-bold text-textPrimary">{dispute.amount}</td>
-                  <td className="p-4">
-                    <div className="flex flex-col gap-2">
-                      <span className={cn(
-                        "px-2.5 py-1 rounded-full text-xs font-bold w-fit",
-                        dispute.status === 'Open' ? "bg-red-500/10 text-red-400 border border-red-500/20" : 
-                        dispute.status === 'Resolved' ? "bg-green-500/10 text-green-400 border border-green-500/20" :
-                        "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20"
-                      )}>
-                        {dispute.status}
-                      </span>
-                      {dispute.status !== 'Resolved' && (
-                        <span className="text-[10px] text-textPrimary/40 flex items-center gap-1">
-                          <Clock className="w-3 h-3" /> Opened {dispute.created}
-                        </span>
-                      )}
-=======
         <CardContent className="space-y-4">
           <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
             <div className="relative w-full md:max-w-md">
@@ -384,7 +277,7 @@ export const DisputeManagement = () => {
               <div className="flex items-center justify-between gap-4 border-b border-gray-200 px-6 py-5 dark:border-gray-800 shrink-0 bg-white dark:bg-gray-900">
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Review Case {selectedDispute.id}</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Order {selectedDispute.orderId} • {selectedDispute.amount}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Order {selectedDispute.orderId} â€¢ {selectedDispute.amount}</p>
                 </div>
                 <button
                   type="button"
@@ -426,7 +319,6 @@ export const DisputeManagement = () => {
                   <div className="rounded-3xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-800/50">
                     <div className="border-b border-gray-200/70 p-5 dark:border-gray-800">
                       <h3 className="font-semibold text-gray-900 dark:text-white">Evidence & Chat Logs</h3>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     </div>
                     <div className="p-5 space-y-4">
                       <div className="space-y-3">
@@ -507,7 +399,7 @@ export const DisputeManagement = () => {
                         <p className="font-semibold text-gray-900 dark:text-white text-base">{selectedDispute.reason}</p>
                       </div>
                       <div className="space-y-2 pt-2">
-                        <p><span className="font-medium text-gray-500 dark:text-gray-400">Raised by:</span> {selectedDispute.raisedBy} • {selectedDispute.reporter}</p>
+                        <p><span className="font-medium text-gray-500 dark:text-gray-400">Raised by:</span> {selectedDispute.raisedBy} â€¢ {selectedDispute.reporter}</p>
                         <p><span className="font-medium text-gray-500 dark:text-gray-400">Reported on:</span> {selectedDispute.date}</p>
                         <div className="flex items-center gap-2 pt-1">
                           <span className="font-medium text-gray-500 dark:text-gray-400">Current status:</span>

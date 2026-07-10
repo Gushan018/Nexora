@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { Package, Search, Filter, ShieldAlert, Check, Trash2, Eye, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
@@ -17,30 +17,18 @@ export const ProductModeration = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <Package className="w-7 h-7 text-primary" />
-            Product Moderation
-          </h1>
-          <p className="text-textPrimary/60">Review flagged physical products for policy violations (counterfeits, banned items, copyright).</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <Package className="w-7 h-7 text-primary" />
             Product Moderation
           </h1>
           <p className="text-slate-600">Review flagged physical products for policy violations (counterfeits, banned items, copyright).</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <Card className="border-red-500/20 bg-red-500/5">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">High Risk Flags</h3>
-=======
             <h3 className="text-sm font-medium text-slate-800 mb-2">High Risk Flags</h3>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-red-400">14</span>
             </div>
@@ -49,11 +37,7 @@ export const ProductModeration = () => {
         </Card>
         <Card className="border-yellow-500/20 bg-yellow-500/5">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Total Pending Review</h3>
-=======
             <h3 className="text-sm font-medium text-slate-800 mb-2">Total Pending Review</h3>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-yellow-500">142</span>
             </div>
@@ -62,30 +46,18 @@ export const ProductModeration = () => {
         </Card>
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Items Removed (YTD)</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">4,215</span>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Items Removed (YTD)</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-slate-900">4,215</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
         <Card className="border-slate-300">
           <CardContent className="p-6 flex justify-between items-center h-full">
             <div>
-<<<<<<< HEAD
-              <h3 className="text-sm font-medium text-textPrimary/60 mb-2">AI Accuracy Score</h3>
-              <div className="flex items-end gap-3">
-                <span className="text-3xl font-bold text-textPrimary">94.2%</span>
-=======
               <h3 className="text-sm font-medium text-slate-600 mb-2">AI Accuracy Score</h3>
               <div className="flex items-end gap-3">
                 <span className="text-3xl font-bold text-slate-900">94.2%</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </div>
           </CardContent>
@@ -95,17 +67,6 @@ export const ProductModeration = () => {
       <Card>
         <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-<<<<<<< HEAD
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
-            <input 
-              type="text" 
-              placeholder="Search by Product Name, ID, or Seller..." 
-              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors" 
-            />
-          </div>
-          <div className="flex gap-2">
-            <select className="bg-surface border border-white/10 rounded-lg px-3 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 cursor-pointer">
-=======
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input 
               type="text" 
@@ -115,7 +76,6 @@ export const ProductModeration = () => {
           </div>
           <div className="flex gap-2">
             <select className="bg-surface border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               <option>Filter by Risk: All</option>
               <option>Risk: High</option>
               <option>Risk: Medium</option>
@@ -128,11 +88,7 @@ export const ProductModeration = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-<<<<<<< HEAD
-              <tr className="border-b border-white/5 text-sm font-medium text-textPrimary/50 bg-white/[0.02]">
-=======
               <tr className="border-b border-slate-200 text-sm font-medium text-slate-500 bg-slate-50">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <th className="p-4 pl-6">Product Details</th>
                 <th className="p-4">Seller Info</th>
                 <th className="p-4">Violation Flag</th>
@@ -152,21 +108,8 @@ export const ProductModeration = () => {
                         <img src={`https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&q=80`} alt="Product" className="w-full h-full object-cover opacity-50 mix-blend-luminosity" />
                       </div>
                       <div className="flex flex-col">
-<<<<<<< HEAD
-                        <span className="font-bold text-textPrimary">{product.name}</span>
-                        <span className="text-xs text-textPrimary/50">{product.id} • {product.price}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="p-4 text-textPrimary/80">
-                    <span className="block font-medium">{product.seller}</span>
-                    <span className="text-xs text-textPrimary/40">ID: SEL-{Math.floor(Math.random() * 900) + 100}</span>
-                  </td>
-                  <td className="p-4">
-                    <span className="px-2.5 py-1 bg-surface border border-white/10 rounded text-xs text-textPrimary/80 font-medium whitespace-nowrap">
-=======
                         <span className="font-bold text-slate-900">{product.name}</span>
-                        <span className="text-xs text-slate-500">{product.id} • {product.price}</span>
+                        <span className="text-xs text-slate-500">{product.id} â€¢ {product.price}</span>
                       </div>
                     </div>
                   </td>
@@ -176,7 +119,6 @@ export const ProductModeration = () => {
                   </td>
                   <td className="p-4">
                     <span className="px-2.5 py-1 bg-surface border border-slate-300 rounded text-xs text-slate-800 font-medium whitespace-nowrap">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                       {product.flag}
                     </span>
                   </td>
@@ -203,11 +145,7 @@ export const ProductModeration = () => {
                         </Button>
                       </div>
                     ) : (
-<<<<<<< HEAD
-                      <span className="text-xs font-bold text-textPrimary/40 uppercase tracking-wider">Resolved</span>
-=======
                       <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Resolved</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     )}
                   </td>
                 </tr>

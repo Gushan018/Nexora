@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Filter, Plus, Edit2, Trash2, Package, Tag, AlertTriangle, Loader2, X, Check } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -75,19 +75,11 @@ export const SellerProductManagement = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <Package className="w-7 h-7 text-primary" />
-            Product Management
-          </h1>
-          <p className="text-textPrimary/60">Manage your inventory, update pricing, and add new items.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <Package className="w-7 h-7 text-primary" />
             Product Management
           </h1>
           <p className="text-slate-600">Manage your inventory, update pricing, and add new items.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <Link to="/seller/add-product">
           <Button leftIcon={<Plus className="w-4 h-4"/>}>Add Product</Button>
@@ -128,21 +120,11 @@ export const SellerProductManagement = () => {
         {/* Toolbar */}
         <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-<<<<<<< HEAD
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
-            <input
-              type="text"
-              placeholder="Search products by name or ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-surface/50 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
-=======
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input 
               type="text" 
               placeholder="Search products by name or ID..." 
               className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             />
           </div>
           <div className="flex gap-2">
@@ -175,36 +157,6 @@ export const SellerProductManagement = () => {
 
         {/* Data Table */}
         <div className="overflow-x-auto">
-<<<<<<< HEAD
-          {loading ? (
-            <div className="p-12 flex flex-col items-center justify-center gap-4">
-              <Loader2 className="w-8 h-8 text-primary animate-spin" />
-              <p className="text-textPrimary/40">Loading your products...</p>
-            </div>
-          ) : error && products.length === 0 ? (
-            <div className="p-12 text-center text-red-400">
-              <AlertTriangle className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>Failed to load products. Please try again later.</p>
-              <Button onClick={fetchData} variant="outline" className="mt-4">
-                Try Again
-              </Button>
-            </div>
-          ) : filteredProducts?.length === 0 ? (
-            <div className="p-12 text-center text-textPrimary/40">
-              <Package className="w-12 h-12 mx-auto mb-4 opacity-20" />
-              <p>{products.length === 0 ? 'No products found. Start by adding a new product!' : 'No products match your filters.'}</p>
-            </div>
-          ) : (
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-white/5 text-sm font-medium text-textPrimary/50 bg-white/[0.02]">
-                  <th className="p-4 pl-6">Product Details</th>
-                  <th className="p-4">Category</th>
-                  <th className="p-4">Price</th>
-                  <th className="p-4">Inventory</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4 pr-6 text-right">Actions</th>
-=======
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-sm font-medium text-slate-500 bg-slate-50">
@@ -261,7 +213,6 @@ export const SellerProductManagement = () => {
                       </button>
                     </div>
                   </td>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </tr>
               </thead>
               <tbody className="text-sm">

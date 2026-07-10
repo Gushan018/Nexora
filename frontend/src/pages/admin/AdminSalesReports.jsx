@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingCart, TrendingUp, BarChart3, Users, Filter, Download } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -11,16 +11,6 @@ export const AdminSalesReports = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <ShoppingCart className="w-7 h-7 text-primary" />
-            Platform Sales & Conversion
-          </h1>
-          <p className="text-textPrimary/60">Analyze booking volume, average order values, and funnel metrics.</p>
-        </div>
-        <div className="flex gap-2">
-          <select className="bg-surface/50 border border-white/10 rounded-lg px-4 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 cursor-pointer">
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <ShoppingCart className="w-7 h-7 text-primary" />
             Platform Sales & Conversion
@@ -29,7 +19,6 @@ export const AdminSalesReports = () => {
         </div>
         <div className="flex gap-2">
           <select className="bg-surface/50 border border-slate-300 rounded-lg px-4 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <option>Last 30 Days</option>
             <option>Last Quarter</option>
             <option>Year to Date</option>
@@ -41,15 +30,9 @@ export const AdminSalesReports = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-4">
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Total Transactions</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">12,450</span>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Total Transactions</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-slate-900">12,450</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
             <p className="text-xs text-green-400 font-bold mt-2">+5.2% vs last month</p>
           </CardContent>
@@ -57,15 +40,9 @@ export const AdminSalesReports = () => {
 
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Average Order Value (AOV)</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">LKR 1,850</span>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Average Order Value (AOV)</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-slate-900">LKR 1,850</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
             <p className="text-xs text-green-400 font-bold mt-2">+2.1% vs last month</p>
           </CardContent>
@@ -75,13 +52,8 @@ export const AdminSalesReports = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-start">
               <div>
-<<<<<<< HEAD
-                <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Gross Merchandise Value (GMV)</h3>
-                <span className="text-5xl font-bold text-textPrimary">LKR 23.0M</span>
-=======
                 <h3 className="text-sm font-medium text-slate-800 mb-2">Gross Merchandise Value (GMV)</h3>
                 <span className="text-5xl font-bold text-slate-900">LKR 23.0M</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <p className="text-sm text-accent font-bold mt-2">Total value of all bookings processed</p>
               </div>
               <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center border border-accent/20">
@@ -105,35 +77,6 @@ export const AdminSalesReports = () => {
               
               <div className="text-center relative">
                 <div className="bg-primary/20 border border-primary/30 py-3 rounded-lg w-full relative z-10">
-<<<<<<< HEAD
-                  <span className="font-bold text-textPrimary text-sm">Site Visitors (1.2M)</span>
-                </div>
-              </div>
-
-              <div className="flex justify-center text-textPrimary/20"><TrendingUp className="w-4 h-4 rotate-180"/></div>
-
-              <div className="text-center relative">
-                <div className="bg-primary/30 border border-primary/40 py-3 rounded-lg w-[85%] mx-auto relative z-10">
-                  <span className="font-bold text-textPrimary text-sm">Viewed Vendor (850K)</span>
-                </div>
-                <span className="absolute -right-8 top-1/2 -translate-y-1/2 text-xs text-textPrimary/50">71%</span>
-              </div>
-
-              <div className="flex justify-center text-textPrimary/20"><TrendingUp className="w-4 h-4 rotate-180"/></div>
-
-              <div className="text-center relative">
-                <div className="bg-primary/50 border border-primary/50 py-3 rounded-lg w-[40%] mx-auto relative z-10">
-                  <span className="font-bold text-textPrimary text-sm">Sent Request (42K)</span>
-                </div>
-                <span className="absolute -right-8 top-1/2 -translate-y-1/2 text-xs text-textPrimary/50">4.9%</span>
-              </div>
-
-              <div className="flex justify-center text-textPrimary/20"><TrendingUp className="w-4 h-4 rotate-180"/></div>
-
-              <div className="text-center relative">
-                <div className="bg-primary border border-primary py-3 rounded-lg w-[25%] mx-auto relative z-10 shadow-[0_0_20px_rgba(91,124,250,0.4)]">
-                  <span className="font-bold text-textPrimary text-sm">Booked (12.4K)</span>
-=======
                   <span className="font-bold text-slate-900 text-sm">Site Visitors (1.2M)</span>
                 </div>
               </div>
@@ -161,7 +104,6 @@ export const AdminSalesReports = () => {
               <div className="text-center relative">
                 <div className="bg-primary border border-primary py-3 rounded-lg w-[25%] mx-auto relative z-10 shadow-[0_0_20px_rgba(91,124,250,0.4)]">
                   <span className="font-bold text-slate-900 text-sm">Booked (12.4K)</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
                 <span className="absolute -right-8 top-1/2 -translate-y-1/2 text-xs font-bold text-primary">29.5%</span>
               </div>
@@ -187,17 +129,10 @@ export const AdminSalesReports = () => {
               ].map((item, i) => (
                 <div key={i} className="space-y-2">
                   <div className="flex justify-between items-end">
-<<<<<<< HEAD
-                    <span className="font-medium text-textPrimary">{item.category}</span>
-                    <div className="text-right">
-                      <span className="text-textPrimary font-bold block">{item.gmv}</span>
-                      <span className="text-xs text-textPrimary/40">{item.percent}% of total</span>
-=======
                     <span className="font-medium text-slate-900">{item.category}</span>
                     <div className="text-right">
                       <span className="text-slate-900 font-bold block">{item.gmv}</span>
                       <span className="text-xs text-slate-500">{item.percent}% of total</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     </div>
                   </div>
                   <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">

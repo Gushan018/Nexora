@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Settings, Bell, Shield, CreditCard, Users, Save, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -120,19 +120,11 @@ export const VendorSettings = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <Settings className="w-7 h-7 text-primary" />
-            Vendor Settings
-          </h1>
-          <p className="text-textPrimary/60">Configure your operational preferences and account security.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <Settings className="w-7 h-7 text-primary" />
             Vendor Settings
           </h1>
           <p className="text-slate-600">Configure your operational preferences and account security.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <Button 
           onClick={handleSave} 
@@ -175,11 +167,7 @@ export const VendorSettings = () => {
                 "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors text-left",
                 activeTab === tab.id
                   ? "bg-primary/10 text-primary border border-primary/20" 
-<<<<<<< HEAD
-                  : "text-textPrimary/60 hover:text-textPrimary hover:bg-white/5 border border-transparent"
-=======
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               )}
             >
               <tab.icon className="w-4 h-4" />
@@ -191,44 +179,6 @@ export const VendorSettings = () => {
         {/* Main Settings Content */}
         <div className="md:col-span-3 space-y-6">
           
-<<<<<<< HEAD
-          {activeTab === 'general' && (
-            <>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Business Preferences</CardTitle>
-                  <CardDescription>Global rules for how you operate on Nexora.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-textPrimary/90">Default Currency</label>
-                      <select 
-                        value={settings.currency}
-                        onChange={(e) => updateSetting('currency', e.target.value)}
-                        className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
-                      >
-                        <option value="LKR">LKR (Rs)</option>
-                        <option value="USD">USD ($)</option>
-                        <option value="EUR">EUR (€)</option>
-                        <option value="GBP">GBP (£)</option>
-                      </select>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-textPrimary/90">Timezone</label>
-                      <select 
-                        value={settings.timezone}
-                        onChange={(e) => updateSetting('timezone', e.target.value)}
-                        className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
-                      >
-                        <option value="UTC">UTC</option>
-                        <option value="Asia/Colombo">Asia/Colombo (IST)</option>
-                        <option value="PST">Pacific Time (PT)</option>
-                        <option value="EST">Eastern Time (ET)</option>
-                      </select>
-                    </div>
-=======
           <Card>
             <CardHeader>
               <CardTitle>Business Preferences</CardTitle>
@@ -241,8 +191,8 @@ export const VendorSettings = () => {
                   <label className="text-sm font-medium text-slate-800">Default Currency</label>
                   <select className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
                     <option value="USD">LKR (Rs)</option>
-                    <option value="EUR">EUR (€)</option>
-                    <option value="GBP">GBP (£)</option>
+                    <option value="EUR">EUR (â‚¬)</option>
+                    <option value="GBP">GBP (Â£)</option>
                   </select>
                 </div>
                 <div className="space-y-2">
@@ -317,7 +267,6 @@ export const VendorSettings = () => {
                       {policy.selected && <div className="w-3 h-3 rounded-full bg-primary" />}
                     </div>
                     <p className="text-xs text-slate-600 leading-relaxed">{policy.desc}</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
 
                   <div className="space-y-2">
@@ -334,204 +283,6 @@ export const VendorSettings = () => {
                     <p className="text-xs text-textPrimary/40">Prevents last-minute bookings from customers.</p>
                   </div>
 
-<<<<<<< HEAD
-                  <div className="pt-4 border-t border-white/5 space-y-4">
-                    <label className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-surface/30 cursor-pointer transition-colors hover:bg-surface/40">
-                      <div>
-                        <h4 className="text-textPrimary font-medium text-sm">Instant Book</h4>
-                        <p className="text-xs text-textPrimary/50">Automatically approve bookings if your calendar is free.</p>
-                      </div>
-                      <button 
-                        onClick={() => updateSetting('instantBook', !settings.instantBook)}
-                        className={cn(
-                          "w-12 h-6 rounded-full relative transition-colors duration-200 ease-in-out focus:outline-none",
-                          settings.instantBook ? "bg-primary" : "bg-white/10"
-                        )}
-                      >
-                        <div className={cn(
-                          "w-5 h-5 bg-white rounded-full absolute top-0.5 transition-all duration-200 ease-in-out",
-                          settings.instantBook ? "right-0.5" : "left-0.5"
-                        )} />
-                      </button>
-                    </label>
-
-                    <label className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-surface/30 cursor-pointer transition-colors hover:bg-surface/40">
-                      <div>
-                        <h4 className="text-textPrimary font-medium text-sm">Require Deposits</h4>
-                        <p className="text-xs text-textPrimary/50">Force customers to pay 20% upfront to confirm a date.</p>
-                      </div>
-                      <button 
-                        onClick={() => updateSetting('requireDeposits', !settings.requireDeposits)}
-                        className={cn(
-                          "w-12 h-6 rounded-full relative transition-colors duration-200 ease-in-out focus:outline-none",
-                          settings.requireDeposits ? "bg-primary" : "bg-white/10"
-                        )}
-                      >
-                        <div className={cn(
-                          "w-5 h-5 bg-white rounded-full absolute top-0.5 transition-all duration-200 ease-in-out",
-                          settings.requireDeposits ? "right-0.5" : "left-0.5"
-                        )} />
-                      </button>
-                    </label>
-                  </div>
-
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Cancellation Policy</CardTitle>
-                  <CardDescription>Set the terms for when a customer cancels an event.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {[
-                      { title: 'Flexible', desc: 'Full refund up to 7 days before.' },
-                      { title: 'Moderate', desc: 'Full refund up to 30 days before.' },
-                      { title: 'Strict', desc: 'Non-refundable deposit.' },
-                    ].map((policy) => (
-                      <div 
-                        key={policy.title} 
-                        onClick={() => updateSetting('cancellationPolicy', policy.title)}
-                        className={cn(
-                          "p-4 rounded-xl border cursor-pointer transition-all",
-                          settings.cancellationPolicy === policy.title 
-                            ? "border-primary bg-primary/10" 
-                            : "border-white/10 bg-surface/30 hover:border-white/30"
-                        )}
-                      >
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className={cn("font-bold text-sm", settings.cancellationPolicy === policy.title ? "text-primary" : "text-textPrimary")}>{policy.title}</h4>
-                          {settings.cancellationPolicy === policy.title && <div className="w-3 h-3 rounded-full bg-primary" />}
-                        </div>
-                        <p className="text-xs text-textPrimary/60 leading-relaxed">{policy.desc}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                </CardContent>
-              </Card>
-
-              <Card className="border-red-500/20">
-                <CardHeader>
-                  <CardTitle className="text-red-400">Danger Zone</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4 text-sm">
-                  <p className="text-textPrimary/60">If you want to temporarily hide your business or permanently delete your account, you can do so here.</p>
-                  <div className="flex gap-4">
-                    <Button variant="outline">Pause Account</Button>
-                    <Button variant="outline" className="text-red-400 hover:text-red-300 hover:bg-red-400/10 border-red-400/20">Deactivate Business</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </>
-          )}
-
-          {activeTab === 'notifications' && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Notifications</CardTitle>
-                <CardDescription>Manage your email and in-app notification preferences.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <p className="text-textPrimary/60 text-sm">Notification preferences are coming soon. You'll be able to configure email alerts for new bookings, cancellations, and messages.</p>
-              </CardContent>
-            </Card>
-          )}
-
-          {activeTab === 'security' && (
-            <>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Change Password</CardTitle>
-                  <CardDescription>Update your account password. You'll need to enter your current password.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <Input
-                    label="Current Password"
-                    type="password"
-                    placeholder="Enter current password"
-                    value={passwordForm.currentPassword}
-                    onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-                  />
-                  <Input
-                    label="New Password"
-                    type="password"
-                    placeholder="At least 8 characters"
-                    value={passwordForm.newPassword}
-                    onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-                  />
-                  <Input
-                    label="Confirm New Password"
-                    type="password"
-                    placeholder="Re-enter new password"
-                    value={passwordForm.confirmPassword}
-                    onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-                  />
-                  {passwordMessage.text && (
-                    <div className={cn(
-                      "p-3 rounded-xl flex items-center gap-2 text-sm border",
-                      passwordMessage.type === 'success' ? "bg-green-500/10 border-green-500/20 text-green-400" : "bg-red-500/10 border-red-500/20 text-red-400"
-                    )}>
-                      {passwordMessage.type === 'success' ? <CheckCircle className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
-                      {passwordMessage.text}
-                    </div>
-                  )}
-                  <Button
-                    onClick={handleChangePassword}
-                    disabled={passwordSaving}
-                    leftIcon={passwordSaving ? <Loader2 className="w-4 h-4 animate-spin"/> : <Shield className="w-4 h-4"/>}
-                  >
-                    {passwordSaving ? 'Updating...' : 'Update Password'}
-                  </Button>
-                </CardContent>
-              </Card>
-            </>
-          )}
-
-          {activeTab === 'billing' && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Billing & Taxes</CardTitle>
-                <CardDescription>Manage your bank account details and tax information for payouts.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <Input
-                  label="Bank Name"
-                  placeholder="e.g. Bank of Ceylon"
-                  value={settings.bankName || ''}
-                  onChange={(e) => updateSetting('bankName', e.target.value)}
-                />
-                <Input
-                  label="Bank Account Number"
-                  placeholder="e.g. 1234567890"
-                  value={settings.bankAccountNo || ''}
-                  onChange={(e) => updateSetting('bankAccountNo', e.target.value)}
-                />
-                <Input
-                  label="Tax ID / VAT Number"
-                  placeholder="e.g. TAX-123456"
-                  value={settings.taxId || ''}
-                  onChange={(e) => updateSetting('taxId', e.target.value)}
-                />
-                <p className="text-xs text-textPrimary/40">Your bank details are used for monthly payouts. Tax ID is required for invoicing.</p>
-              </CardContent>
-            </Card>
-          )}
-
-          {activeTab === 'team' && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Team Access</CardTitle>
-                <CardDescription>Invite team members to manage your business.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <p className="text-textPrimary/60 text-sm">Team access is coming soon. You'll be able to add staff accounts with different permission levels (Admin, Editor, Viewer).</p>
-              </CardContent>
-            </Card>
-          )}
-=======
           <Card className="border-red-500/20">
             <CardHeader>
               <CardTitle className="text-red-400">Danger Zone</CardTitle>
@@ -544,7 +295,6 @@ export const VendorSettings = () => {
               </div>
             </CardContent>
           </Card>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
         </div>
 

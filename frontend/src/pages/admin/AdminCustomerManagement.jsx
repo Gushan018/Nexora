@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Users, Search, Filter, MoreVertical, CreditCard, Calendar, ShieldAlert, Loader2, AlertCircle, RefreshCcw } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
@@ -50,19 +50,11 @@ export const AdminCustomerManagement = () => {
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <Users className="w-7 h-7 text-primary" />
-            Customer Accounts
-          </h1>
-          <p className="text-textPrimary/60">Monitor buyer behavior and account activity.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <Users className="w-7 h-7 text-primary" />
             Customer Accounts
           </h1>
           <p className="text-slate-600">Monitor buyer behavior, LTV (Lifetime Value), and risk factors.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <Button variant="outline" leftIcon={<RefreshCcw className="w-4 h-4"/>} onClick={fetchCustomers}>Refresh</Button>
       </div>
@@ -70,25 +62,15 @@ export const AdminCustomerManagement = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Total Customers</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">{customers.length.toLocaleString()}</span>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Active Customers (30d)</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-slate-900">12,400</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
         <Card className="border-green-500/20 bg-green-500/5">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Active (with bookings/orders)</h3>
-=======
             <h3 className="text-sm font-medium text-slate-800 mb-2">Avg. Lifetime Value</h3>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-green-400">{stats.active}</span>
             </div>
@@ -97,15 +79,9 @@ export const AdminCustomerManagement = () => {
         <Card className="border-slate-300">
           <CardContent className="p-6 flex justify-between items-center h-full">
             <div>
-<<<<<<< HEAD
-              <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Total Bookings</h3>
-              <div className="flex items-end gap-3">
-                <span className="text-3xl font-bold text-textPrimary">{stats.totalBookings}</span>
-=======
               <h3 className="text-sm font-medium text-slate-600 mb-2">High Risk Accounts</h3>
               <div className="flex items-end gap-3">
                 <span className="text-3xl font-bold text-slate-900">14</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </div>
           </CardContent>
@@ -115,44 +91,6 @@ export const AdminCustomerManagement = () => {
       <Card>
         <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-<<<<<<< HEAD
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
-            <input
-              type="text"
-              placeholder="Search customers..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
-            />
-          </div>
-        </div>
-
-        <div className="overflow-x-auto">
-          {loading ? (
-            <div className="p-12 flex flex-col items-center justify-center text-textPrimary/40 gap-3">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              <p>Loading customers...</p>
-            </div>
-          ) : error ? (
-            <div className="p-12 flex flex-col items-center justify-center text-red-400 gap-3 text-center">
-              <AlertCircle className="w-8 h-8" />
-              <p>{error}</p>
-              <Button onClick={fetchCustomers} variant="outline" size="sm">Try Again</Button>
-            </div>
-          ) : filteredCustomers.length === 0 ? (
-            <div className="p-12 flex flex-col items-center justify-center text-textPrimary/40 gap-3 text-center">
-              <Users className="w-12 h-12 opacity-20" />
-              <p>No customers found.</p>
-            </div>
-          ) : (
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-white/5 text-sm font-medium text-textPrimary/50 bg-white/[0.02]">
-                  <th className="p-4 pl-6">Customer</th>
-                  <th className="p-4">Activity</th>
-                  <th className="p-4">Joined</th>
-                  <th className="p-4 pr-6"></th>
-=======
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input 
               type="text" 
@@ -187,7 +125,7 @@ export const AdminCustomerManagement = () => {
                   <td className="p-4 pl-6">
                     <div className="flex flex-col">
                       <span className="font-bold text-slate-900">{customer.name}</span>
-                      <span className="text-xs text-slate-500">{customer.email} • {customer.id}</span>
+                      <span className="text-xs text-slate-500">{customer.email} â€¢ {customer.id}</span>
                     </div>
                   </td>
                   <td className="p-4">
@@ -221,7 +159,6 @@ export const AdminCustomerManagement = () => {
                       <MoreVertical className="w-5 h-5"/>
                     </button>
                   </td>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </tr>
               </thead>
               <tbody className="text-sm">
@@ -230,13 +167,13 @@ export const AdminCustomerManagement = () => {
                     <td className="p-4 pl-6">
                       <div className="flex flex-col">
                         <span className="font-bold text-textPrimary">{customer.name}</span>
-                        <span className="text-xs text-textPrimary/50">{customer.email} • CUS-{customer.customerId}</span>
+                        <span className="text-xs text-textPrimary/50">{customer.email} â€¢ CUS-{customer.customerId}</span>
                       </div>
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-1.5 text-textPrimary/60">
                         <Calendar className="w-4 h-4" />
-                        <span className="text-xs">{customer._count?.bookings || 0} bookings • {customer._count?.orders || 0} orders</span>
+                        <span className="text-xs">{customer._count?.bookings || 0} bookings â€¢ {customer._count?.orders || 0} orders</span>
                       </div>
                     </td>
                     <td className="p-4 text-textPrimary/80 text-xs">

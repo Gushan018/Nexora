@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -17,11 +17,7 @@ export const ContactUs = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-<<<<<<< HEAD
-            className="text-4xl lg:text-5xl font-bold text-textPrimary mb-6"
-=======
             className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Get in <span className="text-gradient">Touch</span>
           </motion.h1>
@@ -29,11 +25,7 @@ export const ContactUs = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-<<<<<<< HEAD
-            className="text-textPrimary/60 text-lg max-w-2xl mx-auto"
-=======
             className="text-slate-600 text-lg max-w-2xl mx-auto"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Have a question about our platform, enterprise pricing, or need vendor support? Our team is here to help.
           </motion.p>
@@ -48,13 +40,8 @@ export const ContactUs = () => {
             className="lg:col-span-1 space-y-8"
           >
             <div>
-<<<<<<< HEAD
-              <h3 className="text-2xl font-bold text-textPrimary mb-6">Contact Information</h3>
-              <p className="text-textPrimary/60 mb-8">Fill out the form and our team will get back to you within 24 hours.</p>
-=======
               <h3 className="text-2xl font-bold text-slate-900 mb-6">Contact Information</h3>
               <p className="text-slate-600 mb-8">Fill out the form and our team will get back to you within 24 hours.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
             
             <div className="space-y-6">
@@ -63,15 +50,9 @@ export const ContactUs = () => {
                   <Phone className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-<<<<<<< HEAD
-                  <h4 className="text-textPrimary font-medium mb-1">Phone</h4>
-                  <p className="text-textPrimary/60 text-sm">+94 77 123 4567</p>
-                  <p className="text-textPrimary/60 text-sm">+94 11 234 5678</p>
-=======
                   <h4 className="text-slate-900 font-medium mb-1">Phone</h4>
                   <p className="text-slate-600 text-sm">+94 77 123 4567</p>
                   <p className="text-slate-600 text-sm">+94 11 234 5678</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               </div>
 
@@ -80,15 +61,9 @@ export const ContactUs = () => {
                   <Mail className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-<<<<<<< HEAD
-                  <h4 className="text-textPrimary font-medium mb-1">Email</h4>
-                  <p className="text-textPrimary/60 text-sm">support@nexora.lk</p>
-                  <p className="text-textPrimary/60 text-sm">partners@nexora.lk</p>
-=======
                   <h4 className="text-slate-900 font-medium mb-1">Email</h4>
                   <p className="text-slate-600 text-sm">support@nexora.lk</p>
                   <p className="text-slate-600 text-sm">partners@nexora.lk</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               </div>
 
@@ -97,13 +72,8 @@ export const ContactUs = () => {
                   <MapPin className="w-5 h-5 text-secondary" />
                 </div>
                 <div>
-<<<<<<< HEAD
-                  <h4 className="text-textPrimary font-medium mb-1">Headquarters</h4>
-                  <p className="text-textPrimary/60 text-sm">123 Innovation Drive<br/>Colombo 03<br/>Sri Lanka</p>
-=======
                   <h4 className="text-slate-900 font-medium mb-1">Headquarters</h4>
                   <p className="text-slate-600 text-sm">123 Innovation Drive<br/>Colombo 03<br/>Sri Lanka</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               </div>
             </div>
@@ -129,13 +99,8 @@ export const ContactUs = () => {
                   </div>
 
                   <div className="space-y-2">
-<<<<<<< HEAD
-                    <label className="text-sm font-medium text-textPrimary/90">Subject</label>
-                    <select className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary transition-colors appearance-none">
-=======
                     <label className="text-sm font-medium text-slate-800">Subject</label>
                     <select className="w-full bg-surface border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary transition-colors appearance-none">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                       <option value="">Select an option</option>
                       <option value="support">General Support</option>
                       <option value="vendor">Vendor Onboarding</option>
@@ -145,17 +110,10 @@ export const ContactUs = () => {
                   </div>
 
                   <div className="space-y-2">
-<<<<<<< HEAD
-                    <label className="text-sm font-medium text-textPrimary/90">Message</label>
-                    <textarea 
-                      rows="6" 
-                      className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary transition-colors"
-=======
                     <label className="text-sm font-medium text-slate-800">Message</label>
                     <textarea 
                       rows="6" 
                       className="w-full bg-surface border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary transition-colors"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                       placeholder="How can we help you?"
                     ></textarea>
                   </div>

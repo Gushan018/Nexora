@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, ShoppingBag, Clock, Heart, ChevronRight, CheckCircle2, ArrowUpRight } from 'lucide-react';
@@ -123,11 +123,7 @@ export const CustomerDashboard = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-<<<<<<< HEAD
-            className="text-4xl sm:text-5xl font-black text-textPrimary mb-4 tracking-tight"
-=======
             className="text-4xl sm:text-5xl font-black text-slate-900 mb-6 tracking-tight"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Welcome to your Dashboard, <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">{user?.name ? user.name.split(' ')[0] : 'Guest'}</span>
@@ -136,16 +132,9 @@ export const CustomerDashboard = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-<<<<<<< HEAD
-            className="text-textPrimary/70 text-lg max-w-2xl mb-8 leading-relaxed"
-          >
-            {stats?.upcomingBookingsList?.length > 0 ? `Your next upcoming event is in ${Math.ceil((new Date(stats.upcomingBookingsList[0].eventDate) - new Date()) / (1000 * 60 * 60 * 24))} days! ` : 'You have no upcoming events. '}
-            You have <span className="text-textPrimary font-bold">{stats?.actionRequired?.length || 0}</span> pending action{stats?.actionRequired?.length === 1 ? '' : 's'} and <span className="text-textPrimary font-bold">{stats?.wishlisted || 0}</span> wishlisted item{stats?.wishlisted === 1 ? '' : 's'}.
-=======
             className="text-slate-600 text-lg max-w-xl mb-10 leading-relaxed font-medium"
           >
             Manage your event bookings, discover exclusive packages, and track your wishlist all in one place. Let's make your next event unforgettable.
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -156,13 +145,8 @@ export const CustomerDashboard = () => {
             <Button size="lg" className="px-8 bg-primary hover:bg-primary-hover transition-all text-white shadow-lg shadow-primary/30 font-bold" onClick={() => navigate('/customer/event-packages')}>
               Explore Packages
             </Button>
-<<<<<<< HEAD
-            <Button variant="outline" size="lg" className="px-8 bg-surface/50 border-white/10 hover:bg-white/10 transition-all text-textPrimary" onClick={() => navigate('/customer/vendor-directory')}>
-              Browse Vendors
-=======
             <Button variant="outline" size="lg" className="px-8 bg-surface border-slate-300 hover:border-slate-400 hover:bg-surface/80 transition-all text-slate-900 shadow-sm font-bold" onClick={() => navigate('/customer/marketplace')}>
               Shop Marketplace
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </Button>
           </motion.div>
         </div>
@@ -225,11 +209,7 @@ export const CustomerDashboard = () => {
             <CardContent>
               <div className="space-y-6">
                 {stats?.upcomingBookingsList?.length === 0 ? (
-<<<<<<< HEAD
-                  <p className="text-textPrimary/50 text-sm py-4">No upcoming events scheduled.</p>
-=======
                   <p className="text-slate-500 text-sm py-4">No upcoming events scheduled.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 ) : (
                   stats?.upcomingBookingsList?.map((booking, index) => (
                     <TimelineItem 
@@ -256,11 +236,7 @@ export const CustomerDashboard = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-<<<<<<< HEAD
-                    <tr className="border-b border-white/5 text-sm font-medium text-textPrimary/50">
-=======
                     <tr className="border-b border-slate-200 text-sm font-medium text-slate-500">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                       <th className="pb-3 pl-2">Order ID</th>
                       <th className="pb-3">Item</th>
                       <th className="pb-3">Status</th>
@@ -269,21 +245,12 @@ export const CustomerDashboard = () => {
                   </thead>
                   <tbody className="text-sm">
                     {stats?.recentOrders?.length === 0 ? (
-<<<<<<< HEAD
-                      <tr><td colSpan="4" className="py-8 text-textPrimary/50 text-center">No recent orders found.</td></tr>
-                    ) : (
-                      stats?.recentOrders?.map((order) => (
-                        <tr key={order.orderId} className="border-b border-white/5 hover:bg-white/[0.03] transition-colors group">
-                          <td className="py-4 pl-2 font-medium text-textPrimary/80 group-hover:text-textPrimary transition-colors">#ORD-{order.orderId}</td>
-                          <td className="py-4 text-textPrimary/60 group-hover:text-textPrimary/80 transition-colors">
-=======
                       <tr><td colSpan="4" className="py-8 text-slate-500 text-center">No recent orders found.</td></tr>
                     ) : (
                       stats?.recentOrders?.map((order) => (
                         <tr key={order.orderId} className="border-b border-slate-200 hover:bg-white/[0.03] transition-colors group">
                           <td className="py-4 pl-2 font-medium text-slate-800 group-hover:text-slate-900 transition-colors">#ORD-{order.orderId}</td>
                           <td className="py-4 text-slate-600 group-hover:text-slate-800 transition-colors">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                             {order.orderItems?.[0]?.product?.productName || 'Items'} 
                             {order.orderItems?.length > 1 ? ` (+${order.orderItems.length - 1} more)` : ''}
                           </td>
@@ -296,11 +263,7 @@ export const CustomerDashboard = () => {
                               {order.status}
                             </span>
                           </td>
-<<<<<<< HEAD
-                          <td className="py-4 text-right pr-2 font-bold text-textPrimary">LKR {Number(order.totalAmount).toFixed(2)}</td>
-=======
                           <td className="py-4 text-right pr-2 font-bold text-slate-900">LKR {Number(order.totalAmount).toFixed(2)}</td>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                         </tr>
                       ))
                     )}
@@ -322,24 +285,14 @@ export const CustomerDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4 pt-0">
               {stats?.actionRequired?.length === 0 ? (
-<<<<<<< HEAD
-                <div className="p-4 rounded-xl bg-surface/50 border border-white/10">
-                  <p className="text-sm text-textPrimary/60">You're all caught up! No actions required.</p>
-=======
                 <div className="p-4 rounded-xl bg-surface/50 border border-slate-300">
                   <p className="text-sm text-slate-600">You're all caught up! No actions required.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               ) : (
                 stats?.actionRequired?.map(action => (
                   <div key={action.bookingId} className="p-4 rounded-xl bg-surface/50 border border-red-500/20">
-<<<<<<< HEAD
-                    <h4 className="font-medium text-textPrimary mb-1">Payment Required</h4>
-                    <p className="text-sm text-textPrimary/60 mb-3">{action.service?.vendor?.businessName || action.package?.vendor?.businessName} accepted your booking.</p>
-=======
                     <h4 className="font-medium text-slate-900 mb-1">Payment Required</h4>
                     <p className="text-sm text-slate-600 mb-3">{action.service?.vendor?.businessName || action.package?.vendor?.businessName} accepted your booking.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     <Button size="sm" className="w-full bg-red-500/20 text-red-400 hover:bg-red-500/30" onClick={() => navigate(`/customer/payment-page?bookingId=${action.bookingId}&amount=${action.service?.price || action.package?.price || 0}&item=Booking`)}>
                       Pay Now
                     </Button>
@@ -357,30 +310,18 @@ export const CustomerDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4 pt-0">
               {stats?.recommendedVendors?.length === 0 ? (
-<<<<<<< HEAD
-                <p className="text-textPrimary/50 text-sm">No suggestions at this time.</p>
-=======
                 <p className="text-slate-500 text-sm">No suggestions at this time.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               ) : (
                 stats?.recommendedVendors?.map((vendor, i) => (
                   <div key={vendor.vendorId} onClick={() => navigate(`/customer/event-packages`)} className="flex items-center justify-between p-3 rounded-xl bg-surface/50 border border-slate-200 hover:border-slate-300 transition-colors group cursor-pointer">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-gradient-premium flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity" />
                       <div>
-<<<<<<< HEAD
-                        <p className="text-sm font-medium text-textPrimary">{vendor.businessName}</p>
-                        <p className="text-xs text-textPrimary/50">{vendor.vendorType} • Recommended</p>
-                      </div>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-textPrimary/40 group-hover:text-primary transition-colors" />
-=======
                         <p className="text-sm font-medium text-slate-900">{vendor.businessName}</p>
-                        <p className="text-xs text-slate-500">{vendor.vendorType} • Recommended</p>
+                        <p className="text-xs text-slate-500">{vendor.vendorType} â€¢ Recommended</p>
                       </div>
                     </div>
                     <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-primary transition-colors" />
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
                 ))
               )}
@@ -407,15 +348,9 @@ const StatCard = ({ icon, title, value, label, delay }) => (
           </div>
         </div>
         <div>
-<<<<<<< HEAD
-          <h3 className="text-4xl font-black text-textPrimary mb-1 drop-shadow-sm">{value}</h3>
-          <p className="text-sm font-bold text-textPrimary/80 mb-1 tracking-wide">{title}</p>
-          <p className="text-xs text-textPrimary/40">{label}</p>
-=======
           <h3 className="text-4xl font-black text-slate-900 mb-1 drop-shadow-sm">{value}</h3>
           <p className="text-sm font-bold text-slate-800 mb-1 tracking-wide">{title}</p>
           <p className="text-xs text-slate-500">{label}</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
       </CardContent>
     </Card>
@@ -440,13 +375,8 @@ const TimelineItem = ({ time, title, subtitle, status, isLast }) => (
     </div>
     <div className="pb-6">
       <div className="text-xs font-semibold text-primary mb-1">{time}</div>
-<<<<<<< HEAD
-      <h4 className="text-base font-medium text-textPrimary mb-0.5">{title}</h4>
-      <p className="text-sm text-textPrimary/60">{subtitle}</p>
-=======
       <h4 className="text-base font-medium text-slate-900 mb-0.5">{title}</h4>
       <p className="text-sm text-slate-600">{subtitle}</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
     </div>
   </div>
 );

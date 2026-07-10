@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Package, Plus, Edit2, Trash2, CheckCircle2, EyeOff, Loader2, AlertCircle, X, DollarSign, FileText, Check } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
@@ -137,69 +137,12 @@ export const PackageManagement = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <Package className="w-7 h-7 text-primary" />
-            Package Management
-          </h1>
-          <p className="text-textPrimary/60">Bundle your services into attractive event packages.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900">Pricing Packages</h1>
           <p className="text-slate-600">Configure tiered pricing packages for your primary service.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <Button onClick={() => handleOpenModal()} leftIcon={<Plus className="w-4 h-4"/>}>Create New Package</Button>
       </div>
 
-<<<<<<< HEAD
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <Card className="border-primary/20 bg-primary/5">
-          <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Total Packages</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">{packages.length}</span>
-              <span className="text-sm text-textPrimary/40 mb-1">All published</span>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="border-white/10">
-          <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">New this month</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">
-                {packages.filter(p => new Date(p.createdAt).getMonth() === new Date().getMonth()).length}
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {loading ? (
-          <div className="col-span-full py-20 flex flex-col items-center justify-center text-textPrimary/40 gap-3">
-            <Loader2 className="w-10 h-10 animate-spin text-primary" />
-            <p>Loading your packages...</p>
-          </div>
-        ) : error ? (
-          <div className="col-span-full py-20 flex flex-col items-center justify-center text-red-400 gap-3 text-center">
-            <AlertCircle className="w-10 h-10" />
-            <p>{error}</p>
-            <Button onClick={fetchPackages} variant="outline" size="sm">Try Again</Button>
-          </div>
-        ) : packages.length === 0 ? (
-          <div className="col-span-full py-20 flex flex-col items-center justify-center text-textPrimary/40 gap-3 text-center border-2 border-dashed border-white/5 rounded-2xl">
-            <Package className="w-16 h-16 opacity-10" />
-            <p className="text-lg">No packages found yet.</p>
-            <Button onClick={() => handleOpenModal()} variant="outline" size="sm" className="mt-2">Create Your First Package</Button>
-          </div>
-        ) : (
-          packages.map((pkg) => (
-            <Card key={pkg.packageId} className="group hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col">
-              <div className="p-6 flex-1 space-y-4">
-                <div className="flex justify-between items-start">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-                    <Package className="w-6 h-6" />
-=======
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-6">
         
         {PACKAGES.map((pkg) => (
@@ -242,49 +185,12 @@ export const PackageManagement = () => {
                   <div key={i} className="flex items-start gap-2 group cursor-pointer">
                     <Check className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
                     <span className="text-sm text-slate-800 group-hover:text-slate-900 transition-colors">{feature}</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
                   <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border border-green-500/20 bg-green-500/10">
                     <CheckCircle2 className="w-3 h-3 text-green-400" /> <span className="text-green-400">Live</span>
                   </div>
                 </div>
                 
-<<<<<<< HEAD
-                <div>
-                  <h3 className="text-xl font-bold text-textPrimary mb-1">{pkg.packageName}</h3>
-                  {pkg.category && (
-                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/20 mb-2">
-                      {pkg.category.categoryName}
-                    </span>
-                  )}
-                  <p className="text-sm text-textPrimary/50 line-clamp-2 min-h-[2.5rem]">{pkg.description || 'No description provided.'}</p>
-                </div>
-
-                <div className="pt-4 border-t border-white/5 flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-textPrimary/40 mb-0.5">Package Price</p>
-                    <p className="text-lg font-bold text-textPrimary">LKR {parseFloat(pkg.price).toLocaleString()}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="px-6 py-4 bg-white/[0.02] border-t border-white/5 flex gap-2">
-                <Button 
-                  onClick={() => handleOpenModal(pkg)}
-                  variant="outline" 
-                  size="sm" 
-                  className="flex-1"
-                  leftIcon={<Edit2 className="w-3.5 h-3.5" />}
-                >
-                  Edit
-                </Button>
-                <button 
-                  onClick={() => handleDelete(pkg.packageId)}
-                  className="p-2 text-textPrimary/40 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-=======
                 {/* Add Feature Mock */}
                 <div className="flex items-center gap-2 pt-2 border-t border-slate-200 opacity-0 hover:opacity-100 transition-opacity cursor-pointer">
                   <Plus className="w-4 h-4 text-primary shrink-0" />
@@ -323,7 +229,6 @@ export const PackageManagement = () => {
                     </div>
                   </div>
                 ))}
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </Card>
           ))

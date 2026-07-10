@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { ArrowLeft, DollarSign, Upload, Save, Trash2, Loader2, AlertCircle, Check } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
@@ -165,15 +165,6 @@ export const EditService = () => {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <Link to="/vendor/service-listing" className="text-sm text-textPrimary/60 hover:text-textPrimary flex items-center gap-1 w-fit mb-2 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Back to Services
-          </Link>
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            Edit Service
-          </h1>
-          <p className="text-textPrimary/60">Update details for "{formData.serviceName}".</p>
-=======
           <Link to="/vendor/service-listing" className="text-sm text-slate-600 hover:text-slate-900 flex items-center gap-1 w-fit mb-2 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to Services
           </Link>
@@ -181,7 +172,6 @@ export const EditService = () => {
             Edit Service
           </h1>
           <p className="text-slate-600">Update details for "Premium Wedding Videography".</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <div className="flex gap-2">
           <Button
@@ -227,48 +217,21 @@ export const EditService = () => {
               />
 
               <div className="space-y-2">
-<<<<<<< HEAD
-                <label className="text-sm font-medium text-textPrimary/90">Category</label>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                  className="w-full bg-surface/50 border border-border/20 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
-                >
-                  <option value="">Select a category</option>
-                  {categories.map(cat => (
-                    <option key={cat.categoryId} value={cat.categoryId.toString()}>
-                      {cat.categoryName}
-                    </option>
-                  ))}
-=======
                 <label className="text-sm font-medium text-slate-800">Category</label>
                 <select className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors cursor-pointer" defaultValue="photography">
                   <option value="photography">Photography & Videography</option>
                   <option value="venues">Venues & Spaces</option>
                   <option value="catering">Catering & Food</option>
                   <option value="entertainment">Entertainment & Music</option>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </select>
               </div>
 
               <div className="space-y-2">
-<<<<<<< HEAD
-                <label className="text-sm font-medium text-textPrimary/90">Detailed Description</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  rows="6"
-                  placeholder="Describe your service in detail..."
-                  className="w-full bg-surface/50 border border-border/20 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors resize-none"
-=======
                 <label className="text-sm font-medium text-slate-800">Detailed Description</label>
                 <textarea 
                   rows="6" 
                   defaultValue="Our premium wedding videography package includes full-day coverage, drone footage (weather permitting), and a 5-7 minute cinematic highlight film. We use state-of-the-art 4K cameras to ensure your memories are preserved in the highest quality."
                   className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors resize-none"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 />
               </div>
 
@@ -282,25 +245,6 @@ export const EditService = () => {
             <CardContent className="space-y-6">
 
               <div className="space-y-2">
-<<<<<<< HEAD
-                <label className="text-sm font-medium text-textPrimary/90">Cover Photo</label>
-                <label className="block w-full h-48 rounded-xl border border-border/20 overflow-hidden relative group cursor-pointer bg-surface/50">
-                  <input type="file" accept="image/*" onChange={handleCoverImageChange} className="hidden" />
-                  {coverImagePreview ? (
-                    <>
-                      <img src={coverImagePreview} alt="Cover" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                        <span className="text-white font-bold flex items-center gap-2"><Upload className="w-5 h-5" /> Replace Cover</span>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center h-full text-textPrimary/40">
-                      <Upload className="w-10 h-10 mb-2" />
-                      <span className="text-sm font-medium">Click to upload cover image</span>
-                    </div>
-                  )}
-                </label>
-=======
                 <label className="text-sm font-medium text-slate-800">Cover Photo</label>
                 <div className="w-full h-48 rounded-xl border border-slate-300 overflow-hidden relative group cursor-pointer">
                   <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80" alt="Cover" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -308,7 +252,6 @@ export const EditService = () => {
                     <span className="text-slate-900 font-bold flex items-center gap-2"><Upload className="w-5 h-5"/> Replace Cover</span>
                   </div>
                 </div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
 
             </CardContent>
@@ -319,20 +262,6 @@ export const EditService = () => {
               <CardTitle>Pricing</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-<<<<<<< HEAD
-
-              <Input
-                label="Price (LKR)"
-                name="price"
-                type="number"
-                step="0.01"
-                min="0"
-                value={formData.price}
-                onChange={handleInputChange}
-                leftIcon={<DollarSign className="w-4 h-4" />}
-                placeholder="2500"
-              />
-=======
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <Input label="Starting Price (Base Rate)" leftIcon={<DollarSign className="w-4 h-4"/>} defaultValue="2500" type="number" />
@@ -357,7 +286,6 @@ export const EditService = () => {
                   />
                 </div>
               </div>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
             </CardContent>
           </Card>
@@ -374,9 +302,6 @@ export const EditService = () => {
                 <span className="text-green-400 font-bold flex items-center gap-2 mb-1">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" /> Published
                 </span>
-<<<<<<< HEAD
-                <p className="text-textPrimary/60">This service is visible to customers.</p>
-=======
                 <p className="text-slate-600">This service is currently visible to customers in search results.</p>
               </div>
               <div className="pt-2">
@@ -388,7 +313,6 @@ export const EditService = () => {
                   <span>Last Updated:</span>
                   <span className="text-slate-800">Oct 05, 2026</span>
                 </p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </CardContent>
           </Card>
@@ -398,18 +322,8 @@ export const EditService = () => {
               <CardTitle className="text-red-400">Danger Zone</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-<<<<<<< HEAD
-              <p className="text-sm text-textPrimary/60">Permanently delete this service. This action cannot be undone.</p>
-              <Button
-                onClick={handleDelete}
-                variant="outline"
-                className="w-full text-red-400 hover:text-red-300 hover:bg-red-400/10 border-red-400/20"
-                leftIcon={<Trash2 className="w-4 h-4" />}
-              >
-=======
               <p className="text-sm text-slate-600">Permanently delete this service. This action cannot be undone and will remove it from all future search results.</p>
               <Button variant="outline" className="w-full text-red-400 hover:text-red-300 hover:bg-red-400/10 border-red-400/20" leftIcon={<Trash2 className="w-4 h-4"/>}>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 Delete Service
               </Button>
             </CardContent>

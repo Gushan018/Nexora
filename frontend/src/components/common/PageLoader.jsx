@@ -35,11 +35,7 @@ export const PageLoader = ({ text = "Loading..." }) => {
       </div>
 
       <motion.div
-<<<<<<< HEAD
-        className="text-textPrimary font-bold tracking-widest text-sm uppercase flex items-center gap-1 drop-shadow-md"
-=======
-        className="text-slate-900 font-bold tracking-widest text-sm uppercase flex items-center gap-1 drop-shadow-md"
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+        className="text-gray-900 dark:text-white font-bold tracking-widest text-sm uppercase flex items-center gap-1 drop-shadow-md"
         animate={{ opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >

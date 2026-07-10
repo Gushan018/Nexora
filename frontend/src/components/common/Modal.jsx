@@ -33,17 +33,10 @@ export const Modal = ({ isOpen, onClose, title, children }) => {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className="relative w-full max-w-md z-10"
           >
-<<<<<<< HEAD
-            <Card className="shadow-2xl bg-surface/95 backdrop-blur-xl">
-              <div className="flex items-center justify-between p-6 border-b border-border/20">
-                <h2 className="text-xl font-bold text-textPrimary">{title}</h2>
-                <button onClick={onClose} className="p-2 text-muted hover:text-textPrimary transition-colors rounded-full hover:bg-textPrimary/5">
-=======
-            <Card className="border-slate-300 shadow-2xl bg-surface/95 backdrop-blur-xl">
-              <div className="flex items-center justify-between p-6 border-b border-slate-300">
-                <h2 className="text-xl font-bold text-slate-900">{title}</h2>
-                <button onClick={onClose} className="p-2 text-slate-500 hover:text-slate-900 transition-colors rounded-full hover:bg-slate-100">
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+            <Card className="shadow-2xl bg-white dark:bg-surface/95 backdrop-blur-xl">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-white/10">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h2>
+                <button onClick={onClose} className="p-2 text-gray-500 dark:text-white/60 hover:text-gray-900 dark:hover:text-white transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-white/5">
                   <X className="w-5 h-5" />
                 </button>
               </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Briefcase, Search, Filter, Plus, Edit2, Trash2, Tag, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -75,19 +75,11 @@ export const ServiceListing = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-<<<<<<< HEAD
-          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
-            <Briefcase className="w-7 h-7 text-primary" />
-            My Services
-          </h1>
-          <p className="text-textPrimary/60">Manage the services and packages you offer to clients.</p>
-=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <Briefcase className="w-7 h-7 text-primary" />
             My Services
           </h1>
           <p className="text-slate-600">Manage the services and packages you offer to clients.</p>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <Link to="/vendor/create-service">
           <Button leftIcon={<Plus className="w-4 h-4"/>}>Create New Service</Button>
@@ -97,12 +89,6 @@ export const ServiceListing = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <Card className="border-primary/20">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Total Services</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">{services.length}</span>
-              <span className="text-sm text-green-400 mb-1">All published</span>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Active Services</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-slate-900">3</span>
@@ -115,24 +101,15 @@ export const ServiceListing = () => {
             <h3 className="text-sm font-medium text-slate-600 mb-2">Total Bookings (All Time)</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-slate-900">46</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
         <Card className="border-slate-300">
           <CardContent className="p-6">
-<<<<<<< HEAD
-            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">New this month</h3>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-textPrimary">
-                {services.filter(s => new Date(s.createdAt).getMonth() === new Date().getMonth()).length}
-              </span>
-=======
             <h3 className="text-sm font-medium text-slate-600 mb-2">Drafts / Hidden</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-slate-900">1</span>
               <span className="text-sm text-slate-500 mb-1">Not visible</span>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
@@ -142,21 +119,11 @@ export const ServiceListing = () => {
         {/* Toolbar */}
         <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-<<<<<<< HEAD
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
-            <input 
-              type="text" 
-              placeholder="Search services..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-surface/50 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors" 
-=======
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input 
               type="text" 
               placeholder="Search services..." 
               className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             />
           </div>
           <div className="flex gap-2">
@@ -175,38 +142,6 @@ export const ServiceListing = () => {
         
         {/* Data Table */}
         <div className="overflow-x-auto">
-<<<<<<< HEAD
-          {loading ? (
-            <div className="p-12 flex flex-col items-center justify-center text-textPrimary/40 gap-3">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
-              <p>Loading your services...</p>
-            </div>
-          ) : error ? (
-            <div className="p-12 flex flex-col items-center justify-center text-red-400 gap-3 text-center">
-              <AlertCircle className="w-8 h-8" />
-              <p>{error}</p>
-              <Button onClick={fetchServices} variant="outline" size="sm">Try Again</Button>
-            </div>
-          ) : filteredServices.length === 0 ? (
-            <div className="p-12 flex flex-col items-center justify-center text-textPrimary/40 gap-3 text-center">
-              <Briefcase className="w-12 h-12 opacity-20" />
-              <p>No services found. {searchTerm ? 'Try a different search term.' : 'Start by creating your first service!'}</p>
-              {!searchTerm && (
-                <Link to="/vendor/create-service">
-                  <Button variant="outline" size="sm" className="mt-2">Create Service</Button>
-                </Link>
-              )}
-            </div>
-          ) : (
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-white/5 text-sm font-medium text-textPrimary/50 bg-white/[0.02]">
-                  <th className="p-4 pl-6">Service Name</th>
-                  <th className="p-4">Pricing</th>
-                  <th className="p-4">Category</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4 pr-6"></th>
-=======
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-sm font-medium text-slate-500 bg-slate-50">
@@ -227,7 +162,7 @@ export const ServiceListing = () => {
                       </div>
                       <div className="flex flex-col">
                         <span className="font-medium text-slate-900">{service.name}</span>
-                        <span className="text-xs text-slate-500">{service.category} • {service.id}</span>
+                        <span className="text-xs text-slate-500">{service.category} â€¢ {service.id}</span>
                       </div>
                     </div>
                   </td>
@@ -261,7 +196,6 @@ export const ServiceListing = () => {
                       </button>
                     </div>
                   </td>
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </tr>
               </thead>
               <tbody className="text-sm">

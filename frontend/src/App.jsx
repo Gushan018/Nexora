@@ -82,13 +82,10 @@ import { UserManagement } from './pages/admin/UserManagement';
 import { AdminVendorManagement } from './pages/admin/AdminVendorManagement';
 import { AdminSellerManagement } from './pages/admin/AdminSellerManagement';
 import { AdminCustomerManagement } from './pages/admin/AdminCustomerManagement';
-<<<<<<< HEAD
-=======
 import { AdminPaymentsEscrow } from './pages/admin/AdminPaymentsEscrow';
 import { ReviewsModeration } from './pages/admin/ReviewsModeration';
 import { VendorVerification } from './pages/admin/VendorVerification';
 import { BusinessApprovals } from './pages/admin/BusinessApprovals';
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 import { ProductModeration } from './pages/admin/ProductModeration';
 import { CategoryManagement } from './pages/admin/CategoryManagement';
 import { AdminBookingManagement } from './pages/admin/AdminBookingManagement';
