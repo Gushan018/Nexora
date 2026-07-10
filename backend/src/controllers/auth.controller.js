@@ -6,8 +6,8 @@ const prisma = new PrismaClient();
 
 
 const generateToken = (id, role) => {
-  return jwt.sign({ id, role }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+  return jwt.sign({ id, role }, process.env.JWT_SECRET || 'your_jwt_secret_key', {
+    expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   });
 };
 
@@ -95,11 +95,10 @@ const registerVendor = async (req, res) => {
         location,
         vendorType: vendor_type,
         description,
-        isApproved: false,
       },
     });
     res.status(201).json({
-      message: "Vendor registration successful. Awaiting admin approval.",
+      message: "Vendor registered successfully.",
       vendorId: vendor.vendorId,
     });
   } catch (error) {
@@ -108,7 +107,64 @@ const registerVendor = async (req, res) => {
 };
 
 // ==========================================
-// 4. VENDOR LOGIN
+// 4. SELLER REGISTER
+// ==========================================
+const registerSeller = async (req, res) => {
+  try {
+    const { shopName, email, password, contactNumber, location, description } = req.body;
+    const userExists = await prisma.vendor.findUnique({ where: { email } });
+    if (userExists) {
+      return res.status(400).json({ message: "This email address is already in use." });
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const seller = await prisma.vendor.create({
+      data: {
+        businessName: shopName,
+        email,
+        password: hashedPassword,
+        contactNumber,
+        location,
+        vendorType: 'OTHER',
+        description,
+      },
+    });
+    res.status(201).json({
+      message: "Seller registered successfully.",
+      sellerId: seller.vendorId,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+// ==========================================
+// 5. SELLER LOGIN
+// ==========================================
+const loginSeller = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const seller = await prisma.vendor.findUnique({ where: { email } });
+    if (!seller) {
+      return res.status(400).json({ message: "Invalid email or password." });
+    }
+    const isMatch = await bcrypt.compare(password, seller.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password." });
+    }
+    const token = generateToken(seller.vendorId, 'seller');
+    res.status(200).json({
+      message: "Login successful!",
+      token,
+      user: { id: seller.vendorId, businessName: seller.businessName, email: seller.email, role: 'seller' }
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+// ==========================================
+// 6. VENDOR/PRODUCT LOGIN (Same as Vendor)
 // ==========================================
 const loginVendor = async (req, res) => {
   try {
@@ -116,9 +172,6 @@ const loginVendor = async (req, res) => {
     const vendor = await prisma.vendor.findUnique({ where: { email } });
     if (!vendor) {
       return res.status(400).json({ message: "Invalid email or password." });
-    }
-    if (!vendor.isApproved) {
-      return res.status(403).json({ message: "Your account has not yet been approved by the admin." });
     }
     const isMatch = await bcrypt.compare(password, vendor.password);
     if (!isMatch) {
@@ -190,9 +243,6 @@ const loginUnified = async (req, res) => {
     if (vendor) {
       const isMatch = await bcrypt.compare(password, vendor.password);
       if (isMatch) {
-        if (!vendor.isApproved) {
-          return res.status(403).json({ message: "Your account has not yet been approved by the admin." });
-        }
         const token = generateToken(vendor.vendorId, 'vendor');
         return res.status(200).json({
           message: "Login successful!",
@@ -222,4 +272,68 @@ const loginUnified = async (req, res) => {
   }
 };
 
-module.exports = { registerCustomer, loginCustomer, registerVendor, loginVendor, loginAdmin, loginUnified };
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user.id;
+    const role = req.user.role;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "Current password and new password are required." });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({ message: "New password must be at least 8 characters." });
+    }
+
+    let user;
+    if (role === 'customer') {
+      user = await prisma.customer.findUnique({ where: { customerId: userId } });
+    } else if (role === 'admin') {
+      user = await prisma.admin.findUnique({ where: { adminId: userId } });
+    } else {
+      user = await prisma.vendor.findUnique({ where: { vendorId: userId } });
+    }
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    if (role === 'admin') {
+      if (currentPassword !== user.password) {
+        return res.status(400).json({ message: "Current password is incorrect." });
+      }
+    } else {
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Current password is incorrect." });
+      }
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    if (role === 'customer') {
+      await prisma.customer.update({
+        where: { customerId: userId },
+        data: { password: hashedPassword }
+      });
+    } else if (role === 'admin') {
+      await prisma.admin.update({
+        where: { adminId: userId },
+        data: { password: hashedPassword }
+      });
+    } else {
+      await prisma.vendor.update({
+        where: { vendorId: userId },
+        data: { password: hashedPassword }
+      });
+    }
+
+    res.status(200).json({ message: "Password changed successfully." });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+module.exports = { registerCustomer, loginCustomer, registerVendor, loginVendor, registerSeller, loginSeller, loginAdmin, loginUnified, changePassword };

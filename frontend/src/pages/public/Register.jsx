@@ -48,7 +48,7 @@ export const Register = () => {
           vendor_type: formData.vendorType,
         };
         const res = await api.post('/auth/register/vendor', vendorData);
-        alert(res.data.message || 'Vendor registered successfully. Awaiting admin approval.');
+        alert(res.data.message || 'Vendor registered successfully.');
         navigate('/login');
       } else {
         const customerData = {
@@ -99,7 +99,11 @@ export const Register = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
+<<<<<<< HEAD
+            className="text-4xl font-serif text-textPrimary mb-2"
+=======
             className="text-4xl font-serif text-slate-900 mb-2"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Join Event Nest
           </motion.h1>
@@ -107,7 +111,11 @@ export const Register = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
+<<<<<<< HEAD
+            className="text-textPrimary/60"
+=======
             className="text-slate-600"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Create an account to start planning or selling.
           </motion.p>
@@ -130,8 +138,13 @@ export const Register = () => {
               className={cn(
                 "p-4 rounded-xl border flex flex-col items-center text-center transition-all",
                 accountType === 'customer' 
+<<<<<<< HEAD
+                  ? "bg-primary/20 border-primary text-textPrimary" 
+                  : "bg-surface border-white/10 text-textPrimary/50 hover:bg-white/5"
+=======
                   ? "bg-primary/20 border-primary text-slate-900" 
                   : "bg-surface border-slate-300 text-slate-500 hover:bg-slate-100"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               )}
             >
               <User className="w-6 h-6 mb-2" />
@@ -143,8 +156,13 @@ export const Register = () => {
               className={cn(
                 "p-4 rounded-xl border flex flex-col items-center text-center transition-all",
                 accountType === 'vendor' 
+<<<<<<< HEAD
+                  ? "bg-accent/20 border-accent text-textPrimary" 
+                  : "bg-surface border-white/10 text-textPrimary/50 hover:bg-white/5"
+=======
                   ? "bg-accent/20 border-accent text-slate-900" 
                   : "bg-surface border-slate-300 text-slate-500 hover:bg-slate-100"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               )}
             >
               <Store className="w-6 h-6 mb-2" />
@@ -157,7 +175,11 @@ export const Register = () => {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-2">
+<<<<<<< HEAD
+                <label className="text-sm font-medium text-textPrimary/80 block">First Name</label>
+=======
                 <label className="text-sm font-medium text-slate-800 block">First Name</label>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <div className="relative">
                   <User className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input 
@@ -172,7 +194,11 @@ export const Register = () => {
                 </div>
               </div>
               <div className="space-y-2">
+<<<<<<< HEAD
+                <label className="text-sm font-medium text-textPrimary/80 block">Last Name</label>
+=======
                 <label className="text-sm font-medium text-slate-800 block">Last Name</label>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <input 
                   type="text" 
                   name="lastName"
@@ -186,7 +212,11 @@ export const Register = () => {
             </div>
 
             <div className="space-y-2">
+<<<<<<< HEAD
+              <label className="text-sm font-medium text-textPrimary/80 block">Email Address</label>
+=======
               <label className="text-sm font-medium text-slate-800 block">Email Address</label>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               <div className="relative">
                 <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input 
@@ -202,7 +232,11 @@ export const Register = () => {
             </div>
 
             <div className="space-y-2">
+<<<<<<< HEAD
+              <label className="text-sm font-medium text-textPrimary/80 block">Password</label>
+=======
               <label className="text-sm font-medium text-slate-800 block">Password</label>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               <div className="relative">
                 <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input 
@@ -229,7 +263,11 @@ export const Register = () => {
                 <div className="h-1 flex-1 bg-green-500 rounded-full" />
                 <div className="h-1 flex-1 bg-surface border border-slate-300 rounded-full" />
               </div>
+<<<<<<< HEAD
+              <p className="text-[10px] text-textPrimary/40">Must be at least 8 characters long</p>
+=======
               <p className="text-[10px] text-slate-500">Must be at least 8 characters long</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
 
             {/* Terms checkbox */}
@@ -242,8 +280,13 @@ export const Register = () => {
                   className="w-4 h-4 rounded bg-surface border-slate-300 text-primary focus:ring-primary focus:ring-offset-surface"
                 />
               </div>
+<<<<<<< HEAD
+              <label htmlFor="terms" className="text-xs text-textPrimary/60 leading-tight">
+                By creating an account, you agree to Nexora's <a href="/terms" className="text-primary hover:underline">Terms of Service</a> and <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>.
+=======
               <label htmlFor="terms" className="text-xs text-slate-600 leading-tight">
                 By creating an account, you agree to Event Nest's <a href="/terms" className="text-primary hover:underline">Terms of Service</a> and <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>.
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </label>
             </div>
 
@@ -257,9 +300,15 @@ export const Register = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
+<<<<<<< HEAD
+          className="text-center mt-8 text-textPrimary/50 text-sm"
+        >
+          Already have an account? <Link to="/login" className="text-textPrimary hover:text-primary font-bold transition-colors underline underline-offset-4">Log in</Link>
+=======
           className="text-center mt-8 text-slate-500 text-sm"
         >
           Already have an account? <Link to="/login" className="text-slate-900 hover:text-primary font-bold transition-colors underline underline-offset-4">Log in</Link>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </motion.p>
 
       </motion.div>

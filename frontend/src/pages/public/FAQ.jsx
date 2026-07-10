@@ -16,7 +16,7 @@ const FAQS = [
   {
     category: 'Customers',
     questions: [
-      { q: "How do I book a vendor?", a: "Browse the Vendor Directory, review their portfolio and packages, and click 'Book Vendor'. You will submit an event brief and wait for their approval." },
+      { q: "How do I book a vendor?", a: "Browse the Vendor Directory, review their portfolio and packages, and click 'Book Vendor'. You will submit an event brief and the vendor will respond to your booking request." },
       { q: "Are my payments secure?", a: "Yes, all payments are processed through industry-standard encrypted gateways. Funds are held securely until services are delivered according to our platform policy." },
       { q: "Can I manage multiple events?", a: "Yes, your Customer Dashboard allows you to create and manage multiple concurrent events, each with their own timelines, vendors, and budgets." },
     ]
@@ -52,7 +52,11 @@ export const FAQ = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
+<<<<<<< HEAD
+            className="text-4xl lg:text-5xl font-bold text-textPrimary mb-6"
+=======
             className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Frequently Asked <span className="text-gradient">Questions</span>
           </motion.h1>
@@ -60,7 +64,11 @@ export const FAQ = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
+<<<<<<< HEAD
+            className="text-textPrimary/60 text-lg max-w-2xl mx-auto"
+=======
             className="text-slate-600 text-lg max-w-2xl mx-auto"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Everything you need to know about the product and billing. Can't find the answer you're looking for? Please chat to our friendly team.
           </motion.p>
@@ -78,8 +86,13 @@ export const FAQ = () => {
               className={cn(
                 "px-6 py-3 rounded-xl font-medium transition-all duration-300 border",
                 activeCategory === cat.category 
+<<<<<<< HEAD
+                  ? "bg-primary/20 border-primary text-textPrimary shadow-[0_0_20px_rgba(91,124,250,0.2)]" 
+                  : "bg-surface border-white/10 text-textPrimary/60 hover:bg-white/5"
+=======
                   ? "bg-primary/20 border-primary text-slate-900 shadow-[0_0_20px_rgba(91,124,250,0.2)]" 
                   : "bg-surface border-slate-300 text-slate-600 hover:bg-slate-100"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               )}
             >
               {cat.category}
@@ -109,8 +122,13 @@ export const FAQ = () => {
                     onClick={() => toggleQuestion(i)}
                     className="w-full flex items-center justify-between p-6 text-left"
                   >
+<<<<<<< HEAD
+                    <h3 className="text-lg font-medium text-textPrimary pr-8">{faq.q}</h3>
+                    <ChevronDown className={cn("w-5 h-5 text-textPrimary/40 shrink-0 transition-transform duration-300", openIndex === i && "rotate-180 text-primary")} />
+=======
                     <h3 className="text-lg font-medium text-slate-900 pr-8">{faq.q}</h3>
                     <ChevronDown className={cn("w-5 h-5 text-slate-500 shrink-0 transition-transform duration-300", openIndex === i && "rotate-180 text-primary")} />
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </button>
                   
                   <AnimatePresence>
@@ -121,7 +139,11 @@ export const FAQ = () => {
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                       >
+<<<<<<< HEAD
+                        <div className="p-6 pt-0 text-textPrimary/60 leading-relaxed border-t border-white/5 mt-2">
+=======
                         <div className="p-6 pt-0 text-slate-600 leading-relaxed border-t border-slate-200 mt-2">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                           {faq.a}
                         </div>
                       </motion.div>
@@ -138,8 +160,13 @@ export const FAQ = () => {
           <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-6">
             <MessageCircle className="w-8 h-8 text-primary" />
           </div>
+<<<<<<< HEAD
+          <h3 className="text-2xl font-bold text-textPrimary mb-2">Still have questions?</h3>
+          <p className="text-textPrimary/60 mb-8 max-w-md mx-auto">
+=======
           <h3 className="text-2xl font-bold text-slate-900 mb-2">Still have questions?</h3>
           <p className="text-slate-600 mb-8 max-w-md mx-auto">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             Can't find the answer you're looking for? Please chat to our friendly team.
           </p>
           <Link to="/contact-us">

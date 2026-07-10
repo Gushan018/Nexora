@@ -70,7 +70,11 @@ export const Marketplace = ({ isDashboard = false }) => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
+<<<<<<< HEAD
+            className="text-4xl lg:text-5xl font-bold text-textPrimary mb-4"
+=======
             className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Event <span className="text-gradient">Marketplace</span>
           </motion.h1>
@@ -78,7 +82,11 @@ export const Marketplace = ({ isDashboard = false }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
+<<<<<<< HEAD
+            className="text-textPrimary/60 text-lg max-w-2xl"
+=======
             className="text-slate-600 text-lg max-w-2xl"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Discover and purchase premium supplies, decor, and equipment for your next unforgettable event.
           </motion.p>
@@ -128,7 +136,11 @@ export const Marketplace = ({ isDashboard = false }) => {
                   "h-12 px-6 rounded-xl font-medium transition-all whitespace-nowrap border shrink-0",
                   activeCategory === cat 
                     ? "bg-primary/20 border-primary text-primary" 
+<<<<<<< HEAD
+                    : "bg-surface/50 border-white/5 text-textPrimary/60 hover:bg-surface hover:text-textPrimary"
+=======
                     : "bg-surface border-slate-200 text-slate-600 hover:border-primary/50 hover:text-primary"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 )}
               >
                 {cat}
@@ -214,11 +226,19 @@ export const Marketplace = ({ isDashboard = false }) => {
 
         {filteredProducts.length === 0 && (
           <div className="py-20 text-center">
+<<<<<<< HEAD
+            <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Search className="w-10 h-10 text-textPrimary/40" />
+            </div>
+            <h3 className="text-xl font-semibold text-textPrimary mb-2">No products found</h3>
+            <p className="text-textPrimary/60">Try adjusting your search or filters to find what you're looking for.</p>
+=======
             <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <Search className="w-10 h-10 text-slate-500" />
             </div>
             <h3 className="text-xl font-semibold text-slate-900 mb-2">No products found</h3>
             <p className="text-slate-600">Try adjusting your search or filters to find what you're looking for.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </div>
         )}
 
@@ -329,19 +349,32 @@ const ProductCard = ({ product, wishlistItems = [] }) => {
         <div className="flex items-start justify-between mb-2">
           <div>
             <p className="text-xs text-primary mb-1 font-medium">{product.vendor?.businessName}</p>
+<<<<<<< HEAD
+            <h3 className="text-lg font-semibold text-textPrimary leading-tight mb-2 group-hover:text-primary transition-colors">
+=======
             <h3 className="text-lg font-semibold text-slate-900 leading-tight mb-2 group-hover:text-primary transition-colors">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               {product.productName}
             </h3>
           </div>
           <div className="text-right">
+<<<<<<< HEAD
+            <span className="text-xl font-bold text-textPrimary">LKR {Number(product.price).toFixed(2)}</span>
+=======
             <span className="text-xl font-bold text-slate-900">LKR {Number(product.price).toFixed(2)}</span>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </div>
         </div>
         
         <div className="flex items-center gap-2 text-sm">
           <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+<<<<<<< HEAD
+          <span className="text-textPrimary font-medium">4.8</span>
+          <span className="text-textPrimary/40">(12 reviews)</span>
+=======
           <span className="text-slate-900 font-medium">4.8</span>
           <span className="text-slate-500">(12 reviews)</span>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
       </div>
     </div>

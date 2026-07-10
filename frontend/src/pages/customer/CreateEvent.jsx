@@ -22,8 +22,8 @@ export const CreateEvent = () => {
       <div className="container mx-auto px-4 sm:px-6 max-w-3xl">
         
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-white mb-4">Let's plan something amazing.</h1>
-          <p className="text-white/60">Tell us a bit about your event, and we'll setup your custom dashboard.</p>
+          <h1 className="text-4xl font-bold text-textPrimary mb-4">Let's plan something amazing.</h1>
+          <p className="text-textPrimary/60">Tell us a bit about your event, and we'll setup your custom dashboard.</p>
         </div>
 
         {/* Progress Tracker */}
@@ -32,7 +32,7 @@ export const CreateEvent = () => {
             <React.Fragment key={num}>
               <div className={cn(
                 "w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors",
-                step >= num ? "bg-primary text-white" : "bg-surface border border-white/10 text-white/40"
+                step >= num ? "bg-primary text-textPrimary" : "bg-surface border border-white/10 text-textPrimary/40"
               )}>
                 {step > num ? <Check className="w-5 h-5"/> : num}
               </div>
@@ -71,8 +71,8 @@ export const CreateEvent = () => {
                       {type.icon}
                     </div>
                     <div>
-                      <h3 className="font-bold text-white text-lg">{type.name}</h3>
-                      <p className="text-sm text-white/60">{type.desc}</p>
+                      <h3 className="font-bold text-textPrimary text-lg">{type.name}</h3>
+                      <p className="text-sm text-textPrimary/60">{type.desc}</p>
                     </div>
                   </button>
                 ))}
@@ -99,32 +99,32 @@ export const CreateEvent = () => {
               <CardContent className="space-y-6 p-8 pt-0">
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-white/80">Event Name</label>
-                  <input type="text" placeholder="e.g. Sarah & John's Wedding" className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors text-lg" />
+                  <label className="text-sm font-medium text-textPrimary/80">Event Name</label>
+                  <input type="text" placeholder="e.g. Sarah & John's Wedding" className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary transition-colors text-lg" />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-white/80">Date</label>
+                    <label className="text-sm font-medium text-textPrimary/80">Date</label>
                     <div className="relative">
-                      <Calendar className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
-                      <input type="date" className="w-full bg-surface/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-primary transition-colors [color-scheme:dark]" />
+                      <Calendar className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-textPrimary/40" />
+                      <input type="date" className="w-full bg-surface/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-textPrimary focus:outline-none focus:border-primary transition-colors [color-scheme:dark]" />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-white/80">Estimated Guests</label>
+                    <label className="text-sm font-medium text-textPrimary/80">Estimated Guests</label>
                     <div className="relative">
-                      <Users className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
-                      <input type="number" placeholder="150" className="w-full bg-surface/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-primary transition-colors" />
+                      <Users className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-textPrimary/40" />
+                      <input type="number" placeholder="150" className="w-full bg-surface/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-textPrimary focus:outline-none focus:border-primary transition-colors" />
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-white/80">City / Location</label>
+                  <label className="text-sm font-medium text-textPrimary/80">City / Location</label>
                   <div className="relative">
-                    <MapPin className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
-                    <input type="text" placeholder="e.g. Colombo, Sri Lanka" className="w-full bg-surface/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-primary transition-colors" />
+                    <MapPin className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-textPrimary/40" />
+                    <input type="text" placeholder="e.g. Colombo, Sri Lanka" className="w-full bg-surface/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-textPrimary focus:outline-none focus:border-primary transition-colors" />
                   </div>
                 </div>
 
@@ -145,10 +145,10 @@ export const CreateEvent = () => {
               <CardContent className="space-y-6 p-8 pt-0">
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-white/80">Total Estimated Budget (LKR)</label>
+                  <label className="text-sm font-medium text-textPrimary/80">Total Estimated Budget (LKR)</label>
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 font-bold">LKR</span>
-                    <input type="number" placeholder="15000" className="w-full bg-surface/50 border border-white/10 rounded-xl pl-14 pr-4 py-4 text-2xl font-bold text-white focus:outline-none focus:border-primary transition-colors" />
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-textPrimary/40 font-bold">LKR</span>
+                    <input type="number" placeholder="15000" className="w-full bg-surface/50 border border-white/10 rounded-xl pl-14 pr-4 py-4 text-2xl font-bold text-textPrimary focus:outline-none focus:border-primary transition-colors" />
                   </div>
                 </div>
 

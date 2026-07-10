@@ -11,7 +11,11 @@ export const AboutUs = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
+<<<<<<< HEAD
+            className="text-4xl lg:text-5xl font-bold text-textPrimary mb-6"
+=======
             className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Revolutionizing <span className="text-gradient">Event Management</span>
           </motion.h1>
@@ -19,7 +23,11 @@ export const AboutUs = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
+<<<<<<< HEAD
+            className="text-textPrimary/60 text-lg max-w-2xl mx-auto"
+=======
             className="text-slate-600 text-lg max-w-2xl mx-auto"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Event Nest is Sri Lanka's first unified marketplace platform connecting premium event vendors, product sellers, and customers in one seamless ecosystem.
           </motion.p>
@@ -43,25 +51,43 @@ export const AboutUs = () => {
             transition={{ delay: 0.3 }}
             className="space-y-6"
           >
+<<<<<<< HEAD
+            <h3 className="text-3xl font-bold text-textPrimary">Our Mission</h3>
+            <p className="text-textPrimary/70 leading-relaxed">
+              We started Nexora because we saw how fragmented and stressful event planning had become. Our mission is to eliminate the chaos by bringing transparency, premium design, and verified professionals into a single, unified marketplace.
+=======
             <h3 className="text-3xl font-bold text-slate-900">Our Mission</h3>
             <p className="text-slate-700 leading-relaxed">
               We started Event Nest because we saw how fragmented and stressful event planning had become. Our mission is to eliminate the chaos by bringing transparency, premium design, and verified professionals into a single, unified marketplace.
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </p>
             <div className="grid grid-cols-2 gap-6 pt-6">
               <div>
                 <h4 className="text-4xl font-extrabold text-primary mb-2">5K+</h4>
+<<<<<<< HEAD
+                <p className="text-textPrimary/60 text-sm">Events Managed</p>
+              </div>
+              <div>
+                <h4 className="text-4xl font-extrabold text-secondary mb-2">2K+</h4>
+                <p className="text-textPrimary/60 text-sm">Verified Vendors</p>
+=======
                 <p className="text-slate-600 text-sm">Events Managed</p>
               </div>
               <div>
                 <h4 className="text-4xl font-extrabold text-secondary mb-2">2K+</h4>
                 <p className="text-slate-600 text-sm">Verified Vendors</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </div>
           </motion.div>
         </div>
 
         <div className="text-center mb-16">
+<<<<<<< HEAD
+          <h2 className="text-3xl font-bold text-textPrimary mb-4">Core Values</h2>
+=======
           <h2 className="text-3xl font-bold text-slate-900 mb-4">Core Values</h2>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -81,8 +107,13 @@ export const AboutUs = () => {
               <div className="w-16 h-16 mx-auto bg-surface border border-slate-300 rounded-2xl flex items-center justify-center mb-6">
                 {val.icon}
               </div>
+<<<<<<< HEAD
+              <h4 className="text-xl font-bold text-textPrimary mb-3">{val.title}</h4>
+              <p className="text-textPrimary/60 text-sm">{val.desc}</p>
+=======
               <h4 className="text-xl font-bold text-slate-900 mb-3">{val.title}</h4>
               <p className="text-slate-600 text-sm">{val.desc}</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </motion.div>
           ))}
         </div>

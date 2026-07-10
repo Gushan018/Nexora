@@ -1,6 +1,56 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
+/* ═══════════════════════════════════════════════════
+   LIGHT MODE (default)
+   ═══════════════════════════════════════════════════ */
+:root {
+  --color-primary: 212 175 55;
+  --color-primary-hover: 197 160 89;
+  --color-secondary: 241 245 249;
+  --color-accent: 229 193 88;
+  --color-background: 248 250 252;
+  --color-surface: 255 255 255;
+  --color-card: 255 255 255;
+  --color-text-primary: 15 23 42;
+  --color-muted: 71 85 105;
+  --color-border: 226 232 240;
+  --color-success: 16 185 129;
+  --color-warning: 245 158 11;
+  --color-error: 239 68 68;
+}
+
+/* ═══════════════════════════════════════════════════
+   DARK MODE (current colors preserved)
+   ═══════════════════════════════════════════════════ */
+.dark {
+  --color-secondary: 28 35 51;
+  --color-background: 19 26 38;
+  --color-surface: 28 35 51;
+  --color-card: 28 35 51;
+  --color-text-primary: 248 250 252;
+  --color-muted: 148 163 184;
+  --color-border: 45 55 72;
+  --color-success: 16 185 129;
+  --color-warning: 245 158 11;
+  --color-error: 239 68 68;
+}
+
+/* ═══════════════════════════════════════════════════
+   Theme transition guard — only active during toggle
+   ═══════════════════════════════════════════════════ */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.3s ease,
+              border-color 0.3s ease,
+              color 0.3s ease,
+              fill 0.3s ease,
+              stroke 0.3s ease,
+              box-shadow 0.3s ease !important;
+}
+
 @layer base {
   :root {
     --color-background: #F8FAFC;
@@ -46,7 +96,12 @@
   }
 
   body {
+<<<<<<< HEAD
+    background-color: rgb(var(--color-background));
+    color: rgb(var(--color-text-primary));
+=======
     @apply bg-light-background dark:bg-background text-light-textPrimary dark:text-textPrimary;
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
@@ -54,11 +109,19 @@
 
 @layer utilities {
   .glass {
+<<<<<<< HEAD
+    @apply bg-surface/40 backdrop-blur-md border border-border/20;
+  }
+  
+  .glass-card {
+    @apply bg-card/60 backdrop-blur-lg border border-border/10 shadow-xl;
+=======
     @apply bg-light-surface/30 dark:bg-surface/40 backdrop-blur-md border border-gray-300 dark:border-white/10;
   }
   
   .glass-card {
     @apply bg-white/50 dark:bg-card/60 backdrop-blur-lg border border-gray-200 dark:border-white/5 shadow-lg;
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
   }
 
   .text-gradient {
@@ -66,15 +129,33 @@
     background-clip: text;
     color: transparent;
   }
+
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
-/* Custom Scrollbar for a premium look */
+/* ═══════════════════════════════════════════════════
+   Theme-aware custom scrollbar
+   ═══════════════════════════════════════════════════ */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
+<<<<<<< HEAD
+  background: rgb(var(--color-background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-border));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--color-muted));
+=======
   @apply bg-light-background dark:bg-background;
 }
 
@@ -101,4 +182,5 @@
     left: 0;
     width: 100%;
   }
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 }

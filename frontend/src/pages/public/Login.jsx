@@ -67,7 +67,11 @@ export const Login = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
+<<<<<<< HEAD
+            className="text-4xl font-serif text-textPrimary mb-2"
+=======
             className="text-4xl font-serif text-slate-900 mb-2"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Welcome back
           </motion.h1>
@@ -75,7 +79,11 @@ export const Login = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
+<<<<<<< HEAD
+            className="text-textPrimary/60"
+=======
             className="text-slate-600"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           >
             Log in to your account to continue.
           </motion.p>
@@ -93,7 +101,11 @@ export const Login = () => {
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
+<<<<<<< HEAD
+              <label className="text-sm font-medium text-textPrimary/80 block">Email Address</label>
+=======
               <label className="text-sm font-medium text-slate-800 block">Email Address</label>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               <div className="relative">
                 <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input 
@@ -109,7 +121,11 @@ export const Login = () => {
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
+<<<<<<< HEAD
+                <label className="text-sm font-medium text-textPrimary/80 block">Password</label>
+=======
                 <label className="text-sm font-medium text-slate-800 block">Password</label>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <Link to="/forgot-password" className="text-xs text-primary hover:text-primary-light transition-colors">
                   Forgot password?
                 </Link>
@@ -144,9 +160,15 @@ export const Login = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
+<<<<<<< HEAD
+          className="text-center mt-8 text-textPrimary/50 text-sm"
+        >
+          Don't have an account? <Link to="/register" className="text-textPrimary hover:text-primary font-bold transition-colors underline underline-offset-4">Sign up</Link>
+=======
           className="text-center mt-8 text-slate-500 text-sm"
         >
           Don't have an account? <Link to="/register" className="text-slate-900 hover:text-primary font-bold transition-colors underline underline-offset-4">Sign up</Link>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </motion.p>
 
       </motion.div>

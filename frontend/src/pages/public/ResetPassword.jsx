@@ -29,8 +29,13 @@ export const ResetPassword = () => {
         
         <div className="text-center mb-8">
 
+<<<<<<< HEAD
+          <h1 className="text-2xl font-bold text-textPrimary mb-2">Create new password</h1>
+          <p className="text-textPrimary/60 max-w-sm mx-auto">Your new password must be different from previous used passwords.</p>
+=======
           <h1 className="text-2xl font-bold text-slate-900 mb-2">Create new password</h1>
           <p className="text-slate-600 max-w-sm mx-auto">Your new password must be different from previous used passwords.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
 
         <div className="bg-surface/50 border border-slate-300 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
@@ -40,7 +45,11 @@ export const ResetPassword = () => {
             <form onSubmit={handleSubmit} className="space-y-5">
               
               <div className="space-y-2">
+<<<<<<< HEAD
+                <label className="text-sm font-medium text-textPrimary/80 block">New Password</label>
+=======
                 <label className="text-sm font-medium text-slate-800 block">New Password</label>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <div className="relative">
                   <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input 
@@ -59,7 +68,11 @@ export const ResetPassword = () => {
               </div>
 
               <div className="space-y-2">
+<<<<<<< HEAD
+                <label className="text-sm font-medium text-textPrimary/80 block">Confirm Password</label>
+=======
                 <label className="text-sm font-medium text-slate-800 block">Confirm Password</label>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <div className="relative">
                   <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input 
@@ -84,8 +97,13 @@ export const ResetPassword = () => {
               <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4 border border-green-500/20">
                 <CheckCircle2 className="w-8 h-8 text-green-400" />
               </div>
+<<<<<<< HEAD
+              <h3 className="text-xl font-bold text-textPrimary mb-2">Password Reset</h3>
+              <p className="text-sm text-textPrimary/60 mb-6">
+=======
               <h3 className="text-xl font-bold text-slate-900 mb-2">Password Reset</h3>
               <p className="text-sm text-slate-600 mb-6">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 Your password has been successfully reset. Redirecting you to login...
               </p>
             </motion.div>

@@ -1,20 +1,175 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, ArrowLeft, Image as ImageIcon, MapPin, DollarSign, Upload, Info } from 'lucide-react';
+import { Plus, ArrowLeft, Image as ImageIcon, MapPin, DollarSign, Upload, Info, X, Check } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '../../utils/cn';
+import { api } from '../../utils/api';
 
 export const CreateService = () => {
-  const [step, setStep] = useState(1);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [coverImage, setCoverImage] = useState(null);
+  const [coverImagePreview, setCoverImagePreview] = useState(null);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [galleryPreviews, setGalleryPreviews] = useState([]);
+
+  const [formData, setFormData] = useState({
+    serviceName: '',
+    category: '',
+    description: '',
+    price: '',
+    pricingModel: 'fixed',
+    serviceArea: ''
+  });
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await api.get('/vendors/categories');
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleCoverImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setCoverImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCoverImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleGalleryImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    const newGalleryImages = [...galleryImages, ...files].slice(0, 10);
+    setGalleryImages(newGalleryImages);
+
+    newGalleryImages.forEach((file, index) => {
+      if (!galleryPreviews[index]) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setGalleryPreviews(prev => {
+            const updated = [...prev];
+            updated[index] = reader.result;
+            return updated;
+          });
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  };
+
+  const removeGalleryImage = (index) => {
+    setGalleryImages(prev => prev.filter((_, i) => i !== index));
+    setGalleryPreviews(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const uploadImage = async (file) => {
+    const formDataImg = new FormData();
+    formDataImg.append('file', file);
+
+    try {
+      const response = await api.post('/upload', formDataImg, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      return response.data.imageUrl || response.data.url;
+    } catch (error) {
+      console.error('Image upload failed:', error);
+      return null;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    if (!formData.serviceName.trim()) {
+      setError('Service name is required');
+      return;
+    }
+
+    if (!formData.price || parseFloat(formData.price) <= 0) {
+      setError('Valid price is required');
+      return;
+    }
+
+    if (!formData.category) {
+      setError('Category is required');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      let coverImageUrl = null;
+      if (coverImage) {
+        coverImageUrl = await uploadImage(coverImage);
+      }
+
+      const serviceData = {
+        serviceName: formData.serviceName.trim(),
+        price: parseFloat(formData.price),
+        description: formData.description.trim(),
+        categoryId: parseInt(formData.category),
+        pricingModel: formData.pricingModel,
+        serviceArea: formData.serviceArea.trim(),
+        imageUrl: coverImageUrl
+      };
+
+      const response = await api.post('/vendors/services', serviceData);
+
+      setSuccess('Service created successfully!');
+      setTimeout(() => {
+        navigate('/vendor/service-listing');
+      }, 1500);
+    } catch (err) {
+      console.error('Create service error:', err);
+      const serverMsg = err.response?.data?.message || err.response?.data?.error;
+      setError(serverMsg || err.message || 'An error occurred while creating the service. Please check the console for details.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-12">
-      
+
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
+<<<<<<< HEAD
+          <Link to="/vendor/service-listing" className="text-sm text-textPrimary/60 hover:text-textPrimary flex items-center gap-1 w-fit mb-2 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Back to Services
+          </Link>
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
+            Create New Service
+          </h1>
+          <p className="text-textPrimary/60">Define a new service offering to showcase to customers.</p>
+=======
           <Link to="/vendor/service-listing" className="text-sm text-slate-600 hover:text-slate-900 flex items-center gap-1 w-fit mb-2 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to Services
           </Link>
@@ -26,13 +181,44 @@ export const CreateService = () => {
         <div className="flex gap-2">
           <Button variant="outline">Save Draft</Button>
           <Button leftIcon={<Plus className="w-4 h-4"/>}>Publish Service</Button>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
       </div>
 
+      {error && (
+        <motion.div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-red-400 flex items-center gap-2">
+          <X className="w-4 h-4" />
+          {error}
+        </motion.div>
+      )}
+
+      {success && (
+        <motion.div className="bg-green-500/10 border border-green-500/30 rounded-xl px-4 py-3 text-green-400 flex items-center gap-2">
+          <Check className="w-4 h-4" />
+          {success}
+        </motion.div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-6">
-        
+
         {/* Main Form */}
         <div className="lg:col-span-2 space-y-6">
+<<<<<<< HEAD
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Basic Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+
+                <Input
+                  label="Service Title"
+                  placeholder="e.g. Premium Wedding Videography"
+                  name="serviceName"
+                  value={formData.serviceName}
+                  onChange={handleInputChange}
+                  required
+=======
           <Card>
             <CardHeader>
               <CardTitle>Basic Information</CardTitle>
@@ -58,9 +244,26 @@ export const CreateService = () => {
                   rows="6" 
                   placeholder="Describe what makes this service special..."
                   className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors resize-none"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 />
-              </div>
 
+<<<<<<< HEAD
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-textPrimary/90">Category *</label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
+                    required
+                  >
+                    <option value="">Select a category...</option>
+                    {categories.map(cat => (
+                      <option key={cat.categoryId} value={cat.categoryId}>
+                        {cat.categoryName}
+                      </option>
+                    ))}
+=======
             </CardContent>
           </Card>
 
@@ -110,10 +313,23 @@ export const CreateService = () => {
                     <option value="fixed">Fixed Package</option>
                     <option value="hourly">Hourly Rate</option>
                     <option value="custom">Custom Quote Required</option>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </select>
                 </div>
-              </div>
 
+<<<<<<< HEAD
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-textPrimary/90">Detailed Description</label>
+                  <textarea
+                    rows="6"
+                    placeholder="Describe what makes this service special..."
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                    className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                  />
+                </div>
+=======
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-800">Service Area (Locations)</label>
                 <div className="relative">
@@ -126,9 +342,144 @@ export const CreateService = () => {
                 </div>
                 <p className="text-xs text-slate-500 mt-1">Separate multiple locations with commas.</p>
               </div>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Media & Portfolio</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-textPrimary/90">Cover Photo</label>
+                  <label className="w-full h-48 rounded-xl border-2 border-dashed border-white/10 flex flex-col items-center justify-center hover:border-primary/50 hover:bg-surface/50 cursor-pointer transition-all group bg-surface/30">
+                    {coverImagePreview ? (
+                      <img src={coverImagePreview} alt="Cover" className="w-full h-full object-cover rounded-lg" />
+                    ) : (
+                      <>
+                        <Upload className="w-8 h-8 text-textPrimary/40 mb-3 group-hover:text-primary transition-colors" />
+                        <p className="text-sm text-textPrimary font-medium">Click to upload or drag and drop</p>
+                        <p className="text-xs text-textPrimary/40 mt-1">1920x1080px (16:9) recommended</p>
+                      </>
+                    )}
+                    <input
+                      type="file"
+                      onChange={handleCoverImageChange}
+                      accept="image/*"
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-textPrimary/90 flex justify-between">
+                    <span>Gallery Images</span>
+                    <span className="text-textPrimary/40">{galleryImages.length}/10</span>
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    {galleryPreviews.map((preview, i) => (
+                      <div key={i} className="relative aspect-square">
+                        <img src={preview} alt={`Gallery ${i}`} className="w-full h-full object-cover rounded-xl" />
+                        <button
+                          type="button"
+                          onClick={() => removeGalleryImage(i)}
+                          className="absolute -top-2 -right-2 bg-red-500 rounded-full p-1 text-textPrimary hover:bg-red-600"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                    {galleryImages.length < 10 && (
+                      <label className="aspect-square rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center hover:border-white/30 cursor-pointer bg-surface/30 transition-colors">
+                        <Plus className="w-6 h-6 text-textPrimary/20" />
+                        <input
+                          type="file"
+                          multiple
+                          onChange={handleGalleryImageChange}
+                          accept="image/*"
+                          className="hidden"
+                        />
+                      </label>
+                    )}
+                  </div>
+                </div>
+
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Service Settings</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <Input
+                    label="Starting Price (Base Rate) *"
+                    leftIcon={<DollarSign className="w-4 h-4"/>}
+                    placeholder="1500"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-textPrimary/90">Pricing Model</label>
+                    <select
+                      name="pricingModel"
+                      value={formData.pricingModel}
+                      onChange={handleInputChange}
+                      className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
+                    >
+                      <option value="fixed">Fixed Package</option>
+                      <option value="hourly">Hourly Rate</option>
+                      <option value="custom">Custom Quote Required</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-textPrimary/90">Service Area (Locations)</label>
+                  <div className="relative">
+                    <MapPin className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
+                    <input
+                      type="text"
+                      name="serviceArea"
+                      value={formData.serviceArea}
+                      onChange={handleInputChange}
+                      placeholder="e.g. Los Angeles, San Diego, Orange County"
+                      className="w-full bg-surface/50 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
+                    />
+                  </div>
+                  <p className="text-xs text-textPrimary/40 mt-1">Separate multiple locations with commas.</p>
+                </div>
+
+              </CardContent>
+            </Card>
+
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => navigate('/vendor/service-listing')}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                leftIcon={<Plus className="w-4 h-4"/>}
+                disabled={loading}
+              >
+                {loading ? 'Creating...' : 'Publish Service'}
+              </Button>
+            </div>
+          </form>
         </div>
 
         {/* Sidebar Help/Tips */}
@@ -140,10 +491,17 @@ export const CreateService = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+<<<<<<< HEAD
+              <div className="space-y-2 text-sm text-textPrimary/80 leading-relaxed">
+                <p><strong className="text-textPrimary">Use High-Quality Photos:</strong> Listings with at least 5 high-resolution photos receive 60% more inquiries.</p>
+                <p><strong className="text-textPrimary">Be Transparent with Pricing:</strong> Even if you require custom quotes, providing a realistic "Starting at" price helps filter qualified leads.</p>
+                <p><strong className="text-textPrimary">Write a Clear Description:</strong> Clearly state what is included in the base rate and what costs extra.</p>
+=======
               <div className="space-y-2 text-sm text-slate-800 leading-relaxed">
                 <p><strong className="text-slate-900">Use High-Quality Photos:</strong> Listings with at least 5 high-resolution photos receive 60% more inquiries.</p>
                 <p><strong className="text-slate-900">Be Transparent with Pricing:</strong> Even if you require custom quotes, providing a realistic "Starting at" price helps filter qualified leads.</p>
                 <p><strong className="text-slate-900">Write a Clear Description:</strong> Clearly state what is included in the base rate and what costs extra.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             </CardContent>
           </Card>

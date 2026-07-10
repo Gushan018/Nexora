@@ -16,11 +16,19 @@ export const PortfolioManagement = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
+<<<<<<< HEAD
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
+            <ImageIcon className="w-7 h-7 text-primary" />
+            Portfolio Showcase
+          </h1>
+          <p className="text-textPrimary/60">Manage your past work. High-quality portfolios increase booking rates by 40%.</p>
+=======
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <ImageIcon className="w-7 h-7 text-primary" />
             Portfolio Showcase
           </h1>
           <p className="text-slate-600">Manage your past work. High-quality portfolios increase booking rates by 40%.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <Button leftIcon={<Plus className="w-4 h-4"/>}>Add New Project</Button>
       </div>
@@ -33,8 +41,13 @@ export const PortfolioManagement = () => {
         <CardContent>
           <div className="space-y-3">
             {PORTFOLIO_ITEMS.map((item, i) => (
+<<<<<<< HEAD
+              <div key={item.id} className="flex items-center gap-4 p-3 rounded-xl border border-white/5 bg-surface/50 hover:bg-surface transition-colors group">
+                <button className="text-textPrimary/20 hover:text-textPrimary/60 cursor-grab active:cursor-grabbing px-2">
+=======
               <div key={item.id} className="flex items-center gap-4 p-3 rounded-xl border border-slate-200 bg-surface/50 hover:bg-surface transition-colors group">
                 <button className="text-slate-300 hover:text-slate-600 cursor-grab active:cursor-grabbing px-2">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   <GripVertical className="w-5 h-5" />
                 </button>
                 
@@ -48,6 +61,17 @@ export const PortfolioManagement = () => {
                 </div>
 
                 <div className="flex-1">
+<<<<<<< HEAD
+                  <h4 className="text-sm font-medium text-textPrimary">{item.title}</h4>
+                  <p className="text-xs text-textPrimary/50">{item.category}</p>
+                </div>
+
+                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button className="p-2 text-textPrimary/40 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Preview">
+                    <Eye className="w-4 h-4"/>
+                  </button>
+                  <button className="p-2 text-textPrimary/40 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" title="Delete">
+=======
                   <h4 className="text-sm font-medium text-slate-900">{item.title}</h4>
                   <p className="text-xs text-slate-500">{item.category}</p>
                 </div>
@@ -57,6 +81,7 @@ export const PortfolioManagement = () => {
                     <Eye className="w-4 h-4"/>
                   </button>
                   <button className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" title="Delete">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     <Trash2 className="w-4 h-4"/>
                   </button>
                 </div>
@@ -69,8 +94,13 @@ export const PortfolioManagement = () => {
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
               <Plus className="w-6 h-6 text-primary" />
             </div>
+<<<<<<< HEAD
+            <h4 className="text-textPrimary font-medium text-sm mb-1">Add another project</h4>
+            <p className="text-xs text-textPrimary/50">Upload high-res images to showcase your best work</p>
+=======
             <h4 className="text-slate-900 font-medium text-sm mb-1">Add another project</h4>
             <p className="text-xs text-slate-500">Upload high-res images to showcase your best work</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </div>
         </CardContent>
       </Card>

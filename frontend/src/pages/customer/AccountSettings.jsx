@@ -72,8 +72,13 @@ export const AccountSettings = () => {
     >
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
+<<<<<<< HEAD
+          <h1 className="text-3xl font-bold text-textPrimary mb-2">Account Settings</h1>
+          <p className="text-textPrimary/60 text-lg">Manage your personal information and preferences.</p>
+=======
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Account Settings</h1>
           <p className="text-slate-600 text-lg">Manage your personal information and preferences.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <Button 
           leftIcon={<Save className="w-4 h-4"/>} 
@@ -101,11 +106,19 @@ export const AccountSettings = () => {
                 </div>
               </div>
               <div className="absolute inset-0 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center border-4 border-transparent">
+<<<<<<< HEAD
+                <Camera className="w-8 h-8 text-textPrimary" />
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-textPrimary">{user?.name || 'User Name'}</h3>
+=======
                 <Camera className="w-8 h-8 text-slate-900" />
               </div>
             </div>
             <div>
               <h3 className="text-xl font-bold text-slate-900">{user?.name || 'User Name'}</h3>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               <p className="text-primary font-medium text-sm">{user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1) || 'Customer'}</p>
             </div>
           </CardContent>
@@ -123,19 +136,33 @@ export const AccountSettings = () => {
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
+<<<<<<< HEAD
+                <label className="text-sm font-medium text-textPrimary/80">First Name</label>
+                <input 
+                  type="text" 
+                  className="w-full bg-background/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
+=======
                 <label className="text-sm font-medium text-slate-800">First Name</label>
                 <input 
                   type="text" 
                   className="w-full bg-background/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   value={formFirst} 
                   onChange={(e) => setFormFirst(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
+<<<<<<< HEAD
+                <label className="text-sm font-medium text-textPrimary/80">Last Name</label>
+                <input 
+                  type="text" 
+                  className="w-full bg-background/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
+=======
                 <label className="text-sm font-medium text-slate-800">Last Name</label>
                 <input 
                   type="text" 
                   className="w-full bg-background/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   value={formLast} 
                   onChange={(e) => setFormLast(e.target.value)}
                 />
@@ -143,6 +170,15 @@ export const AccountSettings = () => {
             </div>
             
             <div className="space-y-2">
+<<<<<<< HEAD
+              <label className="text-sm font-medium text-textPrimary/80">Email Address</label>
+              <div className="relative">
+                <Mail className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-textPrimary/40" />
+                <input 
+                  type="email" 
+                  disabled
+                  className="w-full bg-background/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-textPrimary/50 cursor-not-allowed focus:outline-none transition-all" 
+=======
               <label className="text-sm font-medium text-slate-800">Email Address</label>
               <div className="relative">
                 <Mail className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
@@ -150,17 +186,26 @@ export const AccountSettings = () => {
                   type="email" 
                   disabled
                   className="w-full bg-background/50 border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-slate-500 cursor-not-allowed focus:outline-none transition-all" 
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   value={user?.email || ''} 
                 />
               </div>
             </div>
             
             <div className="space-y-2">
+<<<<<<< HEAD
+              <label className="text-sm font-medium text-textPrimary/80">Bio / Description</label>
+              <textarea 
+                rows="4" 
+                placeholder="Tell vendors a bit about yourself..."
+                className="w-full bg-background/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
+=======
               <label className="text-sm font-medium text-slate-800">Bio / Description</label>
               <textarea 
                 rows="4" 
                 placeholder="Tell vendors a bit about yourself..."
                 className="w-full bg-background/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               ></textarea>
             </div>
             
