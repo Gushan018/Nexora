@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Building2, Calendar, Package, DollarSign, ArrowUpRight, Users, CheckCircle2, Clock, Plus, Star, ShieldCheck } from 'lucide-react';
+import { Building2, Calendar, Package, DollarSign, CheckCircle2, Clock, Plus, Activity, MessageSquare, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { useAuth } from '../../context/AuthContext';
@@ -11,7 +11,7 @@ export const CompanyDashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const { data: vendorData, isLoading } = useQuery({
+  const { data: vendorData } = useQuery({
     queryKey: ['companyDashboardData'],
     queryFn: async () => {
       try {
@@ -50,7 +50,9 @@ export const CompanyDashboard = () => {
   const packagesList = Array.isArray(packagesData) ? packagesData : packagesData?.packages || [];
   const bookingsList = Array.isArray(bookingsData) ? bookingsData : bookingsData?.bookings || [];
 
-  const activeBookings = bookingsList.filter(b => b.status === 'ACCEPTED' || b.status === 'PENDING').length;
+  const totalPackages = packagesList.length;
+  const totalBookings = bookingsList.length;
+  const pendingRequests = bookingsList.filter(b => b.status === 'PENDING').length;
   const completedEvents = bookingsList.filter(b => b.status === 'COMPLETED').length;
   const totalRevenue = bookingsList.reduce((sum, b) => {
     const price = Number(b.package?.price || b.service?.price || 0);
@@ -58,148 +60,121 @@ export const CompanyDashboard = () => {
   }, 0);
 
   const stats = [
-    { title: 'Total Revenue', value: `LKR ${totalRevenue.toLocaleString()}`, note: 'Real-time event earnings', icon: <DollarSign className="w-5 h-5 text-emerald-400" />, color: 'bg-emerald-500/10 border-emerald-500/20' },
-    { title: 'Event Packages', value: packagesList.length, note: `${packagesList.filter(p => p.isApproved).length} published`, icon: <Package className="w-5 h-5 text-amber-400" />, color: 'bg-amber-500/10 border-amber-500/20' },
-    { title: 'Active Events', value: activeBookings, note: 'Weddings & Galas in progress', icon: <Calendar className="w-5 h-5 text-blue-400" />, color: 'bg-blue-500/10 border-blue-500/20' },
-    { title: 'Completed Galas', value: completedEvents, note: 'Successfully organized events', icon: <CheckCircle2 className="w-5 h-5 text-purple-400" />, color: 'bg-purple-500/10 border-purple-500/20' },
+    { title: 'Total Packages', value: totalPackages, badge: '+0%', icon: <Package className="w-5 h-5 text-amber-400" /> },
+    { title: 'Total Bookings', value: totalBookings, badge: '+0%', icon: <Calendar className="w-5 h-5 text-amber-400" /> },
+    { title: 'Pending Requests', value: pendingRequests, badge: '0', icon: <Clock className="w-5 h-5 text-amber-400" /> },
+    { title: 'Completed Events', value: completedEvents, badge: '+0%', icon: <CheckCircle2 className="w-5 h-5 text-amber-400" /> },
+    { title: 'Total Revenue', value: `Rs. ${totalRevenue.toLocaleString()}`, badge: '+0%', icon: <DollarSign className="w-5 h-5 text-amber-400" /> },
   ];
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 sm:px-0">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 rounded-full border border-amber-500/30">
-              Event Management Company
-            </span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-            <Building2 className="w-8 h-8 text-primary" />
-            {user?.businessName || vendorData?.businessName || 'Event Company Dashboard'}
-          </h1>
-          <p className="text-gray-600 dark:text-white/60">Organize full-service event packages, client proposals, sub-vendor allocations, and gala execution timelines.</p>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => navigate('/company/inquiries')}>Client Inquiries</Button>
-          <Button onClick={() => navigate('/company/package-management')} leftIcon={<Plus className="w-4 h-4" />}>
-            Create Event Package
-          </Button>
-        </div>
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-gray-200 dark:border-white/10 rounded-2xl p-6 sm:p-8">
+        <h1 className="text-3xl sm:text-4xl font-serif text-white mb-2">Dashboard</h1>
+        <p className="text-gray-400 text-sm sm:text-base">Manage your events and track performance</p>
       </div>
 
-      {/* Overview Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      {/* Top 5 KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {stats.map((stat, idx) => (
-          <Card key={idx} className={`border ${stat.color} bg-white dark:bg-surface`}>
-            <CardContent className="p-6">
+          <Card key={idx} className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
+            <CardContent className="p-5">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-sm font-medium text-gray-600 dark:text-white/60">{stat.title}</span>
-                <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-white/5 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
                   {stat.icon}
                 </div>
+                <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                  {stat.badge}
+                </span>
               </div>
-              <div className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
-              <p className="text-xs text-gray-500 dark:text-white/50 mt-2">{stat.note}</p>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</div>
+              <div className="text-xs font-medium text-gray-500 dark:text-white/60">{stat.title}</div>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      {/* Main Grid: Event Packages & Upcoming Execution Timeline */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Left 2 Cols: Published Event Packages */}
-        <div className="xl:col-span-2 space-y-6">
-          <Card className="border-gray-200 dark:border-white/5">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle className="flex items-center gap-2">
-                  <Package className="w-5 h-5 text-primary" />
-                  Full-Service Event Packages
-                </CardTitle>
-                <CardDescription>Weddings, Corporate Galas, Anniversaries, & Private Events</CardDescription>
-              </div>
-              <Button variant="outline" size="sm" onClick={() => navigate('/company/package-management')}>
-                View All ({packagesList.length})
-              </Button>
-            </CardHeader>
-            <CardContent className="p-6 pt-0 space-y-4">
-              {packagesList.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {packagesList.slice(0, 4).map((pkg) => (
-                    <div key={pkg.packageId || pkg.id} className="rounded-2xl border border-gray-200 dark:border-white/10 p-5 bg-gray-50 dark:bg-surface/80 hover:border-primary/50 transition-colors">
-                      <div className="flex justify-between items-start mb-3">
-                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-primary/20 text-primary border border-primary/30">
-                          {pkg.category || 'Event Package'}
-                        </span>
-                        <span className="text-lg font-bold text-primary">LKR {Number(pkg.price || 0).toLocaleString()}</span>
-                      </div>
-                      <h4 className="font-bold text-gray-900 dark:text-white text-base mb-2">{pkg.packageName}</h4>
-                      <p className="text-xs text-gray-600 dark:text-white/60 line-clamp-2 mb-4">{pkg.description || 'Full-service event coordination package.'}</p>
-                      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-white/50 pt-3 border-t border-gray-200 dark:border-white/5">
-                        <span>Max {pkg.maxGuests || 250} Guests</span>
-                        <span className="font-medium text-emerald-400 flex items-center gap-1">
-                          <ShieldCheck className="w-3.5 h-3.5" /> Approved
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12 border-2 border-dashed border-gray-200 dark:border-white/10 rounded-2xl">
-                  <Package className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <p className="font-bold text-gray-900 dark:text-white">No Event Packages Published</p>
-                  <p className="text-xs text-gray-500 dark:text-white/60 mt-1 mb-4">Create your first all-inclusive wedding or corporate event package.</p>
-                  <Button size="sm" onClick={() => navigate('/company/package-management')}>
-                    Create Package
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+      {/* Middle Section: Revenue Analytics & Upcoming Events */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
+        <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface flex flex-col justify-between min-h-[320px]">
+          <CardHeader>
+            <CardTitle className="text-lg font-serif">Revenue Analytics</CardTitle>
+            <CardDescription>Monthly revenue overview</CardDescription>
+          </CardHeader>
+          <CardContent className="flex-1 flex flex-col justify-end p-6 pt-0">
+            <div className="h-44 border-b border-l border-gray-300 dark:border-white/10 flex items-end justify-between px-4 pb-2 relative">
+              <span className="absolute top-2 left-2 text-[11px] text-gray-400">Rs.4</span>
+              <span className="absolute top-1/3 left-2 text-[11px] text-gray-400">Rs.2</span>
+              <span className="absolute bottom-2 left-2 text-[11px] text-gray-400">Rs.0</span>
+              <div className="w-full border-t-2 border-amber-400/80 my-auto"></div>
+            </div>
+            <div className="flex justify-between text-xs text-gray-500 dark:text-white/50 pt-2 px-2">
+              <span>Feb</span>
+              <span>Mar</span>
+              <span>Apr</span>
+              <span>May</span>
+              <span>Jun</span>
+              <span>Jul</span>
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* Right 1 Col: Event Timeline & Inquiries */}
-        <div className="space-y-6">
-          <Card className="border-gray-200 dark:border-white/5">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-amber-400" />
-                  Upcoming Event Schedule
-                </CardTitle>
-                <CardDescription>Confirmed Galas & Celebrations</CardDescription>
-              </div>
-              <Button variant="outline" size="sm" onClick={() => navigate('/company/calendar')}>
-                Full Calendar
-              </Button>
-            </CardHeader>
-            <CardContent className="p-6 pt-0 space-y-3">
-              {bookingsList.length > 0 ? (
-                bookingsList.slice(0, 3).map((b) => (
-                  <div key={b.bookingId} className="rounded-xl border border-gray-200 dark:border-white/5 p-4 bg-gray-50 dark:bg-surface/80">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-xs font-bold text-primary">BK-{b.bookingId}</span>
-                      <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">
-                        {b.status}
-                      </span>
-                    </div>
-                    <p className="font-semibold text-gray-900 dark:text-white text-sm">
-                      {b.package?.packageName || b.service?.serviceName || 'Custom Event'}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-white/50 mt-1">
-                      Client: {b.customer?.name || 'Client'} • {b.eventDate ? new Date(b.eventDate).toLocaleDateString() : 'Upcoming'}
-                    </p>
+        <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface min-h-[320px]">
+          <CardHeader>
+            <CardTitle className="text-lg font-serif">Upcoming Events</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6 pt-0">
+            {bookingsList.length > 0 ? (
+              <div className="space-y-3">
+                {bookingsList.slice(0, 3).map((b) => (
+                  <div key={b.bookingId} className="p-3 rounded-xl border border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-white/5">
+                    <p className="font-bold text-gray-900 dark:text-white text-sm">{b.package?.packageName || b.service?.serviceName || 'Custom Gala'}</p>
+                    <p className="text-xs text-gray-500 dark:text-white/50">{b.customer?.name} • {b.eventDate ? new Date(b.eventDate).toLocaleDateString() : 'Upcoming'}</p>
                   </div>
-                ))
-              ) : (
-                <div className="text-center py-8 text-xs text-gray-500 dark:text-white/50">
-                  No upcoming events scheduled.
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex h-48 items-center justify-center text-sm text-gray-500 dark:text-white/50">
+                No upcoming events
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Bottom Section: Recent Customer Activities & Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
+        <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface min-h-[260px]">
+          <CardHeader>
+            <CardTitle className="text-lg font-serif">Recent Customer Activities</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6 pt-0">
+            <div className="flex h-36 items-center justify-center text-sm text-gray-500 dark:text-white/50">
+              No recent activities
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface min-h-[260px]">
+          <CardHeader>
+            <CardTitle className="text-lg font-serif">Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6 pt-0 space-y-3">
+            <Button className="w-full justify-center bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-xl" onClick={() => navigate('/company/package-management')}>
+              Add New Package
+            </Button>
+            <Button variant="outline" className="w-full justify-center py-2.5 rounded-xl border-gray-300 dark:border-white/10" onClick={() => navigate('/vendor/booking-management')}>
+              View All Bookings
+            </Button>
+            <Button variant="outline" className="w-full justify-center py-2.5 rounded-xl border-gray-300 dark:border-white/10" onClick={() => navigate('/customer/chat-inbox')}>
+              Check Messages
+            </Button>
+            <Button variant="outline" className="w-full justify-center py-2.5 rounded-xl border-gray-300 dark:border-white/10" onClick={() => navigate('/vendor/vendor-booking-analytics')}>
+              Generate Report
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

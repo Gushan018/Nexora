@@ -117,12 +117,14 @@ export const DashboardLayout = ({ role = 'customer' }) => {
       case 'emc':
         return [
           { name: 'Dashboard', path: '/company/dashboard', icon: <LayoutDashboard /> },
-          { name: 'Event Packages', path: '/company/package-management', icon: <Package /> },
-          { name: 'Client Inquiries', path: '/company/inquiries', icon: <Briefcase /> },
-          { name: 'Event Calendar', path: '/vendor/vendor-booking-calendar', icon: <Calendar /> },
-          { name: 'Customer Reviews', path: '/vendor/customer-reviews', icon: <Star /> },
-          { name: 'Revenue Analytics', path: '/vendor/revenue-dashboard', icon: <DollarSign /> },
-          { name: 'Company Settings', path: '/vendor/vendor-settings', icon: <Settings /> },
+          { name: 'Company Profile', path: '/vendor/vendor-profile', icon: <Building2 /> },
+          { name: 'Package Management', path: '/company/package-management', icon: <Package /> },
+          { name: 'Booking Management', path: '/vendor/booking-management', icon: <Calendar /> },
+          { name: 'Messages', path: '/customer/chat-inbox', icon: <MessageSquare /> },
+          { name: 'Orders', path: '/company/inquiries', icon: <ShoppingCart /> },
+          { name: 'Payments', path: '/vendor/revenue-dashboard', icon: <DollarSign /> },
+          { name: 'Reports & Analytics', path: '/vendor/vendor-booking-analytics', icon: <Activity /> },
+          { name: 'Reviews & Ratings', path: '/vendor/customer-reviews', icon: <Star /> },
         ];
       case 'vendor':
         return [
