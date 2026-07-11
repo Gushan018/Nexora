@@ -29,6 +29,8 @@ export const Login = () => {
     if (result.success) {
       if (result.user.role === 'customer') {
         navigate('/customer/dashboard');
+      } else if (result.user.role === 'company' || result.user.role === 'emc' || result.user.vendorType === 'EVENT_COMPANY') {
+        navigate('/company/dashboard');
       } else if (result.user.role === 'seller') {
         navigate('/seller/dashboard');
       } else if (result.user.role === 'vendor') {

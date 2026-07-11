@@ -246,6 +246,8 @@ const loginUnified = async (req, res) => {
         let role = 'vendor';
         if (vendor.vendorType === 'RENTAL' || email.includes('seller')) {
           role = 'seller';
+        } else if (vendor.vendorType === 'EVENT_COMPANY') {
+          role = 'company';
         }
         const token = generateToken(vendor.vendorId, role);
         return res.status(200).json({

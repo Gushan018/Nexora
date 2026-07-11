@@ -20,7 +20,10 @@ export const DashboardLayout = ({ role = 'customer' }) => {
   const dropdownRef = useRef(null);
 
   // Define userRole at component scope
-  const userRole = user?.role || role;
+  let userRole = user?.role || role;
+  if (location.pathname.startsWith('/company') || location.pathname.startsWith('/emc') || role === 'company' || role === 'emc' || user?.vendorType === 'EVENT_COMPANY' || user?.role === 'company' || user?.role === 'emc') {
+    userRole = 'company';
+  }
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -92,6 +95,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
     return <div className="min-h-screen bg-light-background dark:bg-background flex items-center justify-center"><motion.div className="w-16 h-16 rounded-full border-4 border-gray-200 dark:border-white/10 border-t-primary animate-spin" /></div>;
   }
 
+
   const getLinks = () => {
     switch (userRole) {
       case 'admin':
@@ -108,6 +112,17 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           { name: 'Payments', path: '/admin/admin-payments-escrow', icon: <DollarSign /> },
           { name: 'Broadcasts', path: '/admin/admin-notification-management', icon: <Bell /> },
           { name: 'Settings', path: '/admin/system-settings', icon: <Settings /> },
+        ];
+      case 'company':
+      case 'emc':
+        return [
+          { name: 'Dashboard', path: '/company/dashboard', icon: <LayoutDashboard /> },
+          { name: 'Event Packages', path: '/company/package-management', icon: <Package /> },
+          { name: 'Client Inquiries', path: '/company/inquiries', icon: <Briefcase /> },
+          { name: 'Event Calendar', path: '/vendor/vendor-booking-calendar', icon: <Calendar /> },
+          { name: 'Customer Reviews', path: '/vendor/customer-reviews', icon: <Star /> },
+          { name: 'Revenue Analytics', path: '/vendor/revenue-dashboard', icon: <DollarSign /> },
+          { name: 'Company Settings', path: '/vendor/vendor-settings', icon: <Settings /> },
         ];
       case 'vendor':
         return [

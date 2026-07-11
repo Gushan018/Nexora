@@ -42,6 +42,9 @@ import { ReviewSubmission } from './pages/customer/ReviewSubmission';
 import { ChatInbox } from './pages/customer/ChatInbox';
 import { VendorChat } from './pages/customer/VendorChat';
 import { VendorDashboard } from './pages/vendor/VendorDashboard';
+import { CompanyDashboard } from './pages/company/CompanyDashboard';
+import { CompanyPackageManagement } from './pages/company/CompanyPackageManagement';
+import { CompanyInquiries } from './pages/company/CompanyInquiries';
 import { VendorProfile } from './pages/vendor/VendorProfile';
 import { BusinessVerification } from './pages/vendor/BusinessVerification';
 import { PortfolioManagement } from './pages/vendor/PortfolioManagement';
@@ -183,6 +186,13 @@ function App() {
           <Route path="vendor-booking-analytics" element={<VendorBookingAnalytics />} />
           <Route path="vendor-settings" element={<VendorSettings />} />
           <Route path="account-settings" element={<AccountSettings />} />
+        </Route>
+
+        <Route path="/company" element={<DashboardLayout role="company" />}>
+          <Route index element={<CompanyDashboard />} />
+          <Route path="dashboard" element={<CompanyDashboard />} />
+          <Route path="package-management" element={<CompanyPackageManagement />} />
+          <Route path="inquiries" element={<CompanyInquiries />} />
         </Route>
 
         <Route path="/seller" element={<DashboardLayout role="seller" />}>
