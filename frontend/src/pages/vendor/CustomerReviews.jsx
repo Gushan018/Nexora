@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Star, MessageSquare, Filter, Search, Flag, Loader2, AlertTriangle, Package, Send, Edit3, Trash2 } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -18,13 +18,19 @@ export const CustomerReviews = () => {
   const [confirmingDelete, setConfirmingDelete] = useState(null);
   const queryClient = useQueryClient();
 
-  const { data: reviews, isLoading, error } = useQuery({
+  const { data: reviewsData, isLoading, error } = useQuery({
     queryKey: ['vendor-reviews'],
     queryFn: async () => {
       const res = await api.get('/reviews/seller');
       return res.data;
     }
   });
+
+  const reviews = Array.isArray(reviewsData)
+    ? reviewsData
+    : Array.isArray(reviewsData?.reviews)
+    ? reviewsData.reviews
+    : [];
 
   const replyMutation = useMutation({
     mutationFn: async ({ reviewId, reply }) => {
@@ -104,26 +110,18 @@ export const CustomerReviews = () => {
 
   const totalReviews = reviews?.length ?? 0;
   const averageRating = totalReviews > 0
-    ? (reviews.reduce((acc, review) => acc + review.rating, 0) / totalReviews).toFixed(1)
+    ? (reviews.reduce((acc, review) => acc + (review.rating || 5), 0) / totalReviews).toFixed(1)
     : '0.0';
-  const positiveFeedback = totalReviews > 0
-    ? Math.round((reviews.filter((review) => review.rating >= 4).length / totalReviews) * 100)
-    : 0;
+  const pendingReplies = reviews.filter(r => !r.vendorReply && !r.reply).length;
+  const responseRate = totalReviews > 0
+    ? Math.round(((totalReviews - pendingReplies) / totalReviews) * 100)
+    : 100;
 
   if (isLoading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
         <Loader2 className="w-10 h-10 text-primary animate-spin" />
         <p className="text-textPrimary/60">Loading reviews...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4 text-red-400">
-        <AlertTriangle className="w-12 h-12 opacity-50" />
-        <p>Failed to load reviews. Please try again later.</p>
       </div>
     );
   }
@@ -136,8 +134,8 @@ export const CustomerReviews = () => {
             <Star className="w-7 h-7 text-yellow-400" />
             Customer Reviews
           </h1>
-          <p className="text-slate-600">Manage your reputation and respond to client feedback.</p>
         </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         
@@ -145,26 +143,38 @@ export const CustomerReviews = () => {
         <Card className="md:col-span-2 border-yellow-500/20 bg-yellow-500/5">
           <CardContent className="p-6 flex items-center gap-6">
             <div className="text-center">
-              <span className="text-5xl font-bold text-slate-900">4.8</span>
+              <span className="text-5xl font-bold text-slate-900">{averageRating}</span>
               <div className="flex text-yellow-400 my-2 justify-center">
-                <Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current"/><Star className="w-4 h-4 fill-current opacity-50"/>
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star 
+                    key={s} 
+                    className={cn(
+                      "w-4 h-4 fill-current",
+                      s <= Math.round(parseFloat(averageRating)) ? "text-yellow-400" : "text-slate-300 opacity-50"
+                    )} 
+                  />
+                ))}
               </div>
-              <span className="text-xs text-slate-500">Based on 128 reviews</span>
+              <span className="text-xs text-slate-500">Based on {totalReviews} {totalReviews === 1 ? 'review' : 'reviews'}</span>
             </div>
             
             <div className="flex-1 space-y-1.5">
-              {[5,4,3,2,1].map(star => (
-                <div key={star} className="flex items-center gap-2 text-xs text-slate-600">
-                  <span className="w-2">{star}</span>
-                  <Star className="w-3 h-3 text-slate-500" />
-                  <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-yellow-400 rounded-full" 
-                      style={{ width: star === 5 ? '85%' : star === 4 ? '10%' : star === 3 ? '3%' : '1%' }}
-                    />
+              {[5, 4, 3, 2, 1].map(star => {
+                const count = reviews.filter(r => Math.round(r.rating) === star).length;
+                const pct = totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0;
+                return (
+                  <div key={star} className="flex items-center gap-2 text-xs text-slate-600">
+                    <span className="w-2">{star}</span>
+                    <Star className="w-3 h-3 text-slate-500" />
+                    <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-yellow-400 rounded-full transition-all duration-300" 
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>
@@ -173,7 +183,7 @@ export const CustomerReviews = () => {
           <CardContent className="p-6 flex flex-col justify-center h-full">
             <h3 className="text-sm font-medium text-slate-600 mb-2">Response Rate</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">92%</span>
+              <span className="text-3xl font-bold text-slate-900">{responseRate}%</span>
             </div>
           </CardContent>
         </Card>
@@ -182,7 +192,7 @@ export const CustomerReviews = () => {
           <CardContent className="p-6 flex flex-col justify-center h-full">
             <h3 className="text-sm font-medium text-slate-600 mb-2">Pending Replies</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-primary">2</span>
+              <span className="text-3xl font-bold text-slate-900">{pendingReplies}</span>
             </div>
           </CardContent>
         </Card>
@@ -209,59 +219,10 @@ export const CustomerReviews = () => {
         </div>
 
         <div className="divide-y divide-white/5">
-          {REVIEWS.map((review) => (
-            <div key={review.id} className="p-6 hover:bg-slate-50 transition-colors">
-              <div className="flex flex-col sm:flex-row gap-4">
-                
-                {/* Avatar */}
-                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary shrink-0">
-                  {review.customer.charAt(0)}
-                </div>
-
-                <div className="flex-1 space-y-3">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-bold text-slate-900">{review.customer}</h4>
-                      <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
-                        <span>{review.date}</span>
-                        <span>â€¢</span>
-                        <span>{review.event}</span>
-                      </div>
-                    </div>
-                    <div className="flex text-yellow-400">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className={cn("w-4 h-4", i < review.rating ? "fill-current" : "text-slate-300")} />
-                      ))}
-                    </div>
-                  </div>
-
-                  <p className="text-slate-800 text-sm leading-relaxed">"{review.text}"</p>
-
-                  {/* Vendor Reply Block */}
-                  {review.reply ? (
-                    <div className="mt-4 bg-surface/50 border-l-2 border-primary p-4 rounded-r-lg">
-                      <div className="flex items-center gap-2 mb-2">
-                        <MessageSquare className="w-4 h-4 text-primary" />
-                        <span className="text-xs font-bold text-primary">Your Reply</span>
-                      </div>
-                      <p className="text-sm text-slate-700 italic">"{review.reply}"</p>
-                    </div>
-                  ) : (
-                    <div className="pt-2">
-                      <Button variant="outline" size="sm" leftIcon={<Reply className="w-4 h-4"/>}>Reply to Review</Button>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="shrink-0 flex sm:flex-col gap-2">
-                  <button className="p-2 text-slate-500 hover:text-slate-900 rounded-lg transition-colors" title="Helpful">
-                    <ThumbsUp className="w-4 h-4" />
-                  </button>
-                  <button className="p-2 text-slate-500 hover:text-red-400 rounded-lg transition-colors" title="Report">
-                    <Flag className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+          {filteredReviews.length === 0 ? (
+            <div className="p-8 text-center text-textPrimary/40">
+              <MessageSquare className="w-10 h-10 mx-auto mb-2 opacity-20" />
+              <p>No reviews matching your filter.</p>
             </div>
           ) : (
             filteredReviews.map((review) => (
@@ -471,3 +432,4 @@ export const CustomerReviews = () => {
     </div>
   );
 };
+

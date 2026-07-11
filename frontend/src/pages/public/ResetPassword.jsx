@@ -45,7 +45,7 @@ export const ResetPassword = () => {
                   <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input 
                     type="password" 
-                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" 
+                    placeholder="••••••••" 
                     required
                     className="w-full bg-black/40 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-300"
                   />
@@ -64,7 +64,7 @@ export const ResetPassword = () => {
                   <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input 
                     type="password" 
-                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" 
+                    placeholder="••••••••" 
                     required
                     className="w-full bg-black/40 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-300"
                   />
@@ -97,3 +97,4 @@ export const ResetPassword = () => {
     </div>
   );
 };
+

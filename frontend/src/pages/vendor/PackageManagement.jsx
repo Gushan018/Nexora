@@ -1,6 +1,6 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Package, Plus, Edit2, Trash2, CheckCircle2, EyeOff, Loader2, AlertCircle, X, DollarSign, FileText, Check } from 'lucide-react';
+import { Package, Plus, Edit2, Trash2, CheckCircle2, EyeOff, Loader2, AlertCircle, X, DollarSign, FileText, Check, GripVertical, Star } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
@@ -21,11 +21,43 @@ export const PackageManagement = () => {
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
 
+  // Global Add-ons state
+  const [addons, setAddons] = useState(() => {
+    const saved = localStorage.getItem('vendor_global_addons');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [isAddonModalOpen, setIsAddonModalOpen] = useState(false);
+  const [newAddonName, setNewAddonName] = useState('');
+  const [newAddonPrice, setNewAddonPrice] = useState('');
+
+  const saveAddons = (newAddons) => {
+    setAddons(newAddons);
+    localStorage.setItem('vendor_global_addons', JSON.stringify(newAddons));
+  };
+
+  const handleCreateAddon = (e) => {
+    e.preventDefault();
+    if (!newAddonName.trim()) return;
+    const item = {
+      id: Date.now().toString(),
+      name: newAddonName.trim(),
+      price: newAddonPrice.trim() || 'LKR 0',
+    };
+    saveAddons([...addons, item]);
+    setNewAddonName('');
+    setNewAddonPrice('');
+    setIsAddonModalOpen(false);
+  };
+
+  const handleDeleteAddon = (id) => {
+    saveAddons(addons.filter(a => a.id !== id));
+  };
+
   const [formData, setFormData] = useState({
     packageName: '',
     description: '',
     price: '',
-    categoryId: ''
+    category: ''
   });
 
   useEffect(() => {
@@ -45,8 +77,8 @@ export const PackageManagement = () => {
   const fetchPackages = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/vendors/packages');
-      setPackages(response.data);
+      const response = await api.get('/packages?my=true');
+      setPackages(Array.isArray(response.data) ? response.data : (response.data?.packages || []));
       setError(null);
     } catch (err) {
       setError('Failed to load packages. Please try again.');
@@ -62,8 +94,8 @@ export const PackageManagement = () => {
       setFormData({
         packageName: pkg.packageName,
         description: pkg.description || '',
-        price: pkg.price.toString(),
-        categoryId: pkg.categoryId?.toString() || ''
+        price: pkg.price ? pkg.price.toString() : '',
+        category: pkg.category || (pkg.categoryId ? pkg.categoryId.toString() : '')
       });
     } else {
       setEditingPackage(null);
@@ -71,7 +103,7 @@ export const PackageManagement = () => {
         packageName: '',
         description: '',
         price: '',
-        categoryId: ''
+        category: ''
       });
     }
     setIsModalOpen(true);
@@ -88,15 +120,17 @@ export const PackageManagement = () => {
 
     try {
       const payload = {
-        ...formData,
+        packageName: formData.packageName,
+        description: formData.description,
         price: parseFloat(formData.price),
-        categoryId: formData.categoryId ? parseInt(formData.categoryId) : undefined
+        category: formData.category,
+        categoryId: formData.category && !isNaN(formData.category) ? parseInt(formData.category) : undefined
       };
 
       if (editingPackage) {
-        await api.put(`/vendors/packages/${editingPackage.packageId}`, payload);
+        await api.put(`/packages/${editingPackage.packageId}`, payload);
       } else {
-        await api.post('/vendors/packages', payload);
+        await api.post('/packages', payload);
       }
       fetchPackages();
       handleCloseModal();
@@ -143,97 +177,133 @@ export const PackageManagement = () => {
         <Button onClick={() => handleOpenModal()} leftIcon={<Plus className="w-4 h-4"/>}>Create New Package</Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-6">
-        
-        {PACKAGES.map((pkg) => (
-          <Card key={pkg.id} className={cn(
-            "relative transition-all duration-300 hover:-translate-y-1",
-            pkg.popular ? "border-primary/50 shadow-[0_0_30px_rgba(91,124,250,0.15)] bg-primary/5" : "border-slate-300"
-          )}>
-            {pkg.popular && (
-              <div className="absolute -top-3 inset-x-0 flex justify-center z-10">
-                <span className="bg-primary text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
-                  <Star className="w-3 h-3 fill-white" /> Most Popular
-                </span>
-              </div>
-            )}
-            
-            <CardContent className="p-6">
-              
-              <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h3 className={cn("text-xl font-bold", pkg.popular ? "text-primary" : "text-slate-900")}>
-                    {pkg.name}
-                  </h3>
-                  <div className="flex items-baseline gap-1 mt-2">
-                    <span className="text-3xl font-bold text-slate-900">LKR {pkg.price}</span>
-                    <span className="text-sm text-slate-500">/event</span>
+      {loading ? (
+        <div className="text-center text-slate-500 py-12">Loading packages...</div>
+      ) : packages.length === 0 ? (
+        <Card className="border-slate-200">
+          <CardContent className="p-12 text-center text-slate-500">
+            <Package className="w-12 h-12 mx-auto mb-4 opacity-20" />
+            <p className="text-lg font-medium text-slate-700 mb-2">No Packages Found</p>
+            <p className="text-sm mb-6">Create your first tiered pricing package to offer clients bundled event services.</p>
+            <Button onClick={() => handleOpenModal()} leftIcon={<Plus className="w-4 h-4"/>}>Create New Package</Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-6">
+          {packages.map((pkg) => (
+            <Card key={pkg.packageId} className="relative transition-all duration-300 hover:-translate-y-1 border-slate-300">
+              <CardContent className="p-6">
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900">{pkg.packageName}</h3>
+                    <div className="flex items-baseline gap-1 mt-2">
+                      <span className="text-3xl font-bold text-slate-900">LKR {Number(pkg.price).toLocaleString()}</span>
+                      <span className="text-sm text-slate-500">/event</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <button 
+                      onClick={() => handleOpenModal(pkg)}
+                      className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors"
+                      title="Edit Package"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(pkg.packageId)}
+                      className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-400/10 rounded transition-colors"
+                      title="Delete Package"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <button className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors">
-                    <Edit2 className="w-4 h-4" />
-                  </button>
-                  <button className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-400/10 rounded transition-colors">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
 
-              <div className="space-y-3 mb-8">
-                {pkg.features.map((feature, i) => (
-                  <div key={i} className="flex items-start gap-2 group cursor-pointer">
-                    <Check className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
-                    <span className="text-sm text-slate-800 group-hover:text-slate-900 transition-colors">{feature}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border border-green-500/20 bg-green-500/10">
-                    <CheckCircle2 className="w-3 h-3 text-green-400" /> <span className="text-green-400">Live</span>
-                  </div>
+                <p className="text-sm text-slate-600 mb-6">{pkg.description || 'Custom event service package.'}</p>
+                <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider">
+                  <CheckCircle2 className="w-4 h-4 text-green-500" />
+                  {pkg.isApproved ? 'Approved & Live' : 'Pending Approval'}
                 </div>
-                
-                {/* Add Feature Mock */}
-                <div className="flex items-center gap-2 pt-2 border-t border-slate-200 opacity-0 hover:opacity-100 transition-opacity cursor-pointer">
-                  <Plus className="w-4 h-4 text-primary shrink-0" />
-                  <span className="text-sm text-primary font-medium">Add Feature</span>
-                </div>
-              </div>
-
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
         {/* Global Add-ons */}
         <div className="lg:col-span-3 mt-8">
           <Card>
             <CardHeader className="flex flex-row justify-between items-center border-b border-slate-200 pb-4">
               <CardTitle>Global Add-ons</CardTitle>
-              <Button variant="outline" size="sm" leftIcon={<Plus className="w-4 h-4"/>}>Add Item</Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                leftIcon={<Plus className="w-4 h-4"/>}
+                onClick={() => setIsAddonModalOpen(true)}
+              >
+                Add Item
+              </Button>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="divide-y divide-white/5">
-                {[
-                  { name: 'Extra Hour of Coverage', price: 'LKR 250/hr' },
-                  { name: 'Rush Editing (1 Week Delivery)', price: 'LKR 500 flat' },
-                  { name: 'Drone Photography', price: 'LKR 350 flat' },
-                ].map((addon, i) => (
-                  <div key={i} className="p-4 flex items-center justify-between group hover:bg-slate-50 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <GripVertical className="w-4 h-4 text-slate-300 cursor-grab" />
-                      <span className="font-medium text-slate-900">{addon.name}</span>
+              {addons.length === 0 ? (
+                <div className="p-8 text-center text-slate-500 text-sm">No global add-ons added yet. Click "Add Item" above.</div>
+              ) : (
+                <div className="divide-y divide-slate-100 dark:divide-white/5">
+                  {addons.map((addon) => (
+                    <div key={addon.id} className="p-4 flex items-center justify-between group hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
+                      <div className="flex items-center gap-3">
+                        <GripVertical className="w-4 h-4 text-slate-300 cursor-grab" />
+                        <span className="font-medium text-slate-900 dark:text-white">{addon.name}</span>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="text-sm font-bold text-amber-500">{addon.price}</span>
+                        <button 
+                          onClick={() => handleDeleteAddon(addon.id)}
+                          className="text-slate-400 hover:text-red-500 transition-colors p-1"
+                          title="Delete Add-on"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm font-bold text-accent">{addon.price}</span>
-                      <button className="text-slate-500 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          ))
-        )}
-      </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+      {/* Add-on Modal */}
+      <Modal
+        isOpen={isAddonModalOpen}
+        onClose={() => setIsAddonModalOpen(false)}
+        title="Add Global Add-on"
+      >
+        <form onSubmit={handleCreateAddon} className="space-y-4">
+          <Input 
+            label="Add-on Name"
+            placeholder="e.g. Extra Hour of Coverage"
+            value={newAddonName}
+            onChange={(e) => setNewAddonName(e.target.value)}
+            required
+          />
+          <Input 
+            label="Price Rate"
+            placeholder="e.g. LKR 500/hr or LKR 1000 flat"
+            value={newAddonPrice}
+            onChange={(e) => setNewAddonPrice(e.target.value)}
+            required
+          />
+          <div className="flex gap-3 pt-4">
+            <Button type="button" variant="outline" onClick={() => setIsAddonModalOpen(false)} className="flex-1">
+              Cancel
+            </Button>
+            <Button type="submit" className="flex-1">
+              Save Add-on
+            </Button>
+          </div>
+        </form>
+      </Modal>
 
       {/* Create/Edit Modal */}
       <Modal 
@@ -261,19 +331,28 @@ export const PackageManagement = () => {
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-textPrimary/90">Category</label>
+          <div className="flex flex-col space-y-1.5 w-full">
+            <label className="text-sm font-medium text-gray-700 dark:text-white/90">Category</label>
             <select
-              value={formData.categoryId}
-              onChange={(e) => setFormData({...formData, categoryId: e.target.value})}
-              className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors appearance-none"
+              value={formData.category}
+              onChange={(e) => setFormData({...formData, category: e.target.value})}
+              className="flex w-full rounded-xl border border-gray-300 dark:border-white/10 bg-light-surface dark:bg-surface/50 px-3 py-2.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-300 cursor-pointer"
             >
-              <option value="">Select a category...</option>
-              {categories.map(cat => (
-                <option key={cat.categoryId} value={cat.categoryId}>
-                  {cat.categoryName}
-                </option>
-              ))}
+              <option value="" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Select a category...</option>
+              {categories.length > 0 ? (
+                categories.map(cat => (
+                  <option key={cat.categoryId || cat.categoryName} value={cat.categoryName} style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>
+                    {cat.categoryName}
+                  </option>
+                ))
+              ) : (
+                <>
+                  <option value="Decorations" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Decorations</option>
+                  <option value="Food & Catering" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Food & Catering</option>
+                  <option value="Music & Entertainment" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Music & Entertainment</option>
+                  <option value="Photography & Video" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Photography & Video</option>
+                </>
+              )}
             </select>
           </div>
 
@@ -329,3 +408,4 @@ export const PackageManagement = () => {
     </div>
   );
 };
+

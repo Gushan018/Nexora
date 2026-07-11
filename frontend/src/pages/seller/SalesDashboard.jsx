@@ -40,3 +40,4 @@ export const SalesDashboard = () => {
     </div>
   );
 };
+

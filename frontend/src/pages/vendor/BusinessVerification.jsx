@@ -108,7 +108,7 @@ export const BusinessVerification = () => {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-slate-900">Business_Registration_BR.pdf</p>
-                      <p className="text-xs text-slate-500">2.4 MB â€¢ Uploaded yesterday</p>
+                      <p className="text-xs text-slate-500">2.4 MB • Uploaded yesterday</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-green-400 text-sm font-medium">
@@ -124,7 +124,7 @@ export const BusinessVerification = () => {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-slate-900">Owner_Passport_Scan.jpg</p>
-                      <p className="text-xs text-slate-500">1.1 MB â€¢ Uploaded 5 mins ago</p>
+                      <p className="text-xs text-slate-500">1.1 MB • Uploaded 5 mins ago</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-yellow-400 text-sm font-medium">
@@ -144,3 +144,4 @@ export const BusinessVerification = () => {
     </div>
   );
 };
+

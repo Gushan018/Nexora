@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PackagePlus, Upload, Tag, DollarSign, List, Layers, Save, Loader2, X, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -77,10 +77,6 @@ export const AddProduct = () => {
       setError('Description is required');
       return false;
     }
-    if (!formData.categoryId) {
-      setError('Please select a category');
-      return false;
-    }
     if (!formData.quantity || parseInt(formData.quantity) < 0) {
       setError('Valid stock quantity is required');
       return false;
@@ -109,10 +105,8 @@ export const AddProduct = () => {
       if (imageFile) {
         const uploadData = new FormData();
         uploadData.append('file', imageFile);
-        const uploadRes = await api.post('/upload', uploadData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
-        finalImageUrl = uploadRes.data.imageUrl || uploadRes.data.url;
+        const uploadRes = await api.post('/upload', uploadData);
+        finalImageUrl = uploadRes.data.imageUrl || uploadRes.data.fileUrl || uploadRes.data.url;
       }
 
       const productData = {
@@ -166,90 +160,71 @@ export const AddProduct = () => {
         </div>
       </div>
 
+      {/* Error Banner */}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-red-500 flex items-center justify-between text-sm"
+        >
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="w-5 h-5" />
+            {error}
+          </div>
+          <button type="button" onClick={() => setError('')}>
+            <X className="w-4 h-4" />
+          </button>
+        </motion.div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
         <div className="lg:col-span-2 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Basic Information</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <Input 
-                label="Product Name" 
-                placeholder="e.g. Premium Gold Cutlery Set (100 Pieces)" 
-                leftIcon={<Tag className="w-5 h-5" />}
-              />
-              
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-800">Description</label>
-                <textarea 
-                  rows="6" 
-                  className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors"
-                  placeholder="Describe your product in detail..."
+            <Card>
+              <CardHeader>
+                <CardTitle>Basic Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <Input
+                  label="Product Name *"
+                  name="productName"
+                  value={formData.productName}
+                  onChange={handleChange}
+                  placeholder="e.g. Premium Gold Cutlery Set (100 Pieces)"
+                  leftIcon={<Tag className="w-5 h-5" />}
+                  required
                 />
-                <p className="text-xs text-slate-500 mt-1 text-right">0 / 2000 characters</p>
-              </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-800 flex items-center gap-2">
-                    <List className="w-4 h-4 text-slate-600" /> Category
-                  </label>
-                  <select className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors appearance-none">
-                    <option value="">Select Category</option>
-                    <option value="catering">Catering Supplies</option>
-                    <option value="decor">Decorations</option>
-                    <option value="lighting">Lighting & AV</option>
-                    <option value="furniture">Furniture</option>
+                  <label className="text-sm font-medium text-slate-800 dark:text-white/90">Category *</label>
+                  <select
+                    name="categoryId"
+                    value={formData.categoryId}
+                    onChange={handleChange}
+                    className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
+                    required
+                  >
+                    <option value="" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Select Category...</option>
+                    {categories.map((cat) => (
+                      <option key={cat.categoryId} value={cat.categoryId} style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>
+                        {cat.categoryName}
+                      </option>
+                    ))}
                   </select>
                 </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Pricing Strategy</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <Input 
-                  label="Regular Price" 
-                  type="number"
-                  placeholder="0.00" 
-                  leftIcon={<DollarSign className="w-5 h-5" />}
-                />
-                <Input 
-                  label="Sale Price (Optional)" 
-                  type="number"
-                  placeholder="0.00" 
-                  leftIcon={<DollarSign className="w-5 h-5 text-green-400" />}
-                />
-              </div>
-              <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
-                <p className="text-sm text-primary font-medium flex items-center justify-between">
-                  Estimated Platform Fee (5%): <span>-LKR 0.00</span>
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="lg:col-span-1 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Product Media</CardTitle>
-              <CardDescription>First image will be the cover.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="border-2 border-dashed border-slate-400 rounded-xl h-48 flex flex-col items-center justify-center bg-surface/30 hover:bg-surface/50 hover:border-primary/50 transition-all cursor-pointer group">
-                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3 group-hover:bg-primary/20 group-hover:text-primary transition-colors">
-                  <Upload className="w-6 h-6 text-slate-500 group-hover:text-primary" />
+                
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-slate-800 dark:text-white/90">Description</label>
+                  <textarea
+                    rows="4"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors resize-none placeholder:text-slate-400"
+                    placeholder="Describe your product in detail..."
+                  />
                 </div>
-                <p className="text-sm text-slate-600 font-medium text-center px-4">Click or drag images here</p>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-2">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="aspect-square rounded-lg bg-surface border border-slate-300 flex items-center justify-center">
-                    <span className="text-slate-300 text-xs">Slot {i}</span>
-                  </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <Input
                     label="Available Stock *"
                     name="quantity"
@@ -341,6 +316,23 @@ export const AddProduct = () => {
                     onChange={handleImageChange}
                   />
                 </div>
+
+                <div className="pt-2 space-y-1">
+                  <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block">Or enter Image URL directly:</label>
+                  <input
+                    type="text"
+                    name="imageUrl"
+                    value={formData.imageUrl}
+                    onChange={(e) => {
+                      handleChange(e);
+                      if (e.target.value) {
+                        setPreviewUrl(e.target.value);
+                      }
+                    }}
+                    placeholder="https://images.unsplash.com/photo-..."
+                    className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors"
+                  />
+                </div>
               </CardContent>
             </Card>
 
@@ -358,9 +350,8 @@ export const AddProduct = () => {
                 </ul>
               </CardContent>
             </Card>
-          </div>
 
-          <Card>
+            <Card>
             <CardHeader>
               <CardTitle>Shipping Options</CardTitle>
             </CardHeader>
@@ -378,9 +369,10 @@ export const AddProduct = () => {
                 <span className="text-sm text-slate-800">Local Pickup Allowed</span>
               </label>
             </CardContent>
-          </Card>
+            </Card>
+          </div>
         </div>
-      )}
-    </form>
+      </form>
   );
 };
+

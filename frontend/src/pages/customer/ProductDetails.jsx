@@ -244,3 +244,4 @@ export const ProductDetails = () => {
     </div>
   );
 };
+

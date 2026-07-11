@@ -291,3 +291,4 @@ export const PaymentPage = () => {
     </div>
   );
 };
+

@@ -18,6 +18,7 @@ const addProduct = async (req, res) => {
         imageUrl,
         vendorId,
         categoryId: categoryId ? parseInt(categoryId) : null,
+        isApproved: true, 
       },
     });
 
@@ -29,36 +30,16 @@ const addProduct = async (req, res) => {
 
 
 // ===============================================
-// 2. GET SELLER'S PRODUCTS (For Seller)
-// ===============================================
-const getSellerProducts = async (req, res) => {
-  try {
-    const vendorId = req.user.id;
-    const products = await prisma.product.findMany({
-      where: { vendorId },
-      include: {
-        category: { select: { categoryName: true } }
-      },
-      orderBy: { createdAt: 'desc' }
-    });
-
-    res.status(200).json(products);
-  } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
-  }
-};
-
-// ===============================================
-// 3. GET ALL PRODUCTS (For everyone)
+// 2. GET ALL APPROVED PRODUCTS (For everyone)
 // ===============================================
 const getAllProducts = async (req, res) => {
   try {
     const products = await prisma.product.findMany({
+      where: { isApproved: true }, 
       include: {
         vendor: { 
           select: { businessName: true }
-        },
-        category: true
+        }
       }
     });
 
@@ -70,18 +51,22 @@ const getAllProducts = async (req, res) => {
 
 
 // ===============================================
-// 4. GET A SINGLE PRODUCT BY ID (For everyone)
+// 3. GET A SINGLE PRODUCT BY ID (For everyone)
 // ===============================================
 const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await prisma.product.findUnique({
+    const numericId = parseInt(id);
+    if (isNaN(numericId)) {
+      return res.status(400).json({ message: "Invalid product ID format." });
+    }
+    const product = await prisma.product.findFirst({
       where: {
-        productId: parseInt(id),
+        productId: numericId,
+        isApproved: true,
       },
       include: {
         vendor: { select: { businessName: true, location: true } },
-        category: { select: { categoryName: true, categoryId: true } },
         reviews: { 
           include: {
             customer: { select: { name: true } }
@@ -91,7 +76,7 @@ const getProductById = async (req, res) => {
     });
 
     if (!product) {
-      return res.status(404).json({ message: "Product not found." });
+      return res.status(404).json({ message: "Product not found or not approved." });
     }
 
     res.status(200).json(product);
@@ -100,82 +85,57 @@ const getProductById = async (req, res) => {
   }
 };
 
-// ===============================================
-// 5. UPDATE A PRODUCT (For Seller)
-// ===============================================
 const updateProduct = async (req, res) => {
   try {
-    const { id } = req.params;
+    const existing = await prisma.product.findFirst({ where: { productId: parseInt(req.params.id), vendorId: req.user.id } });
+    if (!existing) return res.status(404).json({ message: 'Product not found' });
     const { productName, price, quantity, description, categoryId, imageUrl } = req.body;
-    const vendorId = req.user.id;
-
-    // Check if product belongs to this vendor
-    const existingProduct = await prisma.product.findUnique({
-      where: { productId: parseInt(id) }
-    });
-
-    if (!existingProduct) {
-      return res.status(404).json({ message: "Product not found." });
-    }
-
-    if (existingProduct.vendorId !== vendorId) {
-      return res.status(403).json({ message: "You don't have permission to update this product." });
-    }
-
-    const updatedProduct = await prisma.product.update({
-      where: { productId: parseInt(id) },
+    const product = await prisma.product.update({
+      where: { productId: parseInt(req.params.id) },
       data: {
         productName,
         price: price ? parseFloat(price) : undefined,
-        quantity: quantity ? parseInt(quantity) : undefined,
+        quantity: quantity !== undefined ? parseInt(quantity) : undefined,
         description,
-        categoryId: categoryId ? parseInt(categoryId) : undefined,
-        imageUrl,
+        imageUrl: imageUrl !== undefined ? imageUrl : undefined,
+        categoryId: categoryId !== undefined ? (categoryId ? parseInt(categoryId) : null) : undefined
       },
     });
-
-    res.status(200).json({ message: "Product updated successfully!", product: updatedProduct });
+    res.status(200).json(product);
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
-// ===============================================
-// 6. DELETE A PRODUCT (For Seller)
-// ===============================================
 const deleteProduct = async (req, res) => {
   try {
-    const { id } = req.params;
-    const vendorId = req.user.id;
-
-    // Check if product belongs to this vendor
-    const existingProduct = await prisma.product.findUnique({
-      where: { productId: parseInt(id) }
-    });
-
-    if (!existingProduct) {
-      return res.status(404).json({ message: "Product not found." });
-    }
-
-    if (existingProduct.vendorId !== vendorId) {
-      return res.status(403).json({ message: "You don't have permission to delete this product." });
-    }
-
-    await prisma.product.delete({
-      where: { productId: parseInt(id) }
-    });
-
-    res.status(200).json({ message: "Product deleted successfully!" });
+    const existing = await prisma.product.findFirst({ where: { productId: parseInt(req.params.id), vendorId: req.user.id } });
+    if (!existing) return res.status(404).json({ message: 'Product not found' });
+    await prisma.product.delete({ where: { productId: parseInt(req.params.id) } });
+    res.status(200).json({ message: 'Product deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
+const getMyProducts = async (req, res) => {
+  try {
+    const products = await prisma.product.findMany({
+      where: { vendorId: req.user.id },
+      include: { category: true },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
 module.exports = {
   addProduct,
-  getSellerProducts,
   getAllProducts,
   getProductById,
   updateProduct,
   deleteProduct,
+  getMyProducts,
 };

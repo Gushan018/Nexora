@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { cn } from '../../utils/cn';
 
 export const Card = ({ className, children, ...props }) => {
@@ -54,3 +54,4 @@ export const CardFooter = ({ className, children, ...props }) => {
     </div>
   );
 };
+

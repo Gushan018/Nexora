@@ -7,325 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
-  adminId          Int      @id @default(autoincrement()) @map("admin_id")
-  name             String?  @map("name")
-  email            String   @unique
-  password         String
-  contactNumber    String?  @map("contact_number")
-  profileImage     String?  @map("profile_image")
-  role             String   @default("admin")
-  registrationDate DateTime @default(now()) @map("registration_date")
-
-  @@map("admin")
-}
-
-model Customer {
-  customerId       Int            @id @default(autoincrement()) @map("customer_id")
-  name             String
-  email            String         @unique
-  password         String
-  contactNumber    String?        @map("contact_number")
-  isBlocked        Boolean        @default(false) @map("is_blocked")
-  role             String         @default("customer")
-  registrationDate DateTime       @default(now()) @map("registration_date")
-  profileImage     String?        @map("profile_image")
-  bookings         Booking[]
-  budget           budget?
-  cart             Cart?
-  conversations    Conversation[]
-  notifications    Notification[]
-  orders           Order[]
-  reviews          Review[]
-  wishlists        Wishlist[]
-
-  @@map("customer")
-}
-
-model Vendor {
-  vendorId            Int            @id @default(autoincrement()) @map("vendor_id")
-  businessName        String         @map("business_name")
-  email               String         @unique
-  password            String
-  description         String?
-  contactNumber       String?        @map("contact_number")
-  location            String?
-  vendorType          VendorType     @map("vendor_type")
-  registrationDate    DateTime       @default(now()) @map("registration_date")
-  profileImage        String?        @map("profile_image")
-  booking_lead_time   String         @default("48h")
-  cancellation_policy String         @default("Moderate")
-  currency            String         @default("LKR")
-  instant_book        Boolean        @default(false)
-  require_deposits    Boolean        @default(false)
-  timezone            String         @default("UTC")
-  isApproved          Boolean        @default(false) @map("is_approved")
-  availability        Availability[]
-  conversations       Conversation[]
-  eventPackages       EventPackage[]
-  products            Product[]
-  reviews             Review[]
-  services            Service[]
-
-  @@map("vendor")
-}
-
-model ServiceCategory {
-  categoryId    Int            @id @default(autoincrement()) @map("category_id")
-  categoryName  String         @map("category_name")
-  event_package EventPackage[]
-  products      Product[]
-  services      Service[]
-
-  @@map("service_category")
-}
-
-model Service {
-  serviceId     Int              @id @default(autoincrement()) @map("service_id")
-  serviceName   String           @map("service_name")
-  price         Decimal          @db.Decimal(10, 2)
-  description   String?
-  imageUrl      String?          @map("image_url")
-  isApproved    Boolean          @default(false) @map("is_approved")
-  createdAt     DateTime         @default(now()) @map("created_at")
-  vendorId      Int              @map("vendor_id")
-  categoryId    Int?             @map("category_id")
-  pricing_model String?
-  service_area  String?
-  bookings      Booking[]
-  reviews       Review[]
-  category      ServiceCategory? @relation(fields: [categoryId], references: [categoryId])
-  vendor        Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  wishlists     Wishlist[]
-
-  @@map("service")
-}
-
-model Product {
-  productId   Int              @id @default(autoincrement()) @map("product_id")
-  productName String           @map("product_name")
-  price       Decimal          @db.Decimal(10, 2)
-  quantity    Int              @default(0)
-  imageUrl    String?          @map("image_url")
-  description String?
-  isApproved  Boolean          @default(false) @map("is_approved")
-  createdAt   DateTime         @default(now()) @map("created_at")
-  vendorId    Int              @map("vendor_id")
-  categoryId  Int?             @map("category_id")
-  cartItems   CartItem[]
-  orderItems  OrderItem[]
-  category    ServiceCategory? @relation(fields: [categoryId], references: [categoryId])
-  vendor      Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  reviews     Review[]
-  wishlists   Wishlist[]
-
-  @@map("product")
-}
-
-model EventPackage {
-  packageId        Int              @id @default(autoincrement()) @map("package_id")
-  packageName      String           @map("package_name")
-  description      String?
-  imageUrl         String?          @map("image_url")
-  price            Decimal          @db.Decimal(10, 2)
-  isApproved       Boolean          @default(false) @map("is_approved")
-  createdAt        DateTime         @default(now()) @map("created_at")
-  vendorId         Int              @map("vendor_id")
-  category_id      Int?
-  bookings         Booking[]
-  service_category ServiceCategory? @relation(fields: [category_id], references: [categoryId])
-  vendor           Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  wishlists        Wishlist[]
-
-  @@map("event_package")
-}
-
-model Availability {
-  availabilityId Int      @id @default(autoincrement()) @map("availability_id")
-  date           DateTime @db.Date
-  startTime      String   @map("start_time")
-  endTime        String   @map("end_time")
-  isAvailable    Boolean  @default(true) @map("is_available")
-  vendorId       Int      @map("vendor_id")
-  vendor         Vendor   @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-
-  @@map("availability")
-}
-
-model Booking {
-  bookingId          Int           @id @default(autoincrement()) @map("booking_id")
-  bookingDate        DateTime      @default(now()) @map("booking_date")
-  eventDate          DateTime      @map("event_date") @db.Date
-  status             BookingStatus @default(PENDING)
-  location           String?
-  vendorResponseDate DateTime?     @map("vendor_response_date")
-  customerId         Int           @map("customer_id")
-  serviceId          Int?          @map("service_id")
-  packageId          Int?          @map("package_id")
-  customer           Customer      @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  package            EventPackage? @relation(fields: [packageId], references: [packageId])
-  service            Service?      @relation(fields: [serviceId], references: [serviceId])
-  payment            Payment?
-
-  @@map("booking")
-}
-
-model Cart {
-  cartId     Int        @id @default(autoincrement()) @map("cart_id")
-  customerId Int        @unique @map("customer_id")
-  customer   Customer   @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  cartItems  CartItem[]
-
-  @@map("cart")
-}
-
-model CartItem {
-  cartItemId Int     @id @default(autoincrement()) @map("cart_item_id")
-  quantity   Int     @default(1)
-  cartId     Int     @map("cart_id")
-  productId  Int     @map("product_id")
-  cart       Cart    @relation(fields: [cartId], references: [cartId], onDelete: Cascade)
-  product    Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
-
-  @@map("cart_item")
-}
-
-model Order {
-  orderId         Int         @id @default(autoincrement()) @map("order_id")
-  orderDate       DateTime    @default(now()) @map("order_date")
-  totalAmount     Decimal     @map("total_amount") @db.Decimal(10, 2)
-  status          OrderStatus @default(PENDING)
-  shippingAddress String      @map("shipping_address")
-  customerId      Int         @map("customer_id")
-  customer        Customer    @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  orderItems      OrderItem[]
-  payment         Payment?
-
-  @@map("order")
-}
-
-model OrderItem {
-  orderItemId Int     @id @default(autoincrement()) @map("order_item_id")
-  quantity    Int
-  unitPrice   Decimal @map("unit_price") @db.Decimal(10, 2)
-  orderId     Int     @map("order_id")
-  productId   Int     @map("product_id")
-  order       Order   @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
-  product     Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
-
-  @@map("order_item")
-}
-
-model Payment {
-  paymentId     Int           @id @default(autoincrement()) @map("payment_id")
-  amount        Decimal       @db.Decimal(10, 2)
-  paymentMethod PaymentMethod @map("payment_method")
-  status        PaymentStatus @default(PENDING)
-  transactionId String?       @map("transaction_id")
-  paidAt        DateTime?     @map("paid_at")
-  createdAt     DateTime      @default(now()) @map("created_at")
-  bookingId     Int?          @unique @map("booking_id")
-  orderId       Int?          @unique @map("order_id")
-  receiptUrl    String?       @map("receipt_url")
-  booking       Booking?      @relation(fields: [bookingId], references: [bookingId])
-  order         Order?        @relation(fields: [orderId], references: [orderId])
-
-  @@map("payment")
-}
-
-model Review {
-  reviewId   Int      @id @default(autoincrement()) @map("review_id")
-  rating     Int
-  comment    String?
-  reviewDate DateTime @default(now()) @map("review_date")
-  customerId Int      @map("customer_id")
-  vendorId   Int?     @map("vendor_id")
-  serviceId  Int?     @map("service_id")
-  productId  Int?     @map("product_id")
-  customer   Customer @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  product    Product? @relation(fields: [productId], references: [productId])
-  service    Service? @relation(fields: [serviceId], references: [serviceId])
-  vendor     Vendor?  @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-
-  @@map("review")
-}
-
-model Notification {
-  notificationId Int       @id @default(autoincrement()) @map("notification_id")
-  userId         Int       @map("user_id")
-  userType       String    @map("user_type")
-  type           String
-  message        String
-  isRead         Boolean   @default(false) @map("is_read")
-  createdAt      DateTime  @default(now()) @map("created_at")
-  customerId     Int?      @map("customer_id_fk")
-  customer       Customer? @relation(fields: [customerId], references: [customerId])
-
-  @@map("notification")
-}
-
-model Wishlist {
-  wishlistId Int           @id @default(autoincrement()) @map("wishlist_id")
-  createdAt  DateTime      @default(now()) @map("created_at")
-  customerId Int           @map("customer_id")
-  productId  Int?          @map("product_id")
-  serviceId  Int?          @map("service_id")
-  packageId  Int?          @map("package_id")
-  customer   Customer      @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  package    EventPackage? @relation(fields: [packageId], references: [packageId], onDelete: Cascade)
-  product    Product?      @relation(fields: [productId], references: [productId], onDelete: Cascade)
-  service    Service?      @relation(fields: [serviceId], references: [serviceId], onDelete: Cascade)
-
-  @@unique([customerId, productId])
-  @@unique([customerId, serviceId])
-  @@unique([customerId, packageId])
-  @@map("wishlist")
-}
-
-model Conversation {
-  id         Int       @id @default(autoincrement())
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
-  customerId Int       @map("customer_id")
-  vendorId   Int       @map("vendor_id")
-  customer   Customer  @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  vendor     Vendor    @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  messages   Message[]
-
-  @@unique([customerId, vendorId])
-  @@map("conversation")
-}
-
-model Message {
-  id             Int          @id @default(autoincrement())
-  text           String
-  senderType     String       @map("sender_type")
-  isRead         Boolean      @default(false) @map("is_read")
-  createdAt      DateTime     @default(now()) @map("created_at")
-  conversationId Int          @map("conversation_id")
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-
-  @@map("message")
-}
-
-model budget {
-  id              Int               @id @default(autoincrement())
-  customer_id     Int               @unique
-  total_budget    Decimal           @default(0) @db.Decimal(10, 2)
-  customer        Customer          @relation(fields: [customer_id], references: [customerId], onDelete: Cascade)
-  budget_category budget_category[]
-}
-
-model budget_category {
-  id        Int     @id @default(autoincrement())
-  name      String
-  allocated Decimal @default(0) @db.Decimal(10, 2)
-  spent     Decimal @default(0) @db.Decimal(10, 2)
-  color     String?
-  budget_id Int
-  budget    budget  @relation(fields: [budget_id], references: [id], onDelete: Cascade)
-}
-
+// ===== ENUMS =====
 enum VendorType {
   PHOTOGRAPHER
   SALON
@@ -364,8 +46,6 @@ enum OrderStatus {
   DELIVERED
   CANCELLED
 }
-<<<<<<< HEAD
-=======
 
 enum DisputeStatus {
   OPEN
@@ -378,41 +58,12 @@ enum DisputeStatus {
 
 model Admin {
   adminId          Int      @id @default(autoincrement()) @map("admin_id")
-  name             String?  @map("name")
   email            String   @unique
   password         String
-  contactNumber    String?  @map("contact_number")
-  profileImage     String?  @map("profile_image")
   role             String   @default("admin")
   registrationDate DateTime @default(now()) @map("registration_date")
 
   @@map("admin")
-}
-
-model SystemSetting {
-  id                       Int      @id @default(autoincrement()) @map("id")
-  platformName             String   @default("Nexora Marketplace") @map("platformName")
-  supportEmail             String   @default("support@nexora.com") @map("supportEmail")
-  logoUrl                  String?  @map("logoUrl")
-  defaultTimezone          String   @default("UTC") @map("defaultTimezone")
-  defaultCurrency          String   @default("LKR") @map("defaultCurrency")
-  maintenanceMode          Boolean  @default(false) @map("maintenanceMode")
-  commissionPercent        Int      @default(10) @map("commissionPercent")
-  paymentGateway           String   @default("Stripe") @map("paymentGateway")
-  smtpHost                 String?  @map("smtpHost")
-  smtpPort                 Int?     @map("smtpPort")
-  smtpUser                 String?  @map("smtpUser")
-  smtpPassword             String?  @map("smtpPassword")
-  smtpFromEmail            String?  @map("smtpFromEmail")
-  smtpSecure               Boolean  @default(false) @map("smtpSecure")
-  authLockoutEnabled       Boolean  @default(false) @map("authLockoutEnabled")
-  authFailedAttemptsLimit  Int      @default(5) @map("authFailedAttemptsLimit")
-  authPasswordMinLength    Int      @default(8) @map("authPasswordMinLength")
-  authTwoFactorEnabled     Boolean  @default(false) @map("authTwoFactorEnabled")
-  createdAt                DateTime @default(now()) @map("createdAt")
-  updatedAt                DateTime @updatedAt @map("updatedAt")
-
-  @@map("system_setting")
 }
 
 model Customer {
@@ -421,112 +72,70 @@ model Customer {
   email            String   @unique
   password         String
   contactNumber    String?  @map("contact_number")
-  isBlocked        Boolean  @default(false) @map("is_blocked")
   role             String   @default("customer")
-  profileImage     String?  @map("profile_image")
   registrationDate DateTime @default(now()) @map("registration_date")
 
   bookings      Booking[]
-  budget        budget?
   cart          Cart?
   orders        Order[]
   reviews       Review[]
   notifications Notification[]
-  wishlists     Wishlist[]
-  conversations Conversation[]
   disputes      Dispute[]
+  budgets       Budget[]
+  refunds       RefundRequest[]
 
   @@map("customer")
 }
 
 model Vendor {
-<<<<<<< HEAD
-  vendorId         Int        @id @default(autoincrement()) @map("vendor_id")
-  businessName     String     @map("business_name")
-  email            String     @unique
-  password         String
-  description      String?
-  contactNumber    String?    @map("contact_number")
-  location         String?
-  vendorType       VendorType @map("vendor_type")
-  profileImage     String?    @map("profile_image")
-  currency         String     @default("LKR")
-  timezone         String     @default("UTC")
-  bookingLeadTime  String     @default("48h") @map("booking_lead_time")
-  instantBook      Boolean    @default(false) @map("instant_book")
-  requireDeposits  Boolean    @default(false) @map("require_deposits")
-  cancellationPolicy String   @default("Moderate") @map("cancellation_policy")
-  bankName          String?  @map("bank_name")
-  bankAccountNo     String?  @map("bank_account_no")
-  taxId             String?  @map("tax_id")
-  registrationDate DateTime   @default(now()) @map("registration_date")
-=======
-  vendorId            Int        @id @default(autoincrement()) @map("vendor_id")
-  businessName        String     @map("business_name")
-  email               String     @unique
-  password            String
-  description         String?
-  contactNumber       String?    @map("contact_number")
-  location            String?
-  vendorType          VendorType @map("vendor_type")
-  isApproved          Boolean    @default(false) @map("is_approved")
-  isBlocked           Boolean    @default(false) @map("is_blocked")
-  profileImage        String?    @map("profile_image")
-  registrationDate    DateTime   @default(now()) @map("registration_date")
-  booking_lead_time   String     @default("48h")
-  cancellation_policy String     @default("Moderate")
-  currency            String     @default("LKR")
-  instant_book        Boolean    @default(false)
-  require_deposits    Boolean    @default(false)
-  timezone            String     @default("UTC")
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+  vendorId           Int        @id @default(autoincrement()) @map("vendor_id")
+  businessName       String     @map("business_name")
+  email              String     @unique
+  password           String
+  description        String?
+  contactNumber      String?    @map("contact_number")
+  location           String?
+  registrationNumber String?    @map("registration_number")
+  establishedYear    Int?       @map("established_year")
+  address            String?
+  bannerImage        String?    @map("banner_image")
+  logoImage          String?    @map("logo_image")
+  socialFacebook     String?    @map("social_facebook")
+  socialInstagram    String?    @map("social_instagram")
+  socialTwitter      String?    @map("social_twitter")
+  website            String?
+  vendorType         VendorType @map("vendor_type")
+  isApproved         Boolean    @default(true) @map("is_approved")
+  registrationDate   DateTime   @default(now()) @map("registration_date")
 
   services      Service[]
   products      Product[]
   eventPackages EventPackage[]
   availability  Availability[]
   reviews       Review[]
-  conversations Conversation[]
-  disputes      Dispute[]
+  notifications Notification[]
+  Dispute       Dispute[]
 
   @@map("vendor")
 }
 
 model ServiceCategory {
-<<<<<<< HEAD
-  categoryId   Int            @id @default(autoincrement()) @map("category_id")
-  categoryName String         @map("category_name")
+  categoryId   Int       @id @default(autoincrement()) @map("category_id")
+  categoryName String    @map("category_name")
   services     Service[]
   products     Product[]
-  eventPackages EventPackage[]
-=======
-  categoryId    Int            @id @default(autoincrement()) @map("category_id")
-  categoryName  String         @map("category_name")
-  services      Service[]
-  products      Product[]
-  event_package EventPackage[]
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
   @@map("service_category")
 }
 
 model Service {
-  serviceId     Int      @id @default(autoincrement()) @map("service_id")
-  serviceName   String   @map("service_name")
-  price         Decimal  @db.Decimal(10, 2)
-  description   String?
-<<<<<<< HEAD
-  pricingModel  String?  @map("pricing_model")
-  serviceArea   String?  @map("service_area")
-  imageUrl      String?  @map("image_url")
-  createdAt     DateTime @default(now()) @map("created_at")
-=======
-  imageUrl      String?  @map("image_url")
-  isApproved    Boolean  @default(false) @map("is_approved")
-  createdAt     DateTime @default(now()) @map("created_at")
-  pricing_model String?
-  service_area  String?
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+  serviceId   Int      @id @default(autoincrement()) @map("service_id")
+  serviceName String   @map("service_name")
+  price       Decimal  @db.Decimal(10, 2)
+  description String?
+  imageUrl    String?  @map("image_url")
+  isApproved  Boolean  @default(false) @map("is_approved")
+  createdAt   DateTime @default(now()) @map("created_at")
 
   vendorId   Int              @map("vendor_id")
   categoryId Int?             @map("category_id")
@@ -534,7 +143,6 @@ model Service {
   category   ServiceCategory? @relation(fields: [categoryId], references: [categoryId], onDelete: SetNull)
   bookings   Booking[]
   reviews    Review[]
-  wishlists  Wishlist[]
 
   @@map("service")
 }
@@ -546,6 +154,7 @@ model Product {
   quantity    Int      @default(0)
   imageUrl    String?  @map("image_url")
   description String?
+  isApproved  Boolean  @default(false) @map("is_approved")
   createdAt   DateTime @default(now()) @map("created_at")
 
   vendorId   Int              @map("vendor_id")
@@ -555,7 +164,6 @@ model Product {
   cartItems  CartItem[]
   orderItems OrderItem[]
   reviews    Review[]
-  wishlists  Wishlist[]
 
   @@map("product")
 }
@@ -564,27 +172,38 @@ model EventPackage {
   packageId   Int      @id @default(autoincrement()) @map("package_id")
   packageName String   @map("package_name")
   description String?
-  imageUrl    String?
   price       Decimal  @db.Decimal(10, 2)
+  category    String?
+  duration    String?
+  maxGuests   Int?     @map("max_guests")
+  isApproved  Boolean  @default(false) @map("is_approved")
   createdAt   DateTime @default(now()) @map("created_at")
-  category_id Int?
 
-<<<<<<< HEAD
-  vendorId   Int              @map("vendor_id")
-  categoryId Int?             @map("category_id")
-  vendor     Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  category   ServiceCategory? @relation(fields: [categoryId], references: [categoryId], onDelete: SetNull)
-  bookings   Booking[]
-  wishlists  Wishlist[]
-=======
-  vendorId         Int              @map("vendor_id")
-  vendor           Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  service_category ServiceCategory? @relation(fields: [category_id], references: [categoryId])
-  bookings         Booking[]
-  wishlists        Wishlist[]
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
+  vendorId Int              @map("vendor_id")
+  vendor   Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+  bookings Booking[]
+  services PackageService[]
+  images   PackageImage[]
 
   @@map("event_package")
+}
+
+model PackageService {
+  serviceId Int          @id @default(autoincrement()) @map("service_id")
+  name      String
+  packageId Int          @map("package_id")
+  package   EventPackage @relation(fields: [packageId], references: [packageId], onDelete: Cascade)
+
+  @@map("package_service")
+}
+
+model PackageImage {
+  imageId   Int          @id @default(autoincrement()) @map("image_id")
+  url       String
+  packageId Int          @map("package_id")
+  package   EventPackage @relation(fields: [packageId], references: [packageId], onDelete: Cascade)
+
+  @@map("package_image")
 }
 
 model Availability {
@@ -620,27 +239,6 @@ model Booking {
   @@map("booking")
 }
 
-model Dispute {
-  disputeId   Int           @id @default(autoincrement()) @map("dispute_id")
-  bookingId   Int?          @map("booking_id")
-  customerId  Int?          @map("customer_id")
-  vendorId    Int?          @map("vendor_id")
-  raisedBy    String        @map("raised_by")
-  reporter    String?
-  subject     String
-  description String
-  status      DisputeStatus @default(OPEN)
-  adminNotes  String?       @map("admin_notes")
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
-
-  booking  Booking?  @relation(fields: [bookingId], references: [bookingId], onDelete: SetNull)
-  customer Customer? @relation(fields: [customerId], references: [customerId], onDelete: SetNull)
-  vendor   Vendor?   @relation(fields: [vendorId], references: [vendorId], onDelete: SetNull)
-
-  @@map("dispute")
-}
-
 model Cart {
   cartId     Int        @id @default(autoincrement()) @map("cart_id")
   customerId Int        @unique @map("customer_id")
@@ -672,6 +270,7 @@ model Order {
   customer   Customer    @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
   orderItems OrderItem[]
   payment    Payment?
+  refunds    RefundRequest[]
 
   @@map("order")
 }
@@ -694,7 +293,6 @@ model Payment {
   paymentMethod PaymentMethod @map("payment_method")
   status        PaymentStatus @default(PENDING)
   transactionId String?       @map("transaction_id")
-  receiptUrl    String?       @map("receipt_url")
   paidAt        DateTime?     @map("paid_at")
   createdAt     DateTime      @default(now()) @map("created_at")
 
@@ -711,10 +309,6 @@ model Review {
   rating     Int
   comment    String?
   reviewDate DateTime @default(now()) @map("review_date")
-  vendorReply     String?  @map("vendor_reply")
-  vendorReplyDate DateTime? @map("vendor_reply_date")
-  isReported      Boolean  @default(false) @map("is_reported")
-  reportReason    String?  @map("report_reason")
 
   customerId Int      @map("customer_id")
   vendorId   Int?     @map("vendor_id")
@@ -728,19 +322,80 @@ model Review {
   @@map("review")
 }
 
+model Message {
+  messageId      Int      @id @default(autoincrement()) @map("message_id")
+  conversationId String   @map("conversation_id")
+  senderId       Int      @map("sender_id")
+  senderType     String   @map("sender_type")
+  receiverId     Int      @map("receiver_id")
+  receiverType   String   @map("receiver_type")
+  content        String
+  isRead         Boolean  @default(false) @map("is_read")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@map("message")
+}
+
 model Notification {
   notificationId Int      @id @default(autoincrement()) @map("notification_id")
-  userId         Int      @map("user_id")
-  userType       String   @map("user_type")
   type           String
   message        String
   isRead         Boolean  @default(false) @map("is_read")
   createdAt      DateTime @default(now()) @map("created_at")
 
-  customerId Int?      @map("customer_id_fk")
+  customerId Int?      @map("customer_id")
   customer   Customer? @relation(fields: [customerId], references: [customerId], onDelete: SetNull)
+  vendorId   Int?      @map("vendor_id")
+  vendor     Vendor?   @relation(fields: [vendorId], references: [vendorId], onDelete: SetNull)
 
   @@map("notification")
+}
+
+model SystemSetting {
+  id                      Int      @id @default(autoincrement()) @map("id")
+  platformName            String   @default("Nexora Marketplace") @map("platformName")
+  supportEmail            String   @default("support@nexora.com") @map("supportEmail")
+  logoUrl                 String?  @map("logoUrl")
+  defaultTimezone         String   @default("UTC") @map("defaultTimezone")
+  defaultCurrency         String   @default("LKR") @map("defaultCurrency")
+  maintenanceMode         Boolean  @default(false) @map("maintenanceMode")
+  commissionPercent       Int      @default(10) @map("commissionPercent")
+  paymentGateway          String   @default("Stripe") @map("paymentGateway")
+  smtpHost                String?  @map("smtpHost")
+  smtpPort                Int?     @map("smtpPort")
+  smtpUser                String?  @map("smtpUser")
+  smtpPassword            String?  @map("smtpPassword")
+  smtpFromEmail           String?  @map("smtpFromEmail")
+  smtpSecure              Boolean  @default(false) @map("smtpSecure")
+  authLockoutEnabled      Boolean  @default(false) @map("authLockoutEnabled")
+  authFailedAttemptsLimit Int      @default(5) @map("authFailedAttemptsLimit")
+  authPasswordMinLength   Int      @default(8) @map("authPasswordMinLength")
+  authTwoFactorEnabled    Boolean  @default(false) @map("authTwoFactorEnabled")
+  createdAt               DateTime @default(now()) @map("createdAt")
+  updatedAt               DateTime @updatedAt @map("updatedAt")
+
+  @@map("system_setting")
+}
+
+model Dispute {
+  disputeId   Int           @id @default(autoincrement()) @map("dispute_id")
+  bookingId   Int?          @map("booking_id")
+  customerId  Int?          @map("customer_id")
+  vendorId    Int?          @map("vendor_id")
+  raisedBy    String        @map("raised_by")
+  reporter    String?
+  subject     String
+  description String
+  status      DisputeStatus @default(OPEN)
+  adminNotes  String?       @map("admin_notes")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  booking  Booking?  @relation(fields: [bookingId], references: [bookingId], onDelete: SetNull)
+  customer Customer? @relation(fields: [customerId], references: [customerId], onDelete: SetNull)
+  vendor   Vendor?   @relation(fields: [vendorId], references: [vendorId], onDelete: SetNull)
+
+  @@map("dispute")
 }
 
 model Broadcast {
@@ -765,71 +420,50 @@ model ImpersonationLog {
   @@map("impersonation_log")
 }
 
-model Wishlist {
-  wishlistId Int      @id @default(autoincrement()) @map("wishlist_id")
-  createdAt  DateTime @default(now()) @map("created_at")
+model Budget {
+  budgetId    Int          @id @default(autoincrement()) @map("budget_id")
+  customerId  Int          @map("customer_id")
+  title       String       @default("My Event Budget")
+  totalBudget Float        @default(0) @map("total_budget")
+  eventDate   DateTime?    @map("event_date")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
 
-  customerId Int      @map("customer_id")
-  productId  Int?     @map("product_id")
-  serviceId  Int?     @map("service_id")
-  packageId  Int?     @map("package_id")
+  customer    Customer     @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  items       BudgetItem[]
 
-  customer Customer      @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  product  Product?      @relation(fields: [productId], references: [productId], onDelete: Cascade)
-  service  Service?      @relation(fields: [serviceId], references: [serviceId], onDelete: Cascade)
-  package  EventPackage? @relation(fields: [packageId], references: [packageId], onDelete: Cascade)
-
-  @@unique([customerId, productId])
-  @@unique([customerId, serviceId])
-  @@unique([customerId, packageId])
-
-  @@map("wishlist")
+  @@map("budget")
 }
 
-model Conversation {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+model BudgetItem {
+  budgetItemId Int      @id @default(autoincrement()) @map("budget_item_id")
+  budgetId     Int      @map("budget_id")
+  category     String   @default("General")
+  title        String
+  estimatedCost Float   @default(0) @map("estimated_cost")
+  actualCost   Float    @default(0) @map("actual_cost")
+  isPaid       Boolean  @default(false) @map("is_paid")
+  notes        String?
+  createdAt    DateTime @default(now()) @map("created_at")
 
-  customerId Int @map("customer_id")
-  vendorId   Int @map("vendor_id")
+  budget       Budget   @relation(fields: [budgetId], references: [budgetId], onDelete: Cascade)
 
-  customer Customer  @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  vendor   Vendor    @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  messages Message[]
-
-  @@unique([customerId, vendorId])
-  @@map("conversation")
+  @@map("budget_item")
 }
 
-model Message {
-  id         Int      @id @default(autoincrement())
-  text       String
-  senderType String   @map("sender_type") // 'customer' or 'vendor'
-  isRead     Boolean  @default(false) @map("is_read")
-  createdAt  DateTime @default(now()) @map("created_at")
+model RefundRequest {
+  refundId    Int      @id @default(autoincrement()) @map("refund_id")
+  orderId     Int      @map("order_id")
+  customerId  Int      @map("customer_id")
+  reason      String
+  amount      Float
+  status      String   @default("PENDING")
+  sellerNotes String?  @map("seller_notes")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
-  conversationId Int          @map("conversation_id")
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  order       Order    @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+  customer    Customer @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
 
-  @@map("message")
+  @@map("refund_request")
 }
-
-model budget {
-  id              Int               @id @default(autoincrement())
-  customer_id     Int               @unique
-  total_budget    Decimal           @default(0) @db.Decimal(10, 2)
-  customer        Customer          @relation(fields: [customer_id], references: [customerId], onDelete: Cascade)
-  budget_category budget_category[]
-}
-
-model budget_category {
-  id        Int     @id @default(autoincrement())
-  name      String
-  allocated Decimal @default(0) @db.Decimal(10, 2)
-  spent     Decimal @default(0) @db.Decimal(10, 2)
-  color     String?
-  budget_id Int
-  budget    budget  @relation(fields: [budget_id], references: [id], onDelete: Cascade)
-}
->>>>>>> b140e761a11216b90838762b7cd64bed41ea5750

@@ -47,7 +47,12 @@ const getMyReviews = async (req, res) => {
 
 const getSellerReviews = async (req, res) => {
   try {
-    const vendorId = req.user.id;
+    const vendorId = parseInt(req.user.id);
+
+    if (!vendorId) {
+      return res.status(200).json([]);
+    }
+
     const reviews = await prisma.review.findMany({
       where: {
         OR: [
@@ -57,15 +62,25 @@ const getSellerReviews = async (req, res) => {
         ]
       },
       include: {
-        customer: { select: { name: true, profileImage: true } },
-        product: { select: { productName: true } },
-        service: { select: { serviceName: true } }
+        customer: { select: { customerId: true, name: true, profileImage: true } },
+        product: { select: { productId: true, productName: true } },
+        service: { select: { serviceId: true, serviceName: true } }
       },
       orderBy: { reviewDate: 'desc' }
     });
-    res.status(200).json(reviews);
+
+    const formatted = reviews.map(r => ({
+      ...r,
+      id: r.reviewId,
+      customerName: r.customer?.name || 'Customer',
+      itemName: r.service?.serviceName || r.product?.productName || 'Event Service',
+      date: new Date(r.reviewDate).toLocaleDateString(),
+    }));
+
+    res.status(200).json(formatted);
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    console.error("Error in getSellerReviews:", error.message);
+    res.status(200).json([]);
   }
 };
 

@@ -33,6 +33,7 @@ import { PaymentPage } from './pages/customer/PaymentPage';
 import { OrderSuccess } from './pages/customer/OrderSuccess';
 import { OrderHistory } from './pages/customer/OrderHistory';
 import { EventDashboard } from './pages/customer/EventDashboard';
+import { BudgetPlanner } from './pages/customer/BudgetPlanner';
 
 
 import { BookVendor } from './pages/customer/BookVendor';
@@ -149,6 +150,7 @@ function App() {
           <Route path="order-success" element={<OrderSuccess />} />
           <Route path="order-history" element={<OrderHistory />} />
           <Route path="event-dashboard" element={<EventDashboard />} />
+          <Route path="budget-planner" element={<BudgetPlanner />} />
 
 
           <Route path="book-vendor" element={<BookVendor />} />
@@ -192,6 +194,7 @@ function App() {
           <Route path="seller-product-management" element={<SellerProductManagement />} />
           <Route path="add-product" element={<AddProduct />} />
           <Route path="edit-product" element={<EditProduct />} />
+          <Route path="edit-product/:id" element={<EditProduct />} />
           <Route path="inventory-management" element={<InventoryManagement />} />
           <Route path="stock-tracking" element={<StockTracking />} />
           <Route path="order-management" element={<OrderManagement />} />
@@ -240,3 +243,4 @@ function App() {
 }
 
 export default App;
+

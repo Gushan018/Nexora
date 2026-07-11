@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Calendar, ShoppingBag, Settings, LogOut, Bell, Menu, X, User, Heart, MessageSquare, List, Package, Search, Briefcase, ShoppingCart, Star, Store, DollarSign, ShieldAlert, Flag, Sun, Moon } from 'lucide-react';
+import { LayoutDashboard, Calendar, ShoppingBag, Settings, LogOut, Bell, Menu, X, User, Heart, MessageSquare, List, Package, Search, Briefcase, ShoppingCart, Star, Store, DollarSign, ShieldAlert, Flag, Sun, Moon, Calculator } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -52,13 +52,14 @@ export const DashboardLayout = ({ role = 'customer' }) => {
       const res = await api.get('/admin/settings');
       return res.data;
     },
+    enabled: userRole === 'admin',
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
 
   const canReceiveNotifications = role === 'customer' || role === 'vendor';
 
-  const { data: notifications = [] } = useQuery({
+  const { data: rawNotifications } = useQuery({
     queryKey: ['notifications'],
     queryFn: async () => {
       const res = await api.get('/notifications/my');
@@ -68,7 +69,13 @@ export const DashboardLayout = ({ role = 'customer' }) => {
     refetchInterval: 60000,
   });
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const notifications = Array.isArray(rawNotifications)
+    ? rawNotifications
+    : Array.isArray(rawNotifications?.notifications)
+    ? rawNotifications.notifications
+    : [];
+
+  const unreadCount = rawNotifications?.unreadCount ?? notifications.filter((n) => !n?.isRead).length;
 
   const markAsReadMutation = useMutation({
     mutationFn: (id) => api.put(`/notifications/${id}/read`),
@@ -119,6 +126,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           { name: 'Event Packages', path: '/customer/event-packages', icon: <Package /> },
           { name: 'My Orders', path: '/customer/order-history', icon: <ShoppingCart /> },
           { name: 'My Events', path: '/customer/event-dashboard', icon: <Calendar /> },
+          { name: 'Budget Planner', path: '/customer/budget-planner', icon: <Calculator /> },
           { name: 'Favorites', path: '/customer/wishlist', icon: <Heart /> },
           { name: 'Messages', path: '/customer/chat-inbox', icon: <MessageSquare /> },
           { name: 'Account', path: '/customer/account-settings', icon: <User /> },
@@ -428,3 +436,4 @@ export const DashboardLayout = ({ role = 'customer' }) => {
     </div>
   );
 };
+

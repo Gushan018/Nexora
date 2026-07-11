@@ -10,12 +10,19 @@ export const getBackendBaseUrl = () => {
   return base || 'http://localhost:5000';
 };
 
-export const resolveAssetUrl = (url) => {
-  if (!url) return '/logo.png';
+export const DEFAULT_PRODUCT_IMAGE = 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=500&q=80';
+
+export const resolveAssetUrl = (url, fallback = '/logo.png') => {
+  if (!url || typeof url !== 'string' || !url.trim()) return fallback;
   if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith('data:')) return url;
   if (url.startsWith('/uploads')) return `${getBackendBaseUrl()}${url}`;
   if (url.startsWith('/')) return url;
   return `${getBackendBaseUrl()}/${url}`;
+};
+
+export const getImageUrl = (url) => {
+  return resolveAssetUrl(url, DEFAULT_PRODUCT_IMAGE);
 };
 
 export const api = axios.create({
@@ -25,12 +32,16 @@ export const api = axios.create({
   },
 });
 
-// Add a request interceptor to attach the JWT token
+// Add a request interceptor to attach the JWT token and handle FormData Content-Type
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+      delete config.headers['content-type'];
     }
     return config;
   },
@@ -51,3 +62,4 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+

@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Users, Lock, Unlock, Eye, AlertTriangle, X, Trash2, Plus, Edit, LogIn } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,29 +16,82 @@ export const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [statusFilter, setStatusFilter] = useState('All Status');
+  const [roleFilter, setRoleFilter] = useState('All Roles');
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [formState, setFormState] = useState({ name: '', email: '', contactNumber: '', isBlocked: false });
   const [errorMessage, setErrorMessage] = useState('');
+  const [blockedCustomerIds, setBlockedCustomerIds] = useState(() => {
+    try {
+      const saved = localStorage.getItem('admin_blocked_customer_ids');
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
+
+  const saveBlockedCustomerIds = (newSet) => {
+    setBlockedCustomerIds(newSet);
+    try {
+      localStorage.setItem('admin_blocked_customer_ids', JSON.stringify(Array.from(newSet)));
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get('/admin/users');
-      setUsers(response.data.map((user) => ({
-        id: user.customerId,
-        name: user.name,
-        email: user.email,
-        phone: user.contactNumber || '-',
-        status: user.isBlocked ? 'Blocked' : 'Active',
-        joinDate: new Date(user.registrationDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-        isBlocked: user.isBlocked,
-        raw: user,
-      })));
+      const [custRes, vendRes] = await Promise.allSettled([
+        api.get('/admin/users'),
+        api.get('/admin/vendors')
+      ]);
+
+      let customerList = custRes.status === 'fulfilled' && Array.isArray(custRes.value?.data) ? custRes.value.data : [];
+      let vendorList = vendRes.status === 'fulfilled' && Array.isArray(vendRes.value?.data) ? vendRes.value.data : [];
+
+      const mappedCustomers = customerList.map((user) => {
+        const cId = user.customerId || user.id;
+        const isBlocked = blockedCustomerIds.has(cId);
+        return {
+          id: cId,
+          customerId: cId,
+          name: user.name || 'Customer',
+          email: user.email || '',
+          phone: user.contactNumber || user.phone || '-',
+          role: 'Customer',
+          status: isBlocked ? 'Blocked' : 'Active',
+          joinDate: user.registrationDate ? new Date(user.registrationDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A',
+          isBlocked: isBlocked,
+          raw: user,
+        };
+      });
+
+      const mappedVendors = vendorList.map((v) => {
+        const rawDate = v.registrationDate || v.lastActive;
+        const formattedDate = rawDate ? new Date(rawDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A';
+        const isBlocked = !!(v.blocked || v.isBlocked || !v.isApproved);
+        return {
+          id: `VND-${v.vendorId}`,
+          vendorId: v.vendorId,
+          name: v.businessName || v.name || 'Vendor',
+          email: v.email || '-',
+          phone: v.contactNumber || v.phone || '-',
+          role: 'Vendor',
+          status: isBlocked ? 'Blocked' : 'Active',
+          joinDate: formattedDate,
+          isBlocked: isBlocked,
+          raw: v,
+        };
+      });
+
+      let combined = [...mappedCustomers, ...mappedVendors];
+      setUsers(combined);
     } catch (error) {
-      console.error(error);
+      console.error('Error fetching admin users:', error);
+      setUsers([]);
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +99,7 @@ export const UserManagement = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [blockedCustomerIds]);
 
   const openCreateModal = () => {
     setIsEditMode(false);
@@ -61,7 +114,7 @@ export const UserManagement = () => {
     setFormState({
       name: user.name,
       email: user.email,
-      contactNumber: user.phone,
+      contactNumber: user.phone === '-' ? '' : user.phone,
       isBlocked: user.isBlocked,
     });
     setSelectedUser(user);
@@ -78,22 +131,58 @@ export const UserManagement = () => {
     setFormState((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleViewUser = async (userId) => {
+  const handleViewUser = async (userObj) => {
+    const isVendor = typeof userObj === 'object' && (userObj.role === 'Vendor' || !!userObj.vendorId);
     try {
-      const response = await api.get(`/admin/users/${userId}`);
+      if (isVendor) {
+        const vId = userObj.vendorId || userObj.raw?.vendorId || Number(String(userObj.id).replace('VND-', ''));
+        try {
+          const response = await api.get(`/admin/vendors/${vId}`);
+          const vData = response.data;
+          setSelectedUser({
+            id: userObj.id,
+            vendorId: vId,
+            role: 'Vendor',
+            name: vData.name || vData.businessName || userObj.name,
+            email: vData.email || userObj.email,
+            phone: vData.contactNumber || userObj.phone,
+            status: userObj.status,
+            joinDate: userObj.joinDate,
+            isBlocked: userObj.isBlocked,
+            orders: vData.orders || vData.bookingsList || [],
+          });
+        } catch {
+          setSelectedUser({
+            id: userObj.id,
+            vendorId: vId,
+            role: 'Vendor',
+            name: userObj.name,
+            email: userObj.email,
+            phone: userObj.phone,
+            status: userObj.status,
+            joinDate: userObj.joinDate,
+            isBlocked: userObj.isBlocked,
+            orders: [],
+          });
+        }
+        return;
+      }
+      const cId = userObj.customerId || userObj.raw?.customerId || userObj.id || userObj;
+      const response = await api.get(`/admin/users/${cId}`);
       const user = response.data;
       setSelectedUser({
         id: user.customerId,
+        role: 'Customer',
         name: user.name,
         email: user.email,
         phone: user.contactNumber || '-',
-        status: user.isBlocked ? 'Blocked' : 'Active',
+        status: blockedCustomerIds.has(user.customerId) ? 'Blocked' : 'Active',
         joinDate: new Date(user.registrationDate).toLocaleDateString('en-GB', {
           day: '2-digit',
           month: 'short',
           year: 'numeric',
         }),
-        isBlocked: user.isBlocked,
+        isBlocked: blockedCustomerIds.has(user.customerId),
         orders: user.orders || [],
       });
     } catch (error) {
@@ -103,17 +192,37 @@ export const UserManagement = () => {
 
   const handleSubmit = async () => {
     try {
-      const payload = {
-        name: formState.name,
-        email: formState.email,
-        contactNumber: formState.contactNumber,
-        isBlocked: formState.isBlocked,
-      };
-
+      const isVendor = selectedUser && (selectedUser.role === 'Vendor' || !!selectedUser.vendorId);
       if (isEditMode && selectedUser) {
-        await api.put(`/admin/users/${selectedUser.id}`, payload);
+        if (isVendor) {
+          const vId = selectedUser.vendorId || selectedUser.raw?.vendorId || Number(String(selectedUser.id).replace('VND-', ''));
+          await api.put(`/admin/vendors/${vId}`, {
+            name: formState.name,
+            email: formState.email,
+            contactNumber: formState.contactNumber,
+            isBlocked: formState.isBlocked,
+          });
+        } else {
+          const cId = selectedUser.customerId || selectedUser.raw?.customerId || Number(String(selectedUser.id).replace('VND-', ''));
+          await api.put(`/admin/users/${cId}`, {
+            name: formState.name,
+            email: formState.email,
+            contactNumber: formState.contactNumber,
+          });
+          const newSet = new Set(blockedCustomerIds);
+          if (formState.isBlocked) {
+            newSet.add(cId);
+          } else {
+            newSet.delete(cId);
+          }
+          saveBlockedCustomerIds(newSet);
+        }
       } else {
-        await api.post('/admin/users', payload);
+        await api.post('/admin/users', {
+          name: formState.name,
+          email: formState.email,
+          contactNumber: formState.contactNumber,
+        });
       }
 
       closeModal();
@@ -123,59 +232,126 @@ export const UserManagement = () => {
     }
   };
 
-  const handleDelete = async (userId) => {
-    if (!window.confirm('Delete this user permanently?')) return;
+  const handleDelete = async (user) => {
+    const isVendor = typeof user === 'object' && (user.role === 'Vendor' || !!user.vendorId);
+    const idToPass = isVendor
+      ? (user.vendorId || user.raw?.vendorId || Number(String(user.id).replace('VND-', '')))
+      : (user.customerId || user.raw?.customerId || Number(String(user.id).replace('VND-', '')));
+
+    if (!idToPass || isNaN(Number(idToPass))) return;
+
+    if (!window.confirm(`Delete this ${isVendor ? 'vendor' : 'user'} account?`)) return;
     try {
-      await api.delete(`/admin/users/${userId}`);
-      if (selectedUser?.id === userId) {
+      if (isVendor) {
+        await api.put(`/admin/vendors/${idToPass}/reject`);
+      } else {
+        await api.delete(`/admin/users/${idToPass}`);
+      }
+      if (selectedUser?.id === user.id) {
         setSelectedUser(null);
       }
       fetchUsers();
     } catch (error) {
-      console.error(error);
+      console.error('Failed to delete user:', error);
     }
   };
 
   const handleToggleBlock = async (user) => {
     try {
-      await api.put(`/admin/users/${user.id}`, {
-        name: user.name,
-        email: user.email,
-        contactNumber: user.phone === '-' ? null : user.phone,
-        isBlocked: !user.isBlocked,
-      });
+      const isVendor = user.role === 'Vendor' || !!user.vendorId;
+      const idToPass = isVendor
+        ? (user.vendorId || user.raw?.vendorId || Number(String(user.id).replace('VND-', '')))
+        : (user.customerId || user.raw?.customerId || Number(String(user.id).replace('VND-', '')));
+
+      if (!idToPass || isNaN(Number(idToPass))) return;
+
+      if (isVendor) {
+        await api.put(`/admin/vendors/${idToPass}/block`, { isBlocked: !user.isBlocked });
+      } else {
+        await api.put(`/admin/users/${idToPass}`, {
+          name: user.name,
+          email: user.email,
+          contactNumber: user.phone === '-' ? null : user.phone,
+        });
+        const newSet = new Set(blockedCustomerIds);
+        if (user.isBlocked) {
+          newSet.delete(idToPass);
+        } else {
+          newSet.add(idToPass);
+        }
+        saveBlockedCustomerIds(newSet);
+      }
       fetchUsers();
       if (selectedUser?.id === user.id) {
-        setSelectedUser((prev) => prev && ({ ...prev, isBlocked: !prev.isBlocked }));
+        setSelectedUser((prev) => prev && ({ ...prev, isBlocked: !prev.isBlocked, status: !prev.isBlocked ? 'Blocked' : 'Active' }));
       }
     } catch (error) {
-      console.error(error);
+      console.error('Failed to toggle block:', error);
     }
   };
 
-  const handleLoginAsUser = async (userId) => {
+  const handleLoginAsUser = async (userObj) => {
     setImpersonating(true);
     try {
-      const response = await api.post(`/admin/impersonate/customer/${userId}`);
+      const isVendor = typeof userObj === 'object' ? (userObj.role === 'Vendor' || !!userObj.vendorId) : false;
+      const targetRole = isVendor ? 'vendor' : 'customer';
+      const targetId = typeof userObj === 'object' ? (isVendor ? (userObj.vendorId || userObj.raw?.vendorId || Number(String(userObj.id).replace('VND-', ''))) : (userObj.customerId || userObj.raw?.customerId || userObj.id)) : userObj;
+      
+      const response = await api.post(`/admin/impersonate/${targetRole}/${targetId}`);
       loginAsUser(response.data.token, response.data.user);
-      navigate('/customer/dashboard');
+      navigate(isVendor ? '/vendor/dashboard' : '/customer/dashboard');
     } catch (error) {
       console.error(error);
       setImpersonating(false);
     }
   };
 
+  const handleExportCSV = () => {
+    if (filteredUsers.length === 0) return alert('No users available to export.');
+    const headers = ['ID', 'Name', 'Email', 'Phone', 'Role', 'Join Date', 'Status'];
+    const rows = filteredUsers.map(u => [
+      u.id,
+      `"${(u.name || '').replace(/"/g, '""')}"`,
+      `"${(u.email || '').replace(/"/g, '""')}"`,
+      `"${(u.phone || '').replace(/"/g, '""')}"`,
+      u.role || 'User',
+      u.joinDate || 'N/A',
+      u.status || 'Active'
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `platform_users_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleResetFilters = () => {
+    setSearchQuery('');
+    setStatusFilter('All Status');
+    setRoleFilter('All Roles');
+  };
+
+  const handleSyncStatus = () => {
+    fetchUsers();
+  };
+
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
-      const matchesSearch = [user.name, user.email, user.phone].some((value) =>
-        value.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      const name = (user.name || '').toLowerCase();
+      const email = (user.email || '').toLowerCase();
+      const phone = (user.phone || '').toLowerCase();
+      const query = (searchQuery || '').toLowerCase();
 
+      const matchesSearch = !query || name.includes(query) || email.includes(query) || phone.includes(query);
       const matchesStatus = statusFilter === 'All Status' || user.status === statusFilter;
+      const matchesRole = roleFilter === 'All Roles' || user.role === roleFilter;
 
-      return matchesSearch && matchesStatus;
+      return matchesSearch && matchesStatus && matchesRole;
     });
-  }, [searchQuery, statusFilter, users]);
+  }, [searchQuery, statusFilter, roleFilter, users]);
 
   const selectedUserOrders = selectedUser?.orders ?? [];
   const completedEvents = selectedUserOrders.filter((order) => order.status === 'COMPLETED').length;
@@ -201,32 +377,41 @@ export const UserManagement = () => {
           <p className="text-gray-600 dark:text-white/60">Review customer accounts, manage access, and view booking history.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">Export Users</Button>
+          <Button variant="outline" onClick={handleExportCSV}>Export Users</Button>
           <Button leftIcon={<Plus className="w-4 h-4" />} onClick={openCreateModal}>Add New User</Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
         <input
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
           type="text"
           placeholder="Search by name, email or phone..."
-          className="px-4 py-2 bg-light-surface dark:bg-surface border border-gray-300 dark:border-white/10 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-white/40 focus:outline-none focus:border-primary"
+          className="px-4 py-2 bg-light-surface dark:bg-surface border border-gray-300 dark:border-white/10 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-white/40 focus:outline-none focus:border-primary md:col-span-2"
         />
+        <select
+          value={roleFilter}
+          onChange={(event) => setRoleFilter(event.target.value)}
+          className="px-4 py-2 bg-light-surface dark:bg-surface border border-gray-300 dark:border-white/10 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-primary"
+        >
+          <option value="All Roles">All Roles</option>
+          <option value="Customer">Customers Only</option>
+          <option value="Vendor">Vendors Only</option>
+        </select>
         <select
           value={statusFilter}
           onChange={(event) => setStatusFilter(event.target.value)}
           className="px-4 py-2 bg-light-surface dark:bg-surface border border-gray-300 dark:border-white/10 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-primary"
         >
-          <option>All Status</option>
-          <option>Active</option>
-          <option>Pending</option>
-          <option>Blocked</option>
+          <option value="All Status">All Status</option>
+          <option value="Active">Active</option>
+          <option value="Pending">Pending</option>
+          <option value="Blocked">Blocked</option>
         </select>
-        <div className="md:col-span-2 flex gap-2">
-          <Button variant="outline">Reset Filters</Button>
-          <Button>Sync Status</Button>
+        <div className="flex gap-2">
+          <Button variant="outline" className="w-full" onClick={handleResetFilters}>Reset</Button>
+          <Button className="w-full" onClick={handleSyncStatus} isLoading={isLoading}>Sync</Button>
         </div>
       </div>
 
@@ -239,10 +424,11 @@ export const UserManagement = () => {
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[720px]">
+            <table className="w-full min-w-[800px]">
               <thead>
                 <tr className="border-b border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-white/5">
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Name</th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Role</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Email</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Phone</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Join Date</th>
@@ -258,6 +444,16 @@ export const UserManagement = () => {
                       className="border-b border-gray-200 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors"
                     >
                       <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{user.name}</td>
+                      <td className="px-6 py-4 text-sm">
+                        <span className={cn(
+                          'px-2.5 py-0.5 rounded-full text-xs font-medium',
+                          user.role === 'Vendor'
+                            ? 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300'
+                            : 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300'
+                        )}>
+                          {user.role}
+                        </span>
+                      </td>
                       <td className="px-6 py-4 text-sm text-gray-600 dark:text-white/60">{user.email}</td>
                       <td className="px-6 py-4 text-sm text-gray-600 dark:text-white/60">{user.phone}</td>
                       <td className="px-6 py-4 text-sm text-gray-600 dark:text-white/60">{user.joinDate}</td>
@@ -281,7 +477,7 @@ export const UserManagement = () => {
                             size="sm"
                             variant="outline"
                             leftIcon={<Eye className="w-4 h-4" />}
-                            onClick={() => handleViewUser(user.id)}
+                            onClick={() => handleViewUser(user)}
                           >
                             View
                           </Button>
@@ -305,7 +501,7 @@ export const UserManagement = () => {
                             size="sm"
                             variant="danger"
                             leftIcon={<Trash2 className="w-4 h-4" />}
-                            onClick={() => handleDelete(user.id)}
+                            onClick={() => handleDelete(user)}
                           >
                             Delete
                           </Button>
@@ -344,14 +540,16 @@ export const UserManagement = () => {
               <div className="flex items-center justify-between gap-4 border-b border-gray-200 dark:border-white/5 p-5">
                 <div>
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{selectedUser.name}</h2>
-                  <p className="text-sm text-gray-500 dark:text-white/50">Customer profile overview</p>
+                  <p className="text-sm text-gray-500 dark:text-white/50">
+                    {selectedUser.role === 'Vendor' ? 'Vendor profile overview' : 'Customer profile overview'}
+                  </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Button
                     size="sm"
                     variant="outline"
                     leftIcon={<LogIn className="w-4 h-4" />}
-                    onClick={() => handleLoginAsUser(selectedUser.id)}
+                    onClick={() => handleLoginAsUser(selectedUser)}
                     isLoading={impersonating}
                     title="Temporarily view the platform as this user, without their password"
                   >
@@ -427,7 +625,7 @@ export const UserManagement = () => {
                       <h3 className="text-base font-semibold text-gray-900 dark:text-white">Order & Booking History</h3>
                       <p className="text-sm text-gray-500 dark:text-white/50">Detailed customer orders and escrow status.</p>
                     </div>
-                    <Button size="sm" variant="outline">View All</Button>
+                    <Button size="sm" variant="outline" onClick={() => navigate('/admin/admin-booking-management')}>View All</Button>
                   </div>
 
                   <div className="mt-5 space-y-4">
@@ -526,3 +724,4 @@ const InfoLabel = ({ label, value }) => (
     <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{value}</p>
   </div>
 );
+

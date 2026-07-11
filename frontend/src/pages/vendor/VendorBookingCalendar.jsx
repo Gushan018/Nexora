@@ -1,6 +1,6 @@
-﻿import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, MapPin, User } from 'lucide-react';
-import { Card, CardContent } from '../../components/common/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 import { api } from '../../utils/api';
@@ -127,15 +127,24 @@ export const VendorBookingCalendar = () => {
           <CardContent className="p-0">
             {/* Calendar Header */}
             <div className="p-4 border-b border-slate-200 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-slate-900">October 2026</h2>
+              <h2 className="text-lg font-bold text-slate-900">{currentMonthLabel}</h2>
               <div className="flex gap-2">
-                <button className="p-2 bg-surface border border-slate-300 rounded-lg text-slate-900 hover:bg-slate-100 transition-colors">
+                <button 
+                  onClick={() => changeMonth(-1)}
+                  className="p-2 bg-surface border border-slate-300 rounded-lg text-slate-900 hover:bg-slate-100 transition-colors"
+                >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
-                <button className="px-4 py-2 bg-surface border border-slate-300 rounded-lg text-slate-900 text-sm font-medium hover:bg-slate-100 transition-colors">
+                <button 
+                  onClick={() => setViewDate(new Date())}
+                  className="px-4 py-2 bg-surface border border-slate-300 rounded-lg text-slate-900 text-sm font-medium hover:bg-slate-100 transition-colors"
+                >
                   Today
                 </button>
-                <button className="p-2 bg-surface border border-slate-300 rounded-lg text-slate-900 hover:bg-slate-100 transition-colors">
+                <button 
+                  onClick={() => changeMonth(1)}
+                  className="p-2 bg-surface border border-slate-300 rounded-lg text-slate-900 hover:bg-slate-100 transition-colors"
+                >
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
@@ -150,51 +159,28 @@ export const VendorBookingCalendar = () => {
               ))}
             </div>
             
-            <div className="grid grid-cols-7 grid-rows-5 bg-surface/30">
-              {[...Array(35)].map((_, i) => {
-                const dayNumber = i - 3; // Offset to simulate month starting on Thu
-                const isCurrentMonth = dayNumber > 0 && dayNumber <= 31;
-                const hasEvent = MOCK_EVENTS[dayNumber];
-                
-                return (
-                  <div key={i} className={cn(
+            <div className="grid grid-cols-7 bg-surface/30">
+              {calendarGrid.map((cell, idx) => (
+                <div 
+                  key={idx} 
+                  className={cn(
                     "min-h-[100px] p-2 border-r border-b border-slate-200 last:border-r-0 transition-colors hover:bg-slate-50",
-                    !isCurrentMonth && "opacity-30 bg-black/20"
+                    !cell.isCurrentMonth && "opacity-30 bg-black/20"
+                  )}
+                >
+                  <span className={cn(
+                    "w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium mb-1",
+                    cell.isToday ? "bg-primary text-white" : "text-slate-800"
                   )}>
-                    {isCurrentMonth && (
-                      <>
-                        <span className={cn(
-                          "w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium mb-1",
-                          dayNumber === 24 ? "bg-primary text-white" : "text-slate-800"
-                        )}>
-                          {dayNumber}
-                        </span>
-                        
-                        {hasEvent && hasEvent.map((evt, idx) => (
-                          <div key={idx} className="bg-primary/20 border border-primary/30 rounded p-1 mb-1 truncate cursor-pointer hover:bg-primary/30 transition-colors">
-                            <span className="text-[10px] text-primary font-bold block">{evt.time}</span>
-                            <span className="text-[11px] text-slate-900 truncate">{evt.title}</span>
-                          </div>
-                        ))}
-                      </>
-                    )}
-                  </div>
-
-                  <div className="space-y-1">
-                    {cell.events.slice(0, 2).map((booking, index) => (
-                      <div key={booking.bookingId ?? index} className="rounded-xl border border-white/10 bg-white/5 p-2 text-[11px] text-textPrimary/80">
-                        <div className="font-semibold text-textPrimary truncate">{booking.customer?.name || 'Customer'}</div>
-                        <div className="truncate">{booking.service?.serviceName || booking.package?.packageName || 'Booking'}</div>
-                        <div className="flex items-center gap-1 text-textPrimary/50">
-                          <Clock className="w-3.5 h-3.5" />
-                          {formatTime(booking.eventDate)}
-                        </div>
-                      </div>
-                    ))}
-                    {cell.events.length > 2 && (
-                      <div className="text-[11px] text-textPrimary/50">+{cell.events.length - 2} more</div>
-                    )}
-                  </div>
+                    {cell.date.getDate()}
+                  </span>
+                  
+                  {cell.events.map((evt) => (
+                    <div key={evt.bookingId} className="bg-primary/20 border border-primary/30 rounded p-1 mb-1 truncate cursor-pointer hover:bg-primary/30 transition-colors">
+                      <span className="text-[10px] text-primary font-bold block">{formatTime(evt.eventDate)}</span>
+                      <span className="text-[11px] text-slate-900 truncate">{evt.service?.serviceName || evt.package?.packageName || 'Booking'}</span>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
@@ -202,51 +188,31 @@ export const VendorBookingCalendar = () => {
         </Card>
 
         <div className="space-y-4">
-          <h3 className="font-bold text-slate-900 mb-2">Upcoming this week</h3>
-          
-          <Card className="border-primary/50 relative overflow-hidden group hover:border-primary transition-colors cursor-pointer">
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />
-            <CardContent className="p-4 pl-5">
-              <h4 className="text-slate-900 font-bold mb-3 group-hover:text-primary transition-colors">TechNova Corporate Gala</h4>
-              <div className="space-y-2 text-sm text-slate-700">
-                <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-500"/> Oct 14, 18:00 - 23:00</div>
-                <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-slate-500"/> Grand Hyatt Ballroom</div>
-                <div className="flex items-center gap-2"><User className="w-4 h-4 text-slate-500"/> Contact: Michael Chen</div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Schedule Stats</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-textPrimary/70">Total bookings</span>
+                <span className="font-semibold text-textPrimary">{monthStats.total}</span>
               </div>
-              <span className="text-xs text-textPrimary/50">{monthStats.total} bookings</span>
-            </div>
-            <div className="space-y-3 text-sm text-textPrimary/70">
-              <div className="flex items-center justify-between">
-                <span>Total booked days</span>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-textPrimary/70">Booked days</span>
                 <span className="font-semibold text-textPrimary">{monthStats.bookedDays}</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span>Upcoming events</span>
-                <span className="font-semibold text-textPrimary">{upcomingBookings.length}</span>
-              </div>
               {monthStats.nextEvent && (
-                <div className="rounded-3xl border border-white/10 bg-white/5 p-3">
-                  <p className="text-xs uppercase tracking-[0.2em] text-textPrimary/40">Next event</p>
-                  <p className="mt-2 font-semibold text-textPrimary">{monthStats.nextEvent.service?.serviceName || monthStats.nextEvent.package?.packageName || 'Booking'}</p>
-                  <p className="text-sm text-textPrimary/60">{new Date(monthStats.nextEvent.eventDate).toLocaleDateString()}</p>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-3 mt-4">
+                  <p className="text-xs uppercase tracking-wider text-textPrimary/50 font-semibold mb-1">Next Event</p>
+                  <p className="font-semibold text-textPrimary">{monthStats.nextEvent.service?.serviceName || monthStats.nextEvent.package?.packageName || 'Booking'}</p>
+                  <p className="text-xs text-textPrimary/60 mt-1">{new Date(monthStats.nextEvent.eventDate).toLocaleDateString()}</p>
                 </div>
               )}
-            </div>
-          </div>
-
-          <Card className="border-slate-300 hover:border-slate-400 transition-colors cursor-pointer">
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-slate-300" />
-            <CardContent className="p-4 pl-5">
-              <h4 className="text-slate-900 font-bold mb-3">Sarah & John Wedding</h4>
-              <div className="space-y-2 text-sm text-slate-700">
-                <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-500"/> Oct 18, 14:00 - 22:00</div>
-                <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-slate-500"/> Beachfront Resort</div>
-                <div className="flex items-center gap-2"><User className="w-4 h-4 text-slate-500"/> Contact: Sarah Jenkins</div>
-              </div>
-            )}
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
   );
 };
+

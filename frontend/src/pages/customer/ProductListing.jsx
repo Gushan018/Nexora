@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { Search, Filter, MoreVertical } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -50,3 +50,4 @@ export const ProductListing = () => {
     </div>
   );
 };
+

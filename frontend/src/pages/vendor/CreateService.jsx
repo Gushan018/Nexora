@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, ArrowLeft, Image as ImageIcon, MapPin, DollarSign, Upload, Info, X, Check } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
@@ -135,13 +135,19 @@ export const CreateService = () => {
         serviceName: formData.serviceName.trim(),
         price: parseFloat(formData.price),
         description: formData.description.trim(),
-        categoryId: parseInt(formData.category),
+        categoryId: !isNaN(parseInt(formData.category)) ? parseInt(formData.category) : undefined,
+        category: formData.category,
         pricingModel: formData.pricingModel,
         serviceArea: formData.serviceArea.trim(),
         imageUrl: coverImageUrl
       };
 
-      const response = await api.post('/vendors/services', serviceData);
+      let response;
+      try {
+        response = await api.post('/services', serviceData);
+      } catch (errPost) {
+        response = await api.post('/vendors/services', serviceData);
+      }
 
       setSuccess('Service created successfully!');
       setTimeout(() => {
@@ -193,98 +199,59 @@ export const CreateService = () => {
 
         {/* Main Form */}
         <div className="lg:col-span-2 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Basic Information</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              
-              <Input label="Service Title" placeholder="e.g. Premium Wedding Videography" />
-              
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800">Category</label>
-                <select className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
-                  <option value="" disabled selected>Select a category...</option>
-                  <option value="photography">Photography & Videography</option>
-                  <option value="venues">Venues & Spaces</option>
-                  <option value="catering">Catering & Food</option>
-                  <option value="entertainment">Entertainment & Music</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800">Detailed Description</label>
-                <textarea 
-                  rows="6" 
-                  placeholder="Describe what makes this service special..."
-                  className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors resize-none"
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Basic Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <Input
+                  label="Service Title *"
+                  placeholder="e.g. Premium Wedding Videography"
+                  name="serviceName"
+                  value={formData.serviceName}
+                  onChange={handleInputChange}
+                  required
                 />
-
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Media & Portfolio</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800">Cover Photo</label>
-                <div className="w-full h-48 rounded-xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center hover:border-primary/50 hover:bg-surface/50 cursor-pointer transition-all group bg-surface/30">
-                  <Upload className="w-8 h-8 text-slate-500 mb-3 group-hover:text-primary transition-colors" />
-                  <p className="text-sm text-slate-900 font-medium">Click to upload or drag and drop</p>
-                  <p className="text-xs text-slate-500 mt-1">1920x1080px (16:9) recommended</p>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800 flex justify-between">
-                  <span>Gallery Images</span>
-                  <span className="text-slate-500">0/10</span>
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="aspect-square rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center hover:border-slate-400 cursor-pointer bg-surface/30 transition-colors">
-                      <Plus className="w-6 h-6 text-slate-300" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Service Settings</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <Input label="Starting Price (Base Rate)" leftIcon={<DollarSign className="w-4 h-4"/>} placeholder="1500" type="number" />
+                
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-800">Pricing Model</label>
-                  <select className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
-                    <option value="fixed">Fixed Package</option>
-                    <option value="hourly">Hourly Rate</option>
-                    <option value="custom">Custom Quote Required</option>
+                  <label className="text-sm font-medium text-textPrimary/90">Category *</label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full bg-light-surface dark:bg-surface border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
+                  >
+                    <option value="" disabled style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Select a category...</option>
+                    {categories.length > 0 ? (
+                      categories.map(cat => (
+                        <option key={cat.categoryId} value={cat.categoryId} style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>
+                          {cat.categoryName}
+                        </option>
+                      ))
+                    ) : (
+                      <>
+                        <option value="Decorations" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Decorations</option>
+                        <option value="Food & Catering" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Food & Catering</option>
+                        <option value="Music & Entertainment" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Music & Entertainment</option>
+                        <option value="Photography & Video" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Photography & Video</option>
+                      </>
+                    )}
                   </select>
                 </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800">Service Area (Locations)</label>
-                <div className="relative">
-                  <MapPin className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-                  <input 
-                    type="text" 
-                    placeholder="e.g. Los Angeles, San Diego, Orange County"
-                    className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors"
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-textPrimary/90">Detailed Description</label>
+                  <textarea
+                    rows="4"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                    placeholder="Describe what makes this service special..."
+                    className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors resize-none"
                   />
                 </div>
-                <p className="text-xs text-slate-500 mt-1">Separate multiple locations with commas.</p>
-              </div>
-
               </CardContent>
             </Card>
 
@@ -359,9 +326,9 @@ export const CreateService = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <Input
-                    label="Starting Price (Base Rate) *"
-                    leftIcon={<DollarSign className="w-4 h-4"/>}
-                    placeholder="1500"
+                    label="Starting Price (Base Rate in LKR) *"
+                    leftIcon={<span className="text-xs font-bold text-slate-400">Rs.</span>}
+                    placeholder="250000"
                     type="number"
                     step="0.01"
                     min="0"
@@ -376,17 +343,17 @@ export const CreateService = () => {
                       name="pricingModel"
                       value={formData.pricingModel}
                       onChange={handleInputChange}
-                      className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
+                      className="w-full bg-light-surface dark:bg-surface border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
                     >
-                      <option value="fixed">Fixed Package</option>
-                      <option value="hourly">Hourly Rate</option>
-                      <option value="custom">Custom Quote Required</option>
+                      <option value="fixed" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Fixed Package</option>
+                      <option value="hourly" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Hourly Rate</option>
+                      <option value="custom" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Custom Quote Required</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-textPrimary/90">Service Area (Locations)</label>
+                  <label className="text-sm font-medium text-textPrimary/90">Service Area (Sri Lankan Cities / Districts)</label>
                   <div className="relative">
                     <MapPin className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
                     <input
@@ -394,11 +361,11 @@ export const CreateService = () => {
                       name="serviceArea"
                       value={formData.serviceArea}
                       onChange={handleInputChange}
-                      placeholder="e.g. Los Angeles, San Diego, Orange County"
+                      placeholder="e.g. Colombo, Kandy, Galle, Negombo"
                       className="w-full bg-surface/50 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
                     />
                   </div>
-                  <p className="text-xs text-textPrimary/40 mt-1">Separate multiple locations with commas.</p>
+                  <p className="text-xs text-textPrimary/40 mt-1">Separate Sri Lankan locations with commas.</p>
                 </div>
 
               </CardContent>
@@ -445,3 +412,4 @@ export const CreateService = () => {
     </div>
   );
 };
+

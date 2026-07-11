@@ -238,16 +238,20 @@ const loginUnified = async (req, res) => {
       }
     }
 
-    // 2. Check Vendor
+    // 2. Check Vendor / Seller
     const vendor = await prisma.vendor.findUnique({ where: { email } });
     if (vendor) {
       const isMatch = await bcrypt.compare(password, vendor.password);
       if (isMatch) {
-        const token = generateToken(vendor.vendorId, 'vendor');
+        let role = 'vendor';
+        if (vendor.vendorType === 'RENTAL' || email.includes('seller')) {
+          role = 'seller';
+        }
+        const token = generateToken(vendor.vendorId, role);
         return res.status(200).json({
           message: "Login successful!",
           token,
-          user: { id: vendor.vendorId, businessName: vendor.businessName, email: vendor.email, role: 'vendor' }
+          user: { id: vendor.vendorId, businessName: vendor.businessName, email: vendor.email, role, vendorType: vendor.vendorType }
         });
       }
     }

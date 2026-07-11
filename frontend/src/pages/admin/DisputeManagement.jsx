@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ShieldAlert, Search, MessageSquare, Gavel, Download, FileText, CheckCircle2, AlertTriangle, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
@@ -7,10 +7,10 @@ import { api } from '../../utils/api';
 import { cn } from '../../utils/cn';
 
 const TABS = [
-  { id: 'open', label: 'ðŸ”´ Open / Action Required' },
-  { id: 'investigating', label: 'ðŸŸ¡ Under Investigation' },
-  { id: 'resolved', label: 'ðŸŸ¢ Resolved / Closed' },
-  { id: 'rejected', label: 'âš« Rejected' },
+  { id: 'open', label: '🔴 Open / Action Required' },
+  { id: 'investigating', label: '🟡 Under Investigation' },
+  { id: 'resolved', label: '🟢 Resolved / Closed' },
+  { id: 'rejected', label: '⚫ Rejected' },
 ];
 
 const badgeStyles = {
@@ -277,7 +277,7 @@ export const DisputeManagement = () => {
               <div className="flex items-center justify-between gap-4 border-b border-gray-200 px-6 py-5 dark:border-gray-800 shrink-0 bg-white dark:bg-gray-900">
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Review Case {selectedDispute.id}</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Order {selectedDispute.orderId} â€¢ {selectedDispute.amount}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Order {selectedDispute.orderId} • {selectedDispute.amount}</p>
                 </div>
                 <button
                   type="button"
@@ -399,7 +399,7 @@ export const DisputeManagement = () => {
                         <p className="font-semibold text-gray-900 dark:text-white text-base">{selectedDispute.reason}</p>
                       </div>
                       <div className="space-y-2 pt-2">
-                        <p><span className="font-medium text-gray-500 dark:text-gray-400">Raised by:</span> {selectedDispute.raisedBy} â€¢ {selectedDispute.reporter}</p>
+                        <p><span className="font-medium text-gray-500 dark:text-gray-400">Raised by:</span> {selectedDispute.raisedBy} • {selectedDispute.reporter}</p>
                         <p><span className="font-medium text-gray-500 dark:text-gray-400">Reported on:</span> {selectedDispute.date}</p>
                         <div className="flex items-center gap-2 pt-1">
                           <span className="font-medium text-gray-500 dark:text-gray-400">Current status:</span>
@@ -432,3 +432,4 @@ export const DisputeManagement = () => {
     </div>
   );
 };
+

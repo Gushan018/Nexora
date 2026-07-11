@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Users, Check, ChevronRight, Heart, Building2, PartyPopper } from 'lucide-react';
@@ -168,3 +168,4 @@ export const CreateEvent = () => {
     </div>
   );
 };
+

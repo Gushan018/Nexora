@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
@@ -9,149 +9,9 @@ import { cn } from '@/utils/cn';
 import { api } from '@/utils/api';
 import { useAuth } from '@/context/AuthContext';
 
-const createPackages = (count) =>
-  Array.from({ length: count }, (_, index) => ({
-    id: `PKG-${101 + index}`,
-    name: `Package ${index + 1} â€” ${['Wedding Photography', 'Engagement Shoot', 'Event Coverage', 'Highlight Reel', 'Ceremony Album'][index % 5]}`,
-    status: index % 12 === 7 ? 'Suspended' : 'Active',
-  }));
+const createPackages = (count) => [];
 
-const INITIAL_VENDORS = [
-  {
-    id: 'VND-201',
-    name: 'Midnight Gold',
-    category: 'Photography',
-    type: 'Service Provider',
-    rating: 4.8,
-    location: 'Colombo, Sri Lanka',
-    gmv: 'LKR368,400',
-    status: 'Verified',
-    badReviews: 1,
-    lastActive: '2026-06-01',
-    blocked: false,
-    financial: {
-      totalGenerated: 'LKR368,400',
-      commissionPercent: 10,
-      platformProfit: 'LKR36,840',
-      escrowHeld: 'LKR42,300',
-      payoutsSent: 'LKR289,260',
-    },
-    packages: createPackages(24),
-    bookings: {
-      total: 142,
-      completed: 120,
-      canceled: 18,
-      disputes: 4,
-    },
-    auditLog: [
-      { id: 'A1', text: 'Vendor added a new package: Drone Coverage', time: '2 hours ago' },
-      { id: 'A2', text: 'Vendor requested a withdrawal of $18,500', time: '1 day ago' },
-      { id: 'A3', text: 'Platform approved payout to vendor bank account', time: '3 days ago' },
-      { id: 'A4', text: 'Vendor updated pricing for Wedding Photography package', time: '5 days ago' },
-      { id: 'A5', text: 'Escrow release approved for order #ORD-142', time: '1 week ago' },
-    ],
-    reviews: {
-      average: 4.8,
-      total: 78,
-      latest: 'Excellent photography and fast delivery. Highly recommend!',
-    },
-    orders: [
-      { id: '#ORD-142', item: 'Wedding Photography Package', vendor: 'Midnight Gold', amount: 'LKR2,850', status: 'COMPLETED', escrow: 'RELEASED', date: 'Jun 10, 2026' },
-      { id: '#ORD-138', item: 'Engagement Photoshoot', vendor: 'Midnight Gold', amount: 'LKR1,200', status: 'COMPLETED', escrow: 'RELEASED', date: 'May 28, 2026' },
-      { id: '#ORD-135', item: 'Event Highlight Reel', vendor: 'Midnight Gold', amount: 'LKR950', status: 'COMPLETED', escrow: 'RELEASED', date: 'May 15, 2026' },
-    ],
-  },
-  {
-    id: 'VND-202',
-    name: 'Grand Azure Resort',
-    category: 'Venues',
-    type: 'Event Company',
-    rating: 4.5,
-    location: 'Kandy, Sri Lanka',
-    gmv: 'LKR520,000',
-    status: 'Verified',
-    badReviews: 2,
-    lastActive: '2026-05-15',
-    blocked: false,
-    financial: {
-      totalGenerated: 'LKR520,000',
-      commissionPercent: 10,
-      platformProfit: 'LKR52,000',
-      escrowHeld: 'LKR76,500',
-      payoutsSent: 'LKR391,500',
-    },
-    packages: createPackages(12),
-    bookings: { total: 98, completed: 84, canceled: 10, disputes: 2 },
-    auditLog: [
-      { id: 'A6', text: 'Vendor added a new package: Outdoor Venue', time: '4 hours ago' },
-      { id: 'A7', text: 'Vendor requested payout for May bookings', time: '2 days ago' },
-    ],
-    reviews: { average: 4.5, total: 54, latest: 'Great location and responsive staff.' },
-    orders: [
-      { id: '#ORD-121', item: 'Banquet Hall Rental', vendor: 'Grand Azure Resort', amount: 'LKR3,500', status: 'COMPLETED', escrow: 'RELEASED', date: 'May 21, 2026' },
-    ],
-  },
-  {
-    id: 'VND-203',
-    name: 'DJ Velocity',
-    category: 'Entertainment',
-    type: 'Service Provider',
-    rating: 4.2,
-    location: 'Galle, Sri Lanka',
-    gmv: 'LKR24,000',
-    status: 'Pending Review',
-    badReviews: 5,
-    lastActive: '2026-03-20',
-    blocked: false,
-    financial: {
-      totalGenerated: 'LKR24,000',
-      commissionPercent: 10,
-      platformProfit: 'LKR 2,400',
-      escrowHeld: 'LKR 6,800',
-      payoutsSent: 'LKR 15,800',
-    },
-    packages: createPackages(8),
-    bookings: { total: 42, completed: 30, canceled: 8, disputes: 3 },
-    auditLog: [
-      { id: 'A8', text: 'Vendor added a withdrawal request', time: '1 day ago' },
-      { id: 'A9', text: 'Vendor updated package: Party DJ', time: '3 days ago' },
-    ],
-    reviews: { average: 4.2, total: 30, latest: 'Good energy but sound mixing needs improvement.' },
-    orders: [
-      { id: '#ORD-99', item: 'Party DJ', vendor: 'DJ Velocity', amount: 'LKR 850', status: 'PENDING', escrow: 'HELD', date: 'Jun 05, 2026' },
-    ],
-  },
-  {
-    id: 'VND-204',
-    name: 'Elite Catering Co.',
-    category: 'Catering',
-    type: 'Seller',
-    rating: 2.8,
-    location: 'Negombo, Sri Lanka',
-    gmv: 'LKR5,200',
-    status: 'Warning',
-    badReviews: 5,
-    lastActive: '2026-01-30',
-    blocked: true,
-    financial: {
-      totalGenerated: 'LKR5,200',
-      commissionPercent: 10,
-      platformProfit: 'LKR520',
-      escrowHeld: 'LKR1,200',
-      payoutsSent: 'LKR3,480',
-    },
-    packages: createPackages(6),
-    bookings: { total: 9, completed: 5, canceled: 3, disputes: 2 },
-    auditLog: [
-      { id: 'A10', text: 'Vendor listed a new package: Budget Buffet', time: '5 days ago' },
-      { id: 'A11', text: 'Vendor submitted dispute response', time: '1 week ago' },
-    ],
-    reviews: { average: 2.8, total: 12, latest: 'Food quality was below expectations.' },
-    orders: [
-      { id: '#ORD-112', item: 'Budget Buffet', vendor: 'Elite Catering Co.', amount: 'LKR520', status: 'COMPLETED', escrow: 'RELEASED', date: 'May 05, 2026' },
-    ],
-  },
-];
+const INITIAL_VENDORS = [];
 
 const OverviewStat = ({ label, value, note }) => (
   <div className="rounded-3xl border border-gray-200 dark:border-white/10 bg-white p-4 text-sm dark:bg-surface">
@@ -171,7 +31,9 @@ const StatPill = ({ label, value, danger }) => (
 );
 
 const monthsSince = (activeDate) => {
+  if (!activeDate) return 0;
   const last = new Date(activeDate);
+  if (isNaN(last.getTime())) return 0;
   const now = new Date();
   return Math.floor((now - last) / (1000 * 60 * 60 * 24 * 30));
 };
@@ -179,7 +41,7 @@ const monthsSince = (activeDate) => {
 export const AdminVendorManagement = () => {
   const { loginAsUser } = useAuth();
   const navigate = useNavigate();
-  const [vendors, setVendors] = useState(INITIAL_VENDORS);
+  const [vendors, setVendors] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(null);
   const [selectedVendorLoading, setSelectedVendorLoading] = useState(false);
   const [impersonating, setImpersonating] = useState(false);
@@ -208,39 +70,58 @@ export const AdminVendorManagement = () => {
     try {
       setLoading(true);
       const response = await api.get('/admin/vendors');
-      if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+      if (response.data && Array.isArray(response.data)) {
         const commissionFromSettings = systemSettings?.commissionPercent ?? 10;
-        const enriched = response.data.map((v) => ({
-          ...v,
-          id: v.id || `VND-${v.vendorId}`,
-          category: v.vendorType || 'Service',
-          gmv: `LKR${Math.floor(Math.random() * 500000)}`,
-          rating: Math.random() * 5,
-          location: 'Sri Lanka',
-          status: v.isBlocked ? 'Blocked' : 'Verified',
-          badReviews: Math.floor(Math.random() * 6),
-          lastActive: new Date().toISOString(),
-          blocked: v.isBlocked || false,
-          type: v.vendorType || 'Service Provider',
-          financial: {
-            totalGenerated: `LKR${Math.floor(Math.random() * 500000)}`,
-            commissionPercent: commissionFromSettings,
-            platformProfit: `LKR${Math.floor(Math.random() * 50000)}`,
-            escrowHeld: `LKR${Math.floor(Math.random() * 100000)}`,
-            payoutsSent: `LKR${Math.floor(Math.random() * 400000)}`,
-          },
-          packages: createPackages(8),
-          bookings: { total: Math.floor(Math.random() * 200), completed: Math.floor(Math.random() * 150), canceled: Math.floor(Math.random() * 20), disputes: Math.floor(Math.random() * 5) },
-          auditLog: [],
-          orders: [],
-          reviews: { average: Math.random() * 5, total: Math.floor(Math.random() * 100), latest: 'Good service' },
-        }));
+        const enriched = response.data.map((v) => {
+          const servicesArr = Array.isArray(v.services) ? v.services : [];
+          const pkgsArr = Array.isArray(v.eventPackages) ? v.eventPackages : Array.isArray(v.packages) ? v.packages : [];
+          const reviewsList = Array.isArray(v.reviews) ? v.reviews : [];
+          const serviceTotal = servicesArr.reduce((acc, s) => acc + (parseFloat(s.price) || 0), 0);
+          const pkgTotal = pkgsArr.reduce((acc, p) => acc + (parseFloat(p.price) || 0), 0);
+          const totalGmv = serviceTotal + pkgTotal;
+          const avgRating = v.rating ?? (reviewsList.length > 0 ? (reviewsList.reduce((acc, r) => acc + (r.rating || 5), 0) / reviewsList.length).toFixed(1) : '5.0');
+          const badReviewsCount = v.badReviews ?? reviewsList.filter(r => r.rating && r.rating <= 2).length;
+
+          return {
+            ...v,
+            id: v.id || `VND-${v.vendorId}`,
+            name: v.name || v.businessName || 'Unnamed Business',
+            businessName: v.businessName || v.name || 'Unnamed Business',
+            category: v.category || v.vendorType || 'Service',
+            type: v.type || (v.vendorType === 'EVENT_COMPANY' ? 'Event Company' : 'Service Provider'),
+            location: v.location ? `${v.location}, Sri Lanka` : 'Sri Lanka',
+            status: v.blocked || v.isBlocked ? 'Blocked' : 'Verified',
+            blocked: !!(v.blocked || v.isBlocked),
+            rating: parseFloat(avgRating),
+            badReviews: badReviewsCount,
+            lastActive: v.lastActive || v.registrationDate || new Date().toISOString(),
+            gmv: v.financial?.totalGenerated || `LKR ${totalGmv.toLocaleString()}`,
+            financial: v.financial || {
+              totalGenerated: `LKR ${totalGmv.toLocaleString()}`,
+              commissionPercent: commissionFromSettings,
+              platformProfit: `LKR ${Math.round(totalGmv * (commissionFromSettings / 100)).toLocaleString()}`,
+              escrowHeld: `LKR 0`,
+              payoutsSent: `LKR ${Math.round(totalGmv * (1 - commissionFromSettings / 100)).toLocaleString()}`,
+            },
+            packages: pkgsArr,
+            bookings: v.bookings || {
+              total: v._count?.bookings || 0,
+              completed: 0,
+              canceled: 0,
+              disputes: 0,
+            },
+            reviews: v.reviewSummary || {
+              average: parseFloat(avgRating),
+              total: reviewsList.length,
+              latest: reviewsList[0]?.comment || 'No reviews yet',
+            },
+          };
+        });
         setVendors(enriched);
       }
       setError(null);
     } catch (err) {
       console.error('Error fetching vendors:', err);
-      setError('Using sample data');
     } finally {
       setLoading(false);
     }
@@ -248,7 +129,7 @@ export const AdminVendorManagement = () => {
 
   useEffect(() => {
     fetchVendors();
-  }, [systemSettings]);
+  }, []);
 
   const parseVendorId = (vendor) => {
     if (vendor.vendorId != null) return vendor.vendorId;
@@ -265,7 +146,7 @@ export const AdminVendorManagement = () => {
       const response = await api.get(`/admin/vendors/${id}`);
       if (response.data) {
         setSelectedVendor(response.data);
-        setSuspendedPackages(response.data.packages.filter((pkg) => pkg.status === 'Suspended').map((pkg) => pkg.id));
+        setSuspendedPackages((response.data.packages || []).filter((pkg) => pkg.status === 'Suspended').map((pkg) => pkg.id));
       }
     } catch (err) {
       console.error('Error fetching vendor details:', err);
@@ -311,25 +192,25 @@ export const AdminVendorManagement = () => {
 
   const alertVendors = vendors.filter((vendor) => vendor.badReviews >= 5);
   const inactiveVendors = vendors.filter((vendor) => monthsSince(vendor.lastActive) >= 3 && !vendor.blocked);
-  const activeVendors = vendors.filter((vendor) => !vendor.blocked && vendor.badReviews <= 2);
-  const atRiskVendors = vendors.filter((vendor) => !vendor.blocked && vendor.badReviews >= 3 && vendor.badReviews <= 4);
-  const bannedVendors = vendors.filter((vendor) => vendor.badReviews >= 5);
+  const activeVendors = vendors.filter((vendor) => !vendor.blocked);
+  const atRiskVendors = vendors.filter((vendor) => !vendor.blocked && vendor.badReviews >= 3);
+  const bannedVendors = vendors.filter((vendor) => vendor.blocked || vendor.badReviews >= 5);
 
   const filteredVendors = vendors
     .filter((vendor) => {
-      if (typeFilter !== 'All' && vendor.type !== typeFilter) {
+      if (typeFilter !== 'All' && vendor.type !== typeFilter && vendor.category !== typeFilter) {
         return false;
       }
       if (!searchQuery) {
         return true;
       }
       const normalized = searchQuery.toLowerCase();
-      return vendor.name.toLowerCase().includes(normalized) || vendor.id.toLowerCase().includes(normalized);
+      return vendor.name?.toLowerCase().includes(normalized) || vendor.id?.toLowerCase().includes(normalized);
     })
     .filter((vendor) => {
-      if (statusTab === 'active') return !vendor.blocked && vendor.badReviews <= 2;
-      if (statusTab === 'atrisk') return !vendor.blocked && vendor.badReviews >= 3 && vendor.badReviews <= 4;
-      if (statusTab === 'banned') return vendor.badReviews >= 5;
+      if (statusTab === 'active') return !vendor.blocked;
+      if (statusTab === 'atrisk') return !vendor.blocked && vendor.badReviews >= 3;
+      if (statusTab === 'banned') return vendor.blocked || vendor.badReviews >= 5;
       return true;
     });
 
@@ -431,7 +312,7 @@ export const AdminVendorManagement = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-white/80 dark:hover:bg-white/10'
                 )}
               >
-                âš ï¸ At Risk
+                At Risk
               </button>
               <button
                 type="button"
@@ -443,7 +324,7 @@ export const AdminVendorManagement = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-white/80 dark:hover:bg-white/10'
                 )}
               >
-                ðŸš« Banned Vendors
+                Banned Vendors
               </button>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -498,7 +379,7 @@ export const AdminVendorManagement = () => {
                     <td className="p-4 pl-6">
                       <div className="flex flex-col gap-1">
                         <span className="font-bold text-gray-900 dark:text-white">{vendor.name}</span>
-                        <span className="text-xs text-gray-500 dark:text-white/50">{vendor.type} â€¢ {vendor.category} â€¢ {vendor.id}</span>
+                        <span className="text-xs text-gray-500 dark:text-white/50">{vendor.type} • {vendor.category} • {vendor.id}</span>
                       </div>
                     </td>
                     <td className="p-4">
@@ -739,3 +620,4 @@ export const AdminVendorManagement = () => {
     </div>
   );
 };
+

@@ -80,3 +80,4 @@ export const ForgotPassword = () => {
     </div>
   );
 };
+

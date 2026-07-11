@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { User, Lock, Bell, CreditCard, Camera, ShieldCheck, Mail, Save } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -196,3 +196,4 @@ export const ProfileManagement = () => {
     </div>
   );
 };
+

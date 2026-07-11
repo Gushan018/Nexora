@@ -165,19 +165,37 @@ export const AdminPaymentsEscrow = () => {
   };
 
 
+  const handleExportCSV = () => {
+    if (!filteredRecords.length) return;
+    const headers = ['Order ID', 'Vendor', 'Customer', 'Amount', 'Held Since', 'Release Date', 'Status'];
+    const rows = filteredRecords.map(r => [
+      r.orderId,
+      `"${r.vendor}"`,
+      `"${r.customer}"`,
+      `"${r.amount}"`,
+      r.heldSince,
+      r.releaseDate,
+      r.status
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `Escrow_Payments_${activeTab}_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const filteredRecords = useMemo(() => {
     return records.filter((record) => {
-      if (activeTab !== 'history' && record.type !== activeTab) {
-        return false;
-      }
-      if (activeTab === 'history' && record.type !== 'history') {
-        return false;
-      }
+      if (activeTab === 'inEscrow' && record.type !== 'inEscrow') return false;
+      if (activeTab === 'readyPayout' && record.type !== 'readyPayout') return false;
       const normalized = searchQuery.toLowerCase();
       return (
-        record.vendor.toLowerCase().includes(normalized) ||
-        record.orderId.toLowerCase().includes(normalized) ||
-        record.status.toLowerCase().includes(normalized)
+        record.vendor?.toLowerCase().includes(normalized) ||
+        record.orderId?.toLowerCase().includes(normalized) ||
+        record.status?.toLowerCase().includes(normalized)
       );
     });
   }, [activeTab, searchQuery, records]);
@@ -194,8 +212,8 @@ export const AdminPaymentsEscrow = () => {
           <p className="text-gray-600 dark:text-white/60">Manage escrow balances, payout-ready orders, and transaction history.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" leftIcon={<Download className="w-4 h-4" />}>Export</Button>
-          <Button size="sm" leftIcon={<RefreshCw className="w-4 h-4" />}>Sync Ledger</Button>
+          <Button variant="outline" size="sm" onClick={handleExportCSV} leftIcon={<Download className="w-4 h-4" />}>Export</Button>
+          <Button size="sm" onClick={fetchAllData} leftIcon={<RefreshCw className="w-4 h-4" />}>Sync Ledger</Button>
         </div>
       </div>
 

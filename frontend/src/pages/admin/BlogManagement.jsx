@@ -104,7 +104,7 @@ export const BlogManagement = () => {
                       </div>
                       <div className="flex flex-col max-w-[250px]">
                         <span className="font-bold text-slate-900 text-sm truncate">{post.title}</span>
-                        <span className="text-xs text-slate-500 mt-1">By {post.author} â€¢ {post.date}</span>
+                        <span className="text-xs text-slate-500 mt-1">By {post.author} • {post.date}</span>
                       </div>
                     </div>
                   </td>
@@ -141,3 +141,4 @@ export const BlogManagement = () => {
     </div>
   );
 };
+

@@ -93,7 +93,7 @@ export const IncomingRequests = () => {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="text-xl font-bold text-slate-900 mb-1">{req.customer}</h3>
-                      <p className="text-sm text-slate-500">Request {req.id} â€¢ Received {req.timeAgo}</p>
+                      <p className="text-sm text-slate-500">Request {req.id} • Received {req.timeAgo}</p>
                     </div>
                     <div className="text-right">
                       <span className="block text-2xl font-bold text-primary">{req.value}</span>
@@ -162,3 +162,4 @@ export const IncomingRequests = () => {
     </div>
   );
 };
+

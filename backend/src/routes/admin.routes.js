@@ -1,14 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const {
-<<<<<<< HEAD
-  releasePayment,
-  getAllVendors,
-  getAllCustomers,
-  getAllUsers,
-  getUserDetails,
-  getAdminDashboardStats
-=======
   getPendingVendors,
   approveVendor,
   rejectVendor,
@@ -29,6 +21,7 @@ const {
   getAdminPayments,
   updateDisputeStatus,
   toggleVendorBlock,
+  updateVendor,
   getAdminDashboardStats,
   getAdminDisputeStats,
   getAdminEscrowStats,
@@ -40,31 +33,15 @@ const {
   getBroadcasts,
   createBroadcast,
   impersonateUser,
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 } = require('../controllers/admin.controller');
 const { protect, restrictTo } = require('../middleware/auth.middleware');
 
 // Admin Routes
 router.use(protect, restrictTo('admin'));
 
-<<<<<<< HEAD
-// Dashboard
-router.get('/dashboard/stats', getAdminDashboardStats);
-
-// Users
-router.get('/users', getAllUsers);
-router.get('/users/:id', getUserDetails);
-
-// Vendors
-router.get('/vendors', getAllVendors);
-
-// Customers
-router.get('/customers', getAllCustomers);
-
-// Payments
-=======
 // Customers CRUD
 router.get('/users', getCustomers);
+router.get('/customers', getCustomers);
 router.get('/users/:id', getCustomerById);
 router.post('/users', createCustomer);
 router.put('/users/:id', updateCustomer);
@@ -78,10 +55,14 @@ router.get('/dashboard-stats', getAdminDashboardStats);
 router.get('/disputes-stats', getAdminDisputeStats);
 router.get('/reviews-stats', getAdminReviewStats);
 
+// Bookings Management
+router.get('/bookings', getAllBookingsForAdmin);
+
 // Vendors Management
 router.get('/vendors', getAllVendors);
 router.get('/vendors/:id', getAdminVendorById);
 router.get('/vendors/pending', getPendingVendors);
+router.put('/vendors/:id', updateVendor);
 router.put('/vendors/:id/approve', approveVendor);
 router.put('/vendors/:id/reject', rejectVendor);
 router.put('/vendors/:id/block', toggleVendorBlock);
@@ -107,7 +88,6 @@ router.post('/broadcasts', createBroadcast);
 router.get('/bookings', getAllBookingsForAdmin);
 router.get('/escrow-stats', getAdminEscrowStats);
 router.get('/payments', getAdminPayments);
->>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 router.put('/payments/:id/release', releasePayment);
 
 module.exports = router;

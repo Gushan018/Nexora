@@ -25,11 +25,19 @@ export const UserDetail = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await api.get(`/admin/users/${id}`);
+      const isVendor = userType === 'vendor' || userType === 'seller';
+      const endpoint = isVendor ? `/admin/vendors/${id}` : `/admin/users/${id}`;
+      const response = await api.get(endpoint);
       setUser(response.data);
     } catch (err) {
-      setError('Failed to load user details.');
-      console.error(err);
+      console.error('Error fetching user detail:', err);
+      try {
+        const fallbackEndpoint = (userType === 'vendor' || userType === 'seller') ? `/admin/users/${id}` : `/admin/vendors/${id}`;
+        const res = await api.get(fallbackEndpoint);
+        setUser(res.data);
+      } catch (fallbackErr) {
+        setError('Failed to load user details.');
+      }
     } finally {
       setLoading(false);
     }
@@ -127,7 +135,7 @@ export const UserDetail = () => {
         </div>
 
         <div className="lg:col-span-2 space-y-6">
-          {user.type === 'vendor' && (
+          {(user.type === 'vendor' || userType === 'vendor' || userType === 'seller' || !!user.businessName) && (
             <>
               <Card>
                 <CardHeader>
@@ -136,19 +144,19 @@ export const UserDetail = () => {
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="text-center p-4 rounded-xl bg-white/5">
-                      <p className="text-2xl font-bold text-primary">{user._count?.services || 0}</p>
+                      <p className="text-2xl font-bold text-primary">{user._count?.services || user.services?.length || 0}</p>
                       <p className="text-xs text-textPrimary/60 mt-1">Services</p>
                     </div>
                     <div className="text-center p-4 rounded-xl bg-white/5">
-                      <p className="text-2xl font-bold text-accent">{user._count?.products || 0}</p>
+                      <p className="text-2xl font-bold text-accent">{user._count?.products || user.products?.length || 0}</p>
                       <p className="text-xs text-textPrimary/60 mt-1">Products</p>
                     </div>
                     <div className="text-center p-4 rounded-xl bg-white/5">
-                      <p className="text-2xl font-bold text-green-400">{user._count?.eventPackages || 0}</p>
+                      <p className="text-2xl font-bold text-green-400">{user._count?.eventPackages || user.eventPackages?.length || 0}</p>
                       <p className="text-xs text-textPrimary/60 mt-1">Packages</p>
                     </div>
                     <div className="text-center p-4 rounded-xl bg-white/5">
-                      <p className="text-2xl font-bold text-yellow-500">{user.averageRating || 0}</p>
+                      <p className="text-2xl font-bold text-yellow-500">{user.averageRating || user.rating || 0}</p>
                       <p className="text-xs text-textPrimary/60 mt-1">Avg Rating</p>
                     </div>
                   </div>
@@ -164,7 +172,7 @@ export const UserDetail = () => {
             </>
           )}
 
-          {user.type === 'customer' && (
+          {(!user.businessName && (user.type === 'customer' || userType === 'customer')) && (
             <Card>
               <CardHeader>
                 <CardTitle>Activity</CardTitle>
@@ -201,5 +209,6 @@ export const UserDetail = () => {
     </div>
   );
 };
+
 
 

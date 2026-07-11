@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, MapPin, Star, Filter, ShieldCheck, Mail } from 'lucide-react';
 import { Button } from '../../components/common/Button';
@@ -141,3 +141,4 @@ export const VendorDirectory = ({ isDashboard = false }) => {
     </div>
   );
 };
+

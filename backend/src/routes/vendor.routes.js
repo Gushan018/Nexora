@@ -1,87 +1,59 @@
 const express = require('express');
 const router = express.Router();
-const {
-  getAllVendors,
-  getVendorById,
-  getVendorProfile,
-  updateVendorProfile,
-  createService,
-  updateService,
-  deleteService,
-  getVendorServices,
-  getServiceById,
-  getCategories,
-  createPackage,
-  updatePackage,
-  deletePackage,
-  getVendorPackages,
-  createAvailability,
-  updateAvailability,
-  deleteAvailability,
-  getVendorAvailability,
-  getVendorStats,
-  generateReport
-} = require('../controllers/vendor.controller');
 const { protect, restrictTo } = require('../middleware/auth.middleware');
-
-// GET /api/vendors/
-router.get('/', getAllVendors);
-
-// GET /api/vendors/stats (Vendor Dashboard Stats)
-router.get('/stats', protect, restrictTo('seller', 'vendor'), getVendorStats);
-
-// GET /api/vendors/report (Download Report)
-router.get('/report', protect, restrictTo('seller', 'vendor'), generateReport);
-
-// GET /api/vendors/profile (Current Vendor)
-router.get('/profile', protect, restrictTo('seller', 'vendor'), getVendorProfile);
-
-// PUT /api/vendors/profile (Update Current Vendor)
-router.put('/profile', protect, restrictTo('seller', 'vendor'), updateVendorProfile);
+const { getAllVendors, getVendorById, getMyProfile, updateMyProfile, getDashboard, getReports, exportReportPDF, exportReportExcel, getMyServices, getMyProducts, getVendorPayments } = require('../controllers/vendor.controller');
+const { getAllCategories } = require('../controllers/categories.controller');
+const { getMyPackages, createPackage, updatePackage, deletePackage } = require('../controllers/package.controller');
+const { getAllServices, getServiceById, createService, updateService, deleteService } = require('../controllers/services.controller');
 
 // GET /api/vendors/categories
-router.get('/categories', getCategories);
+router.get('/categories', getAllCategories);
 
-// POST /api/vendors/services (Create Service)
-router.post('/services', protect, restrictTo('seller', 'vendor'), createService);
+// Vendor Packages Aliases
+router.get('/packages', protect, restrictTo('vendor'), getMyPackages);
+router.post('/packages', protect, restrictTo('vendor'), createPackage);
+router.put('/packages/:id', protect, restrictTo('vendor'), updatePackage);
+router.delete('/packages/:id', protect, restrictTo('vendor'), deletePackage);
 
-// GET /api/vendors/services (Get all vendor services)
-router.get('/services', protect, restrictTo('seller', 'vendor'), getVendorServices);
+// GET /api/vendors/ 
+router.get('/', getAllVendors);
 
-// GET /api/vendors/services/:serviceId (Get single service)
-router.get('/services/:serviceId', protect, restrictTo('seller', 'vendor'), getServiceById);
+// GET /api/vendors/profile  (must be before /:id)
+router.get('/profile', protect, restrictTo('vendor', 'seller'), getMyProfile);
 
-// PUT /api/vendors/services/:serviceId (Update Service)
-router.put('/services/:serviceId', protect, restrictTo('seller', 'vendor'), updateService);
+// PUT /api/vendors/profile
+router.put('/profile', protect, restrictTo('vendor', 'seller'), updateMyProfile);
 
-// DELETE /api/vendors/services/:serviceId (Delete Service)
-router.delete('/services/:serviceId', protect, restrictTo('seller', 'vendor'), deleteService);
+// GET /api/vendors/dashboard & /api/vendors/stats
+router.get('/dashboard', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), getDashboard);
+router.get('/stats', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), getDashboard);
+router.get('/dashboard-stats', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), getDashboard);
 
-// POST /api/vendors/packages (Create Package)
-router.post('/packages', protect, restrictTo('seller', 'vendor'), createPackage);
+// GET /api/vendors/reports & /api/vendors/report
+router.get('/reports', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), getReports);
+router.get('/report', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), getReports);
 
-// GET /api/vendors/packages (Get all vendor packages)
-router.get('/packages', protect, restrictTo('seller', 'vendor'), getVendorPackages);
+// GET /api/vendors/reports/export/pdf
+router.get('/reports/export/pdf', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), exportReportPDF);
 
-// PUT /api/vendors/packages/:packageId (Update Package)
-router.put('/packages/:packageId', protect, restrictTo('seller', 'vendor'), updatePackage);
+// GET /api/vendors/reports/export/excel
+router.get('/reports/export/excel', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), exportReportExcel);
 
-// DELETE /api/vendors/packages/:packageId (Delete Package)
-router.delete('/packages/:packageId', protect, restrictTo('seller', 'vendor'), deletePackage);
+// GET /api/vendors/my-services & /api/vendors/services
+router.get('/my-services', protect, restrictTo('vendor', 'service_provider', 'event_company'), getMyServices);
+router.get('/services', protect, restrictTo('vendor', 'service_provider', 'event_company'), getMyServices);
+router.get('/services/:id', protect, restrictTo('vendor', 'service_provider', 'event_company'), getServiceById);
+router.post('/services', protect, restrictTo('vendor', 'service_provider', 'event_company'), createService);
+router.put('/services/:id', protect, restrictTo('vendor', 'service_provider', 'event_company'), updateService);
+router.delete('/services/:id', protect, restrictTo('vendor', 'service_provider', 'event_company'), deleteService);
 
-// POST /api/vendors/availability (Create Availability)
-router.post('/availability', protect, restrictTo('seller', 'vendor'), createAvailability);
+// GET /api/vendors/my-products
+router.get('/my-products', protect, restrictTo('vendor'), getMyProducts);
 
-// GET /api/vendors/availability (Get all vendor availability)
-router.get('/availability', protect, restrictTo('seller', 'vendor'), getVendorAvailability);
+// GET /api/vendors/payments
+router.get('/payments', protect, restrictTo('vendor'), getVendorPayments);
 
-// PUT /api/vendors/availability/:availabilityId (Update Availability)
-router.put('/availability/:availabilityId', protect, restrictTo('seller', 'vendor'), updateAvailability);
-
-// DELETE /api/vendors/availability/:availabilityId (Delete Availability)
-router.delete('/availability/:availabilityId', protect, restrictTo('seller', 'vendor'), deleteAvailability);
-
-// GET /api/vendors/123
+// GET /api/vendors/123 
 router.get('/:id', getVendorById);
 
 module.exports = router;

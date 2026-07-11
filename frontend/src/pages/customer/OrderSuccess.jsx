@@ -173,7 +173,7 @@ export const OrderSuccess = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-900 text-lg">{itemName}</h3>
-                  <p className="text-sm text-slate-600">{isOrder ? 'Marketplace Order' : 'Full Day Access â€¢ Standard Package'}</p>
+                  <p className="text-sm text-slate-600">{isOrder ? 'Marketplace Order' : 'Full Day Access • Standard Package'}</p>
                 </div>
               </div>
 
@@ -217,3 +217,4 @@ export const OrderSuccess = () => {
     </div>
   );
 };
+

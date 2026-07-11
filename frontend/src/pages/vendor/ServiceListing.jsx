@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Briefcase, Search, Filter, Plus, Edit2, Trash2, Tag, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -27,7 +27,7 @@ export const ServiceListing = () => {
     try {
       setLoading(true);
       const response = await api.get('/vendors/services');
-      setServices(response.data);
+      setServices(Array.isArray(response.data) ? response.data : []);
       setError(null);
     } catch (err) {
       setError('Failed to load services. Please try again.');
@@ -66,10 +66,15 @@ export const ServiceListing = () => {
   const categories = [...new Set(services.map(s => s.category?.categoryName).filter(Boolean))];
 
   const filteredServices = services.filter(service => {
-    const matchesSearch = service.serviceName.toLowerCase().includes(searchTerm.toLowerCase());
+    const name = service.serviceName || '';
+    const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = !selectedCategory || service.category?.categoryName === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const activeServicesCount = services.filter(s => s.isAvailable !== false).length;
+  const totalBookingsCount = services.reduce((acc, s) => acc + (s.bookings?.length || 0), 0);
+  const hiddenServicesCount = services.filter(s => s.isAvailable === false).length;
 
   return (
     <div className="space-y-6">
@@ -86,13 +91,13 @@ export const ServiceListing = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card className="border-primary/20">
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-slate-600 mb-2">Active Services</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">3</span>
-              <span className="text-sm text-green-400 mb-1">Visible to clients</span>
+              <span className="text-3xl font-bold text-slate-900">{activeServicesCount}</span>
+              <span className="text-sm text-green-500 mb-1">Visible to clients</span>
             </div>
           </CardContent>
         </Card>
@@ -100,7 +105,7 @@ export const ServiceListing = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-slate-600 mb-2">Total Bookings (All Time)</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">46</span>
+              <span className="text-3xl font-bold text-slate-900">{totalBookingsCount}</span>
             </div>
           </CardContent>
         </Card>
@@ -108,7 +113,7 @@ export const ServiceListing = () => {
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-slate-600 mb-2">Drafts / Hidden</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">1</span>
+              <span className="text-3xl font-bold text-slate-900">{hiddenServicesCount}</span>
               <span className="text-sm text-slate-500 mb-1">Not visible</span>
             </div>
           </CardContent>
@@ -122,6 +127,8 @@ export const ServiceListing = () => {
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input 
               type="text" 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search services..." 
               className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
             />
@@ -144,96 +151,50 @@ export const ServiceListing = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 text-sm font-medium text-slate-500 bg-slate-50">
+              <tr className="border-b border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 uppercase tracking-wider">
                 <th className="p-4 pl-6">Service Name</th>
                 <th className="p-4">Pricing</th>
-                <th className="p-4">Bookings</th>
+                <th className="p-4">Category</th>
                 <th className="p-4">Visibility</th>
-                <th className="p-4 pr-6"></th>
+                <th className="p-4 pr-6 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="text-sm">
-              {SERVICES.map((service, i) => (
-                <tr key={i} className="border-b border-slate-200 hover:bg-slate-50 transition-colors group">
-                  <td className="p-4 pl-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-surface border border-slate-300 flex items-center justify-center shrink-0">
-                        <Tag className="w-5 h-5 text-slate-500" />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="font-medium text-slate-900">{service.name}</span>
-                        <span className="text-xs text-slate-500">{service.category} â€¢ {service.id}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="p-4 font-medium text-slate-800">{service.price}</td>
-                  <td className="p-4 text-slate-600">{service.bookings} completed</td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-1.5">
-                      {service.status === 'Active' ? (
-                        <>
-                          <CheckCircle2 className="w-4 h-4 text-green-400" />
-                          <span className="text-green-400">Published</span>
-                        </>
-                      ) : (
-                        <>
-                          <EyeOff className="w-4 h-4 text-slate-500" />
-                          <span className="text-slate-500">Hidden</span>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                  <td className="p-4 pr-6 text-right">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-2 text-slate-600 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit Service">
-                        <Edit2 className="w-4 h-4"/>
-                      </button>
-                      <button className="p-2 text-slate-600 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" title="Delete">
-                        <Trash2 className="w-4 h-4"/>
-                      </button>
-                      <button className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-200 rounded-lg transition-colors">
-                        <MoreVertical className="w-4 h-4"/>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </thead>
-              <tbody className="text-sm">
                 {filteredServices.map((service) => (
-                  <tr key={service.serviceId} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                  <tr key={service.serviceId} className="border-b border-slate-200 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors group">
                     <td className="p-4 pl-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-surface border border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
+                        <div className="w-10 h-10 rounded-lg bg-surface border border-slate-200 dark:border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
                           {service.imageUrl ? (
                             <img src={service.imageUrl} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <Tag className="w-5 h-5 text-textPrimary/40" />
+                            <Tag className="w-5 h-5 text-slate-400" />
                           )}
                         </div>
                         <div className="flex flex-col">
-                          <span className="font-medium text-textPrimary">{service.serviceName}</span>
-                          <span className="text-xs text-textPrimary/50">ID: SVC-{service.serviceId}</span>
+                          <span className="font-medium text-slate-900 dark:text-white">{service.serviceName}</span>
+                          <span className="text-xs text-slate-500 dark:text-white/50">ID: SVC-{service.serviceId}</span>
                         </div>
                       </div>
                     </td>
-                    <td className="p-4 font-medium text-textPrimary/80">LKR {parseFloat(service.price).toLocaleString()}</td>
-                    <td className="p-4 text-textPrimary/60">{service.category?.categoryName || 'Uncategorized'}</td>
+                    <td className="p-4 font-semibold text-slate-900 dark:text-white">LKR {parseFloat(service.price).toLocaleString()}</td>
+                    <td className="p-4 text-slate-700 dark:text-white/70 font-medium">{service.category?.categoryName || 'Uncategorized'}</td>
                     <td className="p-4">
                       <div className="flex items-center gap-1.5">
-                        <CheckCircle2 className="w-4 h-4 text-green-400" />
-                        <span className="text-green-400 font-medium">Published</span>
+                        <CheckCircle2 className="w-4 h-4 text-green-500" />
+                        <span className="text-green-500 font-medium">Published</span>
                       </div>
                     </td>
                     <td className="p-4 pr-6 text-right">
-                      <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex justify-end gap-2">
                         <Link to={`/vendor/edit-service/${service.serviceId}`}>
-                          <button className="p-2 text-textPrimary/60 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit Service">
+                          <button className="p-2 text-slate-600 dark:text-white/70 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit Service">
                             <Edit2 className="w-4 h-4"/>
                           </button>
                         </Link>
                         <button 
                           onClick={() => handleDelete(service.serviceId)}
-                          className="p-2 text-textPrimary/60 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" 
+                          className="p-2 text-slate-600 dark:text-white/70 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors" 
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4"/>
@@ -244,9 +205,8 @@ export const ServiceListing = () => {
                 ))}
               </tbody>
             </table>
-          )}
-        </div>
-      </Card>
+          </div>
+        </Card>
       <Modal isOpen={deleteModalOpen} onClose={cancelDelete} title="Delete Service">
         <p className="text-textPrimary/80 mb-6">
           Are you sure you want to delete <strong className="text-textPrimary">
@@ -278,3 +238,4 @@ export const ServiceListing = () => {
     </div>
   );
 };
+

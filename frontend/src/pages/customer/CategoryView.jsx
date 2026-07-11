@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Filter, ChevronDown, Star, ShoppingCart, Search } from 'lucide-react';
 import { Button } from '../../components/common/Button';
@@ -135,3 +135,4 @@ export const CategoryView = () => {
     </div>
   );
 };
+

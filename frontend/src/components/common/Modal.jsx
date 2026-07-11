@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { Card, CardContent } from './Card';
@@ -50,3 +50,4 @@ export const Modal = ({ isOpen, onClose, title, children }) => {
     </AnimatePresence>
   );
 };
+

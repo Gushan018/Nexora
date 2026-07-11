@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -31,3 +31,4 @@ export const ImpersonationBanner = () => {
     </div>
   );
 };
+

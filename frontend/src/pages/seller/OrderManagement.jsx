@@ -1,18 +1,18 @@
-﻿import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Package, Truck, CheckCircle2, Clock, MapPin, MoreVertical, Loader2, AlertTriangle } from 'lucide-react';
+import { Search, Filter, Package, Truck, CheckCircle2, Clock, MapPin, MoreVertical, Loader2, AlertTriangle, RefreshCw } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../utils/api';
+import { api, getImageUrl } from '../../utils/api';
 
 export const OrderManagement = () => {
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
 
-  const { data: orderItems, isLoading, error } = useQuery({
+  const { data: orderItems, isLoading, error, refetch } = useQuery({
     queryKey: ['seller-orders'],
     queryFn: async () => {
       const res = await api.get('/orders/seller-orders');
@@ -37,12 +37,12 @@ export const OrderManagement = () => {
           status: order.status,
           customer: order.customer,
           shippingAddress: order.shippingAddress,
-          sellerTotal: 0, // We calculate this
+          sellerTotal: 0,
           items: [],
         });
       }
 
-      const itemTotal = parseFloat(item.unitPrice) * item.quantity;
+      const itemTotal = parseFloat(item.unitPrice || item.product?.price || 0) * item.quantity;
       const group = groupMap.get(orderId);
       group.sellerTotal += itemTotal;
       group.items.push({
@@ -98,7 +98,7 @@ export const OrderManagement = () => {
 
   const stats = {
     pending: groupedOrders.filter(order => order.status === 'PENDING').length,
-    processing: groupedOrders.filter(order => order.status === 'PROCESSING').length,
+    inTransit: groupedOrders.filter(order => order.status === 'PROCESSING' || order.status === 'SHIPPED').length,
     delivered: groupedOrders.filter(order => order.status === 'DELIVERED').length,
     totalOrders: groupedOrders.length,
     totalRevenue: groupedOrders.reduce((sum, order) => sum + order.sellerTotal, 0),
@@ -108,44 +108,47 @@ export const OrderManagement = () => {
     <div className="space-y-6 pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <Package className="w-7 h-7 text-primary" />
             Order Management
           </h1>
-          <p className="text-slate-600">Process physical orders, print labels, and track shipments.</p>
+          <p className="text-slate-600 dark:text-slate-400">Process physical orders, print labels, and track shipments.</p>
         </div>
+        <Button variant="outline" onClick={() => refetch()} leftIcon={<RefreshCw className="w-4 h-4" />}>
+          Refresh
+        </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         <Card className="border-yellow-500/20 bg-yellow-500/5">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-yellow-400/80 mb-2">Pending Orders</h3>
+            <h3 className="text-sm font-medium text-yellow-500 dark:text-yellow-400 mb-2">Pending Orders</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-yellow-400">{stats.pending}</span>
+              <span className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{stats.pending}</span>
             </div>
           </CardContent>
         </Card>
         <Card className="border-blue-500/20 bg-blue-500/5">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-slate-600 mb-2">In Transit</h3>
+            <h3 className="text-sm font-medium text-blue-500 dark:text-blue-400 mb-2">In Transit</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">1</span>
+              <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stats.inTransit}</span>
             </div>
           </CardContent>
         </Card>
         <Card className="border-green-500/20 bg-green-500/5">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-slate-600 mb-2">Delivered (30d)</h3>
+            <h3 className="text-sm font-medium text-green-500 dark:text-green-400 mb-2">Delivered (30d)</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-green-400">{stats.delivered}</span>
+              <span className="text-3xl font-bold text-green-600 dark:text-green-400">{stats.delivered}</span>
             </div>
           </CardContent>
         </Card>
-        <Card className="border-slate-300">
+        <Card className="border-slate-300 dark:border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-slate-600 mb-2">Return Requests</h3>
+            <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">Total Orders</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">0</span>
+              <span className="text-3xl font-bold text-slate-900 dark:text-white">{stats.totalOrders}</span>
             </div>
           </CardContent>
         </Card>
@@ -153,88 +156,72 @@ export const OrderManagement = () => {
 
       <Card>
         {/* Toolbar */}
-        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
-          <div className="relative flex-1 max-w-md">
+        <div className="p-4 border-b border-slate-200 dark:border-white/10 flex flex-col sm:flex-row gap-4 justify-between items-center">
+          <div className="relative flex-1 max-w-md w-full">
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input 
               type="text" 
-              placeholder="Search by order ID or customer name..." 
-              className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by order ID, customer name, or product..." 
+              className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl pl-10 pr-4 py-2 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors" 
             />
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" leftIcon={<Filter className="w-4 h-4"/>}>Export</Button>
+          <div className="flex gap-3 w-full sm:w-auto">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
+            >
+              <option value="ALL" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>All Statuses</option>
+              <option value="PENDING" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Pending</option>
+              <option value="PROCESSING" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Processing</option>
+              <option value="SHIPPED" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Shipped</option>
+              <option value="DELIVERED" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Delivered</option>
+              <option value="CANCELLED" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Cancelled</option>
+            </select>
           </div>
         </div>
         
         {/* Data Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-slate-200 text-sm font-medium text-slate-500 bg-slate-50">
-                <th className="p-4 pl-6">Order ID / Date</th>
-                <th className="p-4">Customer</th>
-                <th className="p-4">Items</th>
-                <th className="p-4">Total Value</th>
-                <th className="p-4">Fulfillment Status</th>
-                <th className="p-4 pr-6"></th>
-              </tr>
-            </thead>
-            <tbody className="text-sm">
-              {ORDERS.map((order, i) => (
-                <tr key={i} className="border-b border-slate-200 hover:bg-slate-50 transition-colors group">
-                  <td className="p-4 pl-6">
-                    <div className="flex flex-col">
-                      <span className="font-medium text-slate-900">{order.id}</span>
-                      <span className="text-xs text-slate-500">{order.date}</span>
-                    </div>
-                  </td>
-                  <td className="p-4 text-slate-800">{order.customer}</td>
-                  <td className="p-4 text-slate-800">{order.items} items</td>
-                  <td className="p-4 font-bold text-slate-900">{order.total}</td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-1.5">
-                      {order.status === 'Delivered' && <CheckCircle2 className="w-4 h-4 text-green-400" />}
-                      {order.status === 'Pending Fulfillment' && <Clock className="w-4 h-4 text-yellow-400" />}
-                      {order.status === 'In Transit' && <MapPin className="w-4 h-4 text-blue-400" />}
-                      <span className={cn(
-                        order.status === 'Delivered' ? "text-green-400" : 
-                        order.status === 'Pending Fulfillment' ? "text-yellow-400" : 
-                        "text-blue-400"
-                      )}>
-                        {order.status}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="p-4 pr-6 text-right">
-                    <div className="flex justify-end gap-2">
-                      {order.status === 'Pending Fulfillment' && (
-                        <button className="px-3 py-1.5 text-xs font-medium text-slate-900 bg-primary/20 hover:bg-primary/30 text-primary rounded-lg transition-colors border border-primary/20">
-                          Ship Order
-                        </button>
-                      )}
-                      <button className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-200 rounded-lg transition-colors opacity-0 group-hover:opacity-100">
-                        <MoreVertical className="w-5 h-5"/>
-                      </button>
-                    </div>
-                  </td>
+        {isLoading ? (
+          <div className="p-12 text-center text-slate-500 flex items-center justify-center gap-2">
+            <Loader2 className="w-5 h-5 animate-spin text-primary" /> Loading orders...
+          </div>
+        ) : filteredOrders.length === 0 ? (
+          <div className="p-12 text-center text-slate-500 dark:text-slate-400">
+            <Package className="w-12 h-12 mx-auto mb-3 text-slate-400 dark:text-slate-600 opacity-60" />
+            <p className="font-medium text-base text-slate-800 dark:text-white">No orders found</p>
+            <p className="text-sm">Orders placed for your store products will appear here.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-slate-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800/80">
+                  <th className="p-4 pl-6">Order ID / Date</th>
+                  <th className="p-4">Customer</th>
+                  <th className="p-4">Items</th>
+                  <th className="p-4">Total Value</th>
+                  <th className="p-4">Fulfillment Status</th>
+                  <th className="p-4 pr-6"></th>
                 </tr>
               </thead>
               <tbody className="text-sm">
                 {filteredOrders.map((order) => (
-                  <tr key={order.orderId} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                  <tr key={order.orderId} className="border-b border-slate-200 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors group">
                     <td className="p-4 pl-6">
                       <div className="flex flex-col gap-1">
-                        <span className="font-medium text-textPrimary">#ORD-{order.orderId}</span>
-                        <span className="text-xs text-textPrimary/50">{new Date(order.orderDate).toLocaleDateString()}</span>
-                        <span className="text-xs text-textPrimary/40 line-clamp-1 max-w-[150px]">{order.shippingAddress || 'No address provided'}</span>
+                        <span className="font-semibold text-slate-900 dark:text-white">#ORD-{order.orderId}</span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400">{new Date(order.orderDate).toLocaleDateString()}</span>
+                        <span className="text-xs text-slate-400 line-clamp-1 max-w-[180px]">{order.shippingAddress || 'No address provided'}</span>
                       </div>
                     </td>
                     <td className="p-4">
                       <div className="flex flex-col">
-                        <span className="text-textPrimary/80 font-medium">{order.customer?.name || 'Customer'}</span>
-                        <span className="text-[10px] text-textPrimary/40">{order.customer?.email || 'No email'}</span>
-                        <span className="text-[10px] text-textPrimary/40">{order.customer?.contactNumber}</span>
+                        <span className="text-slate-900 dark:text-white font-medium">{order.customer?.name || 'Customer'}</span>
+                        <span className="text-xs text-slate-500">{order.customer?.email || 'No email'}</span>
+                        <span className="text-xs text-slate-400">{order.customer?.contactNumber}</span>
                       </div>
                     </td>
                     <td className="p-4">
@@ -242,50 +229,50 @@ export const OrderManagement = () => {
                         {order.items.map((item) => (
                           <div key={item.orderItemId} className="flex items-center gap-3">
                             <img
-                              src={item.product?.imageUrl ? `http://localhost:5000${item.product.imageUrl}` : 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100'}
+                              src={getImageUrl(item.product?.imageUrl)}
                               alt={item.product?.productName || 'Product'}
-                              className="w-8 h-8 rounded object-cover border border-white/10"
+                              className="w-9 h-9 rounded-lg object-cover border border-slate-200 dark:border-white/10 shrink-0"
                             />
                             <div className="flex flex-col">
-                              <span className="text-textPrimary/80 truncate max-w-[120px] text-xs">{item.product?.productName}</span>
-                              <span className="text-[10px] text-textPrimary/40">LKR {parseFloat(item.unitPrice).toLocaleString()} x {item.quantity}</span>
+                              <span className="text-slate-900 dark:text-white font-medium truncate max-w-[140px] text-xs">{item.product?.productName}</span>
+                              <span className="text-[11px] text-slate-500">LKR {parseFloat(item.unitPrice || item.product?.price || 0).toLocaleString()} × {item.quantity}</span>
                             </div>
                           </div>
                         ))}
                       </div>
                     </td>
-                    <td className="p-4 font-bold text-textPrimary">LKR {order.sellerTotal.toLocaleString()}</td>
+                    <td className="p-4 font-bold text-slate-900 dark:text-white">LKR {order.sellerTotal.toLocaleString()}</td>
                     <td className="p-4">
                       <select
                         value={order.status}
                         onChange={(e) => handleStatusUpdate(order.orderId, e.target.value)}
                         className={cn(
-                          "bg-surface border border-white/10 rounded-lg px-2 py-1 text-[10px] font-medium focus:outline-none transition-colors",
-                          order.status === 'DELIVERED' ? "text-green-400 border-green-400/20" : 
-                          order.status === 'PENDING' ? "text-yellow-400 border-yellow-400/20" : 
-                          order.status === 'PROCESSING' ? "text-blue-400 border-blue-400/20" :
-                          order.status === 'SHIPPED' ? "text-purple-400 border-purple-400/20" :
-                          "text-red-400 border-red-400/20"
+                          "border rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none transition-colors cursor-pointer",
+                          order.status === 'DELIVERED' ? "bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400" : 
+                          order.status === 'PENDING' ? "bg-yellow-500/10 border-yellow-500/30 text-yellow-600 dark:text-yellow-400" : 
+                          order.status === 'PROCESSING' ? "bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400" :
+                          order.status === 'SHIPPED' ? "bg-purple-500/10 border-purple-500/30 text-purple-600 dark:text-purple-400" :
+                          "bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400"
                         )}
                       >
-                        <option value="PENDING">PENDING</option>
-                        <option value="PROCESSING">PROCESSING</option>
-                        <option value="SHIPPED">SHIPPED</option>
-                        <option value="DELIVERED">DELIVERED</option>
-                        <option value="CANCELLED">CANCELLED</option>
+                        <option value="PENDING" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>PENDING</option>
+                        <option value="PROCESSING" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>PROCESSING</option>
+                        <option value="SHIPPED" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>SHIPPED</option>
+                        <option value="DELIVERED" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>DELIVERED</option>
+                        <option value="CANCELLED" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>CANCELLED</option>
                       </select>
                     </td>
                     <td className="p-4 pr-6 text-right">
                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <MoreVertical className="w-4 h-4" />
+                          <MoreVertical className="w-4 h-4 text-slate-500" />
                        </Button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          )}
-        </div>
+          </div>
+        )}
       </Card>
     </div>
   );

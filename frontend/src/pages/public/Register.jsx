@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, ArrowRight, CheckCircle2, Store, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -40,15 +40,20 @@ export const Register = () => {
     setIsLoading(true);
 
     try {
-      if (accountType === 'vendor') {
+      if (accountType !== 'customer') {
+        const typeMap = {
+          vendor: formData.vendorType || 'CATERING',
+          seller: 'RENTAL',
+          event_company: 'EVENT_COMPANY'
+        };
         const vendorData = {
           business_name: formData.businessName || `${formData.firstName} ${formData.lastName}'s Business`,
           email: formData.email,
           password: formData.password,
-          vendor_type: formData.vendorType,
+          vendor_type: typeMap[accountType] || 'OTHER',
         };
         const res = await api.post('/auth/register/vendor', vendorData);
-        alert(res.data.message || 'Vendor registered successfully.');
+        alert(res.data.message || 'Account registered successfully.');
         navigate('/login');
       } else {
         const customerData = {
@@ -58,7 +63,6 @@ export const Register = () => {
         };
         const res = await api.post('/auth/register/customer', customerData);
         
-        // Auto login after successful register
         if (res.status === 201) {
           const loginRes = await login(formData.email, formData.password);
           if (loginRes.success) {
@@ -123,33 +127,66 @@ export const Register = () => {
             </div>
           )}
 
-          {/* Account Type Selector */}
-          <div className="grid grid-cols-2 gap-4 mb-8">
+          {/* Account Type Selector - 4 Member Types */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
             <button
+              type="button"
               onClick={() => setAccountType('customer')}
               className={cn(
-                "p-4 rounded-xl border flex flex-col items-center text-center transition-all",
+                "p-3 rounded-xl border flex flex-col items-center text-center transition-all cursor-pointer",
                 accountType === 'customer' 
-                  ? "bg-primary/20 border-primary text-slate-900" 
-                  : "bg-surface border-slate-300 text-slate-500 hover:bg-slate-100"
+                  ? "bg-primary/20 border-primary text-slate-900 dark:text-white" 
+                  : "bg-surface/50 border-slate-300 dark:border-white/10 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               )}
             >
-              <User className="w-6 h-6 mb-2" />
-              <span className="font-bold text-sm">I'm a Customer</span>
-              <span className="text-[10px] mt-1 opacity-80">Looking to book services</span>
+              <User className="w-5 h-5 mb-1 text-primary" />
+              <span className="font-bold text-xs">Customer</span>
+              <span className="text-[10px] mt-0.5 opacity-70">Event Host</span>
             </button>
+
             <button
+              type="button"
               onClick={() => setAccountType('vendor')}
               className={cn(
-                "p-4 rounded-xl border flex flex-col items-center text-center transition-all",
+                "p-3 rounded-xl border flex flex-col items-center text-center transition-all cursor-pointer",
                 accountType === 'vendor' 
-                  ? "bg-accent/20 border-accent text-slate-900" 
-                  : "bg-surface border-slate-300 text-slate-500 hover:bg-slate-100"
+                  ? "bg-primary/20 border-primary text-slate-900 dark:text-white" 
+                  : "bg-surface/50 border-slate-300 dark:border-white/10 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               )}
             >
-              <Store className="w-6 h-6 mb-2" />
-              <span className="font-bold text-sm">I'm a Vendor</span>
-              <span className="text-[10px] mt-1 opacity-80">Looking to sell services</span>
+              <Store className="w-5 h-5 mb-1 text-primary" />
+              <span className="font-bold text-xs">Service Provider</span>
+              <span className="text-[10px] mt-0.5 opacity-70">Vendor</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setAccountType('seller')}
+              className={cn(
+                "p-3 rounded-xl border flex flex-col items-center text-center transition-all cursor-pointer",
+                accountType === 'seller' 
+                  ? "bg-primary/20 border-primary text-slate-900 dark:text-white" 
+                  : "bg-surface/50 border-slate-300 dark:border-white/10 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+              )}
+            >
+              <Store className="w-5 h-5 mb-1 text-primary" />
+              <span className="font-bold text-xs">Product Seller</span>
+              <span className="text-[10px] mt-0.5 opacity-70">Shop Owner</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setAccountType('event_company')}
+              className={cn(
+                "p-3 rounded-xl border flex flex-col items-center text-center transition-all cursor-pointer",
+                accountType === 'event_company' 
+                  ? "bg-primary/20 border-primary text-slate-900 dark:text-white" 
+                  : "bg-surface/50 border-slate-300 dark:border-white/10 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+              )}
+            >
+              <Store className="w-5 h-5 mb-1 text-primary" />
+              <span className="font-bold text-xs">Event Management</span>
+              <span className="text-[10px] mt-0.5 opacity-70">Planner Co.</span>
             </button>
           </div>
 
@@ -266,3 +303,4 @@ export const Register = () => {
     </div>
   );
 };
+

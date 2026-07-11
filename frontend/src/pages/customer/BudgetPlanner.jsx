@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calculator, PieChart, TrendingUp, Plus, Edit2, Trash2, Edit3 } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -309,3 +309,4 @@ export const BudgetPlanner = () => {
     </div>
   );
 };
+

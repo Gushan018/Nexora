@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { AlertCircle, RefreshCcw } from 'lucide-react';
 
 export class ErrorBoundary extends React.Component {
@@ -46,3 +46,4 @@ export class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
+

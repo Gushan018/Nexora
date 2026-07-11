@@ -318,7 +318,7 @@ export const CustomerDashboard = () => {
                       <div className="w-10 h-10 rounded-full bg-gradient-premium flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity" />
                       <div>
                         <p className="text-sm font-medium text-slate-900">{vendor.businessName}</p>
-                        <p className="text-xs text-slate-500">{vendor.vendorType} â€¢ Recommended</p>
+                        <p className="text-xs text-slate-500">{vendor.vendorType} • Recommended</p>
                       </div>
                     </div>
                     <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-primary transition-colors" />
@@ -380,3 +380,4 @@ const TimelineItem = ({ time, title, subtitle, status, isLast }) => (
     </div>
   </div>
 );
+

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 
 export const PageLoader = ({ text = "Loading..." }) => {
@@ -56,3 +56,4 @@ export const PageLoader = ({ text = "Loading..." }) => {
     </div>
   );
 };
+

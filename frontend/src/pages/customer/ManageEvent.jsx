@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { CalendarDays, MapPin, Users, DollarSign, ListTodo, MessageSquare, ChevronRight, Briefcase } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -155,3 +155,4 @@ export const ManageEvent = () => {
     </div>
   );
 };
+

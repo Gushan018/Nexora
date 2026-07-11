@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -29,6 +29,8 @@ export const Login = () => {
     if (result.success) {
       if (result.user.role === 'customer') {
         navigate('/customer/dashboard');
+      } else if (result.user.role === 'seller') {
+        navigate('/seller/dashboard');
       } else if (result.user.role === 'vendor') {
         navigate('/vendor/dashboard');
       } else if (result.user.role === 'admin') {
@@ -40,6 +42,11 @@ export const Login = () => {
       setError(result.message);
     }
     setIsLoading(false);
+  };
+
+  const handleDemoLogin = (demoEmail) => {
+    setEmail(demoEmail);
+    setPassword('password123');
   };
 
   return (
@@ -118,7 +125,7 @@ export const Login = () => {
                 <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input 
                   type={showPassword ? "text" : "password"} 
-                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" 
+                  placeholder="••••••••" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -138,6 +145,48 @@ export const Login = () => {
               {isLoading ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
+
+          {/* Quick Demo Login Badges */}
+          <div className="mt-6 pt-6 border-t border-slate-200 dark:border-white/10 text-center">
+            <p className="text-xs font-semibold text-slate-500 dark:text-white/60 mb-3 uppercase tracking-wider">Quick Demo Login by Member Role</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              <button 
+                type="button" 
+                onClick={() => handleDemoLogin('sarah@example.com')}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-primary/20 border border-slate-300 dark:border-white/10 transition-colors"
+              >
+                👤 Customer
+              </button>
+              <button 
+                type="button" 
+                onClick={() => handleDemoLogin('vendor1@example.com')}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-primary/20 border border-slate-300 dark:border-white/10 transition-colors"
+              >
+                🛠️ Vendor
+              </button>
+              <button 
+                type="button" 
+                onClick={() => handleDemoLogin('seller1@example.com')}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-primary/20 border border-slate-300 dark:border-white/10 transition-colors"
+              >
+                📦 Seller
+              </button>
+              <button 
+                type="button" 
+                onClick={() => handleDemoLogin('eventcompany@example.com')}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-primary/20 border border-slate-300 dark:border-white/10 transition-colors"
+              >
+                🎪 Event Company
+              </button>
+              <button 
+                type="button" 
+                onClick={() => handleDemoLogin('admin@example.com')}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-primary/20 border border-slate-300 dark:border-white/10 transition-colors"
+              >
+                🛡️ Admin
+              </button>
+            </div>
+          </div>
         </div>
 
         <motion.p 
@@ -153,3 +202,4 @@ export const Login = () => {
     </div>
   );
 };
+

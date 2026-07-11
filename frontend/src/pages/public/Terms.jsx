@@ -29,3 +29,4 @@ export const Terms = () => {
     </div>
   );
 };
+

@@ -1,11 +1,11 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Filter, Plus, Edit2, Trash2, Package, Tag, AlertTriangle, Loader2, X, Check } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 import { Link } from 'react-router-dom';
-import { api } from '../../utils/api';
+import { api, getImageUrl, DEFAULT_PRODUCT_IMAGE } from '../../utils/api';
 
 export const SellerProductManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -159,7 +159,7 @@ export const SellerProductManagement = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 text-sm font-medium text-slate-500 bg-slate-50">
+              <tr className="border-b border-slate-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800/80">
                 <th className="p-4 pl-6">Product Details</th>
                 <th className="p-4">Category</th>
                 <th className="p-4">Price</th>
@@ -169,64 +169,18 @@ export const SellerProductManagement = () => {
               </tr>
             </thead>
             <tbody className="text-sm">
-              {PRODUCTS.map((prod, i) => (
-                <tr key={i} className="border-b border-slate-200 hover:bg-slate-50 transition-colors group">
-                  <td className="p-4 pl-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-lg bg-surface border border-slate-300 shrink-0 overflow-hidden">
-                         <img src={`https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100&q=80&${i}`} alt="" className="w-full h-full object-cover opacity-80" />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="font-medium text-slate-900 line-clamp-1">{prod.name}</span>
-                        <span className="text-xs text-slate-500">{prod.id}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="p-4 text-slate-800">{prod.category}</td>
-                  <td className="p-4 font-medium text-slate-900">{prod.price}</td>
-                  <td className="p-4">
-                    <span className={cn(
-                      "font-medium",
-                      prod.stock === 0 ? "text-red-400" : prod.stock < 5 ? "text-yellow-400" : "text-slate-900"
-                    )}>
-                      {prod.stock} in stock
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <span className={cn(
-                      "px-2.5 py-1 rounded-full text-xs font-medium border border-current/20 whitespace-nowrap",
-                      prod.status === 'Active' ? "text-green-400 bg-green-400/10" : 
-                      prod.status === 'Draft' ? "text-slate-600 bg-slate-200" : 
-                      prod.status === 'Low Stock' ? "text-yellow-400 bg-yellow-400/10" :
-                      "text-red-400 bg-red-400/10"
-                    )}>
-                      {prod.status}
-                    </span>
-                  </td>
-                  <td className="p-4 pr-6 text-right">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-2 text-slate-600 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors">
-                        <Edit2 className="w-4 h-4"/>
-                      </button>
-                      <button className="p-2 text-slate-600 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
-                        <Trash2 className="w-4 h-4"/>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </thead>
-              <tbody className="text-sm">
                 {filteredProducts.map((prod) => (
                   <tr key={prod.productId} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
                     <td className="p-4 pl-6">
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-lg bg-surface border border-white/10 shrink-0 overflow-hidden">
                           <img
-                            src={prod.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100&q=80'}
-                            alt={prod.productName}
-                            className="w-full h-full object-cover opacity-80"
+                            src={getImageUrl(prod.imageUrl)}
+                            alt=""
+                            className="w-full h-full object-cover"
                             onError={(e) => {
-                              e.target.src = 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100&q=80';
+                              e.target.onerror = null;
+                              e.target.src = DEFAULT_PRODUCT_IMAGE;
                             }}
                           />
                         </div>
@@ -278,8 +232,7 @@ export const SellerProductManagement = () => {
                 ))}
               </tbody>
             </table>
-          )}
-        </div>
+          </div>
 
         {/* Footer Stats */}
         {products.length > 0 && (
@@ -291,3 +244,4 @@ export const SellerProductManagement = () => {
     </div>
   );
 };
+

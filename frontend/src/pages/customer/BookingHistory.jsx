@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Search, Filter, CheckCircle2, Clock, MapPin, Download, MoreVertical, Star } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -148,3 +148,4 @@ export const BookingHistory = () => {
     </div>
   );
 };
+

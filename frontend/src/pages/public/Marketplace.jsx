@@ -347,3 +347,4 @@ const ProductCard = ({ product, wishlistItems = [] }) => {
     </div>
   );
 };
+

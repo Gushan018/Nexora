@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, MapPin, Filter, Star, ChevronDown, CheckSquare, Sparkles } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -135,3 +135,4 @@ export const AdvancedSearch = () => {
     </div>
   );
 };
+

@@ -4,7 +4,8 @@ const {
   createBooking,
   getMyBookings,
   getVendorBookings,      
-  updateBookingStatus     
+  updateBookingStatus,
+  getBookingById,
 } = require('../controllers/booking.controller');
 
 const { protect, restrictTo } = require('../middleware/auth.middleware');
@@ -14,7 +15,8 @@ router.post('/', protect, restrictTo('customer'), createBooking);
 router.get('/my', protect, restrictTo('customer'), getMyBookings);
 
 // ====== Vendor Routes  ======
-router.get('/vendor', protect, restrictTo('vendor', 'seller'), getVendorBookings);
-router.put('/:id/status', protect, restrictTo('vendor', 'seller'), updateBookingStatus);
+router.get('/vendor', protect, restrictTo('vendor'), getVendorBookings);
+router.get('/:id', protect, getBookingById);
+router.put('/:id/status', protect, restrictTo('vendor'), updateBookingStatus);
 
 module.exports = router;

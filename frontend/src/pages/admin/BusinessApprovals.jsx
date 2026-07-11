@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, Search, Filter, Check, X, FileText, Building, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
@@ -132,3 +132,4 @@ export const BusinessApprovals = () => {
     </div>
   );
 };
+

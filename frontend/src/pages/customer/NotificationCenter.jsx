@@ -9,13 +9,19 @@ import { cn } from '../../utils/cn';
 export const NotificationCenter = () => {
   const queryClient = useQueryClient();
 
-  const { data: notifications = [], isLoading } = useQuery({
+  const { data: rawNotifications, isLoading } = useQuery({
     queryKey: ['notifications'],
     queryFn: async () => {
       const res = await api.get('/notifications/my');
       return res.data;
     }
   });
+
+  const notifications = Array.isArray(rawNotifications)
+    ? rawNotifications
+    : Array.isArray(rawNotifications?.notifications)
+    ? rawNotifications.notifications
+    : [];
 
   const markReadMutation = useMutation({
     mutationFn: async (id) => {
@@ -97,3 +103,4 @@ export const NotificationCenter = () => {
     </div>
   );
 };
+

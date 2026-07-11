@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AlertTriangle, ArrowLeft, Calendar, Building, DollarSign } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
@@ -113,3 +113,4 @@ export const BookingCancellation = () => {
     </div>
   );
 };
+

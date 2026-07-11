@@ -55,7 +55,7 @@ export const BookingDetails = () => {
           </h1>
           <div className="flex items-center gap-2 text-sm text-slate-600">
             <span>Placed on {new Date(booking.bookingDate).toLocaleDateString()}</span>
-            <span>â€¢</span>
+            <span>•</span>
             <span className="flex items-center gap-1 text-green-400 bg-green-400/10 px-2 py-0.5 rounded">
               {booking.status === 'ACCEPTED' ? <CheckCircle2 className="w-3.5 h-3.5" /> : <AlertCircle className="w-3.5 h-3.5 text-yellow-400" />} 
               <span className={booking.status === 'PENDING' ? 'text-yellow-400' : ''}>{booking.status}</span>
@@ -215,4 +215,5 @@ export const BookingDetails = () => {
     </div>
   );
 };
+
 
