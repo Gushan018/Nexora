@@ -127,10 +127,6 @@ function App() {
           <Route path="terms" element={<Terms />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="reset-password" element={<ResetPassword />} />
-          <Route path="email-verification" element={<EmailVerification />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="maintenance" element={<Maintenance />} />
         </Route>
 
@@ -246,6 +242,7 @@ function App() {
           <Route path="advanced-analytics-dashboard" element={<AdvancedAnalyticsDashboard />} />
           <Route path="user/:id" element={<UserDetail />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
       </ErrorBoundary>
     </Router>
