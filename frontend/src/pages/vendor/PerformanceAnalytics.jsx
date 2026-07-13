@@ -18,6 +18,7 @@ export const PerformanceAnalytics = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
+<<<<<<< HEAD
           <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <BarChart3 className="w-7 h-7 text-primary" />
             Performance Analytics
@@ -26,6 +27,16 @@ export const PerformanceAnalytics = () => {
         </div>
         <div className="flex gap-2">
           <select className="bg-surface/50 border border-white/10 rounded-lg px-4 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 cursor-pointer">
+=======
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <BarChart3 className="w-7 h-7 text-primary" />
+            Performance Analytics
+          </h1>
+          <p className="text-slate-600">Track your visibility and conversion metrics on Event Nest.</p>
+        </div>
+        <div className="flex gap-2">
+          <select className="bg-surface/50 border border-slate-300 rounded-lg px-4 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <option>Last 30 Days</option>
             <option>Last 90 Days</option>
             <option>This Year</option>
@@ -38,11 +49,16 @@ export const PerformanceAnalytics = () => {
         {KEY_METRICS.map((metric, i) => {
           const Icon = metric.icon;
           return (
-            <Card key={i} className="border-white/5">
+            <Card key={i} className="border-slate-200">
               <CardContent className="p-6">
                 <div className="flex justify-between items-start mb-4">
+<<<<<<< HEAD
                   <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
                     <Icon className="w-5 h-5 text-textPrimary/60" />
+=======
+                  <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-slate-600" />
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
                   <span className={cn(
                     "flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full",
@@ -53,8 +69,13 @@ export const PerformanceAnalytics = () => {
                   </span>
                 </div>
                 <div>
+<<<<<<< HEAD
                   <h3 className="text-3xl font-bold text-textPrimary">{metric.value}</h3>
                   <p className="text-sm text-textPrimary/50 mt-1">{metric.label}</p>
+=======
+                  <h3 className="text-3xl font-bold text-slate-900">{metric.value}</h3>
+                  <p className="text-sm text-slate-500 mt-1">{metric.label}</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               </CardContent>
             </Card>
@@ -65,31 +86,36 @@ export const PerformanceAnalytics = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Main Chart Placeholder */}
-        <Card className="lg:col-span-2 border-white/5 flex flex-col h-[400px]">
+        <Card className="lg:col-span-2 border-slate-200 flex flex-col h-[400px]">
           <CardHeader>
             <CardTitle>Traffic Overview</CardTitle>
             <CardDescription>Views vs Inquiries over the selected period</CardDescription>
           </CardHeader>
-          <CardContent className="flex-1 flex items-center justify-center border-t border-white/5 relative">
+          <CardContent className="flex-1 flex items-center justify-center border-t border-slate-200 relative">
             
             {/* Mock Chart Grid */}
             <div className="absolute inset-0 p-6 flex flex-col justify-between pointer-events-none opacity-20">
               {[...Array(5)].map((_, i) => (
-                <div key={i} className="w-full h-px bg-white/20" />
+                <div key={i} className="w-full h-px bg-slate-300" />
               ))}
             </div>
 
             <div className="text-center z-10">
               <BarChart3 className="w-16 h-16 text-primary/20 mx-auto mb-4" />
+<<<<<<< HEAD
               <p className="text-textPrimary/40 font-medium">Recharts / Chart.js Canvas</p>
               <p className="text-xs text-textPrimary/30">Traffic visualization would render here</p>
+=======
+              <p className="text-slate-500 font-medium">Recharts / Chart.js Canvas</p>
+              <p className="text-xs text-slate-400">Traffic visualization would render here</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
             
           </CardContent>
         </Card>
 
         {/* Traffic Sources */}
-        <Card className="border-white/5 h-[400px] flex flex-col">
+        <Card className="border-slate-200 h-[400px] flex flex-col">
           <CardHeader>
             <CardTitle>Traffic Sources</CardTitle>
             <CardDescription>Where your views come from</CardDescription>
@@ -97,17 +123,22 @@ export const PerformanceAnalytics = () => {
           <CardContent className="flex-1 pt-0">
             <div className="space-y-6">
               {[
-                { source: 'Nexora Search', percent: 65, color: 'bg-primary' },
+                { source: 'Event Nest Search', percent: 65, color: 'bg-primary' },
                 { source: 'Direct Link', percent: 20, color: 'bg-accent' },
                 { source: 'External Referrals', percent: 10, color: 'bg-yellow-500' },
-                { source: 'Other', percent: 5, color: 'bg-white/20' },
+                { source: 'Other', percent: 5, color: 'bg-slate-300' },
               ].map((item, i) => (
                 <div key={i} className="space-y-2">
                   <div className="flex justify-between text-sm">
+<<<<<<< HEAD
                     <span className="text-textPrimary/80">{item.source}</span>
                     <span className="text-textPrimary font-medium">{item.percent}%</span>
+=======
+                    <span className="text-slate-800">{item.source}</span>
+                    <span className="text-slate-900 font-medium">{item.percent}%</span>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
-                  <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                     <motion.div 
                       initial={{ width: 0 }}
                       animate={{ width: `${item.percent}%` }}

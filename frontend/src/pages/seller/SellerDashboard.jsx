@@ -70,8 +70,13 @@ export const SellerDashboard = () => {
       {/* Welcome & Quick Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
+<<<<<<< HEAD
           <h1 className="text-3xl font-bold text-textPrimary tracking-tight">Storefront Overview</h1>
           <p className="text-textPrimary/60">Manage your products, track orders, and monitor sales.</p>
+=======
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Storefront Overview</h1>
+          <p className="text-slate-600">Manage your products, track orders, and monitor sales.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <div className="flex items-center gap-3">
           <Link to={`/seller/store-profile/${user?.id}`}>
@@ -106,6 +111,7 @@ export const SellerDashboard = () => {
               <Button variant="ghost" size="sm" rightIcon={<ArrowUpRight className="w-4 h-4"/>}>Detailed Analytics</Button>
             </Link>
           </CardHeader>
+<<<<<<< HEAD
           <CardContent className="h-80 pt-4">
             {chartData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -128,6 +134,41 @@ export const SellerDashboard = () => {
                 Insufficient data to generate sales chart.
               </div>
             )}
+=======
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-slate-200 text-sm font-medium text-slate-500">
+                    <th className="pb-3 pl-2">Order ID</th>
+                    <th className="pb-3">Product</th>
+                    <th className="pb-3">Date</th>
+                    <th className="pb-3">Status</th>
+                    <th className="pb-3 text-right pr-2">Total</th>
+                  </tr>
+                </thead>
+                <tbody className="text-sm">
+                  {[
+                    { id: '#SL-0992', product: 'Gold Cutlery Set', date: 'Today, 2:30 PM', status: 'Pending', total: 'LKR 120.00', color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
+                    { id: '#SL-0991', product: 'LED Uplights (x4)', date: 'Today, 11:15 AM', status: 'Processing', total: 'LKR 450.00', color: 'text-blue-400', bg: 'bg-blue-400/10' },
+                    { id: '#SL-0990', product: 'Table Linens (x20)', date: 'Yesterday', status: 'Shipped', total: 'LKR 340.00', color: 'text-green-400', bg: 'bg-green-400/10' },
+                  ].map((order, i) => (
+                    <tr key={i} className="border-b border-slate-200 hover:bg-slate-100 transition-colors">
+                      <td className="py-4 pl-2 font-medium text-slate-900">{order.id}</td>
+                      <td className="py-4 text-slate-800">{order.product}</td>
+                      <td className="py-4 text-slate-500">{order.date}</td>
+                      <td className="py-4">
+                        <span className={cn("px-2.5 py-1 rounded-full text-xs font-medium border border-current/20", order.bg, order.color)}>
+                          {order.status}
+                        </span>
+                      </td>
+                      <td className="py-4 text-right pr-2 font-medium text-slate-900">{order.total}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           </CardContent>
         </Card>
 
@@ -141,6 +182,7 @@ export const SellerDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 pt-0">
+<<<<<<< HEAD
               {products?.filter(p => p.quantity < 5).length === 0 ? (
                 <p className="text-sm text-textPrimary/40 italic">All products are well stocked.</p>
               ) : (
@@ -155,6 +197,17 @@ export const SellerDashboard = () => {
                     <Link to={`/seller/edit-product/${item.productId}`}>
                       <Button size="sm" variant="outline" className="text-xs h-8">Restock</Button>
                     </Link>
+=======
+              {[
+                { name: 'Crystal Wine Glasses', left: 12 },
+                { name: 'Silk Chair Covers', left: 5 },
+                { name: 'Rustic Wooden Arch', left: 1 },
+              ].map((item, i) => (
+                <div key={i} className="flex justify-between items-center p-3 rounded-xl bg-surface/50 border border-yellow-500/10">
+                  <div>
+                    <p className="font-medium text-slate-900 text-sm">{item.name}</p>
+                    <p className="text-xs text-yellow-400/70">Only {item.left} remaining</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
                 ))
               )}
@@ -224,13 +277,22 @@ const SellerStatCard = ({ title, value, trend, isWarning, icon }) => (
   <Card className={cn("hover:-translate-y-1 transition-transform duration-300", isWarning && "border-yellow-500/30")}>
     <CardContent className="p-6">
       <div className="flex items-start justify-between mb-2">
+<<<<<<< HEAD
         <p className="text-sm font-medium text-textPrimary/60">{title}</p>
         <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
+=======
+        <p className="text-sm font-medium text-slate-600">{title}</p>
+        <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center border border-slate-300">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
           {icon}
         </div>
       </div>
       <div className="flex items-end gap-3 mt-2">
+<<<<<<< HEAD
         <h3 className="text-3xl font-bold text-textPrimary">{value}</h3>
+=======
+        <h3 className="text-3xl font-bold text-slate-900">{value}</h3>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         {trend && (
           <span className="text-sm font-medium mb-1 flex items-center text-green-400 bg-green-400/10 px-2 py-0.5 rounded-md">
             <TrendingUp className="w-3 h-3 mr-1" />

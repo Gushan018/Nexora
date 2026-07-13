@@ -139,11 +139,19 @@ export const AddProduct = () => {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
+<<<<<<< HEAD
           <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <PackagePlus className="w-7 h-7 text-primary" />
             Add New Product
           </h1>
           <p className="text-textPrimary/60">List a new physical item on your marketplace storefront.</p>
+=======
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <PackagePlus className="w-7 h-7 text-primary" />
+            Add New Product
+          </h1>
+          <p className="text-slate-600">List a new physical item on your marketplace storefront.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <div className="flex gap-3 w-full sm:w-auto">
           <Button
@@ -166,6 +174,7 @@ export const AddProduct = () => {
         </div>
       </div>
 
+<<<<<<< HEAD
       {/* Error Message */}
       {error && (
         <motion.div
@@ -210,8 +219,34 @@ export const AddProduct = () => {
                   leftIcon={<Tag className="w-5 h-5" />}
                   required
                 />
+=======
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <div className="lg:col-span-2 space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Basic Information</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <Input 
+                label="Product Name" 
+                placeholder="e.g. Premium Gold Cutlery Set (100 Pieces)" 
+                leftIcon={<Tag className="w-5 h-5" />}
+              />
+              
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-slate-800">Description</label>
+                <textarea 
+                  rows="6" 
+                  className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors"
+                  placeholder="Describe your product in detail..."
+                />
+                <p className="text-xs text-slate-500 mt-1 text-right">0 / 2000 characters</p>
+              </div>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
 
                 <div className="space-y-1.5">
+<<<<<<< HEAD
                   <label className="text-sm font-medium text-textPrimary/90">Description *</label>
                   <textarea
                     name="description"
@@ -222,8 +257,21 @@ export const AddProduct = () => {
                     placeholder="Describe your product in detail..."
                     required
                   />
+=======
+                  <label className="text-sm font-medium text-slate-800 flex items-center gap-2">
+                    <List className="w-4 h-4 text-slate-600" /> Category
+                  </label>
+                  <select className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors appearance-none">
+                    <option value="">Select Category</option>
+                    <option value="catering">Catering Supplies</option>
+                    <option value="decor">Decorations</option>
+                    <option value="lighting">Lighting & AV</option>
+                    <option value="furniture">Furniture</option>
+                  </select>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
 
+<<<<<<< HEAD
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-textPrimary/90 flex items-center gap-2">
@@ -241,6 +289,54 @@ export const AddProduct = () => {
                         <option key={cat.categoryId} value={cat.categoryId}>{cat.categoryName}</option>
                       ))}
                     </select>
+=======
+          <Card>
+            <CardHeader>
+              <CardTitle>Pricing Strategy</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <Input 
+                  label="Regular Price" 
+                  type="number"
+                  placeholder="0.00" 
+                  leftIcon={<DollarSign className="w-5 h-5" />}
+                />
+                <Input 
+                  label="Sale Price (Optional)" 
+                  type="number"
+                  placeholder="0.00" 
+                  leftIcon={<DollarSign className="w-5 h-5 text-green-400" />}
+                />
+              </div>
+              <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
+                <p className="text-sm text-primary font-medium flex items-center justify-between">
+                  Estimated Platform Fee (5%): <span>-LKR 0.00</span>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="lg:col-span-1 space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Product Media</CardTitle>
+              <CardDescription>First image will be the cover.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="border-2 border-dashed border-slate-400 rounded-xl h-48 flex flex-col items-center justify-center bg-surface/30 hover:bg-surface/50 hover:border-primary/50 transition-all cursor-pointer group">
+                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3 group-hover:bg-primary/20 group-hover:text-primary transition-colors">
+                  <Upload className="w-6 h-6 text-slate-500 group-hover:text-primary" />
+                </div>
+                <p className="text-sm text-slate-600 font-medium text-center px-4">Click or drag images here</p>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-2">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="aspect-square rounded-lg bg-surface border border-slate-300 flex items-center justify-center">
+                    <span className="text-slate-300 text-xs">Slot {i}</span>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
                   <Input
                     label="Available Stock *"
@@ -352,6 +448,28 @@ export const AddProduct = () => {
             </Card>
           </div>
 
+<<<<<<< HEAD
+=======
+          <Card>
+            <CardHeader>
+              <CardTitle>Shipping Options</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <label className="flex items-center gap-3 p-3 rounded-lg border border-slate-300 hover:bg-slate-100 cursor-pointer transition-colors">
+                <input type="checkbox" className="w-4 h-4 rounded bg-surface border-slate-400 text-primary focus:ring-primary/50 focus:ring-offset-background" defaultChecked />
+                <span className="text-sm text-slate-800">Standard Delivery (3-5 days)</span>
+              </label>
+              <label className="flex items-center gap-3 p-3 rounded-lg border border-slate-300 hover:bg-slate-100 cursor-pointer transition-colors">
+                <input type="checkbox" className="w-4 h-4 rounded bg-surface border-slate-400 text-primary focus:ring-primary/50 focus:ring-offset-background" />
+                <span className="text-sm text-slate-800">Express Delivery (Next day)</span>
+              </label>
+              <label className="flex items-center gap-3 p-3 rounded-lg border border-slate-300 hover:bg-slate-100 cursor-pointer transition-colors">
+                <input type="checkbox" className="w-4 h-4 rounded bg-surface border-slate-400 text-primary focus:ring-primary/50 focus:ring-offset-background" />
+                <span className="text-sm text-slate-800">Local Pickup Allowed</span>
+              </label>
+            </CardContent>
+          </Card>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
       )}
     </form>

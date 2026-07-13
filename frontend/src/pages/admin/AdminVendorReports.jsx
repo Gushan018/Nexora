@@ -11,6 +11,7 @@ export const AdminVendorReports = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
+<<<<<<< HEAD
           <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <Store className="w-7 h-7 text-accent" />
             Vendor Analytics
@@ -19,6 +20,16 @@ export const AdminVendorReports = () => {
         </div>
         <div className="flex gap-2">
           <select className="bg-surface/50 border border-white/10 rounded-lg px-4 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 cursor-pointer">
+=======
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Store className="w-7 h-7 text-accent" />
+            Vendor Analytics
+          </h1>
+          <p className="text-slate-600">Analyze vendor acquisition, churn, and subscription tier distribution.</p>
+        </div>
+        <div className="flex gap-2">
+          <select className="bg-surface/50 border border-slate-300 rounded-lg px-4 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <option>Year to Date</option>
             <option>Last Quarter</option>
           </select>
@@ -29,7 +40,11 @@ export const AdminVendorReports = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-4">
         <Card className="border-accent/20 bg-accent/5">
           <CardContent className="p-6">
+<<<<<<< HEAD
             <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Total Active Vendors</h3>
+=======
+            <h3 className="text-sm font-medium text-slate-800 mb-2">Total Active Vendors</h3>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <div className="flex items-end gap-3">
               <span className="text-4xl font-bold text-accent">1,842</span>
             </div>
@@ -37,24 +52,38 @@ export const AdminVendorReports = () => {
           </CardContent>
         </Card>
 
-        <Card className="border-white/10">
+        <Card className="border-slate-300">
           <CardContent className="p-6">
+<<<<<<< HEAD
             <h3 className="text-sm font-medium text-textPrimary/60 mb-2">New Signups (YTD)</h3>
             <div className="flex justify-between items-end">
               <span className="text-3xl font-bold text-textPrimary">415</span>
               <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+=======
+            <h3 className="text-sm font-medium text-slate-600 mb-2">New Signups (YTD)</h3>
+            <div className="flex justify-between items-end">
+              <span className="text-3xl font-bold text-slate-900">415</span>
+              <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <UserPlus className="w-5 h-5 text-green-400" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-white/10">
+        <Card className="border-slate-300">
           <CardContent className="p-6">
+<<<<<<< HEAD
             <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Vendor Churn Rate</h3>
             <div className="flex justify-between items-end">
               <span className="text-3xl font-bold text-textPrimary">2.4%</span>
               <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+=======
+            <h3 className="text-sm font-medium text-slate-600 mb-2">Vendor Churn Rate</h3>
+            <div className="flex justify-between items-end">
+              <span className="text-3xl font-bold text-slate-900">2.4%</span>
+              <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 <UserMinus className="w-5 h-5 text-red-400" />
               </div>
             </div>
@@ -63,7 +92,11 @@ export const AdminVendorReports = () => {
 
         <Card className="border-yellow-500/20 bg-yellow-500/5">
           <CardContent className="p-6">
+<<<<<<< HEAD
             <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Pro Subscriptions</h3>
+=======
+            <h3 className="text-sm font-medium text-slate-800 mb-2">Pro Subscriptions</h3>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             <div className="flex justify-between items-end">
               <span className="text-3xl font-bold text-yellow-500">680</span>
               <div className="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20">
@@ -77,27 +110,32 @@ export const AdminVendorReports = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         {/* Acquisition Chart */}
-        <Card className="border-white/5 h-[400px] flex flex-col">
+        <Card className="border-slate-200 h-[400px] flex flex-col">
           <CardHeader>
             <CardTitle>Vendor Acquisition vs Churn</CardTitle>
             <CardDescription>Monthly net growth</CardDescription>
           </CardHeader>
-          <CardContent className="flex-1 flex items-center justify-center border-t border-white/5 relative">
+          <CardContent className="flex-1 flex items-center justify-center border-t border-slate-200 relative">
             <div className="absolute inset-0 p-6 flex flex-col justify-between pointer-events-none opacity-20">
               {[...Array(5)].map((_, i) => (
-                <div key={i} className="w-full h-px bg-white/20" />
+                <div key={i} className="w-full h-px bg-slate-300" />
               ))}
             </div>
             <div className="text-center z-10">
               <Activity className="w-16 h-16 text-accent/20 mx-auto mb-4" />
+<<<<<<< HEAD
               <p className="text-textPrimary/40 font-medium">Recharts Composed Chart</p>
               <p className="text-xs text-textPrimary/30">Bar (Signups) vs Line (Churn)</p>
+=======
+              <p className="text-slate-500 font-medium">Recharts Composed Chart</p>
+              <p className="text-xs text-slate-400">Bar (Signups) vs Line (Churn)</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
             </div>
           </CardContent>
         </Card>
 
         {/* Tier Distribution */}
-        <Card className="border-white/5 h-[400px] flex flex-col">
+        <Card className="border-slate-200 h-[400px] flex flex-col">
           <CardHeader>
             <CardTitle>Subscription Tier Distribution</CardTitle>
             <CardDescription>Breakdown of free vs paid vendor accounts</CardDescription>
@@ -112,18 +150,28 @@ export const AdminVendorReports = () => {
                     <Crown className="w-5 h-5 text-yellow-500" />
                   </div>
                   <div>
+<<<<<<< HEAD
                     <h4 className="font-bold text-textPrimary">Pro Tier (LKR 99/mo)</h4>
                     <p className="text-xs text-textPrimary/60">Premium features unlocked</p>
+=======
+                    <h4 className="font-bold text-slate-900">Pro Tier (LKR 99/mo)</h4>
+                    <p className="text-xs text-slate-600">Premium features unlocked</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   </div>
                 </div>
                 <div className="text-right">
                   <span className="font-bold text-lg text-yellow-500 block">680</span>
+<<<<<<< HEAD
                   <span className="text-xs text-textPrimary/40">37%</span>
+=======
+                  <span className="text-xs text-slate-500">37%</span>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl border border-white/10 bg-surface flex items-center justify-between">
+              <div className="p-4 rounded-xl border border-slate-300 bg-surface flex items-center justify-between">
                 <div className="flex items-center gap-3">
+<<<<<<< HEAD
                   <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
                     <Store className="w-5 h-5 text-textPrimary/60" />
                   </div>
@@ -140,6 +188,24 @@ export const AdminVendorReports = () => {
 
               <div className="pt-4 mt-4 border-t border-white/5 text-center">
                 <p className="text-sm text-textPrimary/60">Conversion Rate from Basic to Pro: <span className="font-bold text-textPrimary">12.4%</span></p>
+=======
+                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                    <Store className="w-5 h-5 text-slate-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900">Basic Tier (Free)</h4>
+                    <p className="text-xs text-slate-600">Standard commission rates</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="font-bold text-lg text-slate-900 block">1,162</span>
+                  <span className="text-xs text-slate-500">63%</span>
+                </div>
+              </div>
+
+              <div className="pt-4 mt-4 border-t border-slate-200 text-center">
+                <p className="text-sm text-slate-600">Conversion Rate from Basic to Pro: <span className="font-bold text-slate-900">12.4%</span></p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
 
             </div>

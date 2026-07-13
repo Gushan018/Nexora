@@ -106,11 +106,19 @@ export const VendorBookingCalendar = () => {
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
+<<<<<<< HEAD
           <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <CalendarIcon className="w-7 h-7 text-primary" />
             Booking Calendar
           </h1>
           <p className="text-textPrimary/60">Manage your schedule and availability for upcoming events.</p>
+=======
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <CalendarIcon className="w-7 h-7 text-primary" />
+            Booking Calendar
+          </h1>
+          <p className="text-slate-600">Manage your schedule and availability for upcoming events.</p>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => alert('Integration coming soon')}>
@@ -125,6 +133,7 @@ export const VendorBookingCalendar = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <Card className="lg:col-span-3">
           <CardContent className="p-0">
+<<<<<<< HEAD
             <div className="p-4 border-b border-white/5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h2 className="text-lg font-bold text-textPrimary">{currentMonthLabel}</h2>
@@ -151,18 +160,39 @@ export const VendorBookingCalendar = () => {
                   onClick={() => changeMonth(1)}
                   className="p-2 bg-surface border border-white/10 rounded-lg text-textPrimary hover:bg-white/5 transition-colors"
                 >
+=======
+            {/* Calendar Header */}
+            <div className="p-4 border-b border-slate-200 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-slate-900">October 2026</h2>
+              <div className="flex gap-2">
+                <button className="p-2 bg-surface border border-slate-300 rounded-lg text-slate-900 hover:bg-slate-100 transition-colors">
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button className="px-4 py-2 bg-surface border border-slate-300 rounded-lg text-slate-900 text-sm font-medium hover:bg-slate-100 transition-colors">
+                  Today
+                </button>
+                <button className="p-2 bg-surface border border-slate-300 rounded-lg text-slate-900 hover:bg-slate-100 transition-colors">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
+<<<<<<< HEAD
             <div className="grid grid-cols-7 border-b border-white/5 bg-surface/10">
               {DAYS.map((day) => (
                 <div key={day} className="p-3 text-center text-sm font-medium text-textPrimary/50 border-r border-white/5 last:border-0">
+=======
+            {/* Calendar Grid */}
+            <div className="grid grid-cols-7 border-b border-slate-200">
+              {DAYS.map(day => (
+                <div key={day} className="p-3 text-center text-sm font-medium text-slate-500 border-r border-slate-200 last:border-0">
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                   {day}
                 </div>
               ))}
             </div>
+<<<<<<< HEAD
 
             <div className="grid grid-cols-7 gap-px bg-white/5">
               {calendarGrid.map((cell) => (
@@ -185,6 +215,36 @@ export const VendorBookingCalendar = () => {
                       <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold text-primary">
                         {cell.events.length} {cell.events.length === 1 ? 'event' : 'events'}
                       </span>
+=======
+            
+            <div className="grid grid-cols-7 grid-rows-5 bg-surface/30">
+              {[...Array(35)].map((_, i) => {
+                const dayNumber = i - 3; // Offset to simulate month starting on Thu
+                const isCurrentMonth = dayNumber > 0 && dayNumber <= 31;
+                const hasEvent = MOCK_EVENTS[dayNumber];
+                
+                return (
+                  <div key={i} className={cn(
+                    "min-h-[100px] p-2 border-r border-b border-slate-200 last:border-r-0 transition-colors hover:bg-slate-50",
+                    !isCurrentMonth && "opacity-30 bg-black/20"
+                  )}>
+                    {isCurrentMonth && (
+                      <>
+                        <span className={cn(
+                          "w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium mb-1",
+                          dayNumber === 24 ? "bg-primary text-white" : "text-slate-800"
+                        )}>
+                          {dayNumber}
+                        </span>
+                        
+                        {hasEvent && hasEvent.map((evt, idx) => (
+                          <div key={idx} className="bg-primary/20 border border-primary/30 rounded p-1 mb-1 truncate cursor-pointer hover:bg-primary/30 transition-colors">
+                            <span className="text-[10px] text-primary font-bold block">{evt.time}</span>
+                            <span className="text-[11px] text-slate-900 truncate">{evt.title}</span>
+                          </div>
+                        ))}
+                      </>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
                     )}
                   </div>
 
@@ -210,11 +270,24 @@ export const VendorBookingCalendar = () => {
         </Card>
 
         <div className="space-y-4">
+<<<<<<< HEAD
           <div className="rounded-3xl border border-white/5 bg-surface/50 p-5">
             <div className="flex items-center justify-between gap-2 mb-4">
               <div>
                 <p className="text-sm font-medium text-textPrimary/70">Month summary</p>
                 <h3 className="text-xl font-bold text-textPrimary">{viewDate.toLocaleString('default', { month: 'long' })} stats</h3>
+=======
+          <h3 className="font-bold text-slate-900 mb-2">Upcoming this week</h3>
+          
+          <Card className="border-primary/50 relative overflow-hidden group hover:border-primary transition-colors cursor-pointer">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />
+            <CardContent className="p-4 pl-5">
+              <h4 className="text-slate-900 font-bold mb-3 group-hover:text-primary transition-colors">TechNova Corporate Gala</h4>
+              <div className="space-y-2 text-sm text-slate-700">
+                <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-500"/> Oct 14, 18:00 - 23:00</div>
+                <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-slate-500"/> Grand Hyatt Ballroom</div>
+                <div className="flex items-center gap-2"><User className="w-4 h-4 text-slate-500"/> Contact: Michael Chen</div>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
               <span className="text-xs text-textPrimary/50">{monthStats.total} bookings</span>
             </div>
@@ -237,6 +310,7 @@ export const VendorBookingCalendar = () => {
             </div>
           </div>
 
+<<<<<<< HEAD
           <div className="rounded-3xl border border-white/5 bg-surface/50 p-5">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-textPrimary">Upcoming bookings</h3>
@@ -268,6 +342,16 @@ export const VendorBookingCalendar = () => {
                     </CardContent>
                   </Card>
                 ))}
+=======
+          <Card className="border-slate-300 hover:border-slate-400 transition-colors cursor-pointer">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-slate-300" />
+            <CardContent className="p-4 pl-5">
+              <h4 className="text-slate-900 font-bold mb-3">Sarah & John Wedding</h4>
+              <div className="space-y-2 text-sm text-slate-700">
+                <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-500"/> Oct 18, 14:00 - 22:00</div>
+                <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-slate-500"/> Beachfront Resort</div>
+                <div className="flex items-center gap-2"><User className="w-4 h-4 text-slate-500"/> Contact: Sarah Jenkins</div>
+>>>>>>> e098d737a1e10ec8f5a43e47ec275c30b1f58b45
               </div>
             )}
           </div>
