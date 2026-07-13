@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-
   url      = env("DATABASE_URL")
 }
 
@@ -108,6 +107,7 @@ model Customer {
   registrationDate DateTime @default(now()) @map("registration_date")
 
   bookings      Booking[]
+  budget        budget?
   cart          Cart?
   orders        Order[]
   reviews       Review[]
@@ -120,18 +120,24 @@ model Customer {
 }
 
 model Vendor {
-  vendorId         Int        @id @default(autoincrement()) @map("vendor_id")
-  businessName     String     @map("business_name")
-  email            String     @unique
-  password         String
-  description      String?
-  contactNumber    String?    @map("contact_number")
-  location         String?
-  vendorType       VendorType @map("vendor_type")
-  isApproved       Boolean    @default(false) @map("is_approved")
-  isBlocked        Boolean    @default(false) @map("is_blocked")
-  profileImage     String?    @map("profile_image")
-  registrationDate DateTime   @default(now()) @map("registration_date")
+  vendorId            Int        @id @default(autoincrement()) @map("vendor_id")
+  businessName        String     @map("business_name")
+  email               String     @unique
+  password            String
+  description         String?
+  contactNumber       String?    @map("contact_number")
+  location            String?
+  vendorType          VendorType @map("vendor_type")
+  isApproved          Boolean    @default(false) @map("is_approved")
+  isBlocked           Boolean    @default(false) @map("is_blocked")
+  profileImage        String?    @map("profile_image")
+  registrationDate    DateTime   @default(now()) @map("registration_date")
+  booking_lead_time   String     @default("48h")
+  cancellation_policy String     @default("Moderate")
+  currency            String     @default("LKR")
+  instant_book        Boolean    @default(false)
+  require_deposits    Boolean    @default(false)
+  timezone            String     @default("UTC")
 
   services      Service[]
   products      Product[]
@@ -145,22 +151,25 @@ model Vendor {
 }
 
 model ServiceCategory {
-  categoryId   Int       @id @default(autoincrement()) @map("category_id")
-  categoryName String    @map("category_name")
-  services     Service[]
-  products     Product[]
+  categoryId    Int            @id @default(autoincrement()) @map("category_id")
+  categoryName  String         @map("category_name")
+  services      Service[]
+  products      Product[]
+  event_package EventPackage[]
 
   @@map("service_category")
 }
 
 model Service {
-  serviceId   Int      @id @default(autoincrement()) @map("service_id")
-  serviceName String   @map("service_name")
-  price       Decimal  @db.Decimal(10, 2)
-  description String?
-  imageUrl    String?  @map("image_url")
-  isApproved  Boolean  @default(false) @map("is_approved")
-  createdAt   DateTime @default(now()) @map("created_at")
+  serviceId     Int      @id @default(autoincrement()) @map("service_id")
+  serviceName   String   @map("service_name")
+  price         Decimal  @db.Decimal(10, 2)
+  description   String?
+  imageUrl      String?  @map("image_url")
+  isApproved    Boolean  @default(false) @map("is_approved")
+  createdAt     DateTime @default(now()) @map("created_at")
+  pricing_model String?
+  service_area  String?
 
   vendorId   Int              @map("vendor_id")
   categoryId Int?             @map("category_id")
@@ -203,21 +212,23 @@ model EventPackage {
   price       Decimal  @db.Decimal(10, 2)
   isApproved  Boolean  @default(false) @map("is_approved")
   createdAt   DateTime @default(now()) @map("created_at")
+  category_id Int?
 
-  vendorId Int      @map("vendor_id")
-  vendor   Vendor   @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  bookings Booking[]
-  wishlists Wishlist[]
+  vendorId         Int              @map("vendor_id")
+  vendor           Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+  service_category ServiceCategory? @relation(fields: [category_id], references: [categoryId])
+  bookings         Booking[]
+  wishlists        Wishlist[]
 
   @@map("event_package")
 }
 
 model Availability {
-  availabilityId Int     @id @default(autoincrement()) @map("availability_id")
+  availabilityId Int      @id @default(autoincrement()) @map("availability_id")
   date           DateTime @db.Date
-  startTime      String  @map("start_time")
-  endTime        String  @map("end_time")
-  isAvailable    Boolean @default(true) @map("is_available")
+  startTime      String   @map("start_time")
+  endTime        String   @map("end_time")
+  isAvailable    Boolean  @default(true) @map("is_available")
 
   vendorId Int    @map("vendor_id")
   vendor   Vendor @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
@@ -233,11 +244,11 @@ model Booking {
   location           String?
   vendorResponseDate DateTime?     @map("vendor_response_date")
 
-  customerId Int          @map("customer_id")
-  serviceId  Int?         @map("service_id")
-  packageId  Int?         @map("package_id")
-  customer   Customer     @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  service    Service?     @relation(fields: [serviceId], references: [serviceId], onDelete: SetNull)
+  customerId Int           @map("customer_id")
+  serviceId  Int?          @map("service_id")
+  packageId  Int?          @map("package_id")
+  customer   Customer      @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  service    Service?      @relation(fields: [serviceId], references: [serviceId], onDelete: SetNull)
   package    EventPackage? @relation(fields: [packageId], references: [packageId], onDelete: SetNull)
   payment    Payment?
   disputes   Dispute[]
@@ -408,30 +419,48 @@ model Wishlist {
 }
 
 model Conversation {
-  id           Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  
-  customerId   Int       @map("customer_id")
-  vendorId     Int       @map("vendor_id")
-  
-  customer     Customer  @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
-  vendor       Vendor    @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  messages     Message[]
-  
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  customerId Int @map("customer_id")
+  vendorId   Int @map("vendor_id")
+
+  customer Customer  @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+  vendor   Vendor    @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+  messages Message[]
+
   @@unique([customerId, vendorId])
   @@map("conversation")
 }
 
 model Message {
-  id             Int          @id @default(autoincrement())
-  text           String
-  senderType     String       @map("sender_type") // 'customer' or 'vendor'
-  isRead         Boolean      @default(false) @map("is_read")
-  createdAt      DateTime     @default(now()) @map("created_at")
-  
+  id         Int      @id @default(autoincrement())
+  text       String
+  senderType String   @map("sender_type") // 'customer' or 'vendor'
+  isRead     Boolean  @default(false) @map("is_read")
+  createdAt  DateTime @default(now()) @map("created_at")
+
   conversationId Int          @map("conversation_id")
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@map("message")
+}
+
+model budget {
+  id              Int               @id @default(autoincrement())
+  customer_id     Int               @unique
+  total_budget    Decimal           @default(0) @db.Decimal(10, 2)
+  customer        Customer          @relation(fields: [customer_id], references: [customerId], onDelete: Cascade)
+  budget_category budget_category[]
+}
+
+model budget_category {
+  id        Int     @id @default(autoincrement())
+  name      String
+  allocated Decimal @default(0) @db.Decimal(10, 2)
+  spent     Decimal @default(0) @db.Decimal(10, 2)
+  color     String?
+  budget_id Int
+  budget    budget  @relation(fields: [budget_id], references: [id], onDelete: Cascade)
 }
