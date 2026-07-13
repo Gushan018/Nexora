@@ -18,11 +18,11 @@ export const BookingTracking = () => {
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <Activity className="w-7 h-7 text-primary" />
             Booking Progress
           </h1>
-          <p className="text-white/60">Track milestones and upcoming requirements for your booking.</p>
+          <p className="text-textPrimary/60">Track milestones and upcoming requirements for your booking.</p>
         </div>
       </div>
 
@@ -45,12 +45,12 @@ export const BookingTracking = () => {
                       <div className="shrink-0 relative z-10">
                         {step.status === 'completed' && (
                           <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center ring-4 ring-background">
-                            <CheckCircle2 className="w-5 h-5 text-white" />
+                            <CheckCircle2 className="w-5 h-5 text-textPrimary" />
                           </div>
                         )}
                         {step.status === 'current' && (
                           <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center ring-4 ring-background animate-pulse">
-                            <AlertCircle className="w-4 h-4 text-white" />
+                            <AlertCircle className="w-4 h-4 text-textPrimary" />
                           </div>
                         )}
                         {step.status === 'upcoming' && (
@@ -67,11 +67,11 @@ export const BookingTracking = () => {
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-1">
                           <h4 className={cn(
                             "font-bold text-lg",
-                            step.status === 'current' ? "text-primary" : "text-white"
+                            step.status === 'current' ? "text-primary" : "text-textPrimary"
                           )}>{step.title}</h4>
-                          <span className="text-xs font-mono text-white/40 bg-white/5 px-2 py-1 rounded">{step.date}</span>
+                          <span className="text-xs font-mono text-textPrimary/40 bg-white/5 px-2 py-1 rounded">{step.date}</span>
                         </div>
-                        <p className="text-sm text-white/60 mb-3">{step.desc}</p>
+                        <p className="text-sm text-textPrimary/60 mb-3">{step.desc}</p>
                         
                         {step.status === 'current' && step.id === 3 && (
                           <Button size="sm">Pay Final Balance</Button>
@@ -97,8 +97,8 @@ export const BookingTracking = () => {
                   <Camera className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-white">Lumiere Photo</h4>
-                  <p className="text-xs text-white/50">Photography Services</p>
+                  <h4 className="font-bold text-textPrimary">Lumiere Photo</h4>
+                  <p className="text-xs text-textPrimary/50">Photography Services</p>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -110,11 +110,11 @@ export const BookingTracking = () => {
 
           <Card className="bg-primary/10 border-primary/20">
             <CardContent className="p-6 text-sm">
-              <h4 className="font-bold text-white flex items-center gap-2 mb-2">
+              <h4 className="font-bold text-textPrimary flex items-center gap-2 mb-2">
                 <AlertCircle className="w-4 h-4 text-primary" /> Action Required
               </h4>
-              <p className="text-white/80 leading-relaxed">
-                Your final balance of <span className="font-bold text-white">LKR 2,560.00</span> is due in 4 days. Please complete the payment to avoid cancellation.
+              <p className="text-textPrimary/80 leading-relaxed">
+                Your final balance of <span className="font-bold text-textPrimary">LKR 2,560.00</span> is due in 4 days. Please complete the payment to avoid cancellation.
               </p>
             </CardContent>
           </Card>

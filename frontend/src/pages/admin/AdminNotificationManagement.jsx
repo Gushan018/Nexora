@@ -11,11 +11,11 @@ export const AdminNotificationManagement = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <Bell className="w-7 h-7 text-primary" />
             Global Push Notifications
           </h1>
-          <p className="text-white/60">Broadcast system alerts, promotions, and updates to user cohorts.</p>
+          <p className="text-textPrimary/60">Broadcast system alerts, promotions, and updates to user cohorts.</p>
         </div>
       </div>
 
@@ -30,8 +30,8 @@ export const AdminNotificationManagement = () => {
           <CardContent className="space-y-4">
             
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-white/80 block">Target Audience</label>
-              <select className="w-full bg-surface/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
+              <label className="text-sm font-medium text-textPrimary/80 block">Target Audience</label>
+              <select className="w-full bg-surface/50 border border-white/10 rounded-lg px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors cursor-pointer">
                 <option>All Users (47k+)</option>
                 <option>All Vendors (1.8k)</option>
                 <option>All Customers (45k)</option>
@@ -41,7 +41,7 @@ export const AdminNotificationManagement = () => {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-white/80 block">Notification Type</label>
+              <label className="text-sm font-medium text-textPrimary/80 block">Notification Type</label>
               <div className="grid grid-cols-3 gap-3">
                 <label className="cursor-pointer border border-primary/40 bg-primary/10 rounded-lg p-3 text-center transition-colors">
                   <input type="radio" name="type" className="hidden" defaultChecked />
@@ -51,31 +51,31 @@ export const AdminNotificationManagement = () => {
                 <label className="cursor-pointer border border-white/10 hover:border-white/20 bg-surface/50 rounded-lg p-3 text-center transition-colors">
                   <input type="radio" name="type" className="hidden" />
                   <AlertTriangle className="w-5 h-5 mx-auto mb-1 text-yellow-500" />
-                  <span className="text-xs font-medium text-white/60">Warning</span>
+                  <span className="text-xs font-medium text-textPrimary/60">Warning</span>
                 </label>
                 <label className="cursor-pointer border border-white/10 hover:border-white/20 bg-surface/50 rounded-lg p-3 text-center transition-colors">
                   <input type="radio" name="type" className="hidden" />
                   <ShieldCheck className="w-5 h-5 mx-auto mb-1 text-green-400" />
-                  <span className="text-xs font-medium text-white/60">Success</span>
+                  <span className="text-xs font-medium text-textPrimary/60">Success</span>
                 </label>
               </div>
             </div>
 
             <div className="space-y-1.5 pt-2">
-              <label className="text-sm font-medium text-white/80 block">Message Title</label>
+              <label className="text-sm font-medium text-textPrimary/80 block">Message Title</label>
               <input 
                 type="text" 
                 placeholder="e.g. Holiday Sale is now live!" 
-                className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors"
+                className="w-full bg-surface border border-white/10 rounded-lg px-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-white/80 block">Message Body</label>
+              <label className="text-sm font-medium text-textPrimary/80 block">Message Body</label>
               <textarea 
                 rows="4" 
                 placeholder="Write your message here..."
-                className="w-full bg-surface border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                className="w-full bg-surface border border-white/10 rounded-lg px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors resize-none"
               />
             </div>
 
@@ -102,15 +102,15 @@ export const AdminNotificationManagement = () => {
               ].map((log, i) => (
                 <div key={i} className="p-4 hover:bg-white/[0.02] transition-colors">
                   <div className="flex justify-between items-start mb-2">
-                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                    <h4 className="text-sm font-bold text-textPrimary flex items-center gap-2">
                       {log.type === 'Warning' && <AlertTriangle className="w-4 h-4 text-yellow-500" />}
                       {log.type === 'Success' && <ShieldCheck className="w-4 h-4 text-green-400" />}
                       {log.type === 'Info' && <MessageSquare className="w-4 h-4 text-primary" />}
                       {log.title}
                     </h4>
-                    <span className="text-[10px] text-white/40">{log.date}</span>
+                    <span className="text-[10px] text-textPrimary/40">{log.date}</span>
                   </div>
-                  <div className="flex justify-between items-center text-xs text-white/50">
+                  <div className="flex justify-between items-center text-xs text-textPrimary/50">
                     <span className="flex items-center gap-1"><Users className="w-3 h-3"/> Target: {log.target}</span>
                     <span>Delivered to {log.reach}</span>
                   </div>

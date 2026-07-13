@@ -18,11 +18,11 @@ export const OrderTracking = () => {
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <MapPin className="w-7 h-7 text-primary" />
             Track Order #NXR-8492
           </h1>
-          <p className="text-white/60">Estimated Completion: Oct 18, 2026</p>
+          <p className="text-textPrimary/60">Estimated Completion: Oct 18, 2026</p>
         </div>
         <Button variant="outline" leftIcon={<MessageSquare className="w-4 h-4"/>}>Contact Vendor</Button>
       </div>
@@ -46,12 +46,12 @@ export const OrderTracking = () => {
                       <div className="shrink-0 relative z-10">
                         {step.status === 'completed' && (
                           <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center ring-4 ring-background">
-                            <CheckCircle2 className="w-5 h-5 text-white" />
+                            <CheckCircle2 className="w-5 h-5 text-textPrimary" />
                           </div>
                         )}
                         {step.status === 'current' && (
                           <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center ring-4 ring-background animate-pulse">
-                            <Truck className="w-4 h-4 text-white" />
+                            <Truck className="w-4 h-4 text-textPrimary" />
                           </div>
                         )}
                         {step.status === 'upcoming' && (
@@ -68,11 +68,11 @@ export const OrderTracking = () => {
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-1">
                           <h4 className={cn(
                             "font-bold text-lg",
-                            step.status === 'current' ? "text-accent" : "text-white"
+                            step.status === 'current' ? "text-accent" : "text-textPrimary"
                           )}>{step.title}</h4>
-                          <span className="text-xs font-mono text-white/40 bg-white/5 px-2 py-1 rounded">{step.time}</span>
+                          <span className="text-xs font-mono text-textPrimary/40 bg-white/5 px-2 py-1 rounded">{step.time}</span>
                         </div>
-                        <p className="text-sm text-white/60">{step.desc}</p>
+                        <p className="text-sm text-textPrimary/60">{step.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -94,9 +94,9 @@ export const OrderTracking = () => {
                   BC
                 </div>
                 <div>
-                  <h4 className="font-bold text-white">Bloom Catering</h4>
+                  <h4 className="font-bold text-textPrimary">Bloom Catering</h4>
                   <div className="flex items-center gap-1 text-xs text-yellow-400 mt-1">
-                    ★ 4.9 <span className="text-white/40">(128 reviews)</span>
+                    ★ 4.9 <span className="text-textPrimary/40">(128 reviews)</span>
                   </div>
                 </div>
               </div>
@@ -114,24 +114,24 @@ export const OrderTracking = () => {
             <CardContent className="p-6 pt-0 space-y-4">
               <div className="flex gap-3">
                 <div className="w-12 h-12 rounded bg-white/5 flex items-center justify-center shrink-0">
-                  <Package className="w-6 h-6 text-white/40" />
+                  <Package className="w-6 h-6 text-textPrimary/40" />
                 </div>
                 <div>
-                  <h5 className="font-medium text-sm text-white line-clamp-2">Premium 3-Course Wedding Menu</h5>
-                  <span className="text-xs text-white/50">Qty: 150 pax</span>
+                  <h5 className="font-medium text-sm text-textPrimary line-clamp-2">Premium 3-Course Wedding Menu</h5>
+                  <span className="text-xs text-textPrimary/50">Qty: 150 pax</span>
                 </div>
               </div>
               
               <div className="pt-4 border-t border-white/5 space-y-2 text-sm">
-                <div className="flex justify-between text-white/60">
+                <div className="flex justify-between text-textPrimary/60">
                   <span>Subtotal</span>
-                  <span className="text-white">LKR 12,500</span>
+                  <span className="text-textPrimary">LKR 12,500</span>
                 </div>
-                <div className="flex justify-between text-white/60">
+                <div className="flex justify-between text-textPrimary/60">
                   <span>Logistics</span>
-                  <span className="text-white">LKR 350</span>
+                  <span className="text-textPrimary">LKR 350</span>
                 </div>
-                <div className="flex justify-between font-bold pt-2 border-t border-white/5 text-white">
+                <div className="flex justify-between font-bold pt-2 border-t border-white/5 text-textPrimary">
                   <span>Total</span>
                   <span className="text-primary">LKR 12,850</span>
                 </div>

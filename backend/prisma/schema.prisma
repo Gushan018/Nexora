@@ -90,8 +90,16 @@ model Vendor {
   contactNumber    String?    @map("contact_number")
   location         String?
   vendorType       VendorType @map("vendor_type")
-  isApproved       Boolean    @default(false) @map("is_approved")
   profileImage     String?    @map("profile_image")
+  currency         String     @default("LKR")
+  timezone         String     @default("UTC")
+  bookingLeadTime  String     @default("48h") @map("booking_lead_time")
+  instantBook      Boolean    @default(false) @map("instant_book")
+  requireDeposits  Boolean    @default(false) @map("require_deposits")
+  cancellationPolicy String   @default("Moderate") @map("cancellation_policy")
+  bankName          String?  @map("bank_name")
+  bankAccountNo     String?  @map("bank_account_no")
+  taxId             String?  @map("tax_id")
   registrationDate DateTime   @default(now()) @map("registration_date")
 
   services      Service[]
@@ -105,22 +113,24 @@ model Vendor {
 }
 
 model ServiceCategory {
-  categoryId   Int       @id @default(autoincrement()) @map("category_id")
-  categoryName String    @map("category_name")
+  categoryId   Int            @id @default(autoincrement()) @map("category_id")
+  categoryName String         @map("category_name")
   services     Service[]
   products     Product[]
+  eventPackages EventPackage[]
 
   @@map("service_category")
 }
 
 model Service {
-  serviceId   Int      @id @default(autoincrement()) @map("service_id")
-  serviceName String   @map("service_name")
-  price       Decimal  @db.Decimal(10, 2)
-  description String?
-  imageUrl    String?  @map("image_url")
-  isApproved  Boolean  @default(false) @map("is_approved")
-  createdAt   DateTime @default(now()) @map("created_at")
+  serviceId     Int      @id @default(autoincrement()) @map("service_id")
+  serviceName   String   @map("service_name")
+  price         Decimal  @db.Decimal(10, 2)
+  description   String?
+  pricingModel  String?  @map("pricing_model")
+  serviceArea   String?  @map("service_area")
+  imageUrl      String?  @map("image_url")
+  createdAt     DateTime @default(now()) @map("created_at")
 
   vendorId   Int              @map("vendor_id")
   categoryId Int?             @map("category_id")
@@ -140,7 +150,6 @@ model Product {
   quantity    Int      @default(0)
   imageUrl    String?  @map("image_url")
   description String?
-  isApproved  Boolean  @default(false) @map("is_approved")
   createdAt   DateTime @default(now()) @map("created_at")
 
   vendorId   Int              @map("vendor_id")
@@ -160,13 +169,14 @@ model EventPackage {
   packageName String   @map("package_name")
   description String?
   price       Decimal  @db.Decimal(10, 2)
-  isApproved  Boolean  @default(false) @map("is_approved")
   createdAt   DateTime @default(now()) @map("created_at")
 
-  vendorId Int      @map("vendor_id")
-  vendor   Vendor   @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
-  bookings Booking[]
-  wishlists Wishlist[]
+  vendorId   Int              @map("vendor_id")
+  categoryId Int?             @map("category_id")
+  vendor     Vendor           @relation(fields: [vendorId], references: [vendorId], onDelete: Cascade)
+  category   ServiceCategory? @relation(fields: [categoryId], references: [categoryId], onDelete: SetNull)
+  bookings   Booking[]
+  wishlists  Wishlist[]
 
   @@map("event_package")
 }
@@ -273,6 +283,10 @@ model Review {
   rating     Int
   comment    String?
   reviewDate DateTime @default(now()) @map("review_date")
+  vendorReply     String?  @map("vendor_reply")
+  vendorReplyDate DateTime? @map("vendor_reply_date")
+  isReported      Boolean  @default(false) @map("is_reported")
+  reportReason    String?  @map("report_reason")
 
   customerId Int      @map("customer_id")
   vendorId   Int?     @map("vendor_id")

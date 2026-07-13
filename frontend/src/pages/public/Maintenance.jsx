@@ -23,21 +23,21 @@ export const Maintenance = () => {
           <div className="relative mb-8">
             <Settings className="w-24 h-24 text-primary animate-[spin_10s_linear_infinite]" />
             <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-surface rounded-full flex items-center justify-center border border-white/10 shadow-xl">
-              <Wrench className="w-6 h-6 text-white" />
+              <Wrench className="w-6 h-6 text-textPrimary" />
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-4">
+          <h1 className="text-4xl md:text-5xl font-black text-textPrimary tracking-tighter mb-4">
             We're upgrading Nexora.
           </h1>
           
-          <p className="text-lg text-white/60 mb-8 max-w-lg mx-auto">
+          <p className="text-lg text-textPrimary/60 mb-8 max-w-lg mx-auto">
             The marketplace is currently down for scheduled maintenance to improve performance and add new features. We'll be back online shortly.
           </p>
 
           <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-surface/50 border border-white/10 backdrop-blur-md">
             <Clock className="w-5 h-5 text-primary" />
-            <span className="text-sm font-medium text-white/80">Estimated downtime: 45 minutes</span>
+            <span className="text-sm font-medium text-textPrimary/80">Estimated downtime: 45 minutes</span>
           </div>
 
           <div className="mt-12">

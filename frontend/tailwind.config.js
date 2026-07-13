@@ -7,19 +7,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#D4AF37", 
-        primaryHover: "#C5A059",
-        secondary: "#1C2333", 
-        accent: "#E5C158",
-        background: "#131A26", 
-        surface: "#1C2333",
-        card: "#1C2333", 
-        textPrimary: "#F8FAFC",
-        muted: "#94A3B8",
-        border: "#2D3748",
-        success: "#10B981",
-        warning: "#F59E0B",
-        error: "#EF4444"
+        primary: 'rgb(var(--color-primary) / <alpha-value>)',
+        primaryHover: 'rgb(var(--color-primary-hover) / <alpha-value>)',
+        secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+        accent: 'rgb(var(--color-accent) / <alpha-value>)',
+        background: 'rgb(var(--color-background) / <alpha-value>)',
+        surface: 'rgb(var(--color-surface) / <alpha-value>)',
+        card: 'rgb(var(--color-card) / <alpha-value>)',
+        textPrimary: 'rgb(var(--color-text-primary) / <alpha-value>)',
+        muted: 'rgb(var(--color-muted) / <alpha-value>)',
+        border: 'rgb(var(--color-border) / <alpha-value>)',
+        success: 'rgb(var(--color-success) / <alpha-value>)',
+        warning: 'rgb(var(--color-warning) / <alpha-value>)',
+        error: 'rgb(var(--color-error) / <alpha-value>)'
       },
       fontFamily: {
         serif: ['"Playfair Display"', 'serif'],

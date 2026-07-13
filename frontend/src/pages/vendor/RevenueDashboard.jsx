@@ -11,14 +11,14 @@ export const RevenueDashboard = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <DollarSign className="w-7 h-7 text-green-400" />
             Revenue Dashboard
           </h1>
-          <p className="text-white/60">Analyze your earnings, taxes, and financial health.</p>
+          <p className="text-textPrimary/60">Analyze your earnings, taxes, and financial health.</p>
         </div>
         <div className="flex gap-2">
-          <select className="bg-surface/50 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-primary/50 cursor-pointer">
+          <select className="bg-surface/50 border border-white/10 rounded-lg px-4 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 cursor-pointer">
             <option>2026 (YTD)</option>
             <option>2025</option>
           </select>
@@ -31,10 +31,10 @@ export const RevenueDashboard = () => {
         {/* Gross Revenue */}
         <Card className="border-green-500/20 bg-green-500/5 md:col-span-2">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/80 mb-2">Gross Revenue (YTD)</h3>
+            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Gross Revenue (YTD)</h3>
             <div className="flex justify-between items-end">
               <div>
-                <span className="text-5xl font-bold text-white">LKR 142,500</span>
+                <span className="text-5xl font-bold text-textPrimary">LKR 142,500</span>
                 <p className="text-sm text-green-400 flex items-center gap-1 mt-2">
                   <ArrowUpRight className="w-4 h-4" /> +24% vs last year
                 </p>
@@ -49,10 +49,10 @@ export const RevenueDashboard = () => {
         {/* Platform Fees */}
         <Card className="border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-2">Platform Fees</h3>
+            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Platform Fees</h3>
             <div className="flex flex-col justify-end h-full">
-              <span className="text-3xl font-bold text-white/80">-LKR 7,125</span>
-              <p className="text-xs text-white/40 mt-1">Flat 5% Nexora Fee</p>
+              <span className="text-3xl font-bold text-textPrimary/80">-LKR 7,125</span>
+              <p className="text-xs text-textPrimary/40 mt-1">Flat 5% Nexora Fee</p>
             </div>
           </CardContent>
         </Card>
@@ -60,10 +60,10 @@ export const RevenueDashboard = () => {
         {/* Net Earnings */}
         <Card className="border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-2">Net Earnings</h3>
+            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Net Earnings</h3>
             <div className="flex flex-col justify-end h-full">
-              <span className="text-3xl font-bold text-white">LKR 135,375</span>
-              <p className="text-xs text-white/40 mt-1">Available to withdraw</p>
+              <span className="text-3xl font-bold text-textPrimary">LKR 135,375</span>
+              <p className="text-xs text-textPrimary/40 mt-1">Available to withdraw</p>
             </div>
           </CardContent>
         </Card>
@@ -85,8 +85,8 @@ export const RevenueDashboard = () => {
             </div>
             <div className="text-center z-10">
               <Activity className="w-16 h-16 text-green-400/20 mx-auto mb-4" />
-              <p className="text-white/40 font-medium">Recharts Line Graph</p>
-              <p className="text-xs text-white/30">Visualizing monthly MRR / ARR</p>
+              <p className="text-textPrimary/40 font-medium">Recharts Line Graph</p>
+              <p className="text-xs text-textPrimary/30">Visualizing monthly MRR / ARR</p>
             </div>
           </CardContent>
         </Card>
@@ -109,14 +109,14 @@ export const RevenueDashboard = () => {
                 <div key={i} className="p-4 flex items-center justify-between hover:bg-white/[0.02] transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded bg-white/5 flex items-center justify-center">
-                      <Calendar className="w-4 h-4 text-white/40" />
+                      <Calendar className="w-4 h-4 text-textPrimary/40" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">{payout.date}</p>
+                      <p className="text-sm font-medium text-textPrimary">{payout.date}</p>
                       <p className="text-xs text-green-400">{payout.status}</p>
                     </div>
                   </div>
-                  <span className="font-bold text-white">{payout.amount}</span>
+                  <span className="font-bold text-textPrimary">{payout.amount}</span>
                 </div>
               ))}
             </div>

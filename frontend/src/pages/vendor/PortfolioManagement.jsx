@@ -16,11 +16,11 @@ export const PortfolioManagement = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <ImageIcon className="w-7 h-7 text-primary" />
             Portfolio Showcase
           </h1>
-          <p className="text-white/60">Manage your past work. High-quality portfolios increase booking rates by 40%.</p>
+          <p className="text-textPrimary/60">Manage your past work. High-quality portfolios increase booking rates by 40%.</p>
         </div>
         <Button leftIcon={<Plus className="w-4 h-4"/>}>Add New Project</Button>
       </div>
@@ -34,7 +34,7 @@ export const PortfolioManagement = () => {
           <div className="space-y-3">
             {PORTFOLIO_ITEMS.map((item, i) => (
               <div key={item.id} className="flex items-center gap-4 p-3 rounded-xl border border-white/5 bg-surface/50 hover:bg-surface transition-colors group">
-                <button className="text-white/20 hover:text-white/60 cursor-grab active:cursor-grabbing px-2">
+                <button className="text-textPrimary/20 hover:text-textPrimary/60 cursor-grab active:cursor-grabbing px-2">
                   <GripVertical className="w-5 h-5" />
                 </button>
                 
@@ -48,15 +48,15 @@ export const PortfolioManagement = () => {
                 </div>
 
                 <div className="flex-1">
-                  <h4 className="text-sm font-medium text-white">{item.title}</h4>
-                  <p className="text-xs text-white/50">{item.category}</p>
+                  <h4 className="text-sm font-medium text-textPrimary">{item.title}</h4>
+                  <p className="text-xs text-textPrimary/50">{item.category}</p>
                 </div>
 
                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button className="p-2 text-white/40 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Preview">
+                  <button className="p-2 text-textPrimary/40 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Preview">
                     <Eye className="w-4 h-4"/>
                   </button>
-                  <button className="p-2 text-white/40 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" title="Delete">
+                  <button className="p-2 text-textPrimary/40 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" title="Delete">
                     <Trash2 className="w-4 h-4"/>
                   </button>
                 </div>
@@ -69,8 +69,8 @@ export const PortfolioManagement = () => {
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
               <Plus className="w-6 h-6 text-primary" />
             </div>
-            <h4 className="text-white font-medium text-sm mb-1">Add another project</h4>
-            <p className="text-xs text-white/50">Upload high-res images to showcase your best work</p>
+            <h4 className="text-textPrimary font-medium text-sm mb-1">Add another project</h4>
+            <p className="text-xs text-textPrimary/50">Upload high-res images to showcase your best work</p>
           </div>
         </CardContent>
       </Card>

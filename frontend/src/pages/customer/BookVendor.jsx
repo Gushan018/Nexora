@@ -51,7 +51,7 @@ export const BookVendor = () => {
   const PACKAGES = vendor?.eventPackages || [];
 
   if (isLoading) return <PageLoader text="Loading vendor details..." />;
-  if (!vendor) return <div className="pt-32 pb-20 text-center text-white">Vendor not found.</div>;
+  if (!vendor) return <div className="pt-32 pb-20 text-center text-textPrimary">Vendor not found.</div>;
 
   const selectedPkgData = PACKAGES.find(p => p.packageId === selectedPackage);
 
@@ -67,7 +67,7 @@ export const BookVendor = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight"
+            className="text-4xl md:text-5xl font-black text-textPrimary mb-4 tracking-tight"
           >
             Book with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">{vendor.businessName}</span>
           </motion.h1>
@@ -75,7 +75,7 @@ export const BookVendor = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-white/60 text-lg"
+            className="text-textPrimary/60 text-lg"
           >
             Configure your booking details and secure your date.
           </motion.p>
@@ -87,7 +87,7 @@ export const BookVendor = () => {
             <React.Fragment key={num}>
               <div className={cn(
                 "w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors relative",
-                step >= num ? "bg-primary text-white shadow-[0_0_20px_rgba(91,124,250,0.4)]" : "bg-surface border border-white/10 text-white/40"
+                step >= num ? "bg-primary text-textPrimary shadow-[0_0_20px_rgba(91,124,250,0.4)]" : "bg-surface border border-white/10 text-textPrimary/40"
               )}>
                 {step > num ? <Check className="w-5 h-5"/> : num}
               </div>
@@ -115,7 +115,7 @@ export const BookVendor = () => {
                   </CardHeader>
                   <CardContent className="p-6 pt-0 space-y-4">
                     {PACKAGES.length === 0 && (
-                      <div className="text-center text-white/60 py-8">This vendor has no packages available.</div>
+                      <div className="text-center text-textPrimary/60 py-8">This vendor has no packages available.</div>
                     )}
                     {PACKAGES.map(pkg => (
                       <div 
@@ -134,11 +134,11 @@ export const BookVendor = () => {
                         <div className="flex justify-between items-start mb-2">
                           <h3 className={cn(
                             "font-bold text-lg",
-                            selectedPackage === pkg.packageId ? "text-primary" : "text-white"
+                            selectedPackage === pkg.packageId ? "text-primary" : "text-textPrimary"
                           )}>{pkg.packageName}</h3>
-                          <span className="font-bold text-white">LKR {Number(pkg.price).toFixed(2)}</span>
+                          <span className="font-bold text-textPrimary">LKR {Number(pkg.price).toFixed(2)}</span>
                         </div>
-                        <p className="text-sm text-white/60 mb-4">{pkg.description || 'No description available.'}</p>
+                        <p className="text-sm text-textPrimary/60 mb-4">{pkg.description || 'No description available.'}</p>
                       </div>
                     ))}
 
@@ -163,26 +163,26 @@ export const BookVendor = () => {
                   <CardContent className="p-6 pt-0 space-y-6">
                     
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-white/80">Event Date</label>
+                      <label className="text-sm font-medium text-textPrimary/80">Event Date</label>
                       <div className="relative">
-                        <CalendarIcon className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
+                        <CalendarIcon className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-textPrimary/40" />
                         <input 
                           type="date" 
                           value={eventDate}
                           onChange={(e) => setEventDate(e.target.value)}
-                          className="w-full bg-surface border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-primary transition-colors [color-scheme:dark]" 
+                          className="w-full bg-surface border border-white/10 rounded-xl pl-12 pr-4 py-3 text-textPrimary focus:outline-none focus:border-primary transition-colors [color-scheme:dark]" 
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-white/80">Message to Vendor (Optional)</label>
+                      <label className="text-sm font-medium text-textPrimary/80">Message to Vendor (Optional)</label>
                       <textarea 
                         rows="3" 
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Tell them a bit about your vision..." 
-                        className="w-full bg-surface border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-primary transition-colors resize-none"
+                        className="w-full bg-surface border border-white/10 rounded-xl p-4 text-textPrimary focus:outline-none focus:border-primary transition-colors resize-none"
                       />
                     </div>
 
@@ -202,8 +202,8 @@ export const BookVendor = () => {
                   <CardContent className="p-6 pt-0 space-y-6">
                     
                     <div className="bg-surface border border-white/10 rounded-xl p-6 text-center space-y-2">
-                      <p className="text-white/60">Total Amount Due</p>
-                      <h2 className="text-4xl font-bold text-white">LKR {selectedPkgData ? Number(selectedPkgData.price).toFixed(2) : '0.00'}</h2>
+                      <p className="text-textPrimary/60">Total Amount Due</p>
+                      <h2 className="text-4xl font-bold text-textPrimary">LKR {selectedPkgData ? Number(selectedPkgData.price).toFixed(2) : '0.00'}</h2>
                     </div>
 
                     <div className="pt-6 flex justify-between">
@@ -224,26 +224,26 @@ export const BookVendor = () => {
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-6 pb-6 border-b border-white/5">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 border border-white/10 shrink-0 flex items-center justify-center">
-                    <span className="text-xl font-bold text-white">{vendor.businessName.charAt(0)}</span>
+                    <span className="text-xl font-bold text-textPrimary">{vendor.businessName.charAt(0)}</span>
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-lg">{vendor.businessName}</h3>
+                    <h3 className="font-bold text-textPrimary text-lg">{vendor.businessName}</h3>
                     <p className="text-xs text-primary font-medium tracking-wider uppercase">{vendor.vendorType}</p>
                   </div>
                 </div>
 
                 <div className="space-y-4 text-sm">
                   <div>
-                    <span className="block text-white/40 mb-1 text-xs">Selected Package</span>
+                    <span className="block text-textPrimary/40 mb-1 text-xs">Selected Package</span>
                     {selectedPkgData ? (
-                      <span className="font-medium text-white">{selectedPkgData.packageName}</span>
+                      <span className="font-medium text-textPrimary">{selectedPkgData.packageName}</span>
                     ) : (
-                      <span className="text-white/20 italic">None selected</span>
+                      <span className="text-textPrimary/20 italic">None selected</span>
                     )}
                   </div>
                   <div>
-                    <span className="block text-white/40 mb-1 text-xs">Base Price</span>
-                    <span className="font-medium text-white">LKR {selectedPkgData ? Number(selectedPkgData.price).toFixed(2) : '0.00'}
+                    <span className="block text-textPrimary/40 mb-1 text-xs">Base Price</span>
+                    <span className="font-medium text-textPrimary">LKR {selectedPkgData ? Number(selectedPkgData.price).toFixed(2) : '0.00'}
                     </span>
                   </div>
                 </div>

@@ -17,18 +17,18 @@ export const DisputeManagement = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <Gavel className="w-7 h-7 text-red-400" />
             Dispute Resolution Center
           </h1>
-          <p className="text-white/60">Mediate conflicts, review evidence, and issue refunds.</p>
+          <p className="text-textPrimary/60">Mediate conflicts, review evidence, and issue refunds.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <Card className="border-red-500/20 bg-red-500/5">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/80 mb-2">Active Disputes</h3>
+            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Active Disputes</h3>
             <div className="flex items-end gap-3">
               <span className="text-3xl font-bold text-red-400">12</span>
             </div>
@@ -37,26 +37,26 @@ export const DisputeManagement = () => {
         </Card>
         <Card className="border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-2">Value at Risk</h3>
+            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Value at Risk</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">LKR 14,250</span>
+              <span className="text-3xl font-bold text-textPrimary">LKR 14,250</span>
             </div>
           </CardContent>
         </Card>
         <Card className="border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-2">Avg. Resolution Time</h3>
+            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Avg. Resolution Time</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">4.2 days</span>
+              <span className="text-3xl font-bold text-textPrimary">4.2 days</span>
             </div>
           </CardContent>
         </Card>
         <Card className="border-white/10">
           <CardContent className="p-6 flex justify-between items-center h-full">
             <div>
-              <h3 className="text-sm font-medium text-white/60 mb-2">Resolved (YTD)</h3>
+              <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Resolved (YTD)</h3>
               <div className="flex items-end gap-3">
-                <span className="text-3xl font-bold text-white">184</span>
+                <span className="text-3xl font-bold text-textPrimary">184</span>
               </div>
             </div>
           </CardContent>
@@ -66,15 +66,15 @@ export const DisputeManagement = () => {
       <Card>
         <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
             <input 
               type="text" 
               placeholder="Search by Dispute ID, Booking ID, or parties..." 
-              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors" 
+              className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors" 
             />
           </div>
           <div className="flex gap-2">
-            <select className="bg-surface border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary/50 cursor-pointer">
+            <select className="bg-surface border border-white/10 rounded-lg px-3 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 cursor-pointer">
               <option>Status: All Active</option>
               <option>Status: Open</option>
               <option>Status: In Review</option>
@@ -87,7 +87,7 @@ export const DisputeManagement = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/5 text-sm font-medium text-white/50 bg-white/[0.02]">
+              <tr className="border-b border-white/5 text-sm font-medium text-textPrimary/50 bg-white/[0.02]">
                 <th className="p-4 pl-6">Dispute Info</th>
                 <th className="p-4">Customer vs Vendor</th>
                 <th className="p-4">Disputed Amount</th>
@@ -100,19 +100,19 @@ export const DisputeManagement = () => {
                 <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
                   <td className="p-4 pl-6">
                     <div className="flex flex-col">
-                      <span className="font-bold text-white">{dispute.id}</span>
-                      <span className="text-xs text-white/50 mt-0.5">Booking: {dispute.bookingId}</span>
-                      <p className="text-xs text-white/80 mt-1 truncate max-w-[200px]" title={dispute.reason}>"{dispute.reason}"</p>
+                      <span className="font-bold text-textPrimary">{dispute.id}</span>
+                      <span className="text-xs text-textPrimary/50 mt-0.5">Booking: {dispute.bookingId}</span>
+                      <p className="text-xs text-textPrimary/80 mt-1 truncate max-w-[200px]" title={dispute.reason}>"{dispute.reason}"</p>
                     </div>
                   </td>
                   <td className="p-4">
                     <div className="flex items-center gap-2">
-                      <span className="text-white font-medium">{dispute.customer}</span>
-                      <ArrowRight className="w-3 h-3 text-white/40" />
-                      <span className="text-white/80">{dispute.vendor}</span>
+                      <span className="text-textPrimary font-medium">{dispute.customer}</span>
+                      <ArrowRight className="w-3 h-3 text-textPrimary/40" />
+                      <span className="text-textPrimary/80">{dispute.vendor}</span>
                     </div>
                   </td>
-                  <td className="p-4 font-bold text-white">{dispute.amount}</td>
+                  <td className="p-4 font-bold text-textPrimary">{dispute.amount}</td>
                   <td className="p-4">
                     <div className="flex flex-col gap-2">
                       <span className={cn(
@@ -124,7 +124,7 @@ export const DisputeManagement = () => {
                         {dispute.status}
                       </span>
                       {dispute.status !== 'Resolved' && (
-                        <span className="text-[10px] text-white/40 flex items-center gap-1">
+                        <span className="text-[10px] text-textPrimary/40 flex items-center gap-1">
                           <Clock className="w-3 h-3" /> Opened {dispute.created}
                         </span>
                       )}

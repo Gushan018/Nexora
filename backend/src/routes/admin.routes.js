@@ -1,16 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const { getPendingVendors, approveVendor, releasePayment } = require('../controllers/admin.controller');
+const {
+  releasePayment,
+  getAllVendors,
+  getAllCustomers,
+  getAllUsers,
+  getUserDetails,
+  getAdminDashboardStats
+} = require('../controllers/admin.controller');
 const { protect, restrictTo } = require('../middleware/auth.middleware');
 
 // Admin Routes
 router.use(protect, restrictTo('admin'));
 
-// Vendors Approve 
-router.get('/vendors/pending', getPendingVendors);
-router.put('/vendors/:id/approve', approveVendor);
+// Dashboard
+router.get('/dashboard/stats', getAdminDashboardStats);
 
-// Payments Release 
+// Users
+router.get('/users', getAllUsers);
+router.get('/users/:id', getUserDetails);
+
+// Vendors
+router.get('/vendors', getAllVendors);
+
+// Customers
+router.get('/customers', getAllCustomers);
+
+// Payments
 router.put('/payments/:id/release', releasePayment);
 
 module.exports = router;

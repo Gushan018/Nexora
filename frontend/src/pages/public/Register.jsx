@@ -48,7 +48,7 @@ export const Register = () => {
           vendor_type: formData.vendorType,
         };
         const res = await api.post('/auth/register/vendor', vendorData);
-        alert(res.data.message || 'Vendor registered successfully. Awaiting admin approval.');
+        alert(res.data.message || 'Vendor registered successfully.');
         navigate('/login');
       } else {
         const customerData = {
@@ -99,7 +99,7 @@ export const Register = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl font-serif text-white mb-2"
+            className="text-4xl font-serif text-textPrimary mb-2"
           >
             Join Nexora
           </motion.h1>
@@ -107,7 +107,7 @@ export const Register = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-white/60"
+            className="text-textPrimary/60"
           >
             Create an account to start planning or selling.
           </motion.p>
@@ -130,8 +130,8 @@ export const Register = () => {
               className={cn(
                 "p-4 rounded-xl border flex flex-col items-center text-center transition-all",
                 accountType === 'customer' 
-                  ? "bg-primary/20 border-primary text-white" 
-                  : "bg-surface border-white/10 text-white/50 hover:bg-white/5"
+                  ? "bg-primary/20 border-primary text-textPrimary" 
+                  : "bg-surface border-white/10 text-textPrimary/50 hover:bg-white/5"
               )}
             >
               <User className="w-6 h-6 mb-2" />
@@ -143,8 +143,8 @@ export const Register = () => {
               className={cn(
                 "p-4 rounded-xl border flex flex-col items-center text-center transition-all",
                 accountType === 'vendor' 
-                  ? "bg-accent/20 border-accent text-white" 
-                  : "bg-surface border-white/10 text-white/50 hover:bg-white/5"
+                  ? "bg-accent/20 border-accent text-textPrimary" 
+                  : "bg-surface border-white/10 text-textPrimary/50 hover:bg-white/5"
               )}
             >
               <Store className="w-6 h-6 mb-2" />
@@ -157,7 +157,7 @@ export const Register = () => {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white/80 block">First Name</label>
+                <label className="text-sm font-medium text-textPrimary/80 block">First Name</label>
                 <div className="relative">
                   <User className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                   <input 
@@ -172,7 +172,7 @@ export const Register = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white/80 block">Last Name</label>
+                <label className="text-sm font-medium text-textPrimary/80 block">Last Name</label>
                 <input 
                   type="text" 
                   name="lastName"
@@ -186,7 +186,7 @@ export const Register = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 block">Email Address</label>
+              <label className="text-sm font-medium text-textPrimary/80 block">Email Address</label>
               <div className="relative">
                 <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                 <input 
@@ -202,7 +202,7 @@ export const Register = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 block">Password</label>
+              <label className="text-sm font-medium text-textPrimary/80 block">Password</label>
               <div className="relative">
                 <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                 <input 
@@ -229,7 +229,7 @@ export const Register = () => {
                 <div className="h-1 flex-1 bg-green-500 rounded-full" />
                 <div className="h-1 flex-1 bg-surface border border-white/10 rounded-full" />
               </div>
-              <p className="text-[10px] text-white/40">Must be at least 8 characters long</p>
+              <p className="text-[10px] text-textPrimary/40">Must be at least 8 characters long</p>
             </div>
 
             {/* Terms checkbox */}
@@ -242,7 +242,7 @@ export const Register = () => {
                   className="w-4 h-4 rounded bg-surface border-white/10 text-primary focus:ring-primary focus:ring-offset-surface"
                 />
               </div>
-              <label htmlFor="terms" className="text-xs text-white/60 leading-tight">
+              <label htmlFor="terms" className="text-xs text-textPrimary/60 leading-tight">
                 By creating an account, you agree to Nexora's <a href="/terms" className="text-primary hover:underline">Terms of Service</a> and <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>.
               </label>
             </div>
@@ -257,9 +257,9 @@ export const Register = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="text-center mt-8 text-white/50 text-sm"
+          className="text-center mt-8 text-textPrimary/50 text-sm"
         >
-          Already have an account? <Link to="/login" className="text-white hover:text-primary font-bold transition-colors underline underline-offset-4">Log in</Link>
+          Already have an account? <Link to="/login" className="text-textPrimary hover:text-primary font-bold transition-colors underline underline-offset-4">Log in</Link>
         </motion.p>
 
       </motion.div>

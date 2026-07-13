@@ -55,7 +55,7 @@ export const Blog = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl lg:text-5xl font-bold text-white mb-6"
+            className="text-4xl lg:text-5xl font-bold text-textPrimary mb-6"
           >
             The Nexora <span className="text-gradient">Journal</span>
           </motion.h1>
@@ -63,7 +63,7 @@ export const Blog = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-white/60 text-lg max-w-2xl mx-auto"
+            className="text-textPrimary/60 text-lg max-w-2xl mx-auto"
           >
             Expert advice, event inspiration, and industry news curated by top professionals.
           </motion.p>
@@ -82,11 +82,11 @@ export const Blog = () => {
             </div>
             <div className="md:w-2/5 p-8 md:p-12 flex flex-col justify-center">
               <span className="text-primary font-semibold text-sm mb-4 uppercase tracking-wider">{featuredPost.category}</span>
-              <h2 className="text-3xl font-bold text-white mb-4 group-hover:text-primary transition-colors leading-tight">{featuredPost.title}</h2>
-              <p className="text-white/60 mb-6 leading-relaxed">{featuredPost.excerpt}</p>
+              <h2 className="text-3xl font-bold text-textPrimary mb-4 group-hover:text-primary transition-colors leading-tight">{featuredPost.title}</h2>
+              <p className="text-textPrimary/60 mb-6 leading-relaxed">{featuredPost.excerpt}</p>
               
               <div className="flex items-center justify-between mt-auto">
-                <div className="flex items-center gap-4 text-xs text-white/40">
+                <div className="flex items-center gap-4 text-xs text-textPrimary/40">
                   <span className="flex items-center gap-1"><Calendar className="w-4 h-4"/> {featuredPost.date}</span>
                   <span className="flex items-center gap-1"><User className="w-4 h-4"/> {featuredPost.author}</span>
                 </div>
@@ -113,10 +113,10 @@ export const Blog = () => {
                   </span>
                 </div>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
-              <p className="text-white/60 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+              <h3 className="text-xl font-bold text-textPrimary mb-2 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
+              <p className="text-textPrimary/60 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
               <div className="flex items-center justify-between border-t border-white/5 pt-4">
-                <span className="text-xs text-white/40">{post.date}</span>
+                <span className="text-xs text-textPrimary/40">{post.date}</span>
                 <span className="text-primary text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">Read More <ArrowRight className="w-4 h-4" /></span>
               </div>
             </motion.div>

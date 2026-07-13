@@ -26,20 +26,20 @@ export const BookingHistory = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <Calendar className="w-7 h-7 text-primary" />
             My Bookings
           </h1>
-          <p className="text-white/60">View and manage all your past and upcoming reservations.</p>
+          <p className="text-textPrimary/60">View and manage all your past and upcoming reservations.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <Card className="border-primary/20 bg-primary/5">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/80 mb-2">Upcoming Events</h3>
+            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Upcoming Events</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">
+              <span className="text-3xl font-bold text-textPrimary">
                 {bookings.filter(b => b.status === 'ACCEPTED' && new Date(b.eventDate) >= new Date()).length}
               </span>
             </div>
@@ -47,9 +47,9 @@ export const BookingHistory = () => {
         </Card>
         <Card className="border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-2">Total Spent</h3>
+            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Total Spent</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-white">LKR {bookings.reduce((acc, b) => acc + Number(b.service?.price || b.package?.price || 0), 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              <span className="text-3xl font-bold text-textPrimary">LKR {bookings.reduce((acc, b) => acc + Number(b.service?.price || b.package?.price || 0), 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
           </CardContent>
@@ -60,11 +60,11 @@ export const BookingHistory = () => {
         {/* Toolbar */}
         <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
             <input 
               type="text" 
               placeholder="Search bookings by vendor or ID..." 
-              className="w-full bg-surface/50 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors" 
+              className="w-full bg-surface/50 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors" 
             />
           </div>
           <div className="flex gap-2">
@@ -76,7 +76,7 @@ export const BookingHistory = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/5 text-sm font-medium text-white/50 bg-white/[0.02]">
+              <tr className="border-b border-white/5 text-sm font-medium text-textPrimary/50 bg-white/[0.02]">
                 <th className="p-4 pl-6">Booking Details</th>
                 <th className="p-4">Event Date</th>
                 <th className="p-4">Amount</th>
@@ -90,15 +90,15 @@ export const BookingHistory = () => {
                   <td className="p-4 pl-6">
                     <div className="flex items-center gap-3">
                       <div className="flex flex-col">
-                        <span className="font-bold text-white">
+                        <span className="font-bold text-textPrimary">
                           {booking.service ? booking.service.serviceName : booking.package ? booking.package.packageName : 'Unknown'}
                         </span>
-                        <span className="text-xs text-white/50">ID: {booking.bookingId}</span>
+                        <span className="text-xs text-textPrimary/50">ID: {booking.bookingId}</span>
                       </div>
                     </div>
                   </td>
-                  <td className="p-4 text-white/80">{new Date(booking.eventDate).toLocaleDateString()}</td>
-                  <td className="p-4 font-medium text-white">LKR {booking.service ? Number(booking.service.price).toFixed(2) : booking.package ? Number(booking.package.price).toFixed(2) : '0.00'}
+                  <td className="p-4 text-textPrimary/80">{new Date(booking.eventDate).toLocaleDateString()}</td>
+                  <td className="p-4 font-medium text-textPrimary">LKR {booking.service ? Number(booking.service.price).toFixed(2) : booking.package ? Number(booking.package.price).toFixed(2) : '0.00'}
                   </td>
                   <td className="p-4">
                     <span className={cn(
@@ -129,7 +129,7 @@ export const BookingHistory = () => {
                       </Link>
                     )}
                     <Link to={`/customer/booking-details`}>
-                      <button className="p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-lg transition-colors" title="View Details">
+                      <button className="p-2 text-textPrimary/40 hover:text-textPrimary hover:bg-white/10 rounded-lg transition-colors" title="View Details">
                         <MoreVertical className="w-5 h-5"/>
                       </button>
                     </Link>
@@ -138,7 +138,7 @@ export const BookingHistory = () => {
               ))}
               {bookings.length === 0 && (
                 <tr>
-                  <td colSpan="5" className="p-8 text-center text-white/60">No bookings found.</td>
+                  <td colSpan="5" className="p-8 text-center text-textPrimary/60">No bookings found.</td>
                 </tr>
               )}
             </tbody>

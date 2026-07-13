@@ -65,15 +65,15 @@ export const ProfileManagement = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  if (isLoading) return <div className="text-white">Loading profile...</div>;
+  if (isLoading) return <div className="text-textPrimary">Loading profile...</div>;
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">Account Settings</h1>
-          <p className="text-white/60">Manage your profile, security, and preferences.</p>
+          <h1 className="text-3xl font-bold text-textPrimary tracking-tight">Account Settings</h1>
+          <p className="text-textPrimary/60">Manage your profile, security, and preferences.</p>
         </div>
         <Button 
           leftIcon={<Save className="w-4 h-4"/>} 
@@ -98,7 +98,7 @@ export const ProfileManagement = () => {
               "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all",
               item.active 
                 ? "bg-primary/20 text-primary border border-primary/30" 
-                : "text-white/60 hover:bg-surface hover:text-white border border-transparent"
+                : "text-textPrimary/60 hover:bg-surface hover:text-textPrimary border border-transparent"
             )}>
               {item.icon}
               {item.label}
@@ -119,7 +119,7 @@ export const ProfileManagement = () => {
                 <div className="w-24 h-24 rounded-full bg-surface border-2 border-white/10 relative overflow-hidden group cursor-pointer">
                   <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop" alt="User Avatar" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Camera className="w-6 h-6 text-white" />
+                    <Camera className="w-6 h-6 text-textPrimary" />
                   </div>
                 </div>
                 <div className="space-y-3">
@@ -127,7 +127,7 @@ export const ProfileManagement = () => {
                     <Button variant="outline" size="sm">Change Photo</Button>
                     <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300 hover:bg-red-400/10">Remove</Button>
                   </div>
-                  <p className="text-xs text-white/40">Must be JPEG, PNG, or GIF. Max size 2MB.</p>
+                  <p className="text-xs text-textPrimary/40">Must be JPEG, PNG, or GIF. Max size 2MB.</p>
                 </div>
               </div>
             </CardContent>
@@ -153,10 +153,10 @@ export const ProfileManagement = () => {
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-white/90">Bio / Notes (Optional)</label>
+                <label className="text-sm font-medium text-textPrimary/90">Bio / Notes (Optional)</label>
                 <textarea 
                   rows="3" 
-                  className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
                   placeholder="Tell vendors a bit about what you are planning..."
                 />
               </div>
@@ -174,8 +174,8 @@ export const ProfileManagement = () => {
                     <Mail className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-medium text-white">{profile?.email}</p>
-                    <p className="text-xs text-white/60 flex items-center gap-1 mt-0.5">
+                    <p className="font-medium text-textPrimary">{profile?.email}</p>
+                    <p className="text-xs text-textPrimary/60 flex items-center gap-1 mt-0.5">
                       <ShieldCheck className="w-3 h-3 text-green-400" /> Email Verified
                     </p>
                   </div>

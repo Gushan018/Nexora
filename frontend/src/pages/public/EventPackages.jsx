@@ -42,7 +42,7 @@ export const EventPackages = ({ isDashboard = false }) => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl lg:text-5xl font-bold text-white mb-6"
+            className="text-4xl lg:text-5xl font-bold text-textPrimary mb-6"
           >
             Curated Event <span className="text-gradient">Packages</span>
           </motion.h1>
@@ -50,7 +50,7 @@ export const EventPackages = ({ isDashboard = false }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-white/60 text-lg max-w-2xl mx-auto"
+            className="text-textPrimary/60 text-lg max-w-2xl mx-auto"
           >
             Choose from our pre-designed, vendor-bundled packages to simplify your planning process. Transparent pricing, premium service.
           </motion.p>
@@ -79,7 +79,7 @@ export const EventPackages = ({ isDashboard = false }) => {
 
         {/* Pricing Cards */}
         {filteredPackages.length === 0 && (
-          <div className="text-center text-white/60 py-20 text-xl">
+          <div className="text-center text-textPrimary/60 py-20 text-xl">
             No packages match your search.
           </div>
         )}
@@ -96,34 +96,34 @@ export const EventPackages = ({ isDashboard = false }) => {
                 <span className="text-xs font-bold text-primary tracking-wider uppercase mb-2 block">
                   By {pkg.vendorName}
                 </span>
-                <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{pkg.packageName}</h3>
-                <p className="text-white/60 text-sm min-h-[3rem] line-clamp-2">{pkg.description || 'No description available.'}</p>
+                <h3 className="text-2xl font-bold text-textPrimary mb-2 group-hover:text-primary transition-colors">{pkg.packageName}</h3>
+                <p className="text-textPrimary/60 text-sm min-h-[3rem] line-clamp-2">{pkg.description || 'No description available.'}</p>
               </div>
               
               <div className="mb-8">
-                <span className="text-4xl font-extrabold text-white">LKR {Number(pkg.price).toFixed(2)}</span>
-                <span className="text-white/40 font-medium"> / pkg</span>
+                <span className="text-4xl font-extrabold text-textPrimary">LKR {Number(pkg.price).toFixed(2)}</span>
+                <span className="text-textPrimary/40 font-medium"> / pkg</span>
               </div>
               
               <ul className="space-y-4 mb-8 flex-1">
                 {/* Fallback feature list since real packages might not have detailed array features yet */}
                 <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 shrink-0 text-white/40 group-hover:text-primary transition-colors" />
-                  <span className="text-white/80">Premium quality service</span>
+                  <Check className="w-5 h-5 shrink-0 text-textPrimary/40 group-hover:text-primary transition-colors" />
+                  <span className="text-textPrimary/80">Premium quality service</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 shrink-0 text-white/40 group-hover:text-primary transition-colors" />
-                  <span className="text-white/80">Dedicated support</span>
+                  <Check className="w-5 h-5 shrink-0 text-textPrimary/40 group-hover:text-primary transition-colors" />
+                  <span className="text-textPrimary/80">Dedicated support</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 shrink-0 text-white/40 group-hover:text-primary transition-colors" />
-                  <span className="text-white/80">Customizable options</span>
+                  <Check className="w-5 h-5 shrink-0 text-textPrimary/40 group-hover:text-primary transition-colors" />
+                  <span className="text-textPrimary/80">Customizable options</span>
                 </li>
               </ul>
               
               <Button 
                 variant="outline" 
-                className="w-full py-6 text-lg rounded-xl group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all"
+                className="w-full py-6 text-lg rounded-xl group-hover:bg-primary group-hover:text-textPrimary group-hover:border-primary transition-all"
                 onClick={() => navigate(`/customer/book-vendor?id=${pkg.vendorId}`)}
               >
                 Book Package

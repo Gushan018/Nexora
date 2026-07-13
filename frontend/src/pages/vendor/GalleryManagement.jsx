@@ -17,11 +17,11 @@ export const GalleryManagement = () => {
     <div className="space-y-6 max-w-6xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <ImageIcon className="w-7 h-7 text-primary" />
             Portfolio Gallery
           </h1>
-          <p className="text-white/60">Manage albums and photos showcased on your vendor profile.</p>
+          <p className="text-textPrimary/60">Manage albums and photos showcased on your vendor profile.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" leftIcon={<Upload className="w-4 h-4"/>}>Quick Upload</Button>
@@ -31,18 +31,18 @@ export const GalleryManagement = () => {
 
       <div className="p-4 border-b border-white/5 bg-surface/30 rounded-t-2xl flex flex-col sm:flex-row gap-4 justify-between mt-6">
         <div className="relative flex-1 max-w-md">
-          <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
           <input 
             type="text" 
             placeholder="Search albums..." 
-            className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-white focus:outline-none focus:border-primary/50 transition-colors" 
+            className="w-full bg-surface border border-white/10 rounded-xl pl-10 pr-4 py-2 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors" 
           />
         </div>
         <div className="flex gap-2">
           <Button variant="outline" leftIcon={<Filter className="w-4 h-4"/>}>Filter</Button>
           <div className="flex bg-surface border border-white/10 rounded-lg p-1">
             <button className="p-1.5 bg-primary/20 text-primary rounded-md"><Grid className="w-4 h-4"/></button>
-            <button className="p-1.5 text-white/40 hover:text-white rounded-md transition-colors"><ImageIcon className="w-4 h-4"/></button>
+            <button className="p-1.5 text-textPrimary/40 hover:text-textPrimary rounded-md transition-colors"><ImageIcon className="w-4 h-4"/></button>
           </div>
         </div>
       </div>
@@ -54,8 +54,8 @@ export const GalleryManagement = () => {
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
             <Plus className="w-8 h-8 text-primary" />
           </div>
-          <h3 className="font-bold text-white mb-1">Create Album</h3>
-          <p className="text-xs text-white/50 text-center px-6">Group related photos together for better organization.</p>
+          <h3 className="font-bold text-textPrimary mb-1">Create Album</h3>
+          <p className="text-xs text-textPrimary/50 text-center px-6">Group related photos together for better organization.</p>
         </div>
 
         {/* Existing Albums */}
@@ -79,9 +79,9 @@ export const GalleryManagement = () => {
               <div className="absolute top-2 left-2">
                 <span className={cn(
                   "px-2 py-1 rounded text-[10px] font-bold backdrop-blur-md uppercase tracking-wider",
-                  album.status === 'Public' ? "bg-green-500/80 text-white" :
-                  album.status === 'Draft' ? "bg-white/20 text-white" :
-                  "bg-yellow-500/80 text-white"
+                  album.status === 'Public' ? "bg-green-500/80 text-textPrimary" :
+                  album.status === 'Draft' ? "bg-white/20 text-textPrimary" :
+                  "bg-yellow-500/80 text-textPrimary"
                 )}>
                   {album.status}
                 </span>
@@ -90,8 +90,8 @@ export const GalleryManagement = () => {
             
             <div className="p-4 flex-1 flex flex-col justify-between z-10 bg-surface/50 backdrop-blur-md">
               <div>
-                <h3 className="font-bold text-white text-sm line-clamp-1 group-hover:text-primary transition-colors">{album.title}</h3>
-                <p className="text-xs text-white/50 mt-1">{album.count} items</p>
+                <h3 className="font-bold text-textPrimary text-sm line-clamp-1 group-hover:text-primary transition-colors">{album.title}</h3>
+                <p className="text-xs text-textPrimary/50 mt-1">{album.count} items</p>
               </div>
               <Button variant="outline" size="sm" className="w-full text-xs">Manage Photos</Button>
             </div>

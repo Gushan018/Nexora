@@ -22,7 +22,7 @@ export const PageLoader = ({ text = "Loading..." }) => {
         />
         {/* Inner Ring */}
         <motion.div 
-          className="absolute inset-4 rounded-full border border-transparent border-t-white/50 border-r-white/50 opacity-50"
+          className="absolute inset-4 rounded-full border border-transparent border-t-textPrimary/30 border-r-textPrimary/30 opacity-50"
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         />
@@ -35,7 +35,7 @@ export const PageLoader = ({ text = "Loading..." }) => {
       </div>
 
       <motion.div
-        className="text-white font-bold tracking-widest text-sm uppercase flex items-center gap-1 drop-shadow-md"
+        className="text-textPrimary font-bold tracking-widest text-sm uppercase flex items-center gap-1 drop-shadow-md"
         animate={{ opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >

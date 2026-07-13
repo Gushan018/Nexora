@@ -62,15 +62,15 @@ export const Checkout = () => {
   const total = subtotal + tax + shipping;
 
   if (isLoading) return <PageLoader text="Loading checkout..." />;
-  if (items.length === 0) return <div className="pt-32 pb-20 text-center text-white">Your cart is empty. Please add items to checkout.</div>;
+  if (items.length === 0) return <div className="pt-32 pb-20 text-center text-textPrimary">Your cart is empty. Please add items to checkout.</div>;
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background">
       <div className="container mx-auto px-6 max-w-6xl">
         
         <div className="mb-12">
-          <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2">Checkout</h1>
-          <p className="text-white/60">Complete your purchase securely.</p>
+          <h1 className="text-3xl lg:text-4xl font-bold text-textPrimary mb-2">Checkout</h1>
+          <p className="text-textPrimary/60">Complete your purchase securely.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -82,7 +82,7 @@ export const Checkout = () => {
               <CardHeader className="flex flex-row items-center gap-4 pb-2">
                 <div className={cn(
                   "w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm",
-                  step === 1 ? "bg-primary text-white" : step > 1 ? "bg-green-500 text-white" : "bg-white/10 text-white/50"
+                  step === 1 ? "bg-primary text-textPrimary" : step > 1 ? "bg-green-500 text-textPrimary" : "bg-white/10 text-textPrimary/50"
                 )}>
                   {step > 1 ? <CheckCircle2 className="w-5 h-5" /> : "1"}
                 </div>
@@ -115,29 +115,29 @@ export const Checkout = () => {
                        <img src={item.product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100&q=80'} alt={item.product.productName} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-white font-medium text-sm line-clamp-2">{item.product.productName}</p>
-                      <p className="text-white/60 text-xs mt-1">Qty: {item.quantity}</p>
-                      <p className="text-white font-bold mt-1">LKR {(Number(item.product.price) * item.quantity).toFixed(2)}</p>
+                      <p className="text-textPrimary font-medium text-sm line-clamp-2">{item.product.productName}</p>
+                      <p className="text-textPrimary/60 text-xs mt-1">Qty: {item.quantity}</p>
+                      <p className="text-textPrimary font-bold mt-1">LKR {(Number(item.product.price) * item.quantity).toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
                 
                 <div className="space-y-3 text-sm border-b border-white/10 pb-6">
-                  <div className="flex justify-between text-white/80">
+                  <div className="flex justify-between text-textPrimary/80">
                     <span>Subtotal</span>
                     <span>LKR {subtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-white/80">
+                  <div className="flex justify-between text-textPrimary/80">
                     <span>Shipping</span>
                     <span>LKR {shipping.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-white/80">
+                  <div className="flex justify-between text-textPrimary/80">
                     <span>Tax (VAT)</span>
                     <span>LKR {tax.toFixed(2)}</span>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center text-lg font-bold text-white">
+                <div className="flex justify-between items-center text-lg font-bold text-textPrimary">
                   <span>Total</span>
                   <span>LKR {total.toFixed(2)}</span>
                 </div>
@@ -150,7 +150,7 @@ export const Checkout = () => {
                   {placeOrderMutation.isPending ? 'Placing Order...' : 'Place Order'}
                 </Button>
                 
-                <div className="flex items-center justify-center gap-2 text-xs text-white/40 mt-4">
+                <div className="flex items-center justify-center gap-2 text-xs text-textPrimary/40 mt-4">
                   <ShieldCheck className="w-4 h-4 text-green-400" /> Secure encrypted checkout
                 </div>
               </CardContent>

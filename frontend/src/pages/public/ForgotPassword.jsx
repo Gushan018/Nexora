@@ -24,8 +24,8 @@ export const ForgotPassword = () => {
         
         <div className="text-center mb-8">
 
-          <h1 className="text-2xl font-bold text-white mb-2">Reset your password</h1>
-          <p className="text-white/60 max-w-sm mx-auto">Enter the email address associated with your account and we'll send you a link to reset your password.</p>
+          <h1 className="text-2xl font-bold text-textPrimary mb-2">Reset your password</h1>
+          <p className="text-textPrimary/60 max-w-sm mx-auto">Enter the email address associated with your account and we'll send you a link to reset your password.</p>
         </div>
 
         <div className="bg-surface/50 border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
@@ -34,7 +34,7 @@ export const ForgotPassword = () => {
           {!submitted ? (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white/80 block">Email Address</label>
+                <label className="text-sm font-medium text-textPrimary/80 block">Email Address</label>
                 <div className="relative">
                   <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                   <input 
@@ -59,8 +59,8 @@ export const ForgotPassword = () => {
               <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4 border border-green-500/20">
                 <CheckCircle2 className="w-8 h-8 text-green-400" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Check your email</h3>
-              <p className="text-sm text-white/60 mb-6">
+              <h3 className="text-xl font-bold text-textPrimary mb-2">Check your email</h3>
+              <p className="text-sm text-textPrimary/60 mb-6">
                 We've sent a password reset link to your email address. Please check your inbox and spam folder.
               </p>
               <Button variant="outline" className="w-full" onClick={() => setSubmitted(false)}>
@@ -70,7 +70,7 @@ export const ForgotPassword = () => {
           )}
 
           <div className="mt-6 pt-6 border-t border-white/10 text-center">
-            <Link to="/login" className="text-sm text-white/60 hover:text-white flex items-center justify-center gap-1 transition-colors">
+            <Link to="/login" className="text-sm text-textPrimary/60 hover:text-textPrimary flex items-center justify-center gap-1 transition-colors">
               <ArrowLeft className="w-4 h-4" /> Back to login
             </Link>
           </div>

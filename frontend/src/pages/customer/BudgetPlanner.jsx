@@ -114,11 +114,11 @@ export const BudgetPlanner = () => {
     <div className="space-y-6 pb-20">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <Calculator className="w-7 h-7 text-primary" />
             Budget Planner
           </h1>
-          <p className="text-white/60">Track your event expenses and manage category allocations.</p>
+          <p className="text-textPrimary/60">Track your event expenses and manage category allocations.</p>
         </div>
         <Button onClick={() => handleOpenCatModal()} leftIcon={<Plus className="w-4 h-4"/>}>Add Expense / Category</Button>
       </div>
@@ -129,9 +129,9 @@ export const BudgetPlanner = () => {
             <Edit3 className="w-4 h-4 text-primary" />
           </div>
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/80 mb-2">Total Budget</h3>
+            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Total Budget</h3>
             <div className="flex items-end gap-3">
-              <span className="text-4xl font-bold text-white">LKR {totalAllocated.toLocaleString()}</span>
+              <span className="text-4xl font-bold text-textPrimary">LKR {totalAllocated.toLocaleString()}</span>
             </div>
             <p className="text-xs text-primary/80 mt-4">Click to edit total budget</p>
           </CardContent>
@@ -139,9 +139,9 @@ export const BudgetPlanner = () => {
 
         <Card className="border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-2">Total Spent</h3>
+            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Total Spent</h3>
             <div className="flex items-end justify-between">
-              <span className="text-3xl font-bold text-white">LKR {totalSpent.toLocaleString()}</span>
+              <span className="text-3xl font-bold text-textPrimary">LKR {totalSpent.toLocaleString()}</span>
               <span className="text-xl font-bold text-primary">{percentageSpent}%</span>
             </div>
             {/* Mini Progress Bar */}
@@ -153,13 +153,13 @@ export const BudgetPlanner = () => {
 
         <Card className="border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-2">Remaining Funds</h3>
+            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Remaining Funds</h3>
             <div className="flex items-end gap-3">
               <span className={`text-3xl font-bold ${(totalAllocated - totalSpent) < 0 ? 'text-red-400' : 'text-green-400'}`}>
                 LKR {(totalAllocated - totalSpent).toLocaleString()}
               </span>
             </div>
-            <p className="text-xs text-white/50 mt-4">Across all active categories</p>
+            <p className="text-xs text-textPrimary/50 mt-4">Across all active categories</p>
           </CardContent>
         </Card>
       </div>
@@ -168,11 +168,11 @@ export const BudgetPlanner = () => {
         
         {/* Category Breakdown list */}
         <div className="lg:col-span-2 space-y-4">
-          <h3 className="font-bold text-white mb-2">Budget Categories</h3>
+          <h3 className="font-bold text-textPrimary mb-2">Budget Categories</h3>
           
           {categories.length === 0 && (
             <div className="text-center py-10 bg-white/5 rounded-xl border border-white/10">
-              <p className="text-white/50">No categories added yet.</p>
+              <p className="text-textPrimary/50">No categories added yet.</p>
             </div>
           )}
 
@@ -188,17 +188,17 @@ export const BudgetPlanner = () => {
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-4">
                     <div className="flex items-center gap-3">
                       <div className={`w-3 h-3 rounded-full ${cat.color || 'bg-primary'}`} />
-                      <h4 className="font-bold text-white text-lg">{cat.name}</h4>
+                      <h4 className="font-bold text-textPrimary text-lg">{cat.name}</h4>
                     </div>
                     <div className="flex gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleOpenCatModal(cat)} className="p-1.5 text-white/40 hover:text-primary transition-colors bg-white/5 rounded-lg"><Edit2 className="w-4 h-4"/></button>
-                      <button onClick={() => handleDeleteCat(cat.id)} className="p-1.5 text-white/40 hover:text-red-400 transition-colors bg-white/5 rounded-lg"><Trash2 className="w-4 h-4"/></button>
+                      <button onClick={() => handleOpenCatModal(cat)} className="p-1.5 text-textPrimary/40 hover:text-primary transition-colors bg-white/5 rounded-lg"><Edit2 className="w-4 h-4"/></button>
+                      <button onClick={() => handleDeleteCat(cat.id)} className="p-1.5 text-textPrimary/40 hover:text-red-400 transition-colors bg-white/5 rounded-lg"><Trash2 className="w-4 h-4"/></button>
                     </div>
                   </div>
                   
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-white/60">Spent: <span className="font-bold text-white">LKR {spent.toLocaleString()}</span></span>
-                    <span className="text-white/60">Allocated: <span className="font-bold text-white">LKR {allocated.toLocaleString()}</span></span>
+                    <span className="text-textPrimary/60">Spent: <span className="font-bold text-textPrimary">LKR {spent.toLocaleString()}</span></span>
+                    <span className="text-textPrimary/60">Allocated: <span className="font-bold text-textPrimary">LKR {allocated.toLocaleString()}</span></span>
                   </div>
                   
                   <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-2">
@@ -209,7 +209,7 @@ export const BudgetPlanner = () => {
                   </div>
                   
                   <div className="flex justify-between items-center mt-2">
-                    <span className={`text-xs font-bold ${isOverBudget ? 'text-red-400' : 'text-white/40'}`}>
+                    <span className={`text-xs font-bold ${isOverBudget ? 'text-red-400' : 'text-textPrimary/40'}`}>
                       {isOverBudget ? `Over budget by LKR ${(spent - allocated).toLocaleString()}` : `${catPercentage}% used`}
                     </span>
                     <button onClick={() => handleOpenCatModal(cat)} className="text-xs text-primary font-medium hover:underline">Add Expense</button>
@@ -219,7 +219,7 @@ export const BudgetPlanner = () => {
             )
           })}
           
-          <Button onClick={() => handleOpenCatModal()} variant="outline" className="w-full border-dashed border-white/20 text-white/60 hover:text-white" leftIcon={<Plus className="w-4 h-4"/>}>
+          <Button onClick={() => handleOpenCatModal()} variant="outline" className="w-full border-dashed border-white/20 text-textPrimary/60 hover:text-textPrimary" leftIcon={<Plus className="w-4 h-4"/>}>
             Add New Category
           </Button>
         </div>
@@ -242,11 +242,11 @@ export const BudgetPlanner = () => {
                   }}
                 />
                 <div className="absolute inset-0 bg-background rounded-full m-2 flex flex-col items-center justify-center">
-                  <span className="text-white/60 text-xs uppercase tracking-wider mb-1">Total</span>
-                  <span className="text-2xl font-bold text-white">LKR {totalAllocated.toLocaleString()}</span>
+                  <span className="text-textPrimary/60 text-xs uppercase tracking-wider mb-1">Total</span>
+                  <span className="text-2xl font-bold text-textPrimary">LKR {totalAllocated.toLocaleString()}</span>
                 </div>
               </div>
-              <p className="text-sm text-white/60">Your budget is tracked securely. Stay on top of your expenses.</p>
+              <p className="text-sm text-textPrimary/60">Your budget is tracked securely. Stay on top of your expenses.</p>
             </CardContent>
           </Card>
         </div>
@@ -289,7 +289,7 @@ export const BudgetPlanner = () => {
             helperText="Update this as you make payments."
           />
           <div>
-            <label className="text-sm font-medium text-white/90 mb-2 block">Color Tag</label>
+            <label className="text-sm font-medium text-textPrimary/90 mb-2 block">Color Tag</label>
             <div className="flex gap-2">
               {COLORS.map(c => (
                 <div 

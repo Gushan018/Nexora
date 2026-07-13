@@ -21,6 +21,7 @@ const wishlistRoutes = require('./routes/wishlist.routes');
 const budgetRoutes = require('./routes/budget.routes');
 const chatRoutes = require('./routes/chat.routes');
 const uploadRoutes = require('./routes/upload.routes');
+const categoryRoutes = require('./routes/category.routes');
 
 // ===================================
 
@@ -49,6 +50,7 @@ app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/budget', budgetRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/categories', categoryRoutes);
 
 // ===================================
 

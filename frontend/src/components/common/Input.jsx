@@ -13,20 +13,20 @@ export const Input = React.forwardRef(({
   return (
     <div className="flex flex-col space-y-1.5 w-full">
       {label && (
-        <label className="text-sm font-medium text-white/90">
+        <label className="text-sm font-medium text-textPrimary/90">
           {label}
         </label>
       )}
       <div className="relative">
         {leftIcon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/50">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted/60">
             {leftIcon}
           </div>
         )}
         <input
           ref={ref}
           className={cn(
-            "flex w-full rounded-xl border border-white/10 bg-surface/50 px-3 py-2 text-sm text-white placeholder:text-white/40",
+            "flex w-full rounded-xl border border-border/20 bg-surface/50 px-3 py-2 text-sm text-textPrimary placeholder:text-textPrimary/40",
             "focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-300",
             "disabled:cursor-not-allowed disabled:opacity-50",
             leftIcon && "pl-10",
@@ -37,13 +37,13 @@ export const Input = React.forwardRef(({
           {...props}
         />
         {rightIcon && (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-white/50">
+          <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted/60">
             {rightIcon}
           </div>
         )}
       </div>
       {(error || helperText) && (
-        <p className={cn("text-xs", error ? "text-red-400" : "text-white/50")}>
+        <p className={cn("text-xs", error ? "text-red-400" : "text-muted/60")}>
           {error || helperText}
         </p>
       )}

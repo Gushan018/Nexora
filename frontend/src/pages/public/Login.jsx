@@ -67,7 +67,7 @@ export const Login = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl font-serif text-white mb-2"
+            className="text-4xl font-serif text-textPrimary mb-2"
           >
             Welcome back
           </motion.h1>
@@ -75,7 +75,7 @@ export const Login = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-white/60"
+            className="text-textPrimary/60"
           >
             Log in to your account to continue.
           </motion.p>
@@ -93,7 +93,7 @@ export const Login = () => {
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white/80 block">Email Address</label>
+              <label className="text-sm font-medium text-textPrimary/80 block">Email Address</label>
               <div className="relative">
                 <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                 <input 
@@ -109,7 +109,7 @@ export const Login = () => {
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <label className="text-sm font-medium text-white/80 block">Password</label>
+                <label className="text-sm font-medium text-textPrimary/80 block">Password</label>
                 <Link to="/forgot-password" className="text-xs text-primary hover:text-primary-light transition-colors">
                   Forgot password?
                 </Link>
@@ -144,9 +144,9 @@ export const Login = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="text-center mt-8 text-white/50 text-sm"
+          className="text-center mt-8 text-textPrimary/50 text-sm"
         >
-          Don't have an account? <Link to="/register" className="text-white hover:text-primary font-bold transition-colors underline underline-offset-4">Sign up</Link>
+          Don't have an account? <Link to="/register" className="text-textPrimary hover:text-primary font-bold transition-colors underline underline-offset-4">Sign up</Link>
         </motion.p>
 
       </motion.div>

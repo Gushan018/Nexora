@@ -122,8 +122,8 @@ export const LandingPage = () => {
       {/* Curated Excellence Section */}
       <section className="py-24 relative z-10 max-w-7xl mx-auto px-4 border-b border-white/5">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-serif text-white mb-4">Curated Excellence</h2>
-          <p className="text-white/60 max-w-xl mx-auto text-sm leading-relaxed">
+          <h2 className="text-4xl font-serif text-textPrimary mb-4">Curated Excellence</h2>
+          <p className="text-textPrimary/60 max-w-xl mx-auto text-sm leading-relaxed">
             Every venue and service is rigorously vetted to meet our uncompromising standards of luxury and quality.
           </p>
         </div>
@@ -173,8 +173,8 @@ export const LandingPage = () => {
       {/* How it Works */}
       <section className="relative z-20 max-w-7xl mx-auto px-4 mt-24">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">How Nexora Works</h2>
-          <p className="text-white/60 max-w-2xl mx-auto text-lg">Planning an event has never been this seamless. Follow these three simple steps to bring your vision to life.</p>
+          <h2 className="text-3xl md:text-4xl font-serif text-textPrimary mb-4">How Nexora Works</h2>
+          <p className="text-textPrimary/60 max-w-2xl mx-auto text-lg">Planning an event has never been this seamless. Follow these three simple steps to bring your vision to life.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
@@ -199,8 +199,8 @@ export const LandingPage = () => {
                 <div className="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 {step.icon}
               </div>
-              <h3 className="text-xl font-serif text-white mb-3 relative z-10">{step.title}</h3>
-              <p className="text-white/60 leading-relaxed relative z-10">{step.desc}</p>
+              <h3 className="text-xl font-serif text-textPrimary mb-3 relative z-10">{step.title}</h3>
+              <p className="text-textPrimary/60 leading-relaxed relative z-10">{step.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -210,8 +210,8 @@ export const LandingPage = () => {
       <section className="relative z-20 max-w-7xl mx-auto px-4 mt-32">
         <div className="flex flex-col sm:flex-row justify-between items-end mb-10 gap-4">
           <div>
-            <h2 className="text-3xl md:text-4xl font-serif text-white mb-2">Explore Categories</h2>
-            <p className="text-white/60 text-lg">Find the perfect professionals for your event.</p>
+            <h2 className="text-3xl md:text-4xl font-serif text-textPrimary mb-2">Explore Categories</h2>
+            <p className="text-textPrimary/60 text-lg">Find the perfect professionals for your event.</p>
           </div>
           <Link to="/marketplace" className="text-primary hover:text-primaryHover font-medium flex items-center gap-1 transition-colors">
             View All Categories <ArrowRight className="w-4 h-4" />
@@ -245,8 +245,8 @@ export const LandingPage = () => {
       {/* Testimonials */}
       <section className="relative z-20 max-w-7xl mx-auto px-4 mt-32">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">Loved by Hosts & Vendors</h2>
-          <p className="text-white/60 max-w-2xl mx-auto text-lg">Don't just take our word for it. See what our community has to say about the Nexora experience.</p>
+          <h2 className="text-3xl md:text-4xl font-serif text-textPrimary mb-4">Loved by Hosts & Vendors</h2>
+          <p className="text-textPrimary/60 max-w-2xl mx-auto text-lg">Don't just take our word for it. See what our community has to say about the Nexora experience.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -260,11 +260,11 @@ export const LandingPage = () => {
               <div className="flex items-center gap-4 mb-6">
                 <img src={testimonial.img} alt={testimonial.name} className="w-14 h-14 rounded-full object-cover border-2 border-primary/20" />
                 <div>
-                  <h4 className="text-white font-bold">{testimonial.name}</h4>
+                  <h4 className="text-textPrimary font-bold">{testimonial.name}</h4>
                   <p className="text-primary text-sm">{testimonial.role}</p>
                 </div>
               </div>
-              <p className="text-white/70 leading-relaxed italic">"{testimonial.text}"</p>
+              <p className="text-textPrimary/70 leading-relaxed italic">"{testimonial.text}"</p>
             </div>
           ))}
         </div>
@@ -277,13 +277,13 @@ export const LandingPage = () => {
           <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
 
           <div className="flex-1 relative z-10">
-            <h2 className="text-4xl md:text-5xl font-serif text-white tracking-tighter mb-4 leading-tight">Grow your business <br/>on Nexora.</h2>
-            <p className="text-lg text-white/60 mb-8 max-w-lg">
+            <h2 className="text-4xl md:text-5xl font-serif text-textPrimary tracking-tighter mb-4 leading-tight">Grow your business <br/>on Nexora.</h2>
+            <p className="text-lg text-textPrimary/60 mb-8 max-w-lg">
               Join thousands of premium vendors booking high-value clients. Get access to AI tools, secure payments, and a beautiful storefront.
             </p>
             <ul className="space-y-4 mb-8">
               {['Zero upfront listing fees', 'Guaranteed payouts', 'AI-powered booking management'].map((item, i) => (
-                <li key={i} className="flex items-center text-white/80 font-medium">
+                <li key={i} className="flex items-center text-textPrimary/80 font-medium">
                   <CheckCircle2 className="w-5 h-5 text-primary mr-3" /> {item}
                 </li>
               ))}

@@ -34,16 +34,16 @@ export const Wishlist = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white mb-2">My Wishlist</h1>
-        <p className="text-white/60">Saved items and services for your upcoming events.</p>
+        <h1 className="text-2xl font-bold text-textPrimary mb-2">My Wishlist</h1>
+        <p className="text-textPrimary/60">Saved items and services for your upcoming events.</p>
       </div>
 
       {wishlist?.length === 0 ? (
         <Card className="text-center py-12">
           <CardContent className="flex flex-col items-center">
-            <Heart className="w-12 h-12 text-white/20 mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">Your wishlist is empty</h3>
-            <p className="text-white/60 mb-6">Start browsing the marketplace and vendors to save your favorites!</p>
+            <Heart className="w-12 h-12 text-textPrimary/20 mb-4" />
+            <h3 className="text-xl font-bold text-textPrimary mb-2">Your wishlist is empty</h3>
+            <p className="text-textPrimary/60 mb-6">Start browsing the marketplace and vendors to save your favorites!</p>
             <Link to="/customer/marketplace">
               <Button>Explore Marketplace</Button>
             </Link>
@@ -70,10 +70,10 @@ export const Wishlist = () => {
                   </div>
                 </div>
                 <CardContent className="p-6 flex flex-col flex-1">
-                  <h3 className="font-bold text-white text-lg mb-1">{detail?.productName || detail?.serviceName || detail?.packageName}</h3>
+                  <h3 className="font-bold text-textPrimary text-lg mb-1">{detail?.productName || detail?.serviceName || detail?.packageName}</h3>
                   <p className="text-sm text-primary mb-3">{detail?.vendor?.businessName || 'Unknown Vendor'}</p>
                   <div className="mt-auto pt-4 flex items-center justify-between border-t border-white/10">
-                    <span className="font-bold text-white">LKR {Number(detail?.price || 0).toFixed(2)}</span>
+                    <span className="font-bold text-textPrimary">LKR {Number(detail?.price || 0).toFixed(2)}</span>
                     <Link to={item.product ? `/customer/product-details/${item.productId}` : `/vendor-directory`}>
                       <Button variant="outline" size="sm">View Details</Button>
                     </Link>

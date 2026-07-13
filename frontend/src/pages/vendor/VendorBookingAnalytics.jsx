@@ -11,11 +11,11 @@ export const VendorBookingAnalytics = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <CalendarDays className="w-7 h-7 text-primary" />
             Booking Analytics
           </h1>
-          <p className="text-white/60">Deep dive into your event volume, seasonality, and client demographics.</p>
+          <p className="text-textPrimary/60">Deep dive into your event volume, seasonality, and client demographics.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" leftIcon={<Filter className="w-4 h-4"/>}>Advanced Filters</Button>
@@ -29,15 +29,15 @@ export const VendorBookingAnalytics = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-sm text-white/50 mb-1">Total Bookings YTD</p>
-                <h3 className="text-3xl font-bold text-white">84</h3>
+                <p className="text-sm text-textPrimary/50 mb-1">Total Bookings YTD</p>
+                <h3 className="text-3xl font-bold text-textPrimary">84</h3>
               </div>
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                 <Briefcase className="w-5 h-5 text-primary" />
               </div>
             </div>
             <div className="mt-4 pt-4 border-t border-white/5">
-              <p className="text-xs text-white/40"><span className="text-green-400 font-bold">+12%</span> vs last year</p>
+              <p className="text-xs text-textPrimary/40"><span className="text-green-400 font-bold">+12%</span> vs last year</p>
             </div>
           </CardContent>
         </Card>
@@ -46,15 +46,15 @@ export const VendorBookingAnalytics = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-sm text-white/50 mb-1">Busiest Month</p>
-                <h3 className="text-3xl font-bold text-white">October</h3>
+                <p className="text-sm text-textPrimary/50 mb-1">Busiest Month</p>
+                <h3 className="text-3xl font-bold text-textPrimary">October</h3>
               </div>
               <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
                 <CalendarDays className="w-5 h-5 text-accent" />
               </div>
             </div>
             <div className="mt-4 pt-4 border-t border-white/5">
-              <p className="text-xs text-white/40">18 bookings scheduled</p>
+              <p className="text-xs text-textPrimary/40">18 bookings scheduled</p>
             </div>
           </CardContent>
         </Card>
@@ -63,15 +63,15 @@ export const VendorBookingAnalytics = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-sm text-white/50 mb-1">Avg. Booking Lead Time</p>
-                <h3 className="text-3xl font-bold text-white">4.2 <span className="text-lg text-white/50 font-normal">months</span></h3>
+                <p className="text-sm text-textPrimary/50 mb-1">Avg. Booking Lead Time</p>
+                <h3 className="text-3xl font-bold text-textPrimary">4.2 <span className="text-lg text-textPrimary/50 font-normal">months</span></h3>
               </div>
               <div className="w-10 h-10 rounded-lg bg-yellow-500/10 flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-yellow-500" />
               </div>
             </div>
             <div className="mt-4 pt-4 border-t border-white/5">
-              <p className="text-xs text-white/40">Clients book you well in advance</p>
+              <p className="text-xs text-textPrimary/40">Clients book you well in advance</p>
             </div>
           </CardContent>
         </Card>
@@ -100,7 +100,7 @@ export const VendorBookingAnalytics = () => {
                     transition={{ duration: 1, delay: i * 0.05 }}
                     className="w-full bg-primary/20 group-hover:bg-primary rounded-t-sm transition-colors"
                   />
-                  <span className="text-[10px] text-white/40 mt-2">{month}</span>
+                  <span className="text-[10px] text-textPrimary/40 mt-2">{month}</span>
                 </div>
               );
             })}
@@ -123,8 +123,8 @@ export const VendorBookingAnalytics = () => {
               ].map((loc, i) => (
                 <div key={i}>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-white/80">{loc.city}</span>
-                    <span className="text-white font-bold">{loc.count}</span>
+                    <span className="text-textPrimary/80">{loc.city}</span>
+                    <span className="text-textPrimary font-bold">{loc.count}</span>
                   </div>
                   <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-accent rounded-full" style={{ width: `${loc.pct}%` }} />
@@ -133,8 +133,8 @@ export const VendorBookingAnalytics = () => {
               ))}
             </div>
             <div className="w-1/2 flex items-center justify-center bg-surface/30 opacity-50 relative overflow-hidden">
-              <Map className="w-32 h-32 text-white/10 absolute" />
-              <p className="text-xs text-white/40 z-10 text-center px-4">Interactive Map visualization goes here</p>
+              <Map className="w-32 h-32 text-textPrimary/10 absolute" />
+              <p className="text-xs text-textPrimary/40 z-10 text-center px-4">Interactive Map visualization goes here</p>
             </div>
           </CardContent>
         </Card>

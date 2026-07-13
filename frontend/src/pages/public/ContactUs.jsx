@@ -17,7 +17,7 @@ export const ContactUs = () => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl lg:text-5xl font-bold text-white mb-6"
+            className="text-4xl lg:text-5xl font-bold text-textPrimary mb-6"
           >
             Get in <span className="text-gradient">Touch</span>
           </motion.h1>
@@ -25,7 +25,7 @@ export const ContactUs = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-white/60 text-lg max-w-2xl mx-auto"
+            className="text-textPrimary/60 text-lg max-w-2xl mx-auto"
           >
             Have a question about our platform, enterprise pricing, or need vendor support? Our team is here to help.
           </motion.p>
@@ -40,8 +40,8 @@ export const ContactUs = () => {
             className="lg:col-span-1 space-y-8"
           >
             <div>
-              <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
-              <p className="text-white/60 mb-8">Fill out the form and our team will get back to you within 24 hours.</p>
+              <h3 className="text-2xl font-bold text-textPrimary mb-6">Contact Information</h3>
+              <p className="text-textPrimary/60 mb-8">Fill out the form and our team will get back to you within 24 hours.</p>
             </div>
             
             <div className="space-y-6">
@@ -50,9 +50,9 @@ export const ContactUs = () => {
                   <Phone className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h4 className="text-white font-medium mb-1">Phone</h4>
-                  <p className="text-white/60 text-sm">+94 77 123 4567</p>
-                  <p className="text-white/60 text-sm">+94 11 234 5678</p>
+                  <h4 className="text-textPrimary font-medium mb-1">Phone</h4>
+                  <p className="text-textPrimary/60 text-sm">+94 77 123 4567</p>
+                  <p className="text-textPrimary/60 text-sm">+94 11 234 5678</p>
                 </div>
               </div>
 
@@ -61,9 +61,9 @@ export const ContactUs = () => {
                   <Mail className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-                  <h4 className="text-white font-medium mb-1">Email</h4>
-                  <p className="text-white/60 text-sm">support@nexora.lk</p>
-                  <p className="text-white/60 text-sm">partners@nexora.lk</p>
+                  <h4 className="text-textPrimary font-medium mb-1">Email</h4>
+                  <p className="text-textPrimary/60 text-sm">support@nexora.lk</p>
+                  <p className="text-textPrimary/60 text-sm">partners@nexora.lk</p>
                 </div>
               </div>
 
@@ -72,8 +72,8 @@ export const ContactUs = () => {
                   <MapPin className="w-5 h-5 text-secondary" />
                 </div>
                 <div>
-                  <h4 className="text-white font-medium mb-1">Headquarters</h4>
-                  <p className="text-white/60 text-sm">123 Innovation Drive<br/>Colombo 03<br/>Sri Lanka</p>
+                  <h4 className="text-textPrimary font-medium mb-1">Headquarters</h4>
+                  <p className="text-textPrimary/60 text-sm">123 Innovation Drive<br/>Colombo 03<br/>Sri Lanka</p>
                 </div>
               </div>
             </div>
@@ -99,8 +99,8 @@ export const ContactUs = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-white/90">Subject</label>
-                    <select className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors appearance-none">
+                    <label className="text-sm font-medium text-textPrimary/90">Subject</label>
+                    <select className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary transition-colors appearance-none">
                       <option value="">Select an option</option>
                       <option value="support">General Support</option>
                       <option value="vendor">Vendor Onboarding</option>
@@ -110,10 +110,10 @@ export const ContactUs = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-white/90">Message</label>
+                    <label className="text-sm font-medium text-textPrimary/90">Message</label>
                     <textarea 
                       rows="6" 
-                      className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+                      className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary transition-colors"
                       placeholder="How can we help you?"
                     ></textarea>
                   </div>
