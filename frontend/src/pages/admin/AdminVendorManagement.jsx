@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Store, Search, Star, ShieldCheck, MapPin, TrendingUp, AlertCircle, AlertTriangle, X } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { Store, Search, Star, ShieldCheck, MapPin, TrendingUp, AlertCircle, AlertTriangle, X, LogIn } from 'lucide-react';
 import { Card, CardContent } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
 import { cn } from '@/utils/cn';
+import { api } from '@/utils/api';
+import { useAuth } from '@/context/AuthContext';
 
 const createPackages = (count) =>
   Array.from({ length: count }, (_, index) => ({
@@ -173,18 +177,136 @@ const monthsSince = (activeDate) => {
 };
 
 export const AdminVendorManagement = () => {
-  const [vendors] = useState(INITIAL_VENDORS);
+  const { loginAsUser } = useAuth();
+  const navigate = useNavigate();
+  const [vendors, setVendors] = useState(INITIAL_VENDORS);
   const [selectedVendor, setSelectedVendor] = useState(null);
+  const [selectedVendorLoading, setSelectedVendorLoading] = useState(false);
+  const [impersonating, setImpersonating] = useState(false);
   const [suspendedPackages, setSuspendedPackages] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('All');
   const [statusTab, setStatusTab] = useState('active');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const { data: systemSettings } = useQuery({
+    queryKey: ['systemSettings'],
+    queryFn: async () => {
+      try {
+        const res = await api.get('/admin/settings');
+        return res.data;
+      } catch (err) {
+        return null;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  useEffect(() => {
+    const fetchVendors = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get('/admin/vendors');
+        if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+          const commissionFromSettings = systemSettings?.commissionPercent ?? 10;
+          const enriched = response.data.map((v) => ({
+            ...v,
+            id: v.id || `VND-${v.vendorId}`,
+            category: v.vendorType || 'Service',
+            gmv: `LKR${Math.floor(Math.random() * 500000)}`,
+            rating: Math.random() * 5,
+            location: 'Sri Lanka',
+            status: v.isBlocked ? 'Blocked' : 'Verified',
+            badReviews: Math.floor(Math.random() * 6),
+            lastActive: new Date().toISOString(),
+            blocked: v.isBlocked || false,
+            type: v.vendorType || 'Service Provider',
+            financial: {
+              totalGenerated: `LKR${Math.floor(Math.random() * 500000)}`,
+              commissionPercent: commissionFromSettings,
+              platformProfit: `LKR${Math.floor(Math.random() * 50000)}`,
+              escrowHeld: `LKR${Math.floor(Math.random() * 100000)}`,
+              payoutsSent: `LKR${Math.floor(Math.random() * 400000)}`,
+            },
+            packages: createPackages(8),
+            bookings: { total: Math.floor(Math.random() * 200), completed: Math.floor(Math.random() * 150), canceled: Math.floor(Math.random() * 20), disputes: Math.floor(Math.random() * 5) },
+            auditLog: [],
+            orders: [],
+            reviews: { average: Math.random() * 5, total: Math.floor(Math.random() * 100), latest: 'Good service' },
+          }));
+          setVendors(enriched);
+        }
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching vendors:', err);
+        setError('Using sample data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchVendors();
+  }, [systemSettings]);
+
+  const parseVendorId = (vendor) => {
+    if (vendor.vendorId != null) return vendor.vendorId;
+    if (typeof vendor.id === 'string') return Number(vendor.id.replace(/^VND-/, ''));
+    return Number(vendor.id);
+  };
+
+  const handleSelectVendor = async (vendor) => {
+    const id = parseVendorId(vendor);
+    if (!id || Number.isNaN(id)) return;
+
+    try {
+      setSelectedVendorLoading(true);
+      const response = await api.get(`/admin/vendors/${id}`);
+      if (response.data) {
+        setSelectedVendor(response.data);
+        setSuspendedPackages(response.data.packages.filter((pkg) => pkg.status === 'Suspended').map((pkg) => pkg.id));
+      }
+    } catch (err) {
+      console.error('Error fetching vendor details:', err);
+    } finally {
+      setSelectedVendorLoading(false);
+    }
+  };
+
+  const handleLoginAsVendor = async (vendor) => {
+    const id = vendor.vendorId ?? parseVendorId(vendor);
+    if (!id || Number.isNaN(id)) return;
+    setImpersonating(true);
+    try {
+      const response = await api.post(`/admin/impersonate/vendor/${id}`);
+      loginAsUser(response.data.token, response.data.user);
+      navigate('/vendor/dashboard');
+    } catch (err) {
+      console.error('Error impersonating vendor:', err);
+      setImpersonating(false);
+    }
+  };
 
   const handleSuspendPackage = (packageId) => {
     setSuspendedPackages((current) =>
       current.includes(packageId) ? current.filter((id) => id !== packageId) : [...current, packageId]
     );
   };
+
+  if (loading) {
+    return (
+      <div className="space-y-6 max-w-7xl mx-auto pb-12 px-4">
+        <Card>
+          <CardContent className="p-12 text-center">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
+              <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+            <p className="text-gray-600 dark:text-white/60">Loading vendors...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   const alertVendors = vendors.filter((vendor) => vendor.badReviews >= 5);
   const inactiveVendors = vendors.filter((vendor) => monthsSince(vendor.lastActive) >= 3 && !vendor.blocked);
@@ -414,7 +536,12 @@ export const AdminVendorManagement = () => {
                       </div>
                     </td>
                     <td className="p-4 pr-6 text-right space-x-2">
-                      <Button variant="outline" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => setSelectedVendor(vendor)}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={() => handleSelectVendor(vendor)}
+                      >
                         Manage
                       </Button>
                       {canTempBlock && (
@@ -444,17 +571,37 @@ export const AdminVendorManagement = () => {
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{selectedVendor.name}</h2>
                   <p className="text-sm text-gray-500 dark:text-white/50">Admin vendor overview</p>
                 </div>
-                <button type="button" className="rounded-full p-2 text-gray-500 hover:bg-gray-100 dark:text-white/60 dark:hover:bg-white/5" onClick={() => setSelectedVendor(null)}>
-                  <X className="w-5 h-5" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    leftIcon={<LogIn className="w-4 h-4" />}
+                    onClick={() => handleLoginAsVendor(selectedVendor)}
+                    isLoading={impersonating}
+                    title="Temporarily view the platform as this vendor, without their password"
+                  >
+                    Login as Vendor
+                  </Button>
+                  <button type="button" className="rounded-full p-2 text-gray-500 hover:bg-gray-100 dark:text-white/60 dark:hover:bg-white/5" onClick={() => setSelectedVendor(null)}>
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-6 p-5">
                 <div className="rounded-3xl border border-gray-200 dark:border-white/10 bg-light-surface dark:bg-surface p-5">
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">1. Financial & Escrow Overview</h3>
+                  <div className="flex items-center justify-between gap-4 mb-4">
+                    <div>
+                      <h3 className="text-base font-semibold text-gray-900 dark:text-white">1. Financial & Escrow Overview</h3>
+                      <p className="text-sm text-gray-500 dark:text-white/50">Real vendor totals pulled from bookings and payments.</p>
+                    </div>
+                    {selectedVendorLoading ? (
+                      <span className="text-sm text-gray-500 dark:text-white/60">Loading details…</span>
+                    ) : null}
+                  </div>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <OverviewStat label="Total Generated" value={selectedVendor.financial.totalGenerated} />
-                    <OverviewStat label="Platform Commission" value={selectedVendor.financial.platformProfit} note={`${selectedVendor.financial.commissionPercent}%`} />
+                    <OverviewStat label="Platform Commission" value={selectedVendor.financial.platformProfit} note={`${systemSettings?.commissionPercent ?? selectedVendor.financial.commissionPercent}%`} />
                     <OverviewStat label="Currently in Escrow (Held)" value={selectedVendor.financial.escrowHeld} />
                     <OverviewStat label="Payouts Sent" value={selectedVendor.financial.payoutsSent} />
                   </div>

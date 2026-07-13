@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, User, Sparkles, Sun, Moon } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '../common/Button';
 import { cn } from '../../utils/cn';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import { api, resolveAssetUrl } from '../../utils/api';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -13,6 +15,24 @@ export const Navbar = () => {
   const location = useLocation();
   const { user, loading } = useAuth();
   const { theme, toggleTheme } = useTheme();
+
+  const { data: systemSettings } = useQuery({
+    queryKey: ['systemSettings'],
+    queryFn: async () => {
+      try {
+        // Public endpoint - no auth required
+        const res = await api.get('/settings');
+        return res.data;
+      } catch (err) {
+        // Fallback to default if error
+        return null;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  const logoSrc = resolveAssetUrl(systemSettings?.logoUrl);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,10 +61,10 @@ export const Navbar = () => {
         <div className="flex items-center justify-between gap-2">
           
           <Link to="/" className="flex items-center group">
-            <img 
-              src="/logo.png" 
-              alt="Nexora" 
-              className="h-12 sm:h-16 md:h-20 object-contain transition-transform duration-300 group-hover:scale-105" 
+            <img
+              src={logoSrc}
+              alt="Nexora"
+              className="h-12 sm:h-16 md:h-20 object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </Link>
 

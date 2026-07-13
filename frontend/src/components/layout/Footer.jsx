@@ -1,18 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { api, resolveAssetUrl } from '../../utils/api';
 
 export const Footer = () => {
+  const { data: systemSettings } = useQuery({
+    queryKey: ['systemSettings'],
+    queryFn: async () => {
+      try {
+        // Public endpoint - no auth required
+        const res = await api.get('/settings');
+        return res.data;
+      } catch (err) {
+        // Fallback gracefully
+        return null;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  const logoSrc = resolveAssetUrl(systemSettings?.logoUrl);
+
   return (
     <footer className="bg-surface border-t border-slate-200 pt-20 pb-10">
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-1">
             <Link to="/" className="flex items-center group mb-6">
-              <img 
-                src="/logo.png" 
-                alt="Event Nest" 
-                className="h-20 md:h-24 object-contain transition-transform duration-300 group-hover:scale-105" 
+              <img
+                src={logoSrc}
+                alt="Event Nest"
+                className="h-20 md:h-24 object-contain transition-transform duration-300 group-hover:scale-105"
               />
             </Link>
             

@@ -48,6 +48,13 @@ enum OrderStatus {
   CANCELLED
 }
 
+enum DisputeStatus {
+  OPEN
+  INVESTIGATING
+  RESOLVED
+  REJECTED
+}
+
 // ===== MODELS (TABLES) =====
 
 model Admin {
@@ -61,6 +68,32 @@ model Admin {
   registrationDate DateTime @default(now()) @map("registration_date")
 
   @@map("admin")
+}
+
+model SystemSetting {
+  id                       Int      @id @default(autoincrement()) @map("id")
+  platformName             String   @default("Nexora Marketplace") @map("platformName")
+  supportEmail             String   @default("support@nexora.com") @map("supportEmail")
+  logoUrl                  String?  @map("logoUrl")
+  defaultTimezone          String   @default("UTC") @map("defaultTimezone")
+  defaultCurrency          String   @default("LKR") @map("defaultCurrency")
+  maintenanceMode          Boolean  @default(false) @map("maintenanceMode")
+  commissionPercent        Int      @default(10) @map("commissionPercent")
+  paymentGateway           String   @default("Stripe") @map("paymentGateway")
+  smtpHost                 String?  @map("smtpHost")
+  smtpPort                 Int?     @map("smtpPort")
+  smtpUser                 String?  @map("smtpUser")
+  smtpPassword             String?  @map("smtpPassword")
+  smtpFromEmail            String?  @map("smtpFromEmail")
+  smtpSecure               Boolean  @default(false) @map("smtpSecure")
+  authLockoutEnabled       Boolean  @default(false) @map("authLockoutEnabled")
+  authFailedAttemptsLimit  Int      @default(5) @map("authFailedAttemptsLimit")
+  authPasswordMinLength    Int      @default(8) @map("authPasswordMinLength")
+  authTwoFactorEnabled     Boolean  @default(false) @map("authTwoFactorEnabled")
+  createdAt                DateTime @default(now()) @map("createdAt")
+  updatedAt                DateTime @updatedAt @map("updatedAt")
+
+  @@map("system_setting")
 }
 
 model Customer {
@@ -81,6 +114,7 @@ model Customer {
   notifications Notification[]
   wishlists     Wishlist[]
   conversations Conversation[]
+  disputes      Dispute[]
 
   @@map("customer")
 }
@@ -95,6 +129,7 @@ model Vendor {
   location         String?
   vendorType       VendorType @map("vendor_type")
   isApproved       Boolean    @default(false) @map("is_approved")
+  isBlocked        Boolean    @default(false) @map("is_blocked")
   profileImage     String?    @map("profile_image")
   registrationDate DateTime   @default(now()) @map("registration_date")
 
@@ -104,6 +139,7 @@ model Vendor {
   availability  Availability[]
   reviews       Review[]
   conversations Conversation[]
+  disputes      Dispute[]
 
   @@map("vendor")
 }
@@ -204,8 +240,30 @@ model Booking {
   service    Service?     @relation(fields: [serviceId], references: [serviceId], onDelete: SetNull)
   package    EventPackage? @relation(fields: [packageId], references: [packageId], onDelete: SetNull)
   payment    Payment?
+  disputes   Dispute[]
 
   @@map("booking")
+}
+
+model Dispute {
+  disputeId   Int           @id @default(autoincrement()) @map("dispute_id")
+  bookingId   Int?          @map("booking_id")
+  customerId  Int?          @map("customer_id")
+  vendorId    Int?          @map("vendor_id")
+  raisedBy    String        @map("raised_by")
+  reporter    String?
+  subject     String
+  description String
+  status      DisputeStatus @default(OPEN)
+  adminNotes  String?       @map("admin_notes")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  booking  Booking?  @relation(fields: [bookingId], references: [bookingId], onDelete: SetNull)
+  customer Customer? @relation(fields: [customerId], references: [customerId], onDelete: SetNull)
+  vendor   Vendor?   @relation(fields: [vendorId], references: [vendorId], onDelete: SetNull)
+
+  @@map("dispute")
 }
 
 model Cart {
@@ -304,6 +362,28 @@ model Notification {
   customer   Customer? @relation(fields: [customerId], references: [customerId], onDelete: SetNull)
 
   @@map("notification")
+}
+
+model Broadcast {
+  broadcastId    Int      @id @default(autoincrement()) @map("broadcast_id")
+  title          String
+  message        String
+  type           String   @default("info") @map("type")
+  targetRole     String   @map("target_role")
+  recipientCount Int      @default(0) @map("recipient_count")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@map("broadcast")
+}
+
+model ImpersonationLog {
+  id         Int      @id @default(autoincrement())
+  adminId    Int      @map("admin_id")
+  targetRole String   @map("target_role")
+  targetId   Int      @map("target_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("impersonation_log")
 }
 
 model Wishlist {

@@ -1,35 +1,63 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { LayoutDashboard, Users, DollarSign, Activity, TrendingUp, AlertTriangle, UserCheck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
+import { api } from '../../utils/api';
+
+const CHART_COLORS = ['#D4AF37', '#1C2333', '#E5C158', '#10B981', '#94A3B8'];
 
 export const AdminDashboard = () => {
   const navigate = useNavigate();
-  // Mock data for frontend-first implementation
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['adminDashboardStats'],
+    queryFn: async () => {
+      const res = await api.get('/admin/dashboard-stats');
+      return res.data;
+    },
+  });
+
   const STATS = [
-    { id: 's1', title: 'Total Users', value: '45.2K', icon: <Users className="w-5 h-5 text-primary" />, color: 'bg-primary' },
-    { id: 's2', title: 'Active Vendors', value: '1,842', icon: <UserCheck className="w-5 h-5 text-accent" />, color: 'bg-accent' },
-    { id: 's3', title: 'Total Revenue', value: 'LKR 2.4M', icon: <DollarSign className="w-5 h-5 text-green-400" />, color: 'bg-green-400' },
-    { id: 's4', title: 'Escrow Balance', value: 'LKR 312K', icon: <DollarSign className="w-5 h-5 text-yellow-500" />, color: 'bg-yellow-400' },
+    { id: 's1', title: 'Total Users', value: isLoading ? '...' : `${data?.totalUsers ?? 0}`, icon: <Users className="w-5 h-5 text-primary" />, color: 'bg-primary' },
+    { id: 's2', title: 'Active Vendors', value: isLoading ? '...' : `${data?.activeVendors ?? 0}`, icon: <UserCheck className="w-5 h-5 text-accent" />, color: 'bg-accent' },
+    { id: 's3', title: 'Total Revenue', value: isLoading ? '...' : `LKR ${Number(data?.totalRevenue ?? 0).toLocaleString()}`, icon: <DollarSign className="w-5 h-5 text-green-400" />, color: 'bg-green-400' },
+    { id: 's4', title: 'Escrow Balance', value: isLoading ? '...' : `LKR ${Number(data?.escrowBalance ?? 0).toLocaleString()}`, icon: <DollarSign className="w-5 h-5 text-yellow-500" />, color: 'bg-yellow-400' },
   ];
 
-  const monthlyData = [12, 18, 14, 22, 30, 26, 34, 38, 45, 48, 50, 56];
-  const servicesDistribution = [
-    { label: 'Catering', value: 35, color: '#D4AF37' },
-    { label: 'Photography', value: 20, color: '#1C2333' },
-    { label: 'Entertainment', value: 18, color: '#E5C158' },
-    { label: 'Venues', value: 12, color: '#10B981' },
-    { label: 'Other', value: 15, color: '#94A3B8' },
-  ];
+  const monthlyData = data?.monthlyIncome?.length
+    ? data.monthlyIncome.map((item) => Number(item.amount))
+    : Array(12).fill(0);
 
-  const recentActivities = [
-    { id: 'BKG-901', type: 'Booking', text: 'New booking from Sarah Customer — Premium Buffet', time: '2 hours ago' },
-    { id: 'VND-802', type: 'Vendor', text: 'Vendor "Bloom Designs" registered', time: '5 hours ago' },
-    { id: 'BKG-899', type: 'Booking', text: 'Booking completed — Live DJ Set', time: '1 day ago' },
-  ];
+  const servicesDistribution = data?.serviceRevenueMix?.length
+    ? data.serviceRevenueMix.map((item, idx) => ({
+        ...item,
+        color: CHART_COLORS[idx % CHART_COLORS.length],
+      }))
+    : [
+        { label: 'Catering', value: 35, color: '#D4AF37' },
+        { label: 'Photography', value: 20, color: '#1C2333' },
+        { label: 'Entertainment', value: 18, color: '#E5C158' },
+        { label: 'Venues', value: 12, color: '#10B981' },
+        { label: 'Other', value: 15, color: '#94A3B8' },
+      ];
+
+  const recentActivities = data?.recentActivities?.length
+    ? data.recentActivities.map((activity) => {
+        const date = new Date(activity.createdAt);
+        const time = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        return {
+          ...activity,
+          time,
+        };
+      })
+    : [
+        { id: 'BKG-901', type: 'Booking', text: 'New booking from Sarah Customer — Premium Buffet', time: '2 hours ago' },
+        { id: 'VND-802', type: 'Vendor', text: 'Vendor "Bloom Designs" registered', time: '5 hours ago' },
+        { id: 'BKG-899', type: 'Booking', text: 'Booking completed — Live DJ Set', time: '1 day ago' },
+      ];
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 sm:px-0">
@@ -42,7 +70,7 @@ export const AdminDashboard = () => {
         </div>
         <div className="flex gap-2">
           <Button variant="outline">Export CSV</Button>
-          <Button>Refresh</Button>
+          <Button onClick={() => refetch()}>Refresh</Button>
         </div>
       </div>
 
@@ -66,7 +94,11 @@ export const AdminDashboard = () => {
           </CardHeader>
           <CardContent className="flex-1 flex items-center justify-center border-t border-gray-200 dark:border-white/5">
             <div className="w-full max-w-full">
-              <SimpleAreaChart data={monthlyData} />
+              {monthlyData.some((val) => val > 0) ? (
+                <SimpleAreaChart data={monthlyData} />
+              ) : (
+                <div className="flex h-full items-center justify-center text-sm text-gray-500 dark:text-white/60">No monthly revenue data available</div>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -79,7 +111,11 @@ export const AdminDashboard = () => {
             </CardHeader>
             <CardContent className="flex flex-col xl:flex-row items-center justify-between gap-4">
               <div className="flex items-center justify-center w-full xl:w-auto">
-                <DonutChart data={servicesDistribution} size={200} />
+                {servicesDistribution.some((item) => item.value > 0) ? (
+                  <DonutChart data={servicesDistribution} size={200} />
+                ) : (
+                  <div className="flex h-[200px] w-[200px] items-center justify-center text-sm text-gray-500 dark:text-white/60">No service mix data</div>
+                )}
               </div>
               <div className="flex-1 space-y-3 w-full max-w-[220px]">
                 {servicesDistribution.map((item) => (

@@ -15,7 +15,7 @@ const queryClient = new QueryClient({
   },
 })
 
-import { ThemeProvider } from './context/ThemeContext'
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
