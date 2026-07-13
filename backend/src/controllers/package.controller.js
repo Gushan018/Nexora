@@ -62,8 +62,13 @@ const createPackage = async (req, res) => {
 
 const getPackageById = async (req, res) => {
   try {
+    const pkgId = parseInt(req.params.id, 10);
+    if (isNaN(pkgId)) {
+      return res.status(400).json({ message: 'Invalid package ID' });
+    }
+
     const pkg = await prisma.eventPackage.findFirst({
-      where: { packageId: parseInt(req.params.id), vendorId: req.user.id },
+      where: { packageId: pkgId, vendorId: req.user.id },
       include: { services: true, images: true },
     });
 

@@ -17,6 +17,7 @@ router.get('/public', getAllPublicPackages);
 router.use(protect, restrictTo('vendor'));
 
 router.get('/', getMyPackages);
+router.get('/my', getMyPackages);
 router.post('/', createPackage);
 router.get('/:id', getPackageById);
 router.put('/:id', updatePackage);
