@@ -6,7 +6,7 @@ import { Button } from '../../components/common/Button';
 import { Link } from 'react-router-dom';
 import { cn } from '../../utils/cn';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../../utils/api';
+import { api, resolveAssetUrl } from '../../utils/api';
 import { PageLoader } from '../../components/common/PageLoader';
 
 // Mock data removed
@@ -61,6 +61,8 @@ export const OrderHistory = () => {
     { id: 'SHIPPING', label: 'On Shipping', icon: <Truck className="w-4 h-4" /> },
     { id: 'COMPLETED', label: 'Completed', icon: <CheckCircle2 className="w-4 h-4" /> },
   ];
+
+  const brandingLogo = resolveAssetUrl('/logo.png');
 
   const handleDownloadInvoice = (order) => {
     const printWindow = window.open('', '_blank');
@@ -117,7 +119,7 @@ export const OrderHistory = () => {
           <div class="invoice-box">
             <div class="header">
               <div class="brand">
-                <img src="${window.location.origin}/logo.png" alt="Logo" onerror="this.style.display='none'" />
+                <img src="${brandingLogo}" alt="Logo" onerror="this.style.display='none'" />
               </div>
               <div class="invoice-meta">
                 <h2>INVOICE</h2>

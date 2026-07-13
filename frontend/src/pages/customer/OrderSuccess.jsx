@@ -5,7 +5,7 @@ import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../../utils/api';
+import { api, resolveAssetUrl } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 
 export const OrderSuccess = () => {
@@ -32,6 +32,7 @@ export const OrderSuccess = () => {
   }
   
   const referenceId = `#NXR-${isOrder ? 'ORD' : 'BKG'}-${id.padStart(4, '0')}`;
+  const brandingLogo = resolveAssetUrl('/logo.png');
   
   const handleDownloadInvoice = () => {
     const printWindow = window.open('', '_blank');
@@ -77,7 +78,7 @@ export const OrderSuccess = () => {
           <div class="invoice-box">
             <div class="header">
               <div class="brand">
-                <img src="${window.location.origin}/logo.png" alt="Logo" onerror="this.style.display='none'" />
+                <img src="${brandingLogo}" alt="Logo" onerror="this.style.display='none'" />
               </div>
               <div class="invoice-meta">
                 <h2>INVOICE</h2>

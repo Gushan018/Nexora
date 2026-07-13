@@ -85,3 +85,20 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-400 dark:bg-surface/80;
 }
+
+/* Isolate a single element when printing (e.g. receipts) */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #receipt-print-area,
+  #receipt-print-area * {
+    visibility: visible;
+  }
+  #receipt-print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}

@@ -1,8 +1,25 @@
 import axios from 'axios';
 
 // Create an Axios instance
+const apiBaseUrl = String(import.meta.env.VITE_API_URL || 'http://localhost:5000/api')
+  .trim()
+  .replace(/^"|"$/g, '');
+
+export const getBackendBaseUrl = () => {
+  const base = apiBaseUrl.replace(/\/api$/i, '');
+  return base || 'http://localhost:5000';
+};
+
+export const resolveAssetUrl = (url) => {
+  if (!url) return '/logo.png';
+  if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith('/uploads')) return `${getBackendBaseUrl()}${url}`;
+  if (url.startsWith('/')) return url;
+  return `${getBackendBaseUrl()}/${url}`;
+};
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: apiBaseUrl,
   headers: {
     'Content-Type': 'application/json',
   },

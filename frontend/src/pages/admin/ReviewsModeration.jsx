@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Search, Flag, Ban, Eye, RotateCcw, Star, AlertCircle, Check } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/common/Card';
-import { Button } from '@/components/common/Button';
-import { cn } from '@/utils/cn';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
+import { Button } from '../../components/common/Button';
+import { api } from '../../utils/api';
+import { cn } from '../../utils/cn';
 
 const FLAGGED_REVIEWS = [
   {
@@ -137,30 +138,98 @@ const reasonBadge = (reason) => {
 export const ReviewsModeration = () => {
   const [activeTab, setActiveTab] = useState('flagged');
   const [searchQuery, setSearchQuery] = useState('');
+  const [stats, setStats] = useState({
+    reportedReviews: 0,
+    bannedVendors: 0,
+    suspendedVendors: 0,
+    platformAvgRating: 0,
+  });
+  const [flaggedReviews, setFlaggedReviews] = useState([]);
+  const [penaltyVendors, setPenaltyVendors] = useState([]);
+  const [allReviews, setAllReviews] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchStats = async () => {
+    try {
+      const response = await api.get('/admin/reviews-stats');
+      setStats(response.data);
+    } catch (err) {
+      console.error('Error fetching review stats:', err);
+    }
+  };
+
+  const fetchFlaggedReviews = async () => {
+    try {
+      const response = await api.get('/admin/reviews-flagged');
+      setFlaggedReviews(response.data || []);
+    } catch (err) {
+      console.error('Error fetching flagged reviews:', err);
+    }
+  };
+
+  const fetchPenaltyVendors = async () => {
+    try {
+      const response = await api.get('/admin/penalty-vendors');
+      setPenaltyVendors(response.data || []);
+    } catch (err) {
+      console.error('Error fetching penalty vendors:', err);
+    }
+  };
+
+  const fetchAllReviews = async () => {
+    try {
+      const response = await api.get('/admin/reviews-all');
+      setAllReviews(response.data || []);
+    } catch (err) {
+      console.error('Error fetching all reviews:', err);
+    }
+  };
+
+  const fetchAllData = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      await Promise.all([
+        fetchStats(),
+        fetchFlaggedReviews(),
+        fetchPenaltyVendors(),
+        fetchAllReviews(),
+      ]);
+    } catch (err) {
+      setError('Failed to load review data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllData();
+  }, []);
 
   const filteredFlaggedReviews = useMemo(() => {
     const normalized = searchQuery.toLowerCase();
-    return FLAGGED_REVIEWS.filter((review) =>
+    return flaggedReviews.filter((review) =>
       [review.customerName, review.vendorName, review.id, review.comment]
         .some((value) => value.toLowerCase().includes(normalized))
     );
-  }, [searchQuery]);
+  }, [searchQuery, flaggedReviews]);
 
   const filteredPenaltyVendors = useMemo(() => {
     const normalized = searchQuery.toLowerCase();
-    return PENALTY_VENDORS.filter((vendor) =>
+    return penaltyVendors.filter((vendor) =>
       [vendor.vendorName, vendor.id, vendor.reason]
         .some((value) => value.toLowerCase().includes(normalized))
     );
-  }, [searchQuery]);
+  }, [searchQuery, penaltyVendors]);
 
   const filteredAllReviews = useMemo(() => {
     const normalized = searchQuery.toLowerCase();
-    return ALL_REVIEWS.filter((review) =>
+    return allReviews.filter((review) =>
       [review.customerName, review.vendorName, review.id, review.comment]
         .some((value) => value.toLowerCase().includes(normalized))
     );
-  }, [searchQuery]);
+  }, [searchQuery, allReviews]);
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
@@ -178,7 +247,7 @@ export const ReviewsModeration = () => {
         <Card className="border-amber-500/20 bg-amber-500/5">
           <CardContent className="p-6">
             <p className="text-sm font-medium text-amber-600 dark:text-amber-400">Reported Reviews</p>
-            <p className="mt-4 text-3xl font-semibold text-gray-900 dark:text-white">12</p>
+            <p className="mt-4 text-3xl font-semibold text-gray-900 dark:text-white">{stats.reportedReviews}</p>
             <p className="mt-3 text-sm text-gray-500 dark:text-white/60">Flagged for review.</p>
           </CardContent>
         </Card>
@@ -186,7 +255,7 @@ export const ReviewsModeration = () => {
         <Card className="border-red-500/20 bg-red-500/5">
           <CardContent className="p-6">
             <p className="text-sm font-medium text-red-600 dark:text-red-400">Banned (Reviews)</p>
-            <p className="mt-4 text-3xl font-semibold text-gray-900 dark:text-white">4</p>
+            <p className="mt-4 text-3xl font-semibold text-gray-900 dark:text-white">{stats.bannedVendors}</p>
             <p className="mt-3 text-sm text-gray-500 dark:text-white/60">Vendors in penalty box.</p>
           </CardContent>
         </Card>
@@ -194,7 +263,7 @@ export const ReviewsModeration = () => {
         <Card className="border-white/10">
           <CardContent className="p-6">
             <p className="text-sm font-medium text-gray-500 dark:text-white/60">Suspended (Inactive)</p>
-            <p className="mt-4 text-3xl font-semibold text-gray-900 dark:text-white">15</p>
+            <p className="mt-4 text-3xl font-semibold text-gray-900 dark:text-white">{stats.suspendedVendors}</p>
             <p className="mt-3 text-sm text-gray-500 dark:text-white/60">90+ days inactive.</p>
           </CardContent>
         </Card>
@@ -203,7 +272,7 @@ export const ReviewsModeration = () => {
           <CardContent className="p-6">
             <p className="text-sm font-medium text-gray-500 dark:text-white/60">Platform Avg Rating</p>
             <p className="mt-4 text-3xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              4.6 <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+              {stats.platformAvgRating} <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
             </p>
             <p className="mt-3 text-sm text-gray-500 dark:text-white/60">Across all vendors.</p>
           </CardContent>
@@ -223,9 +292,9 @@ export const ReviewsModeration = () => {
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  'rounded-full px-4 py-2 text-sm font-semibold transition-all',
+                  'rounded-full px-4 py-2 text-sm font-semibold transition-all flex items-center gap-2',
                   activeTab === tab.id
-                    ? 'bg-gray-900 text-white shadow-md shadow-gray-900/10 dark:bg-white dark:text-slate-900'
+                    ? 'bg-gray-900 text-white shadow-md dark:bg-white dark:!text-gray-900' // <--- මෙතන තමයි වෙනස් කළේ
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-white/70 dark:hover:bg-white/10'
                 )}
               >
@@ -421,4 +490,3 @@ export const ReviewsModeration = () => {
     </div>
   );
 };
-
