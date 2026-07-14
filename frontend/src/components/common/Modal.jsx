@@ -1,9 +1,10 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { Card, CardContent } from './Card';
+import { cn } from '../../utils/cn';
 
-export const Modal = ({ isOpen, onClose, title, children }) => {
+export const Modal = ({ isOpen, onClose, title, children, maxWidth }) => {
   // Prevent scrolling when modal is open
   React.useEffect(() => {
     if (isOpen) {
@@ -31,16 +32,16 @@ export const Modal = ({ isOpen, onClose, title, children }) => {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-md z-10"
+            className={cn("relative w-full z-10 my-8 max-h-[90vh] flex flex-col", maxWidth || "max-w-xl")}
           >
-            <Card className="shadow-2xl bg-white dark:bg-surface/95 backdrop-blur-xl">
-              <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-white/10">
+            <Card className="shadow-2xl bg-white dark:bg-surface/95 backdrop-blur-xl flex flex-col max-h-[90vh] overflow-hidden border-gray-200 dark:border-white/10">
+              <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-white/10 shrink-0">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h2>
                 <button onClick={onClose} className="p-2 text-gray-500 dark:text-white/60 hover:text-gray-900 dark:hover:text-white transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-white/5">
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <CardContent className="p-6">
+              <CardContent className="p-6 overflow-y-auto flex-1">
                 {children}
               </CardContent>
             </Card>

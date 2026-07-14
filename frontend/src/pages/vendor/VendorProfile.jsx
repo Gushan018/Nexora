@@ -1,9 +1,10 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Store, Camera, Edit2, MapPin, Globe, Star, Users, Briefcase, Eye, Loader2, AlertCircle, Check, X } from 'lucide-react';
+import { Store, Camera, Edit2, MapPin, Phone, Mail, Star, Users, Briefcase, Eye, Loader2, AlertCircle, Check, X, ShieldCheck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
+import { Modal } from '../../components/common/Modal';
 import { cn } from '../../utils/cn';
 import { api } from '../../utils/api';
 
@@ -13,8 +14,12 @@ export const VendorProfile = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState('');
   const [saving, setSaving] = useState(false);
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+
   const [profileImage, setProfileImage] = useState(null);
+  const [coverImage, setCoverImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [previewCover, setPreviewCover] = useState(null);
 
   const [formData, setFormData] = useState({
     businessName: '',
@@ -39,7 +44,8 @@ export const VendorProfile = () => {
         contactNumber: data.contactNumber || '',
         location: data.location || ''
       });
-      setPreviewImage(data.profileImage);
+      setPreviewImage(data.profileImage || 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&q=80');
+      setPreviewCover(data.coverImage || 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80');
       setError(null);
     } catch (err) {
       setError('Failed to load profile data.');
@@ -54,13 +60,18 @@ export const VendorProfile = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e, type = 'avatar') => {
     const file = e.target.files[0];
     if (file) {
-      setProfileImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewImage(reader.result);
+        if (type === 'avatar') {
+          setProfileImage(file);
+          setPreviewImage(reader.result);
+        } else {
+          setCoverImage(file);
+          setPreviewCover(reader.result);
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -81,20 +92,26 @@ export const VendorProfile = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     setSaving(true);
     setError(null);
     setSuccess('');
 
     try {
-      let imageUrl = vendor.profileImage;
+      let imageUrl = vendor?.profileImage;
       if (profileImage) {
         imageUrl = await uploadImage(profileImage);
       }
 
+      let coverUrl = vendor?.coverImage;
+      if (coverImage) {
+        coverUrl = await uploadImage(coverImage);
+      }
+
       await api.put('/vendors/profile', {
         ...formData,
-        profileImage: imageUrl
+        profileImage: imageUrl,
+        coverImage: coverUrl,
       });
 
       setSuccess('Profile updated successfully!');
@@ -108,27 +125,29 @@ export const VendorProfile = () => {
 
   if (loading) {
     return (
-      <div className="h-[60vh] flex flex-col items-center justify-center text-textPrimary/40 gap-4">
+      <div className="h-[60vh] flex flex-col items-center justify-center text-gray-400 gap-4">
         <Loader2 className="w-10 h-10 animate-spin text-primary" />
-        <p className="text-lg">Loading your profile...</p>
+        <p className="text-lg font-medium">Loading your profile...</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto pb-12">
+    <div className="space-y-6 max-w-5xl mx-auto pb-12 text-slate-100">
       
       {/* Header Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
             <Store className="w-7 h-7 text-primary" />
             Vendor Profile
           </h1>
-          <p className="text-slate-600">Manage how customers see your business on Event Nest.</p>
+          <p className="text-gray-600 dark:text-white/60">Manage how customers see your business on Event Nest.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" leftIcon={<Eye className="w-4 h-4"/>}>Preview Public Profile</Button>
+          <Button variant="outline" onClick={() => setIsPreviewModalOpen(true)} leftIcon={<Eye className="w-4 h-4"/>}>
+            Preview Public Profile
+          </Button>
           <Button onClick={handleSubmit} disabled={saving} leftIcon={saving ? <Loader2 className="w-4 h-4 animate-spin"/> : <Edit2 className="w-4 h-4"/>}>
             {saving ? 'Saving...' : 'Save Changes'}
           </Button>
@@ -152,35 +171,33 @@ export const VendorProfile = () => {
       {/* Cover & Avatar Section */}
       <Card className="overflow-hidden border-none shadow-2xl relative bg-transparent">
         {/* Cover Photo */}
-        <div className="h-64 w-full relative group cursor-pointer bg-surface">
+        <div className="h-64 w-full relative group cursor-pointer bg-slate-900 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10">
           <img 
-            src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80" 
+            src={previewCover} 
             alt="Cover" 
-            className="w-full h-full object-cover opacity-60 transition-opacity group-hover:opacity-40"
+            className="w-full h-full object-cover opacity-70 group-hover:opacity-40 transition-opacity"
           />
-          <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <Camera className="w-8 h-8 text-slate-900 mb-2" />
-            <span className="text-sm font-bold text-slate-900">Change Cover Photo</span>
-            <span className="text-xs text-slate-600">Recommended: 1200x400px</span>
-          </div>
+          <label className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer bg-slate-950/60 backdrop-blur-xs">
+            <Camera className="w-8 h-8 text-white mb-2" />
+            <span className="text-sm font-bold text-white">Change Cover Photo</span>
+            <span className="text-xs text-slate-300">Click to upload banner</span>
+            <input type="file" onChange={(e) => handleImageChange(e, 'cover')} accept="image/*" className="hidden" />
+          </label>
         </div>
 
         {/* Avatar */}
-        <div className="absolute left-8 bottom-[-40px] flex items-end gap-6">
+        <div className="absolute left-8 bottom-[-40px] flex items-end gap-6 z-10">
           <div className="relative group cursor-pointer">
-            <div className="w-32 h-32 rounded-2xl bg-surface border-4 border-background flex items-center justify-center overflow-hidden">
+            <div className="w-32 h-32 rounded-2xl bg-slate-900 border-4 border-slate-950 flex items-center justify-center overflow-hidden shadow-2xl">
               <img 
-                src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&q=80" 
+                src={previewImage} 
                 alt="Logo" 
                 className="w-full h-full object-cover group-hover:opacity-50 transition-opacity"
               />
             </div>
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <Camera className="w-6 h-6 text-slate-900" />
-            </div>
-            <label className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-              <Camera className="w-6 h-6 text-textPrimary" />
-              <input type="file" onChange={handleImageChange} accept="image/*" className="hidden" />
+            <label className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer bg-slate-950/60 rounded-2xl">
+              <Camera className="w-7 h-7 text-white" />
+              <input type="file" onChange={(e) => handleImageChange(e, 'avatar')} accept="image/*" className="hidden" />
             </label>
           </div>
         </div>
@@ -191,7 +208,7 @@ export const VendorProfile = () => {
         {/* Main Details Form */}
         <div className="lg:col-span-2 space-y-6">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <Card>
+            <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
               <CardHeader>
                 <CardTitle>Business Information</CardTitle>
               </CardHeader>
@@ -214,19 +231,22 @@ export const VendorProfile = () => {
                   />
                 </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800">About the Business</label>
-                <textarea 
-                  rows="6" 
-                  className="w-full bg-surface/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors resize-none"
-                  defaultValue="Lumiere Photography is a premium wedding and event photography studio based in California. With over 10 years of experience, our team specializes in candid, documentary-style captures blended with stunning editorial portraits. We believe every event has a unique story, and our goal is to preserve those memories in the most authentic way possible."
-                />
-              </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 dark:text-white/80">About the Business</label>
+                  <textarea 
+                    rows="6" 
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                    placeholder="Detail your experience, services offered, equipment, and company background..."
+                    className="w-full bg-light-surface dark:bg-surface border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                  />
+                </div>
 
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
               <CardHeader>
                 <CardTitle>Contact Details</CardTitle>
               </CardHeader>
@@ -241,7 +261,7 @@ export const VendorProfile = () => {
                   />
                   <Input 
                     label="Email (Read-only)" 
-                    value={vendor.email}
+                    value={vendor?.email || ''}
                     disabled
                   />
                 </div>
@@ -252,65 +272,110 @@ export const VendorProfile = () => {
 
         {/* Sidebar Status & Badges */}
         <div className="space-y-6">
-          <Card className="bg-primary/5 border-primary/20">
+          <Card className="bg-emerald-500/10 border-emerald-500/30">
             <CardContent className="p-6 text-center">
-              <div className="flex flex-col items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-green-500/20 text-green-500">
+              <div className="flex flex-col items-center gap-4 mb-2">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-emerald-500/20 text-emerald-400">
                   <Check className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-lg">Top Rated Vendor</h3>
-                  <p className="text-xs text-slate-600">Maintained 4.8+ rating for 6 months</p>
+                  <h3 className="font-bold text-gray-900 dark:text-white text-lg">Top Rated Vendor</h3>
+                  <p className="text-xs text-gray-600 dark:text-white/60">Maintained 4.8+ rating for active operations</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
             <CardHeader>
               <CardTitle>Profile Statistics</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="divide-y divide-white/5">
+              <div className="divide-y divide-gray-200 dark:divide-white/5 text-sm">
                 <div className="p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-slate-600">
-                    <Users className="w-4 h-4" /> <span className="text-sm">Profile Views (30d)</span>
+                  <div className="flex items-center gap-3 text-gray-600 dark:text-white/60">
+                    <Briefcase className="w-4 h-4 text-primary" /> <span>Active Type</span>
                   </div>
-                  <span className="font-bold text-slate-900">1,245</span>
+                  <span className="font-bold text-gray-900 dark:text-white uppercase">{vendor?.vendorType || 'Vendor'}</span>
                 </div>
                 <div className="p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-slate-600">
-                    <Briefcase className="w-4 h-4" /> <span className="text-sm">Total Bookings</span>
+                  <div className="flex items-center gap-3 text-gray-600 dark:text-white/60">
+                    <Star className="w-4 h-4 text-amber-400" /> <span>Average Rating</span>
                   </div>
-                  <span className="font-bold text-slate-900">84</span>
-                </div>
-                <div className="p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-slate-600">
-                    <Star className="w-4 h-4" /> <span className="text-sm">Average Rating</span>
-                  </div>
-                  <span className="font-bold text-yellow-400">4.9 / 5.0</span>
+                  <span className="font-bold text-amber-400">5.0 / 5.0</span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
             <CardHeader>
-              <CardTitle>Service Categories</CardTitle>
+              <CardTitle>Service Category</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 bg-surface border border-slate-300 rounded-full text-xs text-slate-900">Photography</span>
-                <span className="px-3 py-1 bg-surface border border-slate-300 rounded-full text-xs text-slate-900">Videography</span>
-                <span className="px-3 py-1 bg-surface border border-slate-300 rounded-full text-xs text-slate-900">Drone Coverage</span>
+                <span className="px-3 py-1 bg-primary/20 border border-primary/30 rounded-full text-xs font-bold text-primary uppercase">
+                  {vendor?.vendorType || 'Event Management'}
+                </span>
               </div>
-              <p className="text-xs text-slate-500 mt-4 italic">Categories are derived from your active service listings.</p>
+              <p className="text-xs text-gray-500 dark:text-white/50 mt-4">Derived from your registered vendor category.</p>
             </CardContent>
           </Card>
 
         </div>
       </div>
+
+      {/* Public Profile Live Preview Modal */}
+      <Modal isOpen={isPreviewModalOpen} onClose={() => setIsPreviewModalOpen(false)} title="Public Customer Profile Preview">
+        <div className="space-y-6 pt-2 text-gray-900 dark:text-white">
+          <div className="relative rounded-2xl overflow-hidden h-48 border border-gray-200 dark:border-white/10">
+            <img src={previewCover} alt="Cover" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent flex items-end p-6 gap-4">
+              <div className="w-20 h-20 rounded-xl overflow-hidden border-2 border-primary shrink-0 bg-slate-900">
+                <img src={previewImage} alt="Logo" className="w-full h-full object-cover" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-2xl font-bold text-white">{formData.businessName || 'Your Business Name'}</h2>
+                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                </div>
+                <p className="text-xs text-white/70 flex items-center gap-1 mt-1">
+                  <MapPin className="w-3.5 h-3.5 text-primary" /> {formData.location || 'Colombo, Sri Lanka'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-xl space-y-2 border border-gray-200 dark:border-white/10">
+            <h4 className="text-xs font-bold uppercase text-primary tracking-wider">About Business</h4>
+            <p className="text-sm text-gray-700 dark:text-white/80 whitespace-pre-line">
+              {formData.description || 'No description provided yet.'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-gray-50 dark:bg-white/5 p-3.5 rounded-xl border border-gray-200 dark:border-white/10 flex items-center gap-3">
+              <Phone className="w-5 h-5 text-primary" />
+              <div>
+                <p className="text-[11px] text-gray-500 dark:text-white/50">Contact Number</p>
+                <p className="text-xs font-bold">{formData.contactNumber || 'Not provided'}</p>
+              </div>
+            </div>
+            <div className="bg-gray-50 dark:bg-white/5 p-3.5 rounded-xl border border-gray-200 dark:border-white/10 flex items-center gap-3">
+              <Mail className="w-5 h-5 text-primary" />
+              <div>
+                <p className="text-[11px] text-gray-500 dark:text-white/50">Public Email</p>
+                <p className="text-xs font-bold">{vendor?.email || 'email@example.com'}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-4 border-t border-gray-200 dark:border-white/10">
+            <Button onClick={() => setIsPreviewModalOpen(false)}>Close Preview</Button>
+          </div>
+        </div>
+      </Modal>
+
     </div>
   );
 };
-

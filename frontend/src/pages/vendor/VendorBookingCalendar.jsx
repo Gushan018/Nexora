@@ -113,11 +113,8 @@ export const VendorBookingCalendar = () => {
           <p className="text-slate-600">Manage your schedule and availability for upcoming events.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => alert('Integration coming soon')}>
-            Sync with Google Calendar
-          </Button>
-          <Button variant="secondary" onClick={() => alert('Manual block feature coming soon')}>
-            Add Manual Block
+          <Button variant="outline" onClick={fetchBookings}>
+            Refresh Schedule
           </Button>
         </div>
       </div>
