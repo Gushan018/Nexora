@@ -325,6 +325,22 @@ async function main() {
     },
   });
 
+  const product3 = await prisma.product.upsert({
+    where: { productId: 3 },
+    update: {},
+    create: {
+      productName: 'LED Stage Lights Set',
+      price: 45000.00,
+      quantity: 20,
+      description: 'Professional high-intensity LED Stage Lights system for events.',
+      vendorId: v1.vendorId,
+      categoryId: cat2.categoryId,
+      isApproved: true,
+      imageUrl: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80',
+    },
+  });
+
+
   // ============ ORDERS ============
   console.log('Creating orders...');
 
