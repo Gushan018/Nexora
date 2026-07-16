@@ -123,16 +123,8 @@ const getSellerOrders = async (req, res) => {
         order: {
           include: {
             customer: {
-              select: { name: true, email: true, contactNumber: true }
+              select: { customerId: true, name: true, email: true, contactNumber: true }
             }
-          },
-          select: {
-            orderId: true,
-            orderDate: true,
-            status: true,
-            shippingAddress: true,
-            totalAmount: true,
-            customer: true
           }
         },
         product: {

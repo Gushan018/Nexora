@@ -19,16 +19,18 @@ const getConversations = async (req, res) => {
       const serviceIds = vendorServices.map(s => s.serviceId);
       const packageIds = vendorPackages.map(p => p.packageId);
 
-      const bookings = await prisma.booking.findMany({
-        where: {
-          OR: [
-            ...(serviceIds.length ? [{ serviceId: { in: serviceIds } }] : []),
-            ...(packageIds.length ? [{ packageId: { in: packageIds } }] : []),
-          ],
-        },
-        include: { customer: { select: { customerId: true, name: true } } },
-        orderBy: { bookingDate: 'desc' },
-      });
+      const bookings = (serviceIds.length > 0 || packageIds.length > 0)
+        ? await prisma.booking.findMany({
+            where: {
+              OR: [
+                ...(serviceIds.length ? [{ serviceId: { in: serviceIds } }] : []),
+                ...(packageIds.length ? [{ packageId: { in: packageIds } }] : []),
+              ],
+            },
+            include: { customer: { select: { customerId: true, name: true } } },
+            orderBy: { bookingDate: 'desc' },
+          })
+        : [];
 
       const seen = new Set();
       for (const b of bookings) {

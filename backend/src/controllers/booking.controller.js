@@ -118,12 +118,15 @@ const getVendorBookings = async (req, res) => {
     const serviceIds = vendorServices.map(s => s.serviceId);
     const packageIds = vendorPackages.map(p => p.packageId);
 
-   
+    if (serviceIds.length === 0 && packageIds.length === 0) {
+      return res.status(200).json([]);
+    }
+
     const bookings = await prisma.booking.findMany({
       where: {
         OR: [
-          { serviceId: { in: serviceIds } },
-          { packageId: { in: packageIds } },
+          ...(serviceIds.length ? [{ serviceId: { in: serviceIds } }] : []),
+          ...(packageIds.length ? [{ packageId: { in: packageIds } }] : []),
         ],
       },
       include: {

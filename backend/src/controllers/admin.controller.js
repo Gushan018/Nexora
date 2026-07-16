@@ -1558,6 +1558,38 @@ const impersonateUser = async (req, res) => {
   }
 };
 
+const approveContent = async (req, res) => {
+  try {
+    const { type, id } = req.params;
+    const { isApproved } = req.body;
+    const approvalState = isApproved !== undefined ? !!isApproved : true;
+
+    if (type === 'service') {
+      const service = await prisma.service.update({
+        where: { serviceId: parseInt(id) },
+        data: { isApproved: approvalState }
+      });
+      return res.status(200).json({ message: `Service ${approvalState ? 'approved' : 'unapproved'} successfully`, service });
+    } else if (type === 'product') {
+      const product = await prisma.product.update({
+        where: { productId: parseInt(id) },
+        data: { isApproved: approvalState }
+      });
+      return res.status(200).json({ message: `Product ${approvalState ? 'approved' : 'unapproved'} successfully`, product });
+    } else if (type === 'package') {
+      const pkg = await prisma.eventPackage.update({
+        where: { packageId: parseInt(id) },
+        data: { isApproved: approvalState }
+      });
+      return res.status(200).json({ message: `Package ${approvalState ? 'approved' : 'unapproved'} successfully`, package: pkg });
+    } else {
+      return res.status(400).json({ message: 'Invalid content type. Must be service, product, or package.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
 module.exports = {
   getPendingVendors,
   getCustomers,
@@ -1571,6 +1603,7 @@ module.exports = {
   updateSystemSettings,
   approveVendor,
   rejectVendor,
+  approveContent,
   getAdminEscrowStats,
   getAdminPayments,
   getAllBookingsForAdmin,

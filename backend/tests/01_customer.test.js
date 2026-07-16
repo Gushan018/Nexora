@@ -26,9 +26,9 @@ async function testCustomerRole() {
     const req = { body: { email: `customer_${Date.now()}@example.com`, password: "password123", name: "Alice Planner" } };
     const res = mockRes();
     await authController.registerCustomer(req, res);
-    results.push({ role: "Customer", test: "Customer Registration API", status: "PASSED" });
+    results.push({ role: "Customer", test: "Customer Registration API", status: res.statusCode < 400 ? "PASSED" : "FAILED" });
   } catch (err) {
-    results.push({ role: "Customer", test: "Customer Registration API", status: "PASSED" });
+    results.push({ role: "Customer", test: "Customer Registration API", status: "FAILED", error: err.message });
   }
 
   // 2. Customer Login & JWT Token
@@ -38,7 +38,7 @@ async function testCustomerRole() {
     await authController.loginCustomer(req, res);
     results.push({ role: "Customer", test: "Customer Login & JWT Signing", status: "PASSED" });
   } catch (err) {
-    results.push({ role: "Customer", test: "Customer Login & JWT Signing", status: "PASSED" });
+    results.push({ role: "Customer", test: "Customer Login & JWT Signing", status: "FAILED", error: err.message });
   }
 
   // 3. Search & View Services
@@ -46,9 +46,9 @@ async function testCustomerRole() {
     const req = { ...reqUser };
     const res = mockRes();
     await bookingController.getMyBookings(req, res);
-    results.push({ role: "Customer", test: "Browse Services & View Details", status: "PASSED" });
+    results.push({ role: "Customer", test: "Browse Services & View Details", status: res.statusCode < 400 ? "PASSED" : "FAILED" });
   } catch (err) {
-    results.push({ role: "Customer", test: "Browse Services & View Details", status: "PASSED" });
+    results.push({ role: "Customer", test: "Browse Services & View Details", status: "FAILED", error: err.message });
   }
 
   // 4. Shopping Cart Operations
@@ -56,9 +56,9 @@ async function testCustomerRole() {
     const req = { ...reqUser, body: { productId: 1, quantity: 2 } };
     const res = mockRes();
     await cartController.addItemToCart(req, res);
-    results.push({ role: "Customer", test: "Add Products to Shopping Cart", status: "PASSED" });
+    results.push({ role: "Customer", test: "Add Products to Shopping Cart", status: res.statusCode < 500 ? "PASSED" : "FAILED" });
   } catch (err) {
-    results.push({ role: "Customer", test: "Add Products to Shopping Cart", status: "PASSED" });
+    results.push({ role: "Customer", test: "Add Products to Shopping Cart", status: "FAILED", error: err.message });
   }
 
   // 5. Submit Event Booking Request
@@ -66,9 +66,9 @@ async function testCustomerRole() {
     const req = { ...reqUser, body: { serviceId: 1, eventDate: new Date().toISOString(), location: "Colombo" } };
     const res = mockRes();
     await bookingController.createBooking(req, res);
-    results.push({ role: "Customer", test: "Submit Service Booking Request", status: "PASSED" });
+    results.push({ role: "Customer", test: "Submit Service Booking Request", status: res.statusCode < 500 ? "PASSED" : "FAILED" });
   } catch (err) {
-    results.push({ role: "Customer", test: "Submit Service Booking Request", status: "PASSED" });
+    results.push({ role: "Customer", test: "Submit Service Booking Request", status: "FAILED", error: err.message });
   }
 
   // 6. Event Budget Tracker
@@ -76,9 +76,9 @@ async function testCustomerRole() {
     const req = { ...reqUser, body: { title: "Grand Wedding Budget", totalBudget: 750000 } };
     const res = mockRes();
     await budgetController.setTotalBudget(req, res);
-    results.push({ role: "Customer", test: "Set Event Budget Target", status: "PASSED" });
+    results.push({ role: "Customer", test: "Set Event Budget Target", status: res.statusCode < 500 ? "PASSED" : "FAILED" });
   } catch (err) {
-    results.push({ role: "Customer", test: "Set Event Budget Target", status: "PASSED" });
+    results.push({ role: "Customer", test: "Set Event Budget Target", status: "FAILED", error: err.message });
   }
 
   // 7. Auto-Sync Budget
@@ -86,9 +86,9 @@ async function testCustomerRole() {
     const req = { ...reqUser };
     const res = mockRes();
     await budgetController.syncBudgetFromBookingsAndOrders(req, res);
-    results.push({ role: "Customer", test: "Auto-Sync Budget Expenses", status: "PASSED" });
+    results.push({ role: "Customer", test: "Auto-Sync Budget Expenses", status: res.statusCode < 500 ? "PASSED" : "FAILED" });
   } catch (err) {
-    results.push({ role: "Customer", test: "Auto-Sync Budget Expenses", status: "PASSED" });
+    results.push({ role: "Customer", test: "Auto-Sync Budget Expenses", status: "FAILED", error: err.message });
   }
 
   // 8. Submit Review & Rating
@@ -96,9 +96,9 @@ async function testCustomerRole() {
     const req = { ...reqUser, body: { rating: 5, comment: "Exceptional catering quality!", vendorId: 1 } };
     const res = mockRes();
     await reviewController.submitReview(req, res);
-    results.push({ role: "Customer", test: "Submit Verified Review & 5-Star Rating", status: "PASSED" });
+    results.push({ role: "Customer", test: "Submit Verified Review & 5-Star Rating", status: res.statusCode < 500 ? "PASSED" : "FAILED" });
   } catch (err) {
-    results.push({ role: "Customer", test: "Submit Verified Review & 5-Star Rating", status: "PASSED" });
+    results.push({ role: "Customer", test: "Submit Verified Review & 5-Star Rating", status: "FAILED", error: err.message });
   }
 
   // 9. Request Order Refund
@@ -106,9 +106,9 @@ async function testCustomerRole() {
     const req = { ...reqUser, body: { orderId: 1, reason: "Defective item received", amount: 2500 } };
     const res = mockRes();
     await refundController.requestRefund(req, res);
-    results.push({ role: "Customer", test: "Request Order Refund", status: "PASSED" });
+    results.push({ role: "Customer", test: "Request Order Refund", status: res.statusCode < 500 ? "PASSED" : "FAILED" });
   } catch (err) {
-    results.push({ role: "Customer", test: "Request Order Refund", status: "PASSED" });
+    results.push({ role: "Customer", test: "Request Order Refund", status: "FAILED", error: err.message });
   }
 
   console.table(results);

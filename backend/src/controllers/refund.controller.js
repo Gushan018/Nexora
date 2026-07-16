@@ -121,6 +121,10 @@ const updateRefundStatus = async (req, res) => {
         where: { orderId: refund.orderId },
         data: { status: 'CANCELLED' }
       });
+      await prisma.payment.updateMany({
+        where: { orderId: refund.orderId },
+        data: { status: 'REFUNDED' }
+      }).catch(() => {});
     }
 
     res.status(200).json({ message: `Refund request ${status.toLowerCase()}`, refund });

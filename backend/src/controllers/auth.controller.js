@@ -305,15 +305,9 @@ const changePassword = async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    if (role === 'admin') {
-      if (currentPassword !== user.password) {
-        return res.status(400).json({ message: "Current password is incorrect." });
-      }
-    } else {
-      const isMatch = await bcrypt.compare(currentPassword, user.password);
-      if (!isMatch) {
-        return res.status(400).json({ message: "Current password is incorrect." });
-      }
+    const isMatch = await bcrypt.compare(currentPassword, user.password).catch(() => false) || (currentPassword === user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Current password is incorrect." });
     }
 
     const salt = await bcrypt.genSalt(10);
