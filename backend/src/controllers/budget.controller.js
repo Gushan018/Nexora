@@ -25,12 +25,106 @@ const getBudgetSummary = async (req, res) => {
       });
     }
 
-    const categories = budget.items.map((item) => ({
-      id: item.budgetItemId,
-      name: item.title || item.category,
-      allocated: item.estimatedCost || 0,
-      spent: item.actualCost || 0,
-      color: item.notes || 'bg-primary',
+    // Auto-sync any accepted bookings or orders into budget items with smart categories
+    const bookings = await prisma.booking.findMany({
+      where: { customerId, status: 'ACCEPTED' },
+      include: {
+        service: { include: { category: true } },
+        package: true
+      }
+    });
+    const orders = await prisma.order.findMany({
+      where: { customerId, status: { in: ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED'] } }
+    });
+
+    for (const b of bookings) {
+      const title = `Booking: ${b.service?.serviceName || b.package?.packageName || 'Event Booking'}`;
+      const catName = b.service?.category?.categoryName || b.package?.category || "Vendor Bookings";
+      const cost = parseFloat(b.service?.price || b.package?.price || 0);
+
+      const existing = await prisma.budgetItem.findFirst({
+        where: { budgetId: budget.budgetId, title }
+      });
+
+      if (!existing && cost > 0) {
+        await prisma.budgetItem.create({
+          data: {
+            budgetId: budget.budgetId,
+            category: catName,
+            title,
+            estimatedCost: cost,
+            actualCost: cost,
+            isPaid: true
+          }
+        });
+      }
+    }
+
+    for (const o of orders) {
+      const title = `Order #${o.orderId}`;
+      const cost = parseFloat(o.totalAmount);
+
+      const existing = await prisma.budgetItem.findFirst({
+        where: { budgetId: budget.budgetId, title }
+      });
+
+      if (!existing && cost > 0) {
+        await prisma.budgetItem.create({
+          data: {
+            budgetId: budget.budgetId,
+            category: "Marketplace Purchases",
+            title,
+            estimatedCost: cost,
+            actualCost: cost,
+            isPaid: o.status !== 'PENDING'
+          }
+        });
+      }
+    }
+
+    // Re-fetch budget with newly synced items
+    budget = await prisma.budget.findFirst({
+      where: { customerId },
+      include: {
+        items: { orderBy: { createdAt: 'desc' } }
+      }
+    });
+
+    const COLOR_PALETTE = ['bg-primary', 'bg-blue-500', 'bg-purple-500', 'bg-green-500', 'bg-pink-500', 'bg-amber-500', 'bg-indigo-500'];
+    const categoryMap = {};
+
+    budget.items.forEach((item) => {
+      const catName = item.category || 'General';
+      if (!categoryMap[catName]) {
+        categoryMap[catName] = {
+          name: catName,
+          color: (item.notes && item.notes.startsWith('bg-')) ? item.notes : COLOR_PALETTE[Object.keys(categoryMap).length % COLOR_PALETTE.length],
+          allocated: 0,
+          spent: 0,
+          items: []
+        };
+      }
+      const est = Number(item.estimatedCost || 0);
+      const act = Number(item.actualCost || 0);
+
+      categoryMap[catName].allocated += est;
+      categoryMap[catName].spent += act;
+      categoryMap[catName].items.push({
+        id: item.budgetItemId,
+        title: item.title,
+        allocated: est,
+        spent: act,
+        isPaid: item.isPaid
+      });
+    });
+
+    const groupedCategories = Object.values(categoryMap).map((cat, idx) => ({
+      id: `cat-${idx + 1}`,
+      name: cat.name,
+      allocated: cat.allocated,
+      spent: cat.spent,
+      color: cat.color,
+      items: cat.items
     }));
 
     const totalEstimated = budget.items.reduce((sum, item) => sum + Number(item.estimatedCost || 0), 0);
@@ -39,7 +133,15 @@ const getBudgetSummary = async (req, res) => {
     res.status(200).json({
       budgetId: budget.budgetId,
       totalBudget: Number(budget.totalBudget || 500000),
-      categories,
+      categories: groupedCategories,
+      rawItems: budget.items.map(i => ({
+        id: i.budgetItemId,
+        name: i.title,
+        category: i.category,
+        allocated: Number(i.estimatedCost || 0),
+        spent: Number(i.actualCost || 0),
+        color: i.notes || 'bg-primary'
+      })),
       budget,
       summary: {
         totalBudget: Number(budget.totalBudget || 500000),

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Plus, CalendarDays, MapPin, Users, Activity, Clock, Settings, ArrowRight, CheckCircle2, ListOrdered, Hourglass } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -70,8 +70,11 @@ export const EventDashboard = () => {
         ) : (
           filteredBookings.map((booking, i) => {
             const name = booking.service?.serviceName || booking.package?.packageName || 'My Event';
-            const type = booking.service?.category?.name || 'Event';
+            const type = booking.service?.category?.categoryName || booking.package?.category || 'Event Service';
             const amount = Number(booking.service?.price || booking.package?.price || 0);
+            const vendorName = booking.service?.vendor?.businessName || booking.package?.vendor?.businessName || 'Vendor';
+            const vendorLocation = booking.location || booking.service?.vendor?.location || booking.package?.vendor?.location || 'Location not specified';
+            const imageUrl = booking.service?.imageUrl || booking.package?.images?.[0]?.url || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=500&q=80';
 
             return (
               <motion.div
@@ -82,7 +85,7 @@ export const EventDashboard = () => {
               >
                 <Card className="overflow-hidden hover:border-primary/30 transition-colors group">
                   <div className="h-40 w-full relative overflow-hidden">
-                    <img src={booking.package?.imageUrl || booking.service?.images?.[0] || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=500&q=80'} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={imageUrl} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
                     <div className="absolute bottom-4 left-4 flex gap-2">
                       <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-medium text-white border border-slate-300/50 flex items-center gap-1.5">
@@ -101,22 +104,24 @@ export const EventDashboard = () => {
                         <h2 className="text-2xl font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">{name}</h2>
                         <div className="space-y-1.5 text-sm text-slate-600">
                           <p className="flex items-center gap-2"><CalendarDays className="w-4 h-4"/> {new Date(booking.eventDate).toLocaleDateString()}</p>
-                          <p className="flex items-center gap-2"><MapPin className="w-4 h-4"/> {booking.location || 'Location not specified'}</p>
-                          <p className="flex items-center gap-2"><Users className="w-4 h-4"/> Vendor: {booking.service?.vendor?.businessName || booking.package?.vendor?.businessName || 'Unknown'}</p>
+                          <p className="flex items-center gap-2"><MapPin className="w-4 h-4"/> {vendorLocation}</p>
+                          <p className="flex items-center gap-2"><Users className="w-4 h-4"/> Vendor: {vendorName}</p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Progress Bar Placeholder */}
+                    {/* Progress Bar */}
                     <div className="mb-6">
                       <div className="flex justify-between text-sm mb-2">
                         <span className="text-slate-800 font-medium">Status</span>
-                        <span className="text-primary font-bold">{booking.status === 'ACCEPTED' ? 'Vendor Approved (Pending Payment)' : booking.status === 'PENDING' ? 'Awaiting Vendor' : booking.status}</span>
+                        <span className="text-primary font-bold">
+                          {booking.payment ? `Paid (${booking.payment.status.replace(/_/g, ' ')})` : booking.status === 'ACCEPTED' ? 'Vendor Approved (Pending Payment)' : booking.status === 'PENDING' ? 'Awaiting Vendor Approval' : booking.status}
+                        </span>
                       </div>
                       <div className="w-full h-2 rounded-full bg-surface border border-slate-200 overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
-                          animate={{ width: booking.status === 'ACCEPTED' ? '50%' : booking.status === 'PENDING' ? '10%' : '100%' }}
+                          animate={{ width: booking.payment ? '100%' : booking.status === 'ACCEPTED' ? '60%' : booking.status === 'PENDING' ? '20%' : '100%' }}
                           transition={{ duration: 1, delay: 0.2 }}
                           className="h-full bg-gradient-premium"
                         />
@@ -129,16 +134,25 @@ export const EventDashboard = () => {
                         <p className="text-lg font-bold text-slate-900">LKR {amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">Notes</p>
-                        <p className="text-sm text-slate-800 truncate">{booking.notes || 'No specific notes'}</p>
+                        <p className="text-xs text-slate-500 mb-1">Booking ID</p>
+                        <p className="text-sm font-semibold text-primary">#{booking.bookingId}</p>
                       </div>
                     </div>
 
-                    <Link to={`/customer/booking-details?id=${booking.bookingId}`}>
-                      <Button className="w-full" variant="outline" rightIcon={<ArrowRight className="w-4 h-4"/>}>
-                        View Booking Details
-                      </Button>
-                    </Link>
+                    <div className="flex gap-3">
+                      <Link to={`/customer/booking-details?id=${booking.bookingId}`} className="flex-1">
+                        <Button className="w-full" variant="outline" rightIcon={<ArrowRight className="w-4 h-4"/>}>
+                          View Booking Details
+                        </Button>
+                      </Link>
+                      {booking.status === 'ACCEPTED' && !booking.payment && (
+                        <Link to={`/customer/payment-page?bookingId=${booking.bookingId}&amount=${amount}&item=${encodeURIComponent('Booking: ' + name)}`}>
+                          <Button className="bg-primary text-slate-900 font-semibold hover:bg-primary/90">
+                            Pay Now
+                          </Button>
+                        </Link>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>

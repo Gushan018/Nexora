@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Filter, ShoppingCart, Star, ChevronDown, Heart, X } from 'lucide-react';
 import { Button } from '../../components/common/Button';
@@ -33,6 +33,19 @@ export const Marketplace = ({ isDashboard = false }) => {
     }
   });
 
+  const { data: dbCategories = [] } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const res = await api.get('/categories');
+      return res.data;
+    }
+  });
+
+  const categoryList = ['All', ...Array.from(new Set([
+    ...dbCategories.map(c => c.categoryName),
+    ...products.map(p => p.category?.categoryName).filter(Boolean)
+  ]))];
+
   const { data: wishlistItems = [] } = useQuery({
     queryKey: ['wishlist'],
     queryFn: async () => {
@@ -44,8 +57,10 @@ export const Marketplace = ({ isDashboard = false }) => {
   });
   
   const filteredProducts = products.filter(p => {
-    const matchesCategory = activeCategory === 'All' || (p.category?.categoryName || 'Uncategorized') === activeCategory;
-    const matchesSearch = p.productName.toLowerCase().includes(searchQuery.toLowerCase());
+    const categoryName = p.category?.categoryName || 'Uncategorized';
+    const matchesCategory = activeCategory === 'All' || categoryName === activeCategory;
+    const matchesSearch = p.productName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          (p.vendor?.businessName || '').toLowerCase().includes(searchQuery.toLowerCase());
     const matchesMinPrice = minPrice === '' || Number(p.price) >= Number(minPrice);
     const matchesMaxPrice = maxPrice === '' || Number(p.price) <= Number(maxPrice);
     
@@ -120,7 +135,7 @@ export const Marketplace = ({ isDashboard = false }) => {
               <option value="name-asc">Name: A to Z</option>
             </select>
             <div className="h-8 w-px bg-slate-200 mx-2 hidden md:block shrink-0" />
-            {CATEGORIES.map(cat => (
+            {categoryList.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -273,6 +288,11 @@ const ProductCard = ({ product, wishlistItems = [] }) => {
     }
   };
 
+  const reviewsCount = product.reviews?.length || 0;
+  const avgRating = reviewsCount > 0 
+    ? (product.reviews.reduce((sum, r) => sum + Number(r.rating || 0), 0) / reviewsCount).toFixed(1)
+    : null;
+
   return (
     <div 
       className="glass-card rounded-2xl overflow-hidden group cursor-pointer border border-slate-200 hover:border-primary/50 transition-colors duration-500"
@@ -339,9 +359,9 @@ const ProductCard = ({ product, wishlistItems = [] }) => {
         </div>
         
         <div className="flex items-center gap-2 text-sm">
-          <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-          <span className="text-slate-900 font-medium">4.8</span>
-          <span className="text-slate-500">(12 reviews)</span>
+          <Star className={cn("w-4 h-4", reviewsCount > 0 ? "text-yellow-500 fill-yellow-500" : "text-slate-300")} />
+          <span className="text-slate-900 font-medium">{avgRating ? avgRating : 'New'}</span>
+          <span className="text-slate-500">({reviewsCount} {reviewsCount === 1 ? 'review' : 'reviews'})</span>
         </div>
       </div>
     </div>

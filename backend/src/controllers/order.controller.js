@@ -90,9 +90,10 @@ const getMyOrders = async (req, res) => {
       where: { customerId },
       include: {
         customer: { select: { name: true, email: true } },
+        payment: { select: { paymentId: true, status: true, paymentMethod: true, transactionId: true, paidAt: true } },
         orderItems: {
           include: {
-            product: { select: { productName: true, imageUrl: true } }
+            product: { select: { productId: true, productName: true, imageUrl: true, price: true } }
           }
         }
       },

@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Save, User, Mail, Shield, Camera } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -6,7 +6,7 @@ import { Button } from '../../components/common/Button';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../utils/cn';
-import { api } from '../../utils/api';
+import { api, resolveAssetUrl } from '../../utils/api';
 
 export const AccountSettings = () => {
   const { user, setUser } = useAuth();
@@ -17,11 +17,37 @@ export const AccountSettings = () => {
 
   const [formFirst, setFormFirst] = useState(firstName || '');
   const [formLast, setFormLast] = useState(defaultLastName || '');
+  const [formBio, setFormBio] = useState(user?.bio || '');
   const [isSaving, setIsSaving] = useState(false);
   
   const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(user?.profileImage || null);
   const fileInputRef = useRef(null);
+
+  const profilePath = user?.role === 'admin' ? '/admin/profile' : '/customers/profile';
+
+  React.useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await api.get(profilePath);
+        if (res.data) {
+          const profile = res.data;
+          if (profile.bio !== undefined) setFormBio(profile.bio || '');
+          if (profile.name) {
+            const [first, ...rest] = profile.name.split(' ');
+            setFormFirst(first || '');
+            setFormLast(rest.join(' ') || '');
+          }
+          if (profile.profileImage) {
+            setPreviewImage(profile.profileImage);
+          }
+        }
+      } catch (e) {
+        console.error('Error fetching profile:', e);
+      }
+    };
+    fetchProfile();
+  }, [profilePath]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -31,12 +57,10 @@ export const AccountSettings = () => {
     }
   };
 
-  const profilePath = user?.role === 'admin' ? '/admin/profile' : '/customers/profile';
-
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      let profileImageUrl = user?.profileImage;
+      let profileImageUrl = user?.profileImage || previewImage;
 
       if (file) {
         const formData = new FormData();
@@ -49,11 +73,12 @@ export const AccountSettings = () => {
 
       const res = await api.put(profilePath, {
         name: `${formFirst} ${formLast}`.trim(),
-        profileImage: profileImageUrl
+        profileImage: profileImageUrl,
+        bio: formBio
       });
 
       const updatedProfile = res.data.customer || res.data.admin || {};
-      const updatedUser = { ...user, ...updatedProfile };
+      const updatedUser = { ...user, ...updatedProfile, bio: formBio };
       setUser(updatedUser);
       localStorage.setItem('user', JSON.stringify(updatedUser));
       alert('Account settings saved successfully!');
@@ -94,14 +119,19 @@ export const AccountSettings = () => {
               <div className="w-32 h-32 rounded-full bg-gradient-premium border-4 border-surface p-1 shadow-[0_0_30px_rgba(212,175,55,0.3)]">
                 <div className="w-full h-full rounded-full bg-surface flex items-center justify-center text-4xl text-primary font-bold overflow-hidden">
                   {previewImage ? (
-                    <img src={previewImage.startsWith('blob:') ? previewImage : `http://localhost:5000${previewImage}`} alt="Profile" className="w-full h-full object-cover" />
+                    <img 
+                      src={resolveAssetUrl(previewImage)} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover"
+                      onError={(e) => { e.target.style.display = 'none'; }}
+                    />
                   ) : (
                     firstName?.charAt(0) || 'U'
                   )}
                 </div>
               </div>
               <div className="absolute inset-0 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center border-4 border-transparent">
-                <Camera className="w-8 h-8 text-slate-900" />
+                <Camera className="w-8 h-8 text-white" />
               </div>
             </div>
             <div>
@@ -159,6 +189,8 @@ export const AccountSettings = () => {
               <label className="text-sm font-medium text-slate-800">Bio / Description</label>
               <textarea 
                 rows="4" 
+                value={formBio}
+                onChange={(e) => setFormBio(e.target.value)}
                 placeholder="Tell vendors a bit about yourself..."
                 className="w-full bg-background/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
               ></textarea>

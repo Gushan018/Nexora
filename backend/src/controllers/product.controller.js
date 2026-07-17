@@ -38,9 +38,16 @@ const getAllProducts = async (req, res) => {
       where: { isApproved: true }, 
       include: {
         vendor: { 
-          select: { businessName: true }
+          select: { businessName: true, location: true }
+        },
+        category: {
+          select: { categoryId: true, categoryName: true }
+        },
+        reviews: {
+          select: { rating: true, comment: true }
         }
-      }
+      },
+      orderBy: { createdAt: 'desc' }
     });
 
     res.status(200).json(products);

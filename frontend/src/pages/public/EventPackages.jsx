@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Sparkles, ChevronRight, Calendar, Search, Filter } from 'lucide-react';
 import { Input } from '../../components/common/Input';
@@ -19,32 +19,40 @@ export const EventPackages = ({ isDashboard = false }) => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
 
-  const CATEGORIES = ['All', 'PHOTOGRAPHER', 'CATERING', 'DJ', 'EVENT_COMPANY', 'OTHER'];
-
-  const { data: vendors = [], isLoading } = useQuery({
-    queryKey: ['vendors-packages'],
+  const { data: rawPackages = [], isLoading } = useQuery({
+    queryKey: ['packages-public'],
     queryFn: async () => {
-      const res = await api.get('/vendors');
+      const res = await api.get('/packages/public');
       return res.data;
     }
   });
 
-  const allPackages = vendors.flatMap(v => v.eventPackages?.map(pkg => {
-    // Calculate avg rating for vendor
-    const avgRating = v.reviews?.length ? v.reviews.reduce((acc, curr) => acc + curr.rating, 0) / v.reviews.length : 0;
-    return {
-      ...pkg,
-      vendorName: v.businessName,
-      vendorId: v.vendorId,
-      vendorType: v.vendorType,
-      vendorRating: avgRating
-    };
-  }) || []);
+  const packages = React.useMemo(() => {
+    return rawPackages.map(pkg => {
+      const reviews = pkg.vendor?.reviews || [];
+      const avgRating = reviews.length 
+        ? reviews.reduce((sum, r) => sum + Number(r.rating || 0), 0) / reviews.length 
+        : 0;
+      return {
+        ...pkg,
+        vendorName: pkg.vendor?.businessName || 'Event Provider',
+        vendorType: pkg.vendor?.vendorType || 'OTHER',
+        vendorRating: avgRating
+      };
+    });
+  }, [rawPackages]);
 
-  const filteredPackages = allPackages.filter(pkg => {
+  const categoryList = ['All', ...Array.from(new Set([
+    ...packages.map(p => p.category).filter(Boolean),
+    ...packages.map(p => p.vendorType).filter(Boolean)
+  ]))];
+
+  const filteredPackages = packages.filter(pkg => {
     const matchesSearch = pkg.packageName.toLowerCase().includes(search.toLowerCase()) || 
                           pkg.vendorName.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = activeCategory === 'All' || pkg.vendorType === activeCategory;
+    const matchesCategory = activeCategory === 'All' || 
+                            pkg.vendorType === activeCategory || 
+                            pkg.category === activeCategory;
     const matchesMinPrice = minPrice === '' || Number(pkg.price) >= Number(minPrice);
     const matchesMaxPrice = maxPrice === '' || Number(pkg.price) <= Number(maxPrice);
     const matchesRating = minRating === '' || pkg.vendorRating >= Number(minRating);
@@ -115,7 +123,7 @@ export const EventPackages = ({ isDashboard = false }) => {
               <option value="price-desc">Price: High to Low</option>
             </select>
             
-            {CATEGORIES.map(cat => (
+            {categoryList.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -126,7 +134,7 @@ export const EventPackages = ({ isDashboard = false }) => {
                     : "bg-surface/50 text-slate-600 border-slate-200 hover:border-primary/30 hover:text-primary"
                 )}
               >
-                {cat.replace('_', ' ')}
+                {String(cat).replace(/_/g, ' ')}
               </button>
             ))}
           </div>
@@ -207,7 +215,7 @@ export const EventPackages = ({ isDashboard = false }) => {
             >
               <div className="mb-4">
                 <span className="text-xs font-bold text-primary tracking-wider uppercase mb-2 block">
-                  By {pkg.vendorName}
+                  By {pkg.vendorName} {pkg.category ? `• ${pkg.category}` : ''}
                 </span>
                 <h3 className="text-2xl font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">{pkg.packageName}</h3>
                 <p className="text-slate-600 text-sm min-h-[3rem] line-clamp-2">{pkg.description || 'No description available.'}</p>
@@ -218,20 +226,34 @@ export const EventPackages = ({ isDashboard = false }) => {
                 <span className="text-slate-500 font-medium"> / pkg</span>
               </div>
               
-              <ul className="space-y-4 mb-8 flex-1">
-                {/* Fallback feature list since real packages might not have detailed array features yet */}
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 shrink-0 text-slate-500 group-hover:text-primary transition-colors" />
-                  <span className="text-slate-800">Premium quality service</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 shrink-0 text-slate-500 group-hover:text-primary transition-colors" />
-                  <span className="text-slate-800">Dedicated support</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 shrink-0 text-slate-500 group-hover:text-primary transition-colors" />
-                  <span className="text-slate-800">Customizable options</span>
-                </li>
+              <ul className="space-y-3 mb-8 flex-1">
+                {pkg.services && pkg.services.length > 0 ? (
+                  pkg.services.map((svc, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 shrink-0 text-slate-500 group-hover:text-primary transition-colors" />
+                      <span className="text-slate-800 text-sm">{svc.name}</span>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                    {pkg.maxGuests > 0 && (
+                      <li className="flex items-start gap-3">
+                        <Check className="w-5 h-5 shrink-0 text-slate-500 group-hover:text-primary transition-colors" />
+                        <span className="text-slate-800 text-sm">Capacity: Up to {pkg.maxGuests} guests</span>
+                      </li>
+                    )}
+                    {pkg.duration && (
+                      <li className="flex items-start gap-3">
+                        <Check className="w-5 h-5 shrink-0 text-slate-500 group-hover:text-primary transition-colors" />
+                        <span className="text-slate-800 text-sm">Duration: {pkg.duration}</span>
+                      </li>
+                    )}
+                    <li className="flex items-start gap-3">
+                      <Check className="w-5 h-5 shrink-0 text-slate-500 group-hover:text-primary transition-colors" />
+                      <span className="text-slate-800 text-sm">Full vendor service package</span>
+                    </li>
+                  </>
+                )}
               </ul>
               
               <Button 

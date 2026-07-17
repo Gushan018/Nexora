@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CreditCard, Lock, ShieldCheck, CheckCircle2, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
@@ -97,11 +97,15 @@ export const PaymentPage = () => {
       });
       return res.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      if (data?.message) {
+        alert(data.message);
+      }
       navigate(`/customer/order-success?type=${isOrder ? 'order' : 'booking'}&id=${orderId || bookingId || 'N/A'}&amount=${amount}&item=${encodeURIComponent(itemName)}`);
     },
     onError: (err) => {
-      alert(err.response?.data?.message || 'Payment failed.');
+      console.error('Payment Error:', err);
+      alert(err.response?.data?.message || err.message || 'Payment processing failed. Please try again.');
     }
   });
 
@@ -236,7 +240,7 @@ export const PaymentPage = () => {
 
                 <div className="flex items-start gap-3 p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-sm text-green-400 mt-6">
                   <ShieldCheck className="w-5 h-5 shrink-0" />
-                  <p>Your payment information is encrypted and securely processed by Stripe. We never store your full card details.</p>
+                  <p>Your payment information is encrypted and securely processed. We never store your full card details.</p>
                 </div>
                 
               </CardContent>

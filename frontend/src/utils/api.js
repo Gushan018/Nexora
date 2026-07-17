@@ -15,8 +15,9 @@ export const DEFAULT_PRODUCT_IMAGE = 'https://images.unsplash.com/photo-15722971
 export const resolveAssetUrl = (url, fallback = '/logo.png') => {
   if (!url || typeof url !== 'string' || !url.trim()) return fallback;
   if (/^https?:\/\//i.test(url)) return url;
-  if (url.startsWith('data:')) return url;
+  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
   if (url.startsWith('/uploads')) return `${getBackendBaseUrl()}${url}`;
+  if (url.startsWith('uploads/')) return `${getBackendBaseUrl()}/${url}`;
   if (url.startsWith('/')) return url;
   return `${getBackendBaseUrl()}/${url}`;
 };

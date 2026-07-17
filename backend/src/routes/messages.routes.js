@@ -5,7 +5,9 @@ const { getConversations, getMessages, sendMessage } = require('../controllers/m
 
 router.use(protect);
 router.get('/conversations', getConversations);
+router.get('/messages/:conversationId', getMessages);
 router.get('/:conversationId', getMessages);
+router.post('/messages', sendMessage);
 router.post('/send', sendMessage);
 
 module.exports = router;

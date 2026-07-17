@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, Send, Paperclip, MoreVertical, ChevronLeft, Phone, Calendar, Image as ImageIcon } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -15,16 +15,28 @@ export const VendorChat = () => {
   const [message, setMessage] = useState('');
   const bottomRef = useRef(null);
 
-  const { data: messages = [], isLoading } = useQuery({
+  const { data: chatData, isLoading } = useQuery({
     queryKey: ['messages', conversationId],
     queryFn: async () => {
-      if (!conversationId) return [];
+      if (!conversationId) return { messages: [] };
       const res = await api.get(`/chat/messages/${conversationId}`);
       return res.data;
     },
     enabled: !!conversationId,
     refetchInterval: 3000 // Poll every 3 seconds
   });
+
+  const rawMessages = chatData?.messages || (Array.isArray(chatData) ? chatData : []);
+  const participant = chatData?.participant;
+
+  const messages = React.useMemo(() => {
+    return rawMessages.map(m => ({
+      id: m.id || m.messageId,
+      senderType: m.senderType,
+      text: m.text || m.content || '',
+      createdAt: m.createdAt
+    }));
+  }, [rawMessages]);
 
   const sendMutation = useMutation({
     mutationFn: async (text) => {
@@ -33,6 +45,7 @@ export const VendorChat = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['messages', conversationId]);
+      queryClient.invalidateQueries(['conversations']);
       setMessage('');
     }
   });
@@ -55,28 +68,32 @@ export const VendorChat = () => {
         {/* Chat Header */}
         <div className="p-4 border-b border-slate-200 bg-surface/80 backdrop-blur-md flex justify-between items-center shrink-0 z-10">
           <div className="flex items-center gap-4">
-            <Link to="/customer/chat" className="md:hidden p-2 -ml-2 text-slate-600 hover:text-slate-900">
+            <Link to="/customer/chat-inbox" className="p-2 -ml-2 text-slate-600 hover:text-primary transition-colors flex items-center gap-1 text-sm font-medium">
               <ChevronLeft className="w-5 h-5" />
+              <span className="hidden sm:inline">Back to Inbox</span>
             </Link>
             <div className="relative">
               <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold">
-                L
+                {participant?.name ? participant.name.charAt(0) : 'V'}
               </div>
               <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-surface" />
             </div>
             <div>
-              <h2 className="font-bold text-slate-900">Lumiere Photography</h2>
+              <h2 className="font-bold text-slate-900">{participant?.name || 'Vendor Chat'}</h2>
               <p className="text-xs text-slate-500 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" /> Online
               </p>
             </div>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="hidden sm:flex" leftIcon={<Phone className="w-4 h-4"/>}>Call Vendor</Button>
-            <Button variant="outline" size="sm" className="hidden sm:flex" leftIcon={<Calendar className="w-4 h-4"/>}>View Booking</Button>
-            <button className="p-2 text-slate-500 hover:text-slate-900 rounded-lg">
-              <MoreVertical className="w-5 h-5" />
-            </button>
+            {participant?.phone && (
+              <a href={`tel:${participant.phone}`}>
+                <Button variant="outline" size="sm" className="hidden sm:flex" leftIcon={<Phone className="w-4 h-4"/>}>Call Vendor</Button>
+              </a>
+            )}
+            <Link to="/customer/event-dashboard">
+              <Button variant="outline" size="sm" className="hidden sm:flex" leftIcon={<Calendar className="w-4 h-4"/>}>View Booking</Button>
+            </Link>
           </div>
         </div>
 

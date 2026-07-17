@@ -1,11 +1,18 @@
 const multer = require('multer');
-const crypto = require('crypto');
+const path = require('path');
+const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
 
-// Use memory storage for buffer handling
 const storage = multer.memoryStorage();
 const upload = multer({ 
   storage: storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB limit
+});
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'isb8m8bf',
+  api_key: process.env.CLOUDINARY_API_KEY || '277217182126142',
+  api_secret: process.env.CLOUDINARY_API_SECRET || 'QDOXOiqqkGk8BTmx1beJrTZuClc'
 });
 
 const uploadFile = async (req, res) => {
@@ -14,80 +21,51 @@ const uploadFile = async (req, res) => {
       return res.status(400).json({ message: 'No file uploaded.' });
     }
 
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME || 'isb8m8bf';
-    const apiKey = process.env.CLOUDINARY_API_KEY || '277217182126142';
-    const apiSecret = process.env.CLOUDINARY_API_SECRET || 'QDOXOiqqkGk8BTmx1beJrTZuClc';
-
-    const timestamp = String(Math.floor(Date.now() / 1000));
-    const base64File = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-
-    // 1. Attempt Signed Cloudinary Upload
+    // 1. Try Official Cloudinary Upload Stream
     try {
-      const toSign = `timestamp=${timestamp}${apiSecret}`;
-      const signature = crypto.createHash('sha1').update(toSign, 'utf8').digest('hex');
-
-      const formData = new URLSearchParams();
-      formData.append('file', base64File);
-      formData.append('api_key', apiKey);
-      formData.append('timestamp', timestamp);
-      formData.append('signature', signature);
-
-      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formData.toString()
+      const cloudinaryResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'nexora_uploads' },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        stream.end(req.file.buffer);
       });
 
-      const data = await response.json();
-
-      if (data.secure_url) {
-        console.log('✅ Uploaded to Cloudinary:', data.secure_url);
+      if (cloudinaryResult && cloudinaryResult.secure_url) {
+        console.log('✅ Uploaded to Cloudinary:', cloudinaryResult.secure_url);
         return res.status(200).json({ 
           message: 'File uploaded successfully to Cloudinary',
-          url: data.secure_url,
-          fileUrl: data.secure_url,
-          imageUrl: data.secure_url
+          url: cloudinaryResult.secure_url,
+          fileUrl: cloudinaryResult.secure_url,
+          imageUrl: cloudinaryResult.secure_url
         });
       }
-    } catch (err) {
-      console.warn('Signed Cloudinary upload attempt:', err.message);
+    } catch (cErr) {
+      console.warn('Cloudinary upload attempt note:', cErr.message || cErr);
     }
 
-    // 2. Attempt Unsigned Presets (ml_default, unsigned, nexora_uploads)
-    const presets = ['ml_default', 'unsigned', 'nexora_uploads', 'nexora'];
-    for (const preset of presets) {
-      try {
-        const unsignedData = new URLSearchParams();
-        unsignedData.append('file', base64File);
-        unsignedData.append('upload_preset', preset);
-
-        const unRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: unsignedData.toString()
-        });
-        const unResult = await unRes.json();
-        if (unResult.secure_url) {
-          console.log(`✅ Uploaded to Cloudinary (Preset: ${preset}):`, unResult.secure_url);
-          return res.status(200).json({ 
-            message: 'File uploaded successfully to Cloudinary',
-            url: unResult.secure_url,
-            fileUrl: unResult.secure_url,
-            imageUrl: unResult.secure_url
-          });
-        }
-      } catch (err) {
-        // continue to next preset
-      }
+    // 2. Local Disk Fallback (saves cleanly into uploads folder)
+    const uploadsDir = path.join(__dirname, '..', '..', 'uploads');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
     }
 
-    // 3. Robust Base64 Fallback (ensures uploads never crash or fail on serverless)
-    console.log('ℹ️ Returning Data URI for uploaded image');
-    return res.status(200).json({ 
+    const fileExt = path.extname(req.file.originalname) || '.jpg';
+    const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExt}`;
+    const filePath = path.join(uploadsDir, filename);
+
+    fs.writeFileSync(filePath, req.file.buffer);
+    const localUrl = `/uploads/${filename}`;
+
+    console.log('✅ Saved file locally:', localUrl);
+    return res.status(200).json({
       message: 'File uploaded successfully',
-      url: base64File,
-      fileUrl: base64File,
-      imageUrl: base64File
+      url: localUrl,
+      fileUrl: localUrl,
+      imageUrl: localUrl
     });
 
   } catch (error) {
@@ -97,6 +75,6 @@ const uploadFile = async (req, res) => {
 };
 
 module.exports = {
-  uploadFile,
-  upload
+  upload,
+  uploadFile
 };

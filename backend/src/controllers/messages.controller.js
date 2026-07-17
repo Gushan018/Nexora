@@ -127,6 +127,34 @@ const getMessages = async (req, res) => {
       return res.status(400).json({ message: 'Invalid conversation ID' });
     }
 
+    let participant = null;
+    if (otherRole === 'vend') {
+      const v = await prisma.vendor.findUnique({
+        where: { vendorId: otherId },
+        select: { vendorId: true, businessName: true, vendorType: true, contactNumber: true }
+      });
+      if (v) {
+        participant = {
+          id: v.vendorId,
+          name: v.businessName,
+          type: v.vendorType,
+          phone: v.contactNumber
+        };
+      }
+    } else if (otherRole === 'cust') {
+      const c = await prisma.customer.findUnique({
+        where: { customerId: otherId },
+        select: { customerId: true, name: true, phone: true }
+      });
+      if (c) {
+        participant = {
+          id: c.customerId,
+          name: c.name,
+          phone: c.phone
+        };
+      }
+    }
+
     const where = {
       OR: [
         { senderId: userId, receiverId: otherId, senderType: userRole, receiverType: otherRole === 'cust' ? 'customer' : 'vendor' },
@@ -134,7 +162,7 @@ const getMessages = async (req, res) => {
       ],
     };
 
-    const messages = await prisma.message.findMany({
+    const messagesList = await prisma.message.findMany({
       where,
       orderBy: { createdAt: 'asc' },
     });
@@ -144,7 +172,19 @@ const getMessages = async (req, res) => {
       data: { isRead: true },
     });
 
-    res.status(200).json({ messages, conversationId });
+    const formattedMessages = messagesList.map(m => ({
+      id: m.messageId,
+      senderId: m.senderId,
+      senderType: m.senderType,
+      text: m.content,
+      createdAt: m.createdAt
+    }));
+
+    res.status(200).json({
+      messages: formattedMessages,
+      conversationId,
+      participant
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
@@ -152,17 +192,22 @@ const getMessages = async (req, res) => {
 
 const sendMessage = async (req, res) => {
   try {
-    const { receiverId, message } = req.body;
-    if (!receiverId || !message || !message.trim()) {
-      return res.status(400).json({ message: 'receiverId and message are required' });
+    let { receiverId, message, conversationId, text } = req.body;
+    const msgText = (text || message || '').trim();
+
+    if (!receiverId && conversationId) {
+      const parts = conversationId.split('-');
+      receiverId = parseInt(parts[1]);
+    }
+
+    if (!receiverId || isNaN(parseInt(receiverId)) || !msgText) {
+      return res.status(400).json({ message: 'Receiver ID and message content are required' });
     }
 
     const senderId = req.user.id;
     const senderType = req.user.role;
     const receiverType = senderType === 'vendor' ? 'customer' : 'vendor';
-    const convId = senderType === 'vendor'
-      ? `cust-${receiverId}`
-      : `vend-${receiverId}`;
+    const convId = conversationId || (senderType === 'vendor' ? `cust-${receiverId}` : `vend-${receiverId}`);
 
     const msg = await prisma.message.create({
       data: {
@@ -171,16 +216,20 @@ const sendMessage = async (req, res) => {
         senderType,
         receiverId: parseInt(receiverId),
         receiverType,
-        content: message.trim(),
+        content: msgText,
       },
     });
 
     res.status(201).json({
       message: 'Message sent',
       id: msg.messageId,
+      messageId: msg.messageId,
       senderId: msg.senderId,
       receiverId: msg.receiverId,
+      senderType: msg.senderType,
+      receiverType: msg.receiverType,
       text: msg.content,
+      content: msg.content,
       createdAt: msg.createdAt,
     });
   } catch (error) {

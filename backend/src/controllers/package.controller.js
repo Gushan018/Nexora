@@ -176,7 +176,15 @@ const getAllPublicPackages = async (req, res) => {
       include: {
         services: true,
         images: true,
-        vendor: { select: { businessName: true, location: true } },
+        vendor: { 
+          select: { 
+            vendorId: true, 
+            businessName: true, 
+            location: true, 
+            vendorType: true,
+            reviews: { select: { rating: true } }
+          } 
+        },
       },
       orderBy: { createdAt: 'desc' },
     });

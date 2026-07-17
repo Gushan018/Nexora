@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calculator, PieChart, TrendingUp, Plus, Edit2, Trash2, Edit3 } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -177,76 +177,106 @@ export const BudgetPlanner = () => {
           )}
 
           {categories.map(cat => {
-            const allocated = parseFloat(cat.allocated);
-            const spent = parseFloat(cat.spent);
+            const allocated = parseFloat(cat.allocated || 0);
+            const spent = parseFloat(cat.spent || 0);
             const catPercentage = allocated > 0 ? Math.round((spent / allocated) * 100) : 0;
-            const isOverBudget = spent > allocated;
+            const isOverBudget = spent > allocated && allocated > 0;
             
             return (
-              <Card key={cat.id} className="overflow-visible group border-white/5 hover:border-white/10 transition-colors">
+              <Card key={cat.id || cat.name} className="overflow-visible group border-slate-200 bg-surface/40 hover:border-primary/30 transition-colors">
                 <CardContent className="p-4 sm:p-6">
-                  <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-4">
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-3">
                     <div className="flex items-center gap-3">
-                      <div className={`w-3 h-3 rounded-full ${cat.color || 'bg-primary'}`} />
-                      <h4 className="font-bold text-textPrimary text-lg">{cat.name}</h4>
+                      <div className={`w-3.5 h-3.5 rounded-full ${cat.color || 'bg-primary'}`} />
+                      <h4 className="font-bold text-slate-900 text-lg">{cat.name}</h4>
                     </div>
-                    <div className="flex gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleOpenCatModal(cat)} className="p-1.5 text-textPrimary/40 hover:text-primary transition-colors bg-white/5 rounded-lg"><Edit2 className="w-4 h-4"/></button>
-                      <button onClick={() => handleDeleteCat(cat.id)} className="p-1.5 text-textPrimary/40 hover:text-red-400 transition-colors bg-white/5 rounded-lg"><Trash2 className="w-4 h-4"/></button>
+                    <div className="flex gap-2">
+                      <button onClick={() => handleOpenCatModal({ name: cat.name, allocated: cat.allocated, spent: '0', color: cat.color })} className="text-xs text-primary font-medium hover:underline flex items-center gap-1 bg-primary/10 px-2.5 py-1 rounded-lg">
+                        <Plus className="w-3.5 h-3.5" /> Add Expense
+                      </button>
                     </div>
                   </div>
                   
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-textPrimary/60">Spent: <span className="font-bold text-textPrimary">LKR {spent.toLocaleString()}</span></span>
-                    <span className="text-textPrimary/60">Allocated: <span className="font-bold text-textPrimary">LKR {allocated.toLocaleString()}</span></span>
+                    <span className="text-slate-600">Spent: <span className="font-bold text-slate-900">LKR {spent.toLocaleString()}</span></span>
+                    {allocated > 0 && (
+                      <span className="text-slate-600">Allocated: <span className="font-bold text-slate-900">LKR {allocated.toLocaleString()}</span></span>
+                    )}
                   </div>
                   
-                  <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-2">
-                    <div 
-                      className={`h-full ${isOverBudget ? 'bg-red-500' : cat.color || 'bg-primary'}`} 
-                      style={{ width: `${Math.min(catPercentage, 100)}%` }} 
-                    />
-                  </div>
+                  {allocated > 0 && (
+                    <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden mb-2">
+                      <div 
+                        className={`h-full ${isOverBudget ? 'bg-red-500' : cat.color || 'bg-primary'}`} 
+                        style={{ width: `${Math.min(catPercentage, 100)}%` }} 
+                      />
+                    </div>
+                  )}
+
+                  {/* Nested Expenses List */}
+                  {cat.items && cat.items.length > 0 && (
+                    <div className="mt-4 pt-3 border-t border-slate-200/80 space-y-2">
+                      <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Included Items ({cat.items.length})</span>
+                      {cat.items.map((item) => (
+                        <div key={item.id} className="flex justify-between items-center text-sm py-2 px-3 rounded-xl bg-surface border border-slate-200/60 shadow-xs">
+                          <span className="font-medium text-slate-800 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                            {item.title}
+                          </span>
+                          <div className="flex items-center gap-3">
+                            <span className="text-xs font-semibold text-slate-700">LKR {Number(item.spent).toLocaleString()}</span>
+                            {item.isPaid && <span className="text-[10px] bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full font-bold">Paid</span>}
+                            <button onClick={() => handleDeleteCat(item.id)} className="text-slate-400 hover:text-red-500 p-1 transition-colors">
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   
-                  <div className="flex justify-between items-center mt-2">
-                    <span className={`text-xs font-bold ${isOverBudget ? 'text-red-400' : 'text-textPrimary/40'}`}>
-                      {isOverBudget ? `Over budget by LKR ${(spent - allocated).toLocaleString()}` : `${catPercentage}% used`}
-                    </span>
-                    <button onClick={() => handleOpenCatModal(cat)} className="text-xs text-primary font-medium hover:underline">Add Expense</button>
-                  </div>
+                  {allocated > 0 && (
+                    <div className="flex justify-between items-center mt-3">
+                      <span className={`text-xs font-bold ${isOverBudget ? 'text-red-400' : 'text-slate-500'}`}>
+                        {isOverBudget ? `Over budget by LKR ${(spent - allocated).toLocaleString()}` : `${catPercentage}% used`}
+                      </span>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             )
           })}
           
-          <Button onClick={() => handleOpenCatModal()} variant="outline" className="w-full border-dashed border-white/20 text-textPrimary/60 hover:text-textPrimary" leftIcon={<Plus className="w-4 h-4"/>}>
-            Add New Category
+          <Button onClick={() => handleOpenCatModal()} variant="outline" className="w-full border-dashed border-slate-300 text-slate-600 hover:text-slate-900" leftIcon={<Plus className="w-4 h-4"/>}>
+            Add Custom Category
           </Button>
         </div>
 
         {/* Visualizer / Quick actions */}
         <div className="space-y-6">
-          <Card>
+          <Card className="border-slate-200 bg-surface/40">
             <CardContent className="p-6 flex flex-col items-center text-center">
-              <div className="w-48 h-48 rounded-full border-[16px] border-surface relative mb-6 flex items-center justify-center">
+              <div className="w-48 h-48 rounded-full border-[16px] border-surface relative mb-6 flex items-center justify-center shadow-inner">
                 <div 
                   className="absolute inset-0 rounded-full"
                   style={{
-                    background: `conic-gradient(
-                      #5B7CFA 0% 53%, 
-                      #D4AF37 53% 74%, 
-                      #22c55e 74% 90%, 
-                      #eab308 90% 100%
-                    )`,
+                    background: categories.length ? `conic-gradient(${categories.map((c, i) => {
+                      const colorMap = { 'bg-primary': '#5B7CFA', 'bg-accent': '#D4AF37', 'bg-green-500': '#22c55e', 'bg-blue-500': '#3b82f6', 'bg-purple-500': '#a855f7', 'bg-pink-500': '#ec4899', 'bg-orange-500': '#f97316' };
+                      const color = colorMap[c.color] || '#5B7CFA';
+                      const start = (i / categories.length) * 100;
+                      const end = ((i + 1) / categories.length) * 100;
+                      return `${color} ${start}% ${end}%`;
+                    }).join(', ')})` : '#5B7CFA',
                     margin: '-16px'
                   }}
                 />
-                <div className="absolute inset-0 bg-background rounded-full m-2 flex flex-col items-center justify-center">
-                  <span className="text-textPrimary/60 text-xs uppercase tracking-wider mb-1">Total</span>
-                  <span className="text-2xl font-bold text-textPrimary">LKR {totalAllocated.toLocaleString()}</span>
+                <div className="absolute inset-0 bg-background rounded-full m-2 flex flex-col items-center justify-center border border-slate-200">
+                  <span className="text-slate-500 text-xs uppercase tracking-wider mb-1 font-medium">Total Spent</span>
+                  <span className="text-xl font-extrabold text-slate-900">LKR {totalSpent.toLocaleString()}</span>
+                  <span className="text-xs text-primary font-bold mt-1">{percentageSpent}% of total</span>
                 </div>
               </div>
-              <p className="text-sm text-textPrimary/60">Your budget is tracked securely. Stay on top of your expenses.</p>
+              <p className="text-sm text-slate-600 font-medium">Expenses and bookings are automatically grouped by category for real-time tracking.</p>
             </CardContent>
           </Card>
         </div>

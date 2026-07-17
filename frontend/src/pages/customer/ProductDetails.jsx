@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Star, Truck, ShieldCheck, Heart, Share2, Plus, Minus, CheckCircle2 } from 'lucide-react';
 import { Button } from '../../components/common/Button';
@@ -110,6 +110,11 @@ export const ProductDetails = () => {
     'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&q=80'
   ];
 
+  const reviewsCount = product.reviews?.length || 0;
+  const avgRating = reviewsCount > 0 
+    ? (product.reviews.reduce((sum, r) => sum + Number(r.rating || 0), 0) / reviewsCount).toFixed(1)
+    : null;
+
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background">
       <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
@@ -169,10 +174,10 @@ export const ProductDetails = () => {
               <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 leading-tight">{product.productName}</h1>
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-1 text-yellow-400">
-                  <Star className="w-4 h-4 fill-yellow-400" />
-                  <span className="font-bold">4.8</span>
+                  <Star className={cn("w-4 h-4", reviewsCount > 0 ? "fill-yellow-400 text-yellow-400" : "text-slate-300")} />
+                  <span className="font-bold">{avgRating ? avgRating : 'New'}</span>
                 </div>
-                <span className="text-slate-500">({product.reviews?.length || 0} reviews)</span>
+                <span className="text-slate-500">({reviewsCount} {reviewsCount === 1 ? 'review' : 'reviews'})</span>
                 <span className="text-slate-300">|</span>
                 {product.quantity > 0 ? (
                   <span className="text-green-400 font-medium flex items-center gap-1"><CheckCircle2 className="w-4 h-4"/> In Stock ({product.quantity})</span>

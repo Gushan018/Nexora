@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Package, Search, Filter, ChevronRight, CheckCircle2, Clock, MapPin, ListOrdered, Truck, Archive } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -14,9 +14,11 @@ import { PageLoader } from '../../components/common/PageLoader';
 const StatusIcon = ({ status }) => {
   switch(status) {
     case 'DELIVERED': return <CheckCircle2 className="w-5 h-5 text-green-400" />;
-    case 'IN_TRANSIT': return <MapPin className="w-5 h-5 text-blue-400" />;
+    case 'SHIPPED':
+    case 'IN_TRANSIT': return <Truck className="w-5 h-5 text-blue-400" />;
     case 'PROCESSING': 
     case 'PENDING': return <Clock className="w-5 h-5 text-yellow-400" />;
+    case 'CANCELLED': return <Archive className="w-5 h-5 text-red-400" />;
     default: return <Package className="w-5 h-5 text-slate-500" />;
   }
 };
@@ -38,7 +40,7 @@ export const OrderHistory = () => {
     
     // Tab filtering
     if (activeTab === 'PENDING') result = result.filter(o => ['PENDING', 'PROCESSING'].includes(o.status));
-    else if (activeTab === 'SHIPPING') result = result.filter(o => o.status === 'IN_TRANSIT');
+    else if (activeTab === 'SHIPPING') result = result.filter(o => ['SHIPPED', 'IN_TRANSIT'].includes(o.status));
     else if (activeTab === 'COMPLETED') result = result.filter(o => o.status === 'DELIVERED');
 
     // Search filtering
@@ -239,7 +241,14 @@ export const OrderHistory = () => {
                   <p className="text-sm font-medium text-primary">#{order.orderId}</p>
                 </div>
               </div>
-              <Button variant="outline" size="sm" onClick={() => handleDownloadInvoice(order)}>View Invoice</Button>
+              <div className="flex items-center gap-3">
+                {order.status === 'PENDING' && (
+                  <Link to={`/customer/payment-page?orderId=${order.orderId}&amount=${order.totalAmount}&item=${encodeURIComponent('Marketplace Order #' + order.orderId)}`}>
+                    <Button size="sm" className="bg-primary text-slate-900 font-semibold hover:bg-primary/90">Pay Now</Button>
+                  </Link>
+                )}
+                <Button variant="outline" size="sm" onClick={() => handleDownloadInvoice(order)}>View Invoice</Button>
+              </div>
             </div>
             
             {/* Order Body */}

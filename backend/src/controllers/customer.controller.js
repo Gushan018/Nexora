@@ -13,6 +13,7 @@ const getCustomerProfile = async (req, res) => {
         email: true,
         contactNumber: true,
         profileImage: true,
+        bio: true,
         registrationDate: true,
       }
     });
@@ -31,14 +32,15 @@ const getCustomerProfile = async (req, res) => {
 const updateCustomerProfile = async (req, res) => {
   try {
     const customerId = req.user.id;
-    const { name, contactNumber, profileImage } = req.body;
+    const { name, contactNumber, profileImage, bio } = req.body;
 
     const updatedCustomer = await prisma.customer.update({
       where: { customerId },
       data: {
-        name,
-        contactNumber,
-        ...(profileImage && { profileImage })
+        ...(name && { name }),
+        ...(contactNumber !== undefined && { contactNumber }),
+        ...(profileImage && { profileImage }),
+        ...(bio !== undefined && { bio })
       },
       select: {
         customerId: true,
@@ -46,6 +48,7 @@ const updateCustomerProfile = async (req, res) => {
         email: true,
         contactNumber: true,
         profileImage: true,
+        bio: true,
         registrationDate: true,
       }
     });
