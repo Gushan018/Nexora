@@ -40,20 +40,33 @@ export const Register = () => {
     setIsLoading(true);
 
     try {
-      if (accountType !== 'customer') {
-        const typeMap = {
-          vendor: formData.vendorType || 'CATERING',
-          seller: 'RENTAL',
-          event_company: 'EVENT_COMPANY'
+      if (accountType === 'seller') {
+        const sellerData = {
+          business_name: formData.businessName || `${formData.firstName} ${formData.lastName}'s Shop`,
+          email: formData.email,
+          password: formData.password,
         };
+        const res = await api.post('/auth/register/seller', sellerData);
+        alert(res.data.message || 'Product Seller registered successfully.');
+        navigate('/login');
+      } else if (accountType === 'event_company') {
+        const companyData = {
+          business_name: formData.businessName || `${formData.firstName} ${formData.lastName}'s Event Co.`,
+          email: formData.email,
+          password: formData.password,
+        };
+        const res = await api.post('/auth/register/company', companyData);
+        alert(res.data.message || 'Event Management Company registered successfully.');
+        navigate('/login');
+      } else if (accountType === 'vendor') {
         const vendorData = {
           business_name: formData.businessName || `${formData.firstName} ${formData.lastName}'s Business`,
           email: formData.email,
           password: formData.password,
-          vendor_type: typeMap[accountType] || 'OTHER',
+          vendor_type: formData.vendorType || 'CATERING',
         };
         const res = await api.post('/auth/register/vendor', vendorData);
-        alert(res.data.message || 'Account registered successfully.');
+        alert(res.data.message || 'Service Provider registered successfully.');
         navigate('/login');
       } else {
         const customerData = {

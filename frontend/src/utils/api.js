@@ -12,7 +12,15 @@ export const getBackendBaseUrl = () => {
 
 export const DEFAULT_PRODUCT_IMAGE = 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=500&q=80';
 
-export const resolveAssetUrl = (url, fallback = '/logo.png') => {
+export const resolveAssetUrl = (url, fallback = 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=1000') => {
+  if (url && typeof url === 'object') {
+    if (Array.isArray(url)) {
+      url = url[0];
+    }
+    if (url && typeof url === 'object') {
+      url = url.url || url.imageUrl || url.image_url || url.path || url.src || '';
+    }
+  }
   if (!url || typeof url !== 'string' || !url.trim()) return fallback;
   if (/^https?:\/\//i.test(url)) return url;
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;

@@ -111,7 +111,7 @@ const registerVendor = async (req, res) => {
 // ==========================================
 const registerSeller = async (req, res) => {
   try {
-    const { shopName, email, password, contactNumber, location, description } = req.body;
+    const { shopName, business_name, email, password, contactNumber, contact_number, location, description } = req.body;
     const userExists = await prisma.vendor.findUnique({ where: { email } });
     if (userExists) {
       return res.status(400).json({ message: "This email address is already in use." });
@@ -120,18 +120,50 @@ const registerSeller = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     const seller = await prisma.vendor.create({
       data: {
-        businessName: shopName,
+        businessName: shopName || business_name,
         email,
         password: hashedPassword,
-        contactNumber,
+        contactNumber: contactNumber || contact_number,
         location,
-        vendorType: 'OTHER',
+        vendorType: 'RENTAL',
         description,
       },
     });
     res.status(201).json({
       message: "Seller registered successfully.",
       sellerId: seller.vendorId,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+// ==========================================
+// 4b. EVENT COMPANY REGISTER
+// ==========================================
+const registerCompany = async (req, res) => {
+  try {
+    const { business_name, email, password, contact_number, location, description } = req.body;
+    const userExists = await prisma.vendor.findUnique({ where: { email } });
+    if (userExists) {
+      return res.status(400).json({ message: "This email address is already in use." });
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const company = await prisma.vendor.create({
+      data: {
+        businessName: business_name,
+        email,
+        password: hashedPassword,
+        contactNumber: contact_number,
+        location,
+        vendorType: 'EVENT_COMPANY',
+        description,
+      },
+    });
+    res.status(201).json({
+      message: "Event Management Company registered successfully.",
+      companyId: company.vendorId,
     });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
@@ -336,4 +368,4 @@ const changePassword = async (req, res) => {
   }
 };
 
-module.exports = { registerCustomer, loginCustomer, registerVendor, loginVendor, registerSeller, loginSeller, loginAdmin, loginUnified, changePassword };
+module.exports = { registerCustomer, loginCustomer, registerVendor, loginVendor, registerSeller, loginSeller, registerCompany, loginAdmin, loginUnified, changePassword };

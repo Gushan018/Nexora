@@ -102,7 +102,7 @@ export const Login = () => {
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-800 block">Email Address</label>
+              <label className="text-sm font-medium text-slate-800 dark:text-slate-200 block">Email Address</label>
               <div className="relative">
                 <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input 
@@ -111,14 +111,14 @@ export const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-400"
+                  className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 rounded-xl pl-10 pr-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <label className="text-sm font-medium text-slate-800 block">Password</label>
+                <label className="text-sm font-medium text-slate-800 dark:text-slate-200 block">Password</label>
                 <Link to="/forgot-password" className="text-xs text-primary hover:text-primary-light transition-colors">
                   Forgot password?
                 </Link>
@@ -131,12 +131,12 @@ export const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-12 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-400"
+                  className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 rounded-xl pl-10 pr-12 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500"
                 />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 transition-colors focus:outline-none"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors focus:outline-none"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -164,7 +164,7 @@ export const Login = () => {
                 onClick={() => handleDemoLogin('vendor1@example.com')}
                 className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-primary/20 border border-slate-300 dark:border-white/10 transition-colors"
               >
-                🛠️ Vendor
+                🛠️ Service Provider
               </button>
               <button 
                 type="button" 

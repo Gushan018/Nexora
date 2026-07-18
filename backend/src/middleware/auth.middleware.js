@@ -31,14 +31,19 @@ const restrictTo = (...roles) => {
     if (!req.user) {
       return res.status(401).json({ message: 'Not authorized' });
     }
-    if (req.user.role === 'admin') return next();
-    if (roles.includes('vendor') && ['vendor', 'seller', 'company', 'emc'].includes(req.user.role)) return next();
-    if (roles.includes('seller') && ['seller', 'vendor'].includes(req.user.role)) return next();
-    if (roles.includes('company') && ['company', 'emc', 'vendor'].includes(req.user.role)) return next();
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ message: 'You do not have permission to perform this action' });
-    }
-    next();
+    const userRole = req.user.role;
+    // Admins have universal permission
+    if (userRole === 'admin') return next();
+
+    // Exact role match
+    if (roles.includes(userRole)) return next();
+
+    // Legacy or alias role matching
+    if (roles.includes('vendor') && ['vendor', 'seller', 'company', 'emc'].includes(userRole)) return next();
+    if (roles.includes('seller') && ['seller', 'vendor'].includes(userRole)) return next();
+    if (roles.includes('company') && ['company', 'emc', 'vendor'].includes(userRole)) return next();
+
+    return res.status(403).json({ message: 'You do not have permission to perform this action' });
   };
 };
 
