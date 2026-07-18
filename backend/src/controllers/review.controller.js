@@ -197,6 +197,22 @@ const unreportReview = async (req, res) => {
   }
 };
 
+const getPublicReviews = async (req, res) => {
+  try {
+    const reviews = await prisma.review.findMany({
+      take: 6,
+      orderBy: { rating: 'desc' },
+      include: {
+        customer: { select: { name: true, profileImage: true } },
+        vendor: { select: { businessName: true } }
+      }
+    });
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
 module.exports = {
   submitReview,
   getMyReviews,
@@ -204,5 +220,6 @@ module.exports = {
   replyToReview,
   deleteReviewReply,
   reportReview,
-  unreportReview
+  unreportReview,
+  getPublicReviews
 };

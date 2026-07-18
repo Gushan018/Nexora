@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { submitReview, getMyReviews, getSellerReviews, replyToReview, deleteReviewReply, reportReview, unreportReview } = require('../controllers/review.controller');
+const { submitReview, getMyReviews, getSellerReviews, replyToReview, deleteReviewReply, reportReview, unreportReview, getPublicReviews } = require('../controllers/review.controller');
 const { protect, restrictTo } = require('../middleware/auth.middleware');
 
+router.get('/public', getPublicReviews);
 router.post('/', protect, restrictTo('customer'), submitReview);
 router.get('/my', protect, getMyReviews);
 router.get('/seller', protect, restrictTo('seller', 'vendor'), getSellerReviews);

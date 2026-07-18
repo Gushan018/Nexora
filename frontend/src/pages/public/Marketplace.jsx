@@ -5,7 +5,7 @@ import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import { cn } from '../../utils/cn';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../utils/api';
+import { api, resolveAssetUrl } from '../../utils/api';
 import { Link, useNavigate } from 'react-router-dom';
 import { PageLoader } from '../../components/common/PageLoader';
 import { useAuth } from '../../context/AuthContext';
@@ -302,7 +302,7 @@ const ProductCard = ({ product, wishlistItems = [] }) => {
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-surface">
         <img 
-          src={product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=500&q=80'} 
+          src={resolveAssetUrl(product.imageUrl)} 
           alt={product.productName}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
         />
