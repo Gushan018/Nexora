@@ -12,7 +12,7 @@ export const getBackendBaseUrl = () => {
 
 export const DEFAULT_PRODUCT_IMAGE = 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=500&q=80';
 
-export const resolveAssetUrl = (url, fallback = 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=1000') => {
+export const resolveAssetUrl = (url, fallback = '/logo.png') => {
   if (url && typeof url === 'object') {
     if (Array.isArray(url)) {
       url = url[0];
@@ -28,6 +28,10 @@ export const resolveAssetUrl = (url, fallback = 'https://images.unsplash.com/pho
   if (url.startsWith('uploads/')) return `${getBackendBaseUrl()}/${url}`;
   if (url.startsWith('/')) return url;
   return `${getBackendBaseUrl()}/${url}`;
+};
+
+export const resolveProductImageUrl = (url) => {
+  return resolveAssetUrl(url, DEFAULT_PRODUCT_IMAGE);
 };
 
 export const getImageUrl = (url) => {

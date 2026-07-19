@@ -289,6 +289,11 @@ async function main() {
       price: 5000.00,
       vendorId: v2.vendorId,
       isApproved: true,
+      images: {
+        create: [
+          { url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&q=80' }
+        ]
+      }
     },
   });
 
