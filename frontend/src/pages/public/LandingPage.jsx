@@ -32,7 +32,7 @@ const getCategoryImg = (name) => {
 const DEFAULT_PACKAGE_IMAGES = [
   'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=1000',
   'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=1000',
-  'https://images.unsplash.com/photo-1470229722913-7c090be5bb1a?q=80&w=1000'
+  'https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1000'
 ];
 
 export const LandingPage = () => {
@@ -177,9 +177,9 @@ export const LandingPage = () => {
               { name: 'Event Packages', count: `${packages.length} PACKAGES` },
               { name: 'Client Reviews', count: `${reviews.length} REVIEWS` },
             ].map((stat, i) => (
-              <div key={i} className="flex flex-col items-center sm:items-start text-center sm:text-left bg-black/30 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none p-3 md:p-0 rounded-xl border border-white/10 md:border-none">
-                <span className="text-slate-200 font-medium text-xs sm:text-sm mb-1">{stat.name}</span>
-                <span className="text-primary text-[10px] sm:text-xs font-bold tracking-widest">{stat.count}</span>
+              <div key={i} className="flex flex-col items-center sm:items-start text-center sm:text-left bg-black/40 md:bg-transparent backdrop-blur-md md:backdrop-blur-none p-3 md:p-0 rounded-xl border border-white/10 md:border-none">
+                <span className="text-white font-medium text-xs sm:text-sm mb-1 drop-shadow-md">{stat.name}</span>
+                <span className="text-primary text-[10px] sm:text-xs font-bold tracking-widest drop-shadow">{stat.count}</span>
               </div>
             ))}
           </motion.div>

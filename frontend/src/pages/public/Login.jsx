@@ -76,7 +76,7 @@ export const Login = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl font-serif text-slate-900 mb-2"
+            className="text-4xl font-serif text-white mb-2 drop-shadow-md"
           >
             Welcome back
           </motion.h1>
@@ -84,59 +84,59 @@ export const Login = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-slate-600"
+            className="text-slate-300 drop-shadow-sm"
           >
             Log in to your account to continue.
           </motion.p>
         </div>
 
-        <div className="bg-surface/40 border border-slate-300 rounded-3xl p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group">
+        <div className="bg-[#0F172A]/90 border border-slate-700/80 rounded-3xl p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative overflow-hidden group">
           
           <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
 
           {error && (
-            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-xl text-red-500 text-sm text-center">
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-xl text-red-400 text-sm text-center">
               {error}
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-800 dark:text-slate-200 block">Email Address</label>
+              <label className="text-sm font-medium text-slate-200 block">Email Address</label>
               <div className="relative">
-                <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Mail className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input 
                   type="email" 
                   placeholder="name@example.com" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 rounded-xl pl-10 pr-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                  className="w-full bg-[#1E293B] border border-slate-700 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-slate-400"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <label className="text-sm font-medium text-slate-800 dark:text-slate-200 block">Password</label>
-                <Link to="/forgot-password" className="text-xs text-primary hover:text-primary-light transition-colors">
+                <label className="text-sm font-medium text-slate-200 block">Password</label>
+                <Link to="/forgot-password" className="text-xs text-primary hover:text-primary-light transition-colors font-medium">
                   Forgot password?
                 </Link>
               </div>
               <div className="relative">
-                <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input 
                   type={showPassword ? "text" : "password"} 
                   placeholder="••••••••" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 rounded-xl pl-10 pr-12 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                  className="w-full bg-[#1E293B] border border-slate-700 rounded-xl pl-10 pr-12 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-slate-400"
                 />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors focus:outline-none"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors focus:outline-none"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -149,41 +149,41 @@ export const Login = () => {
           </form>
 
           {/* Quick Demo Login Badges */}
-          <div className="mt-6 pt-6 border-t border-slate-200 dark:border-white/10 text-center">
-            <p className="text-xs font-semibold text-slate-500 dark:text-white/60 mb-3 uppercase tracking-wider">Quick Demo Login by Member Role</p>
+          <div className="mt-6 pt-6 border-t border-slate-700/60 text-center">
+            <p className="text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wider">Quick Demo Login by Member Role</p>
             <div className="flex flex-wrap justify-center gap-2">
               <button 
                 type="button" 
                 onClick={() => handleDemoLogin('sarah@example.com')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-primary/20 border border-slate-300 dark:border-white/10 transition-colors"
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#1E293B] text-slate-200 hover:bg-primary/20 hover:text-white border border-slate-700 transition-colors"
               >
                 👤 Customer
               </button>
               <button 
                 type="button" 
                 onClick={() => handleDemoLogin('vendor1@example.com')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-primary/20 border border-slate-300 dark:border-white/10 transition-colors"
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#1E293B] text-slate-200 hover:bg-primary/20 hover:text-white border border-slate-700 transition-colors"
               >
                 🛠️ Service Provider
               </button>
               <button 
                 type="button" 
                 onClick={() => handleDemoLogin('seller1@example.com')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-primary/20 border border-slate-300 dark:border-white/10 transition-colors"
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#1E293B] text-slate-200 hover:bg-primary/20 hover:text-white border border-slate-700 transition-colors"
               >
                 📦 Seller
               </button>
               <button 
                 type="button" 
                 onClick={() => handleDemoLogin('eventcompany@example.com')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-primary/20 border border-slate-300 dark:border-white/10 transition-colors"
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#1E293B] text-slate-200 hover:bg-primary/20 hover:text-white border border-slate-700 transition-colors"
               >
                 🎪 Event Company
               </button>
               <button 
                 type="button" 
                 onClick={() => handleDemoLogin('admin@example.com')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white hover:bg-primary/20 border border-slate-300 dark:border-white/10 transition-colors"
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#1E293B] text-slate-200 hover:bg-primary/20 hover:text-white border border-slate-700 transition-colors"
               >
                 🛡️ Admin
               </button>
@@ -195,9 +195,9 @@ export const Login = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="text-center mt-8 text-slate-500 text-sm"
+          className="text-center mt-8 text-slate-300 text-sm"
         >
-          Don't have an account? <Link to="/register" className="text-slate-900 hover:text-primary font-bold transition-colors underline underline-offset-4">Sign up</Link>
+          Don't have an account? <Link to="/register" className="text-primary hover:text-white font-bold transition-colors underline underline-offset-4">Sign up</Link>
         </motion.p>
 
       </motion.div>

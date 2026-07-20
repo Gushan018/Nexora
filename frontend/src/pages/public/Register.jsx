@@ -116,7 +116,7 @@ export const Register = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl font-serif text-slate-900 mb-2"
+            className="text-4xl font-serif text-white mb-2 drop-shadow-md"
           >
             Join Event Nest
           </motion.h1>
@@ -124,13 +124,13 @@ export const Register = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-slate-600"
+            className="text-slate-300 drop-shadow-sm"
           >
             Create an account to start planning or selling.
           </motion.p>
         </div>
 
-        <div className="bg-surface/40 border border-slate-300 rounded-3xl p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group">
+        <div className="bg-[#0F172A]/90 border border-slate-700/80 rounded-3xl p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative overflow-hidden group">
           
           <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
 
