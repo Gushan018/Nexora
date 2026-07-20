@@ -106,11 +106,11 @@ export const VendorBookingCalendar = () => {
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <CalendarIcon className="w-7 h-7 text-primary" />
             Booking Calendar
           </h1>
-          <p className="text-slate-600">Manage your schedule and availability for upcoming events.</p>
+          <p className="text-slate-600 dark:text-slate-300">Manage your schedule and availability for upcoming events.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={fetchBookings}>
@@ -123,24 +123,24 @@ export const VendorBookingCalendar = () => {
         <Card className="lg:col-span-3">
           <CardContent className="p-0">
             {/* Calendar Header */}
-            <div className="p-4 border-b border-slate-200 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-slate-900">{currentMonthLabel}</h2>
+            <div className="p-4 border-b border-slate-200 dark:border-white/10 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">{currentMonthLabel}</h2>
               <div className="flex gap-2">
                 <button 
                   onClick={() => changeMonth(-1)}
-                  className="p-2 bg-surface border border-slate-300 rounded-lg text-slate-900 hover:bg-slate-100 transition-colors"
+                  className="p-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button 
                   onClick={() => setViewDate(new Date())}
-                  className="px-4 py-2 bg-surface border border-slate-300 rounded-lg text-slate-900 text-sm font-medium hover:bg-slate-100 transition-colors"
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                 >
                   Today
                 </button>
                 <button 
                   onClick={() => changeMonth(1)}
-                  className="p-2 bg-surface border border-slate-300 rounded-lg text-slate-900 hover:bg-slate-100 transition-colors"
+                  className="p-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
@@ -148,34 +148,38 @@ export const VendorBookingCalendar = () => {
             </div>
 
             {/* Calendar Grid */}
-            <div className="grid grid-cols-7 border-b border-slate-200">
+            <div className="grid grid-cols-7 border-b border-slate-200 dark:border-white/10">
               {DAYS.map(day => (
-                <div key={day} className="p-3 text-center text-sm font-medium text-slate-500 border-r border-slate-200 last:border-0">
+                <div key={day} className="p-3 text-center text-sm font-semibold text-slate-600 dark:text-slate-300 border-r border-slate-200 dark:border-white/10 last:border-0">
                   {day}
                 </div>
               ))}
             </div>
             
-            <div className="grid grid-cols-7 bg-surface/30">
+            <div className="grid grid-cols-7 bg-white dark:bg-[#1C2333]/50">
               {calendarGrid.map((cell, idx) => (
                 <div 
                   key={idx} 
                   className={cn(
-                    "min-h-[100px] p-2 border-r border-b border-slate-200 last:border-r-0 transition-colors hover:bg-slate-50",
-                    !cell.isCurrentMonth && "opacity-30 bg-black/20"
+                    "min-h-[100px] p-2 border-r border-b border-slate-200 dark:border-white/10 last:border-r-0 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/40",
+                    !cell.isCurrentMonth && "opacity-40 bg-slate-100/50 dark:bg-slate-900/50"
                   )}
                 >
                   <span className={cn(
-                    "w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium mb-1",
-                    cell.isToday ? "bg-primary text-white" : "text-slate-800"
+                    "w-7 h-7 flex items-center justify-center rounded-full text-sm font-bold mb-1",
+                    cell.isToday 
+                      ? "bg-primary text-slate-950 shadow-md" 
+                      : cell.isCurrentMonth 
+                        ? "text-slate-900 dark:text-slate-100" 
+                        : "text-slate-400 dark:text-slate-500"
                   )}>
                     {cell.date.getDate()}
                   </span>
                   
                   {cell.events.map((evt) => (
-                    <div key={evt.bookingId} className="bg-primary/20 border border-primary/30 rounded p-1 mb-1 truncate cursor-pointer hover:bg-primary/30 transition-colors">
+                    <div key={evt.bookingId} className="bg-primary/20 border border-primary/40 rounded p-1 mb-1 truncate cursor-pointer hover:bg-primary/30 transition-colors">
                       <span className="text-[10px] text-primary font-bold block">{formatTime(evt.eventDate)}</span>
-                      <span className="text-[11px] text-slate-900 truncate">{evt.service?.serviceName || evt.package?.packageName || 'Booking'}</span>
+                      <span className="text-[11px] text-slate-900 dark:text-slate-100 font-semibold truncate block">{evt.service?.serviceName || evt.package?.packageName || 'Booking'}</span>
                     </div>
                   ))}
                 </div>

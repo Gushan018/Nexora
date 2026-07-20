@@ -80,11 +80,11 @@ export const ServiceListing = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <Briefcase className="w-7 h-7 text-primary" />
             My Services
           </h1>
-          <p className="text-slate-600">Manage the services and packages you offer to clients.</p>
+          <p className="text-slate-600 dark:text-slate-300">Manage the services and packages you offer to clients.</p>
         </div>
         <Link to="/vendor/create-service">
           <Button leftIcon={<Plus className="w-4 h-4"/>}>Create New Service</Button>
@@ -94,27 +94,27 @@ export const ServiceListing = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card className="border-primary/20">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-slate-600 mb-2">Active Services</h3>
+            <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Active Services</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">{activeServicesCount}</span>
-              <span className="text-sm text-green-500 mb-1">Visible to clients</span>
+              <span className="text-3xl font-bold text-slate-900 dark:text-white">{activeServicesCount}</span>
+              <span className="text-sm text-green-500 mb-1 font-medium">Visible to clients</span>
             </div>
           </CardContent>
         </Card>
         <Card className="border-accent/20">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-slate-600 mb-2">Total Bookings (All Time)</h3>
+            <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Total Bookings (All Time)</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">{totalBookingsCount}</span>
+              <span className="text-3xl font-bold text-slate-900 dark:text-white">{totalBookingsCount}</span>
             </div>
           </CardContent>
         </Card>
-        <Card className="border-slate-300">
+        <Card className="border-slate-200 dark:border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-slate-600 mb-2">Drafts / Hidden</h3>
+            <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Drafts / Hidden</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">{hiddenServicesCount}</span>
-              <span className="text-sm text-slate-500 mb-1">Not visible</span>
+              <span className="text-3xl font-bold text-slate-900 dark:text-white">{hiddenServicesCount}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400 mb-1">Not visible</span>
             </div>
           </CardContent>
         </Card>
@@ -122,22 +122,22 @@ export const ServiceListing = () => {
 
       <Card>
         {/* Toolbar */}
-        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
+        <div className="p-4 border-b border-slate-200 dark:border-white/10 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input 
               type="text" 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search services..." 
-              className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
+              className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl pl-10 pr-4 py-2 text-slate-900 dark:text-white focus:outline-none focus:border-primary transition-colors placeholder:text-slate-400" 
             />
           </div>
           <div className="flex gap-2">
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="bg-surface/50 border border-white/10 rounded-xl px-4 py-2 text-sm text-textPrimary focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
+              className="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-primary transition-colors cursor-pointer"
             >
               <option value="">All Categories</option>
               {categories.map(cat => (

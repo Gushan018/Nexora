@@ -130,8 +130,8 @@ export const CustomerReviews = () => {
     <div className="space-y-6 max-w-5xl mx-auto pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-            <Star className="w-7 h-7 text-yellow-400" />
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <Star className="w-7 h-7 text-yellow-400 fill-yellow-400" />
             Customer Reviews
           </h1>
         </div>
@@ -143,7 +143,7 @@ export const CustomerReviews = () => {
         <Card className="md:col-span-2 border-yellow-500/20 bg-yellow-500/5">
           <CardContent className="p-6 flex items-center gap-6">
             <div className="text-center">
-              <span className="text-5xl font-bold text-slate-900">{averageRating}</span>
+              <span className="text-5xl font-bold text-slate-900 dark:text-white">{averageRating}</span>
               <div className="flex text-yellow-400 my-2 justify-center">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <Star 
@@ -155,7 +155,7 @@ export const CustomerReviews = () => {
                   />
                 ))}
               </div>
-              <span className="text-xs text-slate-500">Based on {totalReviews} {totalReviews === 1 ? 'review' : 'reviews'}</span>
+              <span className="text-xs text-slate-600 dark:text-slate-400">Based on {totalReviews} {totalReviews === 1 ? 'review' : 'reviews'}</span>
             </div>
             
             <div className="flex-1 space-y-1.5">
@@ -163,10 +163,10 @@ export const CustomerReviews = () => {
                 const count = reviews.filter(r => Math.round(r.rating) === star).length;
                 const pct = totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0;
                 return (
-                  <div key={star} className="flex items-center gap-2 text-xs text-slate-600">
+                  <div key={star} className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300 font-medium">
                     <span className="w-2">{star}</span>
-                    <Star className="w-3 h-3 text-slate-500" />
-                    <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <Star className="w-3 h-3 text-slate-400" />
+                    <div className="flex-1 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                       <div 
                         className="h-full bg-yellow-400 rounded-full transition-all duration-300" 
                         style={{ width: `${pct}%` }}
@@ -179,42 +179,48 @@ export const CustomerReviews = () => {
           </CardContent>
         </Card>
         
-        <Card className="border-slate-300">
+        <Card className="border-slate-200 dark:border-white/10">
           <CardContent className="p-6 flex flex-col justify-center h-full">
-            <h3 className="text-sm font-medium text-slate-600 mb-2">Response Rate</h3>
+            <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Response Rate</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">{responseRate}%</span>
+              <span className="text-3xl font-bold text-slate-900 dark:text-white">{responseRate}%</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-300">
+        <Card className="border-slate-200 dark:border-white/10">
           <CardContent className="p-6 flex flex-col justify-center h-full">
-            <h3 className="text-sm font-medium text-slate-600 mb-2">Pending Replies</h3>
+            <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Pending Replies</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-bold text-slate-900">{pendingReplies}</span>
+              <span className="text-3xl font-bold text-slate-900 dark:text-white">{pendingReplies}</span>
             </div>
           </CardContent>
         </Card>
       </div>
 
       <Card>
-        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
+        <div className="p-4 border-b border-slate-200 dark:border-white/10 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input 
               type="text" 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search reviews by name or keyword..." 
-              className="w-full bg-surface border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
+              className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl pl-10 pr-4 py-2 text-slate-900 dark:text-white focus:outline-none focus:border-primary transition-colors placeholder:text-slate-400" 
             />
           </div>
           <div className="flex gap-2">
-            <select className="bg-surface border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-primary/50 cursor-pointer">
-              <option>All Reviews</option>
-              <option>5 Stars</option>
-              <option>Needs Reply</option>
+            <select 
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-primary cursor-pointer"
+            >
+              <option value="all">All Reviews</option>
+              <option value="5">5 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="3">3 Stars</option>
             </select>
-
           </div>
         </div>
 

@@ -171,9 +171,12 @@ function App() {
           <Route path="service-listing" element={<ServiceListing />} />
           <Route path="package-management" element={<PackageManagement />} />
           <Route path="incoming-requests" element={<IncomingRequests />} />
+          <Route path="inquiries" element={<IncomingRequests />} />
           <Route path="booking-management" element={<BookingManagement />} />
           <Route path="booking-approval" element={<BookingApproval />} />
           <Route path="vendor-booking-calendar" element={<VendorBookingCalendar />} />
+          <Route path="availability" element={<VendorBookingCalendar />} />
+          <Route path="chat-inbox" element={<ChatInbox />} />
           <Route path="revenue-dashboard" element={<RevenueDashboard />} />
           <Route path="earnings" element={<Earnings />} />
           <Route path="withdrawals" element={<Withdrawals />} />
@@ -187,8 +190,15 @@ function App() {
         <Route path="/company" element={<DashboardLayout role="company" />}>
           <Route index element={<CompanyDashboard />} />
           <Route path="dashboard" element={<CompanyDashboard />} />
+          <Route path="vendor-profile" element={<VendorProfile />} />
           <Route path="package-management" element={<CompanyPackageManagement />} />
+          <Route path="booking-management" element={<BookingManagement />} />
+          <Route path="availability" element={<VendorBookingCalendar />} />
+          <Route path="chat-inbox" element={<ChatInbox />} />
           <Route path="inquiries" element={<CompanyInquiries />} />
+          <Route path="revenue-dashboard" element={<RevenueDashboard />} />
+          <Route path="vendor-booking-analytics" element={<VendorBookingAnalytics />} />
+          <Route path="customer-reviews" element={<CustomerReviews />} />
         </Route>
 
         <Route path="/seller" element={<DashboardLayout role="seller" />}>

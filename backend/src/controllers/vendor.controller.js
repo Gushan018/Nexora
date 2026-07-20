@@ -113,7 +113,11 @@ const getMyProfile = async (req, res) => {
       return res.status(404).json({ message: "Vendor not found" });
     }
 
-    res.status(200).json(vendor);
+    res.status(200).json({
+      ...vendor,
+      profileImage: vendor.logoImage,
+      coverImage: vendor.bannerImage,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
@@ -135,6 +139,8 @@ const updateMyProfile = async (req, res) => {
       address,
       bannerImage,
       logoImage,
+      profileImage,
+      coverImage,
       socialFacebook,
       socialInstagram,
       socialTwitter,
@@ -149,8 +155,8 @@ const updateMyProfile = async (req, res) => {
       registrationNumber,
       establishedYear: establishedYear ? parseInt(establishedYear) : null,
       address,
-      bannerImage,
-      logoImage,
+      bannerImage: bannerImage || coverImage,
+      logoImage: logoImage || profileImage,
       socialFacebook,
       socialInstagram,
       socialTwitter,
@@ -183,8 +189,14 @@ const updateMyProfile = async (req, res) => {
       },
     });
 
-    res.status(200).json(vendor);
+    res.status(200).json({
+      message: "Profile updated successfully.",
+      ...vendor,
+      profileImage: vendor.logoImage,
+      coverImage: vendor.bannerImage,
+    });
   } catch (error) {
+    console.error("updateMyProfile error:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };

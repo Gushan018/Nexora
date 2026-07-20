@@ -129,12 +129,15 @@ export const DashboardLayout = ({ role = 'customer' }) => {
       case 'vendor':
         return [
           { name: 'Dashboard', path: '/vendor/dashboard', icon: <LayoutDashboard /> },
+          { name: 'Company Profile', path: '/vendor/vendor-profile', icon: <Building2 /> },
           { name: 'Services', path: '/vendor/service-listing', icon: <Briefcase /> },
-          { name: 'Bookings', path: '/vendor/booking-management', icon: <Calendar /> },
-          { name: 'Packages', path: '/vendor/package-management', icon: <Package /> },
-          { name: 'Reviews', path: '/vendor/customer-reviews', icon: <Star /> },
-          { name: 'Revenue', path: '/vendor/revenue-dashboard', icon: <ShoppingBag /> },
-          { name: 'Settings', path: '/vendor/vendor-settings', icon: <Settings /> },
+          { name: 'Booking Management', path: '/vendor/booking-management', icon: <Calendar /> },
+          { name: 'Availability', path: '/vendor/availability', icon: <Calendar /> },
+          { name: 'Messages', path: '/vendor/chat-inbox', icon: <MessageSquare /> },
+          { name: 'Orders', path: '/vendor/inquiries', icon: <ShoppingCart /> },
+          { name: 'Payments', path: '/vendor/revenue-dashboard', icon: <DollarSign /> },
+          { name: 'Reports & Analytics', path: '/vendor/vendor-booking-analytics', icon: <Activity /> },
+          { name: 'Reviews & Ratings', path: '/vendor/customer-reviews', icon: <Star /> },
         ];
       case 'customer':
         return [
