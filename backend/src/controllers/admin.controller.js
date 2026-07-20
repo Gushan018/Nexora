@@ -1457,6 +1457,9 @@ const createBroadcast = async (req, res) => {
   try {
     const { title, message, type = 'info', targetRole = 'all' } = req.body;
 
+    const VALID_TARGET_ROLES = ['all', 'customer', 'vendor', 'seller', 'company', 'emc'];
+    const VALID_BROADCAST_TYPES = ['info', 'warning', 'success', 'error'];
+
     if (!title?.trim() || !message?.trim()) {
       return res.status(400).json({ message: 'Title and message are required' });
     }
@@ -1471,7 +1474,7 @@ const createBroadcast = async (req, res) => {
       targetRole === 'all' || targetRole === 'customer'
         ? prisma.customer.findMany({ where: { isBlocked: false }, select: { customerId: true } })
         : Promise.resolve([]),
-      targetRole === 'all' || targetRole === 'vendor'
+      targetRole === 'all' || targetRole === 'vendor' || targetRole === 'seller' || targetRole === 'company' || targetRole === 'emc'
         ? prisma.vendor.findMany({ where: { isBlocked: false }, select: { vendorId: true } })
         : Promise.resolve([]),
     ]);
@@ -1480,15 +1483,12 @@ const createBroadcast = async (req, res) => {
 
     const notificationRows = [
       ...customers.map((c) => ({
-        userId: c.customerId,
-        userType: 'customer',
         customerId: c.customerId,
         type,
         message: notificationMessage,
       })),
       ...vendors.map((v) => ({
-        userId: v.vendorId,
-        userType: 'vendor',
+        vendorId: v.vendorId,
         type,
         message: notificationMessage,
       })),
@@ -1511,6 +1511,7 @@ const createBroadcast = async (req, res) => {
 
     res.status(201).json(broadcast);
   } catch (error) {
+    console.error('createBroadcast error:', error);
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
