@@ -47,7 +47,12 @@ const getMyReviews = async (req, res) => {
 
 const getSellerReviews = async (req, res) => {
   try {
-    const vendorId = parseInt(req.user.id);
+    const userId = parseInt(req.user.id);
+    let vendor = await prisma.vendor.findUnique({ where: { vendorId: userId } });
+    if (!vendor) {
+      vendor = await prisma.vendor.findFirst({ where: { userId: userId } });
+    }
+    const vendorId = vendor ? vendor.vendorId : userId;
 
     if (!vendorId) {
       return res.status(200).json([]);
