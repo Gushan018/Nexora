@@ -15,9 +15,9 @@ const uploadFile = async (req, res) => {
       return res.status(400).json({ message: 'No file uploaded.' });
     }
 
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-    const apiKey = process.env.CLOUDINARY_API_KEY;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME || "isb8m8bf";
+    const apiKey = process.env.CLOUDINARY_API_KEY || "277217182126142";
+    const apiSecret = process.env.CLOUDINARY_API_SECRET || "QDOXOiqqkGk8BTmx1beJrTZuClc";
 
     // 1. Try Official Cloudinary Upload Stream if credentials exist
     if (cloudName && apiKey && apiSecret) {
