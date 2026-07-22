@@ -177,16 +177,16 @@ export const OrderHistory = () => {
 
   if (isLoading) return <PageLoader text="Loading order history..." />;
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
+    <div className="space-y-6 max-w-5xl mx-auto pb-12">
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Order History</h1>
-          <p className="text-slate-600">Track, return, or repurchase items from past orders.</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Order History</h1>
+          <p className="text-slate-600 dark:text-slate-300">Track, return, or repurchase items from past orders.</p>
         </div>
       </div>
 
-      <div className="flex overflow-x-auto hide-scrollbar gap-2 pb-2 border-b border-slate-200">
+      <div className="flex overflow-x-auto hide-scrollbar gap-2 pb-2 border-b border-slate-200 dark:border-white/10">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -194,8 +194,8 @@ export const OrderHistory = () => {
             className={cn(
               "px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2",
               activeTab === tab.id 
-                ? "bg-primary text-slate-900 shadow-sm border border-primary/20" 
-                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-transparent"
+                ? "bg-primary text-slate-950 font-bold shadow-sm border border-primary/20" 
+                : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white border border-transparent"
             )}
           >
             {tab.icon}
@@ -205,7 +205,7 @@ export const OrderHistory = () => {
       </div>
 
       <Card>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 p-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-4">
           <div className="relative w-full md:w-96">
             <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
             <input 
@@ -213,7 +213,7 @@ export const OrderHistory = () => {
               placeholder="Search by order ID or product name..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-surface border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary transition-colors"
+              className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl pl-12 pr-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary transition-colors placeholder:text-slate-400"
             />
           </div>
         </div>
@@ -221,33 +221,33 @@ export const OrderHistory = () => {
 
       <div className="space-y-6">
         {filteredOrders.length === 0 ? (
-          <div className="text-center text-slate-600 py-12">No orders found for this status.</div>
+          <div className="text-center text-slate-500 dark:text-slate-400 py-12">No orders found for this status.</div>
         ) : (
           filteredOrders.map((order) => (
-            <Card key={order.orderId} className="overflow-hidden hover:border-slate-400 transition-colors">
+            <Card key={order.orderId} className="overflow-hidden border-slate-200 dark:border-white/10 hover:border-slate-400 transition-colors">
             {/* Order Header */}
-            <div className="bg-surface/50 p-4 sm:p-6 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="bg-slate-50/80 dark:bg-slate-900/60 p-4 sm:p-6 border-b border-slate-200 dark:border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex flex-wrap gap-x-8 gap-y-2">
                 <div>
-                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Order Placed</p>
-                  <p className="text-sm text-slate-800">{new Date(order.orderDate).toLocaleDateString()}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider mb-1">Order Placed</p>
+                  <p className="text-sm text-slate-800 dark:text-slate-200 font-medium">{new Date(order.orderDate).toLocaleDateString()}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Total</p>
-                  <p className="text-sm text-slate-800">LKR {Number(order.totalAmount).toFixed(2)}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider mb-1">Total</p>
+                  <p className="text-sm text-slate-900 dark:text-white font-bold">LKR {Number(order.totalAmount).toFixed(2)}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Order #</p>
-                  <p className="text-sm font-medium text-primary">#{order.orderId}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider mb-1">Order #</p>
+                  <p className="text-sm font-bold text-primary">#{order.orderId}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 {order.status === 'PENDING' && (
                   <Link to={`/customer/payment-page?orderId=${order.orderId}&amount=${order.totalAmount}&item=${encodeURIComponent('Marketplace Order #' + order.orderId)}`}>
-                    <Button size="sm" className="bg-primary text-slate-900 font-semibold hover:bg-primary/90">Pay Now</Button>
+                    <Button size="sm" className="bg-primary text-slate-950 font-bold hover:bg-primary/90">Pay Now</Button>
                   </Link>
                 )}
-                <Button variant="outline" size="sm" onClick={() => handleDownloadInvoice(order)}>View Invoice</Button>
+                <Button variant="outline" size="sm" className="text-slate-900 dark:text-white border-slate-300 dark:border-slate-700" onClick={() => handleDownloadInvoice(order)}>View Invoice</Button>
               </div>
             </div>
             
@@ -256,24 +256,24 @@ export const OrderHistory = () => {
               <div className="mb-6 flex items-center gap-3">
                 <StatusIcon status={order.status} />
                 <div>
-                  <h4 className="font-bold text-slate-900 text-lg">{order.status}</h4>
-                  <p className="text-sm text-slate-600">Shipped to: {order.shippingAddress}</p>
+                  <h4 className="font-bold text-slate-900 dark:text-white text-lg">{order.status}</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-300">Shipped to: {order.shippingAddress}</p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 {order.orderItems.map((item) => (
-                  <div key={item.orderItemId} className="flex gap-4 p-4 rounded-xl border border-slate-200 bg-surface/30">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface shrink-0">
+                  <div key={item.orderItemId} className="flex gap-4 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0">
                       <img src={item.product.imageUrl || 'https://images.unsplash.com/photo-1572297126131-ebfb1c53cc6f?w=100&q=80'} alt={item.product.productName} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
-                        <h5 className="font-medium text-slate-900 text-sm sm:text-base line-clamp-1">{item.product.productName}</h5>
-                        <p className="text-sm text-slate-500 mt-1">Qty: {item.quantity}</p>
+                        <h5 className="font-semibold text-slate-900 dark:text-white text-sm sm:text-base line-clamp-1">{item.product.productName}</h5>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Qty: {item.quantity}</p>
                       </div>
                       <div className="flex gap-3 mt-2 sm:mt-0 items-center">
-                        <span className="text-xs font-medium text-slate-600">LKR {Number(item.unitPrice).toFixed(2)} each</span>
+                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">LKR {Number(item.unitPrice).toFixed(2)} each</span>
                         {order.status === 'DELIVERED' && (
                           <Link 
                             to={`/customer/review-submission?productId=${item.productId}`} 
