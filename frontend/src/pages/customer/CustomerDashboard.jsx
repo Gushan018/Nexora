@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, ShoppingBag, Clock, Heart, ChevronRight, CheckCircle2, ArrowUpRight } from 'lucide-react';
@@ -113,7 +113,7 @@ export const CustomerDashboard = () => {
         initial={{ opacity: 0, y: 30, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8, type: 'spring' }}
-        className="relative overflow-hidden rounded-3xl bg-surface/40 border border-slate-300 p-8 sm:p-12 backdrop-blur-xl shadow-2xl group"
+        className="relative overflow-hidden rounded-3xl bg-white dark:bg-[#1C2333] border border-slate-200 dark:border-white/10 p-8 sm:p-12 backdrop-blur-xl shadow-2xl group"
       >
         <div className="absolute top-0 right-0 w-[30rem] h-[30rem] bg-primary/20 blur-[120px] rounded-full pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/20 blur-[100px] rounded-full pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
@@ -123,7 +123,7 @@ export const CustomerDashboard = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl sm:text-5xl font-black text-slate-900 mb-6 tracking-tight"
+            className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white mb-6 tracking-tight"
           >
             Welcome to your Dashboard, <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">{user?.name ? user.name.split(' ')[0] : 'Guest'}</span>
@@ -132,7 +132,7 @@ export const CustomerDashboard = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-slate-600 text-lg max-w-xl mb-10 leading-relaxed font-medium"
+            className="text-slate-600 dark:text-slate-300 text-lg max-w-xl mb-10 leading-relaxed font-medium"
           >
             Manage your event bookings, discover exclusive packages, and track your wishlist all in one place. Let's make your next event unforgettable.
           </motion.p>
@@ -142,10 +142,10 @@ export const CustomerDashboard = () => {
             transition={{ delay: 0.6 }}
             className="flex flex-wrap gap-4"
           >
-            <Button size="lg" className="px-8 bg-primary hover:bg-primary-hover transition-all text-white shadow-lg shadow-primary/30 font-bold" onClick={() => navigate('/customer/event-packages')}>
+            <Button size="lg" className="px-8 bg-primary hover:bg-primary-hover transition-all text-slate-950 shadow-lg shadow-primary/30 font-bold" onClick={() => navigate('/customer/event-packages')}>
               Explore Packages
             </Button>
-            <Button variant="outline" size="lg" className="px-8 bg-surface border-slate-300 hover:border-slate-400 hover:bg-surface/80 transition-all text-slate-900 shadow-sm font-bold" onClick={() => navigate('/customer/marketplace')}>
+            <Button variant="outline" size="lg" className="px-8 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all text-slate-900 dark:text-white shadow-sm font-bold" onClick={() => navigate('/customer/marketplace')}>
               Shop Marketplace
             </Button>
           </motion.div>
