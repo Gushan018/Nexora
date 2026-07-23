@@ -206,12 +206,7 @@ const updateMyProfile = async (req, res) => {
 // ===============================================
 const getDashboard = async (req, res) => {
   try {
-    const userId = parseInt(req.user.id);
-    let vendor = await prisma.vendor.findUnique({ where: { vendorId: userId } });
-    if (!vendor) {
-      vendor = await prisma.vendor.findFirst({ where: { userId: userId } });
-    }
-    const vendorId = vendor ? vendor.vendorId : userId;
+    const vendorId = req.user.id;
     const now = new Date();
 
     const totalPackages = await prisma.eventPackage.count({ where: { vendorId } });
@@ -229,22 +224,19 @@ const getDashboard = async (req, res) => {
       where: { ...bookingWhere, status: 'COMPLETED' },
     });
 
-    const payments = (serviceIds.length || packageIds.length)
+    const payments = serviceIds.length
       ? await prisma.payment.findMany({
-          where: {
-            status: { in: ['HELD_IN_ESCROW', 'RELEASED'] },
-            booking: bookingWhere
-          },
+          where: { status: { in: ['HELD_IN_ESCROW', 'RELEASED'] }, booking: { serviceId: { in: serviceIds } } },
         })
       : [];
-    const totalRevenue = payments.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
+    const totalRevenue = payments.reduce((sum, p) => sum + parseFloat(p.amount), 0);
 
     const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
-    const monthlyPayments = (serviceIds.length || packageIds.length)
+    const monthlyPayments = serviceIds.length
       ? await prisma.payment.findMany({
           where: {
             status: { in: ['HELD_IN_ESCROW', 'RELEASED'] },
-            booking: bookingWhere,
+            booking: { serviceId: { in: serviceIds } },
             createdAt: { gte: sixMonthsAgo },
           },
           select: { amount: true, createdAt: true },
@@ -258,24 +250,20 @@ const getDashboard = async (req, res) => {
     }
     for (const p of monthlyPayments) {
       const key = p.createdAt.toLocaleString('en-US', { month: 'short' });
-      revenueByMonth[key] = (revenueByMonth[key] || 0) + parseFloat(p.amount || 0);
+      revenueByMonth[key] = (revenueByMonth[key] || 0) + parseFloat(p.amount);
     }
     const revenueChart = Object.entries(revenueByMonth).map(([month, revenue]) => ({ month, revenue }));
 
     const upcomingEvents = await prisma.booking.findMany({
-      where: { ...bookingWhere, status: { in: ['PENDING', 'ACCEPTED'] } },
+      where: { ...bookingWhere, eventDate: { gte: now }, status: { in: ['PENDING', 'ACCEPTED'] } },
       include: { customer: { select: { name: true } }, service: { select: { serviceName: true } }, package: { select: { packageName: true } } },
       orderBy: { eventDate: 'asc' },
       take: 5,
     });
 
-    const recentPendingRequests = await prisma.booking.findMany({
-      where: { ...bookingWhere, status: 'PENDING' },
-      include: {
-        customer: { select: { name: true, email: true } },
-        service: { select: { serviceName: true } },
-        package: { select: { packageName: true } },
-      },
+    const recentBookings = await prisma.booking.findMany({
+      where: bookingWhere,
+      include: { customer: { select: { name: true } } },
       orderBy: { bookingDate: 'desc' },
       take: 5,
     });
@@ -291,25 +279,22 @@ const getDashboard = async (req, res) => {
         totalRevenue: Math.round(totalRevenue),
       },
       revenueChart,
-      recentRequests: recentPendingRequests.map(b => ({
-        bookingId: b.bookingId,
-        customer: b.customer,
-        service: b.service,
-        package: b.package,
-        bookingDate: b.bookingDate,
-        eventDate: b.eventDate,
-        status: b.status,
-      })),
       upcomingEvents: upcomingEvents.map(e => ({
         id: e.bookingId,
-        customer: e.customer?.name || 'Customer',
+        customer: e.customer.name,
         event: e.service?.serviceName || e.package?.packageName || 'Event',
         date: e.eventDate,
         status: e.status,
       })),
+      recentActivities: recentBookings.map(b => ({
+        id: b.bookingId,
+        customer: b.customer.name,
+        action: `Booked ${b.service?.serviceName || b.package?.packageName || 'a service'}`,
+        time: b.bookingDate,
+        status: b.status,
+      })),
     });
   } catch (error) {
-    console.error("Error in getDashboard:", error.message);
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };

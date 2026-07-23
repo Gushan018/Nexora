@@ -114,52 +114,52 @@ export const BudgetPlanner = () => {
     <div className="space-y-6 pb-20">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-textPrimary flex items-center gap-2">
             <Calculator className="w-7 h-7 text-primary" />
             Budget Planner
           </h1>
-          <p className="text-slate-600 dark:text-slate-300">Track your event expenses and manage category allocations.</p>
+          <p className="text-textPrimary/60">Track your event expenses and manage category allocations.</p>
         </div>
-        <Button onClick={() => handleOpenCatModal()} className="bg-primary text-slate-950 font-bold hover:bg-primary/90" leftIcon={<Plus className="w-4 h-4"/>}>Add Expense / Category</Button>
+        <Button onClick={() => handleOpenCatModal()} leftIcon={<Plus className="w-4 h-4"/>}>Add Expense / Category</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card className="border-primary/30 bg-primary/10 dark:bg-primary/10 relative group cursor-pointer" onClick={handleOpenTotalModal}>
+        <Card className="border-primary/20 bg-primary/5 relative group cursor-pointer" onClick={handleOpenTotalModal}>
           <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
             <Edit3 className="w-4 h-4 text-primary" />
           </div>
           <CardContent className="p-6">
-            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Total Budget</h3>
+            <h3 className="text-sm font-medium text-textPrimary/80 mb-2">Total Budget</h3>
             <div className="flex items-end gap-3">
-              <span className="text-3xl font-extrabold text-slate-900 dark:text-white">LKR {totalAllocated.toLocaleString()}</span>
+              <span className="text-4xl font-bold text-textPrimary">LKR {totalAllocated.toLocaleString()}</span>
             </div>
-            <p className="text-xs text-primary font-bold mt-4">Click to edit total budget</p>
+            <p className="text-xs text-primary/80 mt-4">Click to edit total budget</p>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 dark:border-white/10 bg-white dark:bg-[#1C2333]">
+        <Card className="border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">Total Spent</h3>
+            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Total Spent</h3>
             <div className="flex items-end justify-between">
-              <span className="text-3xl font-extrabold text-slate-900 dark:text-white">LKR {totalSpent.toLocaleString()}</span>
+              <span className="text-3xl font-bold text-textPrimary">LKR {totalSpent.toLocaleString()}</span>
               <span className="text-xl font-bold text-primary">{percentageSpent}%</span>
             </div>
             {/* Mini Progress Bar */}
-            <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full mt-4 overflow-hidden border border-slate-200 dark:border-slate-700">
+            <div className="w-full h-1.5 bg-white/10 rounded-full mt-4 overflow-hidden">
               <div className="h-full bg-primary" style={{ width: `${Math.min(percentageSpent, 100)}%` }} />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 dark:border-white/10 bg-white dark:bg-[#1C2333]">
+        <Card className="border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">Remaining Funds</h3>
+            <h3 className="text-sm font-medium text-textPrimary/60 mb-2">Remaining Funds</h3>
             <div className="flex items-end gap-3">
-              <span className={`text-3xl font-extrabold ${(totalAllocated - totalSpent) < 0 ? 'text-red-500' : 'text-emerald-500'}`}>
+              <span className={`text-3xl font-bold ${(totalAllocated - totalSpent) < 0 ? 'text-red-400' : 'text-green-400'}`}>
                 LKR {(totalAllocated - totalSpent).toLocaleString()}
               </span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-4">Across all active categories</p>
+            <p className="text-xs text-textPrimary/50 mt-4">Across all active categories</p>
           </CardContent>
         </Card>
       </div>
@@ -168,11 +168,11 @@ export const BudgetPlanner = () => {
         
         {/* Category Breakdown list */}
         <div className="lg:col-span-2 space-y-4">
-          <h3 className="font-bold text-slate-900 dark:text-white mb-2 text-lg">Budget Categories</h3>
+          <h3 className="font-bold text-textPrimary mb-2">Budget Categories</h3>
           
           {categories.length === 0 && (
-            <div className="text-center py-10 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
-              <p className="text-slate-500 dark:text-slate-400">No categories added yet.</p>
+            <div className="text-center py-10 bg-white/5 rounded-xl border border-white/10">
+              <p className="text-textPrimary/50">No categories added yet.</p>
             </div>
           )}
 
@@ -183,29 +183,29 @@ export const BudgetPlanner = () => {
             const isOverBudget = spent > allocated && allocated > 0;
             
             return (
-              <Card key={cat.id || cat.name} className="overflow-visible group border-slate-200 dark:border-white/10 bg-white dark:bg-[#1C2333] hover:border-primary/50 transition-colors">
+              <Card key={cat.id || cat.name} className="overflow-visible group border-slate-200 bg-surface/40 hover:border-primary/30 transition-colors">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-3">
                     <div className="flex items-center gap-3">
                       <div className={`w-3.5 h-3.5 rounded-full ${cat.color || 'bg-primary'}`} />
-                      <h4 className="font-bold text-slate-900 dark:text-white text-lg">{cat.name}</h4>
+                      <h4 className="font-bold text-slate-900 text-lg">{cat.name}</h4>
                     </div>
                     <div className="flex gap-2">
-                      <button onClick={() => handleOpenCatModal({ name: cat.name, allocated: cat.allocated, spent: '0', color: cat.color })} className="text-xs text-primary font-bold hover:underline flex items-center gap-1 bg-primary/10 px-2.5 py-1 rounded-lg">
+                      <button onClick={() => handleOpenCatModal({ name: cat.name, allocated: cat.allocated, spent: '0', color: cat.color })} className="text-xs text-primary font-medium hover:underline flex items-center gap-1 bg-primary/10 px-2.5 py-1 rounded-lg">
                         <Plus className="w-3.5 h-3.5" /> Add Expense
                       </button>
                     </div>
                   </div>
                   
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-slate-600 dark:text-slate-400">Spent: <span className="font-bold text-slate-900 dark:text-white">LKR {spent.toLocaleString()}</span></span>
+                    <span className="text-slate-600">Spent: <span className="font-bold text-slate-900">LKR {spent.toLocaleString()}</span></span>
                     {allocated > 0 && (
-                      <span className="text-slate-600 dark:text-slate-400">Allocated: <span className="font-bold text-slate-900 dark:text-white">LKR {allocated.toLocaleString()}</span></span>
+                      <span className="text-slate-600">Allocated: <span className="font-bold text-slate-900">LKR {allocated.toLocaleString()}</span></span>
                     )}
                   </div>
                   
                   {allocated > 0 && (
-                    <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-2 border border-slate-200 dark:border-slate-700">
+                    <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden mb-2">
                       <div 
                         className={`h-full ${isOverBudget ? 'bg-red-500' : cat.color || 'bg-primary'}`} 
                         style={{ width: `${Math.min(catPercentage, 100)}%` }} 
@@ -215,17 +215,17 @@ export const BudgetPlanner = () => {
 
                   {/* Nested Expenses List */}
                   {cat.items && cat.items.length > 0 && (
-                    <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700 space-y-2">
-                      <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1">Included Items ({cat.items.length})</span>
+                    <div className="mt-4 pt-3 border-t border-slate-200/80 space-y-2">
+                      <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Included Items ({cat.items.length})</span>
                       {cat.items.map((item) => (
-                        <div key={item.id} className="flex justify-between items-center text-sm py-2 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                          <span className="font-medium text-slate-900 dark:text-white flex items-center gap-2">
+                        <div key={item.id} className="flex justify-between items-center text-sm py-2 px-3 rounded-xl bg-surface border border-slate-200/60 shadow-xs">
+                          <span className="font-medium text-slate-800 flex items-center gap-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                             {item.title}
                           </span>
                           <div className="flex items-center gap-3">
-                            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">LKR {Number(item.spent).toLocaleString()}</span>
-                            {item.isPaid && <span className="text-[10px] bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full font-bold">Paid</span>}
+                            <span className="text-xs font-semibold text-slate-700">LKR {Number(item.spent).toLocaleString()}</span>
+                            {item.isPaid && <span className="text-[10px] bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full font-bold">Paid</span>}
                             <button onClick={() => handleDeleteCat(item.id)} className="text-slate-400 hover:text-red-500 p-1 transition-colors">
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -237,7 +237,7 @@ export const BudgetPlanner = () => {
                   
                   {allocated > 0 && (
                     <div className="flex justify-between items-center mt-3">
-                      <span className={`text-xs font-bold ${isOverBudget ? 'text-red-500' : 'text-slate-500 dark:text-slate-400'}`}>
+                      <span className={`text-xs font-bold ${isOverBudget ? 'text-red-400' : 'text-slate-500'}`}>
                         {isOverBudget ? `Over budget by LKR ${(spent - allocated).toLocaleString()}` : `${catPercentage}% used`}
                       </span>
                     </div>
@@ -247,16 +247,16 @@ export const BudgetPlanner = () => {
             )
           })}
           
-          <Button onClick={() => handleOpenCatModal()} variant="outline" className="w-full border-dashed border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white" leftIcon={<Plus className="w-4 h-4"/>}>
+          <Button onClick={() => handleOpenCatModal()} variant="outline" className="w-full border-dashed border-slate-300 text-slate-600 hover:text-slate-900" leftIcon={<Plus className="w-4 h-4"/>}>
             Add Custom Category
           </Button>
         </div>
 
         {/* Visualizer / Quick actions */}
         <div className="space-y-6">
-          <Card className="border-slate-200 dark:border-white/10 bg-white dark:bg-[#1C2333]">
+          <Card className="border-slate-200 bg-surface/40">
             <CardContent className="p-6 flex flex-col items-center text-center">
-              <div className="w-48 h-48 rounded-full border-[16px] border-slate-100 dark:border-slate-900 relative mb-6 flex items-center justify-center shadow-inner">
+              <div className="w-48 h-48 rounded-full border-[16px] border-surface relative mb-6 flex items-center justify-center shadow-inner">
                 <div 
                   className="absolute inset-0 rounded-full"
                   style={{
@@ -270,13 +270,13 @@ export const BudgetPlanner = () => {
                     margin: '-16px'
                   }}
                 />
-                <div className="absolute inset-0 bg-white dark:bg-[#0A101D] rounded-full m-2 flex flex-col items-center justify-center border border-slate-200 dark:border-slate-800">
-                  <span className="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider mb-1 font-medium">Total Spent</span>
-                  <span className="text-xl font-extrabold text-slate-900 dark:text-white">LKR {totalSpent.toLocaleString()}</span>
+                <div className="absolute inset-0 bg-background rounded-full m-2 flex flex-col items-center justify-center border border-slate-200">
+                  <span className="text-slate-500 text-xs uppercase tracking-wider mb-1 font-medium">Total Spent</span>
+                  <span className="text-xl font-extrabold text-slate-900">LKR {totalSpent.toLocaleString()}</span>
                   <span className="text-xs text-primary font-bold mt-1">{percentageSpent}% of total</span>
                 </div>
               </div>
-              <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">Expenses and bookings are automatically grouped by category for real-time tracking.</p>
+              <p className="text-sm text-slate-600 font-medium">Expenses and bookings are automatically grouped by category for real-time tracking.</p>
             </CardContent>
           </Card>
         </div>

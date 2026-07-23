@@ -51,10 +51,7 @@ export const IncomingRequests = () => {
     navigate('/vendor/chat-inbox', { state: { recipient: customer } });
   };
 
-  const totalPotentialValue = requests.reduce((sum, r) => {
-    const val = parseFloat(r.package?.price || r.service?.price || r.totalPrice || r.price || 0);
-    return sum + (isNaN(val) ? 0 : val);
-  }, 0);
+  const totalPotentialValue = requests.reduce((sum, r) => sum + parseFloat(r.totalPrice || 0), 0);
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-12">

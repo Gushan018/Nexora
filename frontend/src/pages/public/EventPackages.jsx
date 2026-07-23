@@ -74,7 +74,7 @@ export const EventPackages = ({ isDashboard = false }) => {
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-6"
+            className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
           >
             Curated Event <span className="text-gradient">Packages</span>
           </motion.h1>
@@ -82,7 +82,7 @@ export const EventPackages = ({ isDashboard = false }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-slate-600 dark:text-slate-300 text-lg max-w-2xl mx-auto"
+            className="text-slate-600 text-lg max-w-2xl mx-auto"
           >
             Choose from our pre-designed, vendor-bundled packages to simplify your planning process. Transparent pricing, premium service.
           </motion.p>
@@ -101,13 +101,13 @@ export const EventPackages = ({ isDashboard = false }) => {
               leftIcon={<Search className="w-5 h-5" />}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-12 text-base bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400"
+              className="h-12 text-base"
             />
           </div>
           <div className="flex overflow-x-auto pb-2 md:pb-0 md:flex-wrap items-center gap-3 scrollbar-hide w-full">
             <Button 
               variant={showFilters ? "primary" : "outline"} 
-              className="h-12 whitespace-nowrap shrink-0 text-slate-900 dark:text-white border-slate-300 dark:border-slate-700" 
+              className="h-12 whitespace-nowrap shrink-0" 
               leftIcon={<Filter className="w-4 h-4" />}
               onClick={() => setShowFilters(!showFilters)}
             >
@@ -116,26 +116,25 @@ export const EventPackages = ({ isDashboard = false }) => {
             <select 
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="h-12 px-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-primary shrink-0"
+              className="h-12 px-4 rounded-xl border border-slate-200 bg-surface/50 text-slate-600 focus:outline-none focus:border-primary/50 shrink-0"
             >
-              <option value="newest">Newest</option>
+              <option value="newest">Newest Packages</option>
               <option value="price-asc">Price: Low to High</option>
               <option value="price-desc">Price: High to Low</option>
-              <option value="name-asc">Name: A to Z</option>
             </select>
-            <div className="h-8 w-px bg-slate-200 dark:bg-white/10 mx-2 hidden md:block shrink-0" />
+            
             {categoryList.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={cn(
-                  "h-12 px-6 rounded-xl font-medium transition-all whitespace-nowrap border shrink-0",
-                  activeCategory === cat 
-                    ? "bg-primary/20 border-primary text-primary font-bold" 
-                    : "bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-primary/50 hover:text-primary"
+                  "px-4 h-12 rounded-xl text-sm font-medium transition-all duration-300 border shrink-0 whitespace-nowrap",
+                  activeCategory === cat
+                    ? "bg-primary/10 text-primary border-primary/30"
+                    : "bg-surface/50 text-slate-600 border-slate-200 hover:border-primary/30 hover:text-primary"
                 )}
               >
-                {cat}
+                {String(cat).replace(/_/g, ' ')}
               </button>
             ))}
           </div>
@@ -201,7 +200,7 @@ export const EventPackages = ({ isDashboard = false }) => {
 
         {/* Pricing Cards */}
         {filteredPackages.length === 0 && (
-          <div className="text-center text-slate-500 dark:text-slate-400 py-20 text-xl font-medium">
+          <div className="text-center text-slate-600 py-20 text-xl">
             No packages match your search.
           </div>
         )}
@@ -212,46 +211,46 @@ export const EventPackages = ({ isDashboard = false }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="relative rounded-3xl p-8 transition-transform duration-500 hover:-translate-y-2 bg-white dark:bg-[#1C2333] border border-slate-200 dark:border-white/10 hover:border-primary/50 group flex flex-col shadow-md"
+              className="relative rounded-3xl p-8 transition-transform duration-500 hover:-translate-y-2 bg-surface/50 border border-slate-300 hover:border-primary/50 group flex flex-col"
             >
               <div className="mb-4">
                 <span className="text-xs font-bold text-primary tracking-wider uppercase mb-2 block">
                   By {pkg.vendorName} {pkg.category ? `• ${pkg.category}` : ''}
                 </span>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors">{pkg.packageName}</h3>
-                <p className="text-slate-600 dark:text-slate-300 text-sm min-h-[3rem] line-clamp-2">{pkg.description || 'No description available.'}</p>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">{pkg.packageName}</h3>
+                <p className="text-slate-600 text-sm min-h-[3rem] line-clamp-2">{pkg.description || 'No description available.'}</p>
               </div>
               
               <div className="mb-8">
-                <span className="text-4xl font-extrabold text-slate-900 dark:text-white">LKR {Number(pkg.price).toFixed(2)}</span>
-                <span className="text-slate-500 dark:text-slate-400 font-medium"> / pkg</span>
+                <span className="text-4xl font-extrabold text-slate-900">LKR {Number(pkg.price).toFixed(2)}</span>
+                <span className="text-slate-500 font-medium"> / pkg</span>
               </div>
               
               <ul className="space-y-3 mb-8 flex-1">
                 {pkg.services && pkg.services.length > 0 ? (
                   pkg.services.map((svc, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-primary transition-colors" />
-                      <span className="text-slate-800 dark:text-slate-200 text-sm font-medium">{svc.name}</span>
+                      <Check className="w-5 h-5 shrink-0 text-slate-500 group-hover:text-primary transition-colors" />
+                      <span className="text-slate-800 text-sm">{svc.name}</span>
                     </li>
                   ))
                 ) : (
                   <>
                     {pkg.maxGuests > 0 && (
                       <li className="flex items-start gap-3">
-                        <Check className="w-5 h-5 shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-primary transition-colors" />
-                        <span className="text-slate-800 dark:text-slate-200 text-sm font-medium">Capacity: Up to {pkg.maxGuests} guests</span>
+                        <Check className="w-5 h-5 shrink-0 text-slate-500 group-hover:text-primary transition-colors" />
+                        <span className="text-slate-800 text-sm">Capacity: Up to {pkg.maxGuests} guests</span>
                       </li>
                     )}
                     {pkg.duration && (
                       <li className="flex items-start gap-3">
-                        <Check className="w-5 h-5 shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-primary transition-colors" />
-                        <span className="text-slate-800 dark:text-slate-200 text-sm font-medium">Duration: {pkg.duration}</span>
+                        <Check className="w-5 h-5 shrink-0 text-slate-500 group-hover:text-primary transition-colors" />
+                        <span className="text-slate-800 text-sm">Duration: {pkg.duration}</span>
                       </li>
                     )}
                     <li className="flex items-start gap-3">
-                      <Check className="w-5 h-5 shrink-0 text-slate-500 dark:text-slate-400 group-hover:text-primary transition-colors" />
-                      <span className="text-slate-800 dark:text-slate-200 text-sm font-medium">Full vendor service package</span>
+                      <Check className="w-5 h-5 shrink-0 text-slate-500 group-hover:text-primary transition-colors" />
+                      <span className="text-slate-800 text-sm">Full vendor service package</span>
                     </li>
                   </>
                 )}
@@ -259,7 +258,7 @@ export const EventPackages = ({ isDashboard = false }) => {
               
               <Button 
                 variant="outline" 
-                className="w-full py-6 text-lg rounded-xl text-slate-900 dark:text-white border-slate-300 dark:border-slate-700 group-hover:bg-primary group-hover:text-slate-950 group-hover:border-primary font-bold transition-all"
+                className="w-full py-6 text-lg rounded-xl group-hover:bg-primary group-hover:text-slate-900 group-hover:border-primary transition-all"
                 onClick={() => navigate(`/customer/book-vendor?id=${pkg.vendorId}`)}
               >
                 Book Package
@@ -271,3 +270,4 @@ export const EventPackages = ({ isDashboard = false }) => {
     </div>
   );
 };
+
