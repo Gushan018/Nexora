@@ -114,8 +114,12 @@ const getMyBookings = async (req, res) => {
 // ================================================
 const getVendorBookings = async (req, res) => {
   try {
-    const vendorId = req.user.id; 
-
+    const userId = parseInt(req.user.id);
+    let vendor = await prisma.vendor.findUnique({ where: { vendorId: userId } });
+    if (!vendor) {
+      vendor = await prisma.vendor.findFirst({ where: { userId: userId } });
+    }
+    const vendorId = vendor ? vendor.vendorId : userId;
 
     const vendorServices = await prisma.service.findMany({
       where: { vendorId },
@@ -128,10 +132,6 @@ const getVendorBookings = async (req, res) => {
 
     const serviceIds = vendorServices.map(s => s.serviceId);
     const packageIds = vendorPackages.map(p => p.packageId);
-
-    if (serviceIds.length === 0 && packageIds.length === 0) {
-      return res.status(200).json([]);
-    }
 
     const bookings = await prisma.booking.findMany({
       where: {
@@ -151,6 +151,7 @@ const getVendorBookings = async (req, res) => {
 
     res.status(200).json(bookings);
   } catch (error) {
+    console.error("Error in getVendorBookings:", error.message);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
