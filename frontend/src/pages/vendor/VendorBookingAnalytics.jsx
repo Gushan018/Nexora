@@ -12,7 +12,7 @@ export const VendorBookingAnalytics = () => {
     queryKey: ['vendorBookingAnalytics'],
     queryFn: async () => {
       try {
-        const res = await api.get('/bookings/my');
+        const res = await api.get('/bookings/vendor');
         return res.data;
       } catch (err) {
         return [];
