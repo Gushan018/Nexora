@@ -163,10 +163,10 @@ export const EditProduct = () => {
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Product Management
           </button>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
             Edit Product #{id}
           </h1>
-          <p className="text-slate-600 dark:text-slate-400">Update pricing, inventory, and product details.</p>
+          <p className="text-gray-600 dark:text-white/70">Update pricing, inventory, and product details.</p>
         </div>
         <div className="flex gap-3 w-full sm:w-auto">
           <Button
@@ -207,9 +207,9 @@ export const EditProduct = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <Card>
+          <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
             <CardHeader>
-              <CardTitle>Basic Information</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-white">Basic Information</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <Input
@@ -222,16 +222,16 @@ export const EditProduct = () => {
               />
 
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-800 dark:text-white/90">Category</label>
+                <label className="text-sm font-medium text-gray-900 dark:text-white">Category</label>
                 <select
                   name="categoryId"
                   value={formData.categoryId}
                   onChange={handleChange}
-                  className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
+                  className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
                 >
-                  <option value="" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Uncategorized</option>
+                  <option value="" className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">Uncategorized</option>
                   {categories.map((cat) => (
-                    <option key={cat.categoryId} value={cat.categoryId} style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>
+                    <option key={cat.categoryId} value={cat.categoryId} className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">
                       {cat.categoryName}
                     </option>
                   ))}
@@ -239,13 +239,13 @@ export const EditProduct = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-800 dark:text-white/90">Description</label>
+                <label className="text-sm font-medium text-gray-900 dark:text-white">Description</label>
                 <textarea
                   rows="4"
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors resize-none placeholder:text-slate-400"
+                  className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors resize-none placeholder:text-gray-400 dark:placeholder:text-white/40"
                   placeholder="Describe your product..."
                 />
               </div>
@@ -265,9 +265,9 @@ export const EditProduct = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
             <CardHeader>
-              <CardTitle>Pricing Strategy</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-white">Pricing Strategy</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -288,15 +288,15 @@ export const EditProduct = () => {
         </div>
 
         <div className="lg:col-span-1 space-y-6">
-          <Card>
+          <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
             <CardHeader>
-              <CardTitle>Product Media</CardTitle>
-              <CardDescription>Update image if needed.</CardDescription>
+              <CardTitle className="text-gray-900 dark:text-white">Product Media</CardTitle>
+              <CardDescription className="text-gray-600 dark:text-white/60">Update image if needed.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div
                 className={cn(
-                  "border-2 border-dashed border-slate-300 dark:border-white/20 rounded-xl h-48 flex flex-col items-center justify-center bg-surface/30 hover:border-primary/50 transition-all cursor-pointer group relative overflow-hidden",
+                  "border-2 border-dashed border-gray-300 dark:border-white/20 rounded-xl h-48 flex flex-col items-center justify-center bg-gray-50 dark:bg-surface/30 hover:border-primary/50 transition-all cursor-pointer group relative overflow-hidden",
                   previewUrl && "border-solid border-primary/50"
                 )}
                 onClick={() => document.getElementById('edit-product-image').click()}
@@ -311,9 +311,9 @@ export const EditProduct = () => {
                 ) : (
                   <>
                     <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
-                      <Upload className="w-6 h-6 text-slate-400 group-hover:text-primary" />
+                      <Upload className="w-6 h-6 text-gray-400 dark:text-white/40 group-hover:text-primary" />
                     </div>
-                    <p className="text-sm text-slate-500 font-medium text-center px-4">Click to upload image</p>
+                    <p className="text-sm text-gray-600 dark:text-white/60 font-medium text-center px-4">Click to upload image</p>
                   </>
                 )}
                 <input
@@ -326,7 +326,7 @@ export const EditProduct = () => {
               </div>
 
               <div className="pt-2 space-y-1">
-                <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block">Or enter Image URL directly:</label>
+                <label className="text-xs font-medium text-gray-700 dark:text-white/80 block">Or enter Image URL directly:</label>
                 <input
                   type="text"
                   name="imageUrl"
@@ -338,7 +338,7 @@ export const EditProduct = () => {
                     }
                   }}
                   placeholder="https://images.unsplash.com/photo-..."
-                  className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors"
                 />
               </div>
             </CardContent>

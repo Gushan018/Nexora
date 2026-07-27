@@ -133,11 +133,11 @@ export const AddProduct = () => {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
             <PackagePlus className="w-7 h-7 text-primary" />
             Add New Product
           </h1>
-          <p className="text-slate-600">List a new physical item on your marketplace storefront.</p>
+          <p className="text-gray-600 dark:text-white/70">List a new physical item on your marketplace storefront.</p>
         </div>
         <div className="flex gap-3 w-full sm:w-auto">
           <Button
@@ -179,9 +179,9 @@ export const AddProduct = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-            <Card>
+            <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
               <CardHeader>
-                <CardTitle>Basic Information</CardTitle>
+                <CardTitle className="text-gray-900 dark:text-white">Basic Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <Input
@@ -195,17 +195,17 @@ export const AddProduct = () => {
                 />
 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-800 dark:text-white/90">Category *</label>
+                  <label className="text-sm font-medium text-gray-900 dark:text-white">Category *</label>
                   <select
                     name="categoryId"
                     value={formData.categoryId}
                     onChange={handleChange}
-                    className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
+                    className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
                     required
                   >
-                    <option value="" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Select Category...</option>
+                    <option value="" className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">Select Category...</option>
                     {categories.map((cat) => (
-                      <option key={cat.categoryId} value={cat.categoryId} style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>
+                      <option key={cat.categoryId} value={cat.categoryId} className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">
                         {cat.categoryName}
                       </option>
                     ))}
@@ -213,13 +213,13 @@ export const AddProduct = () => {
                 </div>
                 
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-800 dark:text-white/90">Description</label>
+                  <label className="text-sm font-medium text-gray-900 dark:text-white">Description</label>
                   <textarea
                     rows="4"
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
-                    className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors resize-none placeholder:text-slate-400"
+                    className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors resize-none placeholder:text-gray-400 dark:placeholder:text-white/40"
                     placeholder="Describe your product in detail..."
                   />
                 </div>
@@ -240,9 +240,9 @@ export const AddProduct = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
               <CardHeader>
-                <CardTitle>Pricing Strategy</CardTitle>
+                <CardTitle className="text-gray-900 dark:text-white">Pricing Strategy</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -269,15 +269,15 @@ export const AddProduct = () => {
           </div>
 
           <div className="lg:col-span-1 space-y-6">
-            <Card>
+            <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
               <CardHeader>
-                <CardTitle>Product Media</CardTitle>
-                <CardDescription>Upload a clear image of your product.</CardDescription>
+                <CardTitle className="text-gray-900 dark:text-white">Product Media</CardTitle>
+                <CardDescription className="text-gray-600 dark:text-white/60">Upload a clear image of your product.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div
                   className={cn(
-                    "border-2 border-dashed border-white/20 rounded-xl h-48 flex flex-col items-center justify-center bg-surface/30 hover:bg-surface/50 hover:border-primary/50 transition-all cursor-pointer group relative overflow-hidden",
+                    "border-2 border-dashed border-gray-300 dark:border-white/20 rounded-xl h-48 flex flex-col items-center justify-center bg-gray-50 dark:bg-surface/30 hover:bg-gray-100 dark:hover:bg-surface/50 hover:border-primary/50 transition-all cursor-pointer group relative overflow-hidden",
                     previewUrl && "border-solid border-primary/50"
                   )}
                   onClick={() => document.getElementById('product-image').click()}
@@ -286,7 +286,7 @@ export const AddProduct = () => {
                     <>
                       <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <Upload className="w-8 h-8 text-textPrimary" />
+                        <Upload className="w-8 h-8 text-white" />
                       </div>
                       <button
                         type="button"
@@ -295,7 +295,7 @@ export const AddProduct = () => {
                           setImageFile(null);
                           setPreviewUrl('');
                         }}
-                        className="absolute top-2 right-2 p-1 bg-red-500 rounded-full text-textPrimary hover:bg-red-600 transition-colors"
+                        className="absolute top-2 right-2 p-1 bg-red-500 rounded-full text-white hover:bg-red-600 transition-colors"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -303,9 +303,9 @@ export const AddProduct = () => {
                   ) : (
                     <>
                       <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3 group-hover:bg-primary/20 group-hover:text-primary transition-colors">
-                        <Upload className="w-6 h-6 text-textPrimary/40 group-hover:text-primary" />
+                        <Upload className="w-6 h-6 text-gray-400 dark:text-white/40 group-hover:text-primary" />
                       </div>
-                      <p className="text-sm text-textPrimary/60 font-medium text-center px-4">Click to upload image</p>
+                      <p className="text-sm text-gray-600 dark:text-white/60 font-medium text-center px-4">Click to upload image</p>
                     </>
                   )}
                   <input
@@ -318,7 +318,7 @@ export const AddProduct = () => {
                 </div>
 
                 <div className="pt-2 space-y-1">
-                  <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block">Or enter Image URL directly:</label>
+                  <label className="text-xs font-medium text-gray-700 dark:text-white/80 block">Or enter Image URL directly:</label>
                   <input
                     type="text"
                     name="imageUrl"
@@ -330,18 +330,18 @@ export const AddProduct = () => {
                       }
                     }}
                     placeholder="https://images.unsplash.com/photo-..."
-                    className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors"
+                    className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors"
                   />
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
               <CardHeader>
-                <CardTitle>Guidelines</CardTitle>
+                <CardTitle className="text-gray-900 dark:text-white">Guidelines</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="text-xs text-textPrimary/60 space-y-2 list-disc pl-4">
+                <ul className="text-xs text-gray-600 dark:text-white/60 space-y-2 list-disc pl-4">
                   <li>Images should be clear and well-lit.</li>
                   <li>Max file size: 5MB</li>
                   <li>Avoid using watermarks or text on images.</li>
@@ -351,24 +351,24 @@ export const AddProduct = () => {
               </CardContent>
             </Card>
 
-            <Card>
-            <CardHeader>
-              <CardTitle>Shipping Options</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <label className="flex items-center gap-3 p-3 rounded-lg border border-slate-300 hover:bg-slate-100 cursor-pointer transition-colors">
-                <input type="checkbox" className="w-4 h-4 rounded bg-surface border-slate-400 text-primary focus:ring-primary/50 focus:ring-offset-background" defaultChecked />
-                <span className="text-sm text-slate-800">Standard Delivery (3-5 days)</span>
-              </label>
-              <label className="flex items-center gap-3 p-3 rounded-lg border border-slate-300 hover:bg-slate-100 cursor-pointer transition-colors">
-                <input type="checkbox" className="w-4 h-4 rounded bg-surface border-slate-400 text-primary focus:ring-primary/50 focus:ring-offset-background" />
-                <span className="text-sm text-slate-800">Express Delivery (Next day)</span>
-              </label>
-              <label className="flex items-center gap-3 p-3 rounded-lg border border-slate-300 hover:bg-slate-100 cursor-pointer transition-colors">
-                <input type="checkbox" className="w-4 h-4 rounded bg-surface border-slate-400 text-primary focus:ring-primary/50 focus:ring-offset-background" />
-                <span className="text-sm text-slate-800">Local Pickup Allowed</span>
-              </label>
-            </CardContent>
+            <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
+              <CardHeader>
+                <CardTitle className="text-gray-900 dark:text-white">Shipping Options</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer transition-colors">
+                  <input type="checkbox" className="w-4 h-4 rounded bg-surface border-gray-400 text-primary focus:ring-primary/50 focus:ring-offset-background" defaultChecked />
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">Standard Delivery (3-5 days)</span>
+                </label>
+                <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer transition-colors">
+                  <input type="checkbox" className="w-4 h-4 rounded bg-surface border-gray-400 text-primary focus:ring-primary/50 focus:ring-offset-background" />
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">Express Delivery (Next day)</span>
+                </label>
+                <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer transition-colors">
+                  <input type="checkbox" className="w-4 h-4 rounded bg-surface border-gray-400 text-primary focus:ring-primary/50 focus:ring-offset-background" />
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">Local Pickup Allowed</span>
+                </label>
+              </CardContent>
             </Card>
           </div>
         </div>

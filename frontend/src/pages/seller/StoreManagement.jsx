@@ -132,6 +132,10 @@ export const StoreManagement = () => {
       await api.put('/vendors/profile', payload);
 
       setFormData(prev => ({ ...prev, logoImage, bannerImage }));
+      if (logoImage) setLogoPreview(getImageUrl(logoImage));
+      if (bannerImage) setBannerPreview(getImageUrl(bannerImage));
+      setLogoFile(null);
+      setBannerFile(null);
       setSuccessMessage('Store details updated successfully!');
       setTimeout(() => setSuccessMessage(''), 4000);
     } catch (err) {
@@ -156,11 +160,11 @@ export const StoreManagement = () => {
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
             <Store className="w-7 h-7 text-primary" />
             Store Management
           </h1>
-          <p className="text-slate-600 dark:text-slate-400">Customize your public marketplace storefront appearance and details.</p>
+          <p className="text-gray-600 dark:text-white/70">Customize your public marketplace storefront appearance and details.</p>
         </div>
         <Button 
           type="submit" 
@@ -203,16 +207,16 @@ export const StoreManagement = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         <div className="lg:col-span-2 space-y-6">
-          <Card>
+          <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
             <CardHeader>
-              <CardTitle>Brand Identity</CardTitle>
-              <CardDescription>How customers will identify your business on the Nexora marketplace.</CardDescription>
+              <CardTitle className="text-gray-900 dark:text-white">Brand Identity</CardTitle>
+              <CardDescription className="text-gray-600 dark:text-white/60">How customers will identify your business on the EventNest marketplace.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               
               <div className="flex flex-col sm:flex-row gap-6 items-start">
                 <div
-                  className="w-32 h-32 rounded-2xl bg-surface border-2 border-dashed border-slate-300 dark:border-white/20 flex flex-col items-center justify-center hover:border-primary/50 hover:bg-surface/50 cursor-pointer transition-all group shrink-0 overflow-hidden relative"
+                  className="w-32 h-32 rounded-2xl bg-surface border-2 border-dashed border-gray-300 dark:border-white/20 flex flex-col items-center justify-center hover:border-primary/50 hover:bg-surface/50 cursor-pointer transition-all group shrink-0 overflow-hidden relative"
                   onClick={() => document.getElementById('store-logo-file').click()}
                 >
                   {logoPreview ? (
@@ -225,8 +229,8 @@ export const StoreManagement = () => {
                     </>
                   ) : (
                     <>
-                      <ImageIcon className="w-8 h-8 text-slate-400 group-hover:text-primary mb-1 transition-colors" />
-                      <span className="text-xs text-slate-500 font-medium">Upload Logo</span>
+                      <ImageIcon className="w-8 h-8 text-gray-400 dark:text-white/40 group-hover:text-primary mb-1 transition-colors" />
+                      <span className="text-xs text-gray-600 dark:text-white/60 font-medium">Upload Logo</span>
                     </>
                   )}
                   <input
@@ -259,7 +263,7 @@ export const StoreManagement = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-600 dark:text-slate-400 block">Or enter Logo Image URL directly:</label>
+                <label className="text-xs font-medium text-gray-600 dark:text-white/70 block">Or enter Logo Image URL directly:</label>
                 <input
                   type="text"
                   name="logoImage"
@@ -269,18 +273,18 @@ export const StoreManagement = () => {
                     if (e.target.value) setLogoPreview(e.target.value);
                   }}
                   placeholder="https://example.com/logo.jpg"
-                  className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-800 dark:text-white/90">About Us / Store Description</label>
+                <label className="text-sm font-medium text-gray-900 dark:text-white">About Us / Store Description</label>
                 <textarea 
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
                   rows="5" 
-                  className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors resize-none placeholder:text-slate-400 text-sm"
+                  className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors resize-none placeholder:text-gray-400 dark:placeholder:text-white/40 text-sm"
                   placeholder="Describe your products, specialty, and services offered..."
                 />
               </div>
@@ -288,10 +292,10 @@ export const StoreManagement = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
             <CardHeader>
-              <CardTitle>Contact & Location</CardTitle>
-              <CardDescription>Contact numbers and physical location for customer pick-ups.</CardDescription>
+              <CardTitle className="text-gray-900 dark:text-white">Contact & Location</CardTitle>
+              <CardDescription className="text-gray-600 dark:text-white/60">Contact numbers and physical location for customer pick-ups.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -314,16 +318,16 @@ export const StoreManagement = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-800 dark:text-white/90">Sri Lankan Town / District</label>
+                <label className="text-sm font-medium text-gray-900 dark:text-white">Sri Lankan Town / District</label>
                 <select
                   name="location"
                   value={formData.location}
                   onChange={handleChange}
-                  className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer text-sm"
+                  className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors cursor-pointer text-sm"
                 >
-                  <option value="" style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>Select Location...</option>
+                  <option value="" className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">Select Location...</option>
                   {['Colombo', 'Kandy', 'Galle', 'Negombo', 'Jaffna', 'Kurunegala', 'Matara', 'Nuwara Eliya', 'Batticaloa', 'Trincomalee', 'Gampaha', 'Kalutara', 'Ratnapura', 'Badulla', 'Anuradhapura', 'Hambantota'].map(city => (
-                    <option key={city} value={city} style={{ color: '#0f172a', backgroundColor: '#ffffff' }}>
+                    <option key={city} value={city} className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">
                       {city}, Sri Lanka
                     </option>
                   ))}
@@ -343,14 +347,14 @@ export const StoreManagement = () => {
         </div>
 
         <div className="lg:col-span-1 space-y-6">
-          <Card>
+          <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
             <CardHeader>
-              <CardTitle>Store Cover Photo</CardTitle>
-              <CardDescription>Appears at the top of your public profile storefront.</CardDescription>
+              <CardTitle className="text-gray-900 dark:text-white">Store Cover Photo</CardTitle>
+              <CardDescription className="text-gray-600 dark:text-white/60">Appears at the top of your public profile storefront.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <div 
-                className="w-full h-44 rounded-xl bg-surface border-2 border-dashed border-slate-300 dark:border-white/20 flex flex-col items-center justify-center hover:border-primary/50 hover:bg-surface/50 cursor-pointer transition-all group overflow-hidden relative"
+                className="w-full h-44 rounded-xl bg-surface border-2 border-dashed border-gray-300 dark:border-white/20 flex flex-col items-center justify-center hover:border-primary/50 hover:bg-surface/50 cursor-pointer transition-all group overflow-hidden relative"
                 onClick={() => document.getElementById('store-banner-file').click()}
               >
                 {bannerPreview ? (
@@ -363,8 +367,8 @@ export const StoreManagement = () => {
                   </>
                 ) : (
                   <>
-                    <ImageIcon className="w-8 h-8 text-slate-400 group-hover:text-primary mb-2 transition-colors" />
-                    <span className="text-xs text-slate-500 font-medium">Click to upload banner</span>
+                    <ImageIcon className="w-8 h-8 text-gray-400 dark:text-white/40 group-hover:text-primary mb-2 transition-colors" />
+                    <span className="text-xs text-gray-600 dark:text-white/60 font-medium">Click to upload banner</span>
                   </>
                 )}
                 <input
@@ -377,7 +381,7 @@ export const StoreManagement = () => {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-600 dark:text-slate-400 block">Or enter Banner Image URL:</label>
+                <label className="text-xs font-medium text-gray-600 dark:text-white/70 block">Or enter Banner Image URL:</label>
                 <input
                   type="text"
                   name="bannerImage"
@@ -387,22 +391,22 @@ export const StoreManagement = () => {
                     if (e.target.value) setBannerPreview(e.target.value);
                   }}
                   placeholder="https://example.com/banner.jpg"
-                  className="w-full bg-light-surface dark:bg-surface/50 border border-slate-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-primary/50 transition-colors"
                 />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
             <CardHeader>
-              <CardTitle>Store Visibility</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-white">Store Visibility</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="p-4 rounded-xl border border-green-500/30 bg-green-500/5">
                 <div className="flex items-center gap-2 mb-1 text-green-600 dark:text-green-400 font-bold text-sm">
                   <Check className="w-4 h-4" /> Store Published
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400">Your storefront is verified and active on the Nexora Sri Lanka marketplace.</p>
+                <p className="text-xs text-gray-600 dark:text-white/70">Your storefront is verified and active on the EventNest Sri Lanka marketplace.</p>
               </div>
             </CardContent>
           </Card>

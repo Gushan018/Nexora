@@ -75,11 +75,11 @@ export const SellerProductManagement = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
             <Package className="w-7 h-7 text-primary" />
             Product Management
           </h1>
-          <p className="text-slate-600">Manage your inventory, update pricing, and add new items.</p>
+          <p className="text-gray-600 dark:text-white/70">Manage your inventory, update pricing, and add new items.</p>
         </div>
         <Link to="/seller/add-product">
           <Button leftIcon={<Plus className="w-4 h-4"/>}>Add Product</Button>
@@ -116,39 +116,41 @@ export const SellerProductManagement = () => {
         </motion.div>
       )}
 
-      <Card>
+      <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
         {/* Toolbar */}
-        <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-4 justify-between">
+        <div className="p-4 border-b border-gray-200 dark:border-white/10 flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/40" />
             <input 
               type="text" 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search products by name or ID..." 
-              className="w-full bg-surface/50 border border-slate-300 rounded-xl pl-10 pr-4 py-2 text-slate-900 focus:outline-none focus:border-primary/50 transition-colors" 
+              className="w-full bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl pl-10 pr-4 py-2 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/40 focus:outline-none focus:border-primary/50 transition-colors" 
             />
           </div>
           <div className="flex gap-2">
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="bg-surface/50 border border-white/10 rounded-xl px-4 py-2 text-textPrimary text-sm focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
+              className="bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-2 text-gray-900 dark:text-white text-sm focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
             >
-              <option value="all">All Categories</option>
+              <option value="all" className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">All Categories</option>
               {categories.map(cat => (
-                <option key={cat.categoryId} value={cat.categoryId}>{cat.categoryName}</option>
+                <option key={cat.categoryId} value={cat.categoryId} className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">{cat.categoryName}</option>
               ))}
             </select>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="bg-surface/50 border border-white/10 rounded-xl px-4 py-2 text-textPrimary text-sm focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
+              className="bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-2 text-gray-900 dark:text-white text-sm focus:outline-none focus:border-primary/50 transition-colors cursor-pointer"
             >
-              <option value="all">All Status</option>
+              <option value="all" className="bg-white dark:bg-slate-900 text-gray-900 dark:text-white">All Status</option>
             </select>
             <button
               onClick={fetchData}
               disabled={loading}
-              className="px-4 py-2 rounded-xl border border-white/10 text-textPrimary/60 hover:text-textPrimary hover:border-primary/50 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-xl border border-gray-300 dark:border-white/10 text-gray-700 dark:text-white/80 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 transition-colors disabled:opacity-50 flex items-center gap-1.5"
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Refresh'}
             </button>
@@ -159,7 +161,7 @@ export const SellerProductManagement = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800/80">
+              <tr className="border-b border-gray-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-white/90 bg-gray-100 dark:bg-slate-900/90">
                 <th className="p-4 pl-6">Product Details</th>
                 <th className="p-4">Category</th>
                 <th className="p-4">Price</th>
@@ -169,74 +171,82 @@ export const SellerProductManagement = () => {
               </tr>
             </thead>
             <tbody className="text-sm">
-                {filteredProducts.map((prod) => (
-                  <tr key={prod.productId} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
-                    <td className="p-4 pl-6">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-lg bg-surface border border-white/10 shrink-0 overflow-hidden">
-                          <img
-                            src={getImageUrl(prod.imageUrl)}
-                            alt=""
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src = DEFAULT_PRODUCT_IMAGE;
-                            }}
-                          />
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="font-medium text-textPrimary line-clamp-1">{prod.productName}</span>
-                          <span className="text-xs text-textPrimary/50">#PRD-{prod.productId}</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4 text-textPrimary/80">{prod.category?.categoryName || 'Uncategorized'}</td>
-                    <td className="p-4 font-medium text-textPrimary">LKR {parseFloat(prod.price).toLocaleString()}</td>
-                    <td className="p-4">
-                      <span className={cn(
-                        "font-medium",
-                        prod.quantity === 0 ? "text-red-400" : prod.quantity < 5 ? "text-yellow-400" : "text-textPrimary"
-                      )}>
-                        {prod.quantity} in stock
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <span className="px-2.5 py-1 rounded-full text-xs font-medium border border-current/20 whitespace-nowrap text-green-400 bg-green-400/10">
-                        Active
-                      </span>
-                    </td>
-                    <td className="p-4 pr-6 text-right">
-                      <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Link to={`/seller/edit-product/${prod.productId}`}>
-                          <button
-                            className="p-2 text-textPrimary/60 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors disabled:opacity-50"
-                            disabled={deleteLoading === prod.productId}
-                          >
-                            <Edit2 className="w-4 h-4"/>
-                          </button>
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(prod.productId)}
-                          disabled={deleteLoading === prod.productId}
-                          className="p-2 text-textPrimary/60 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors disabled:opacity-50"
-                        >
-                          {deleteLoading === prod.productId ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                          ) : (
-                            <Trash2 className="w-4 h-4"/>
-                          )}
-                        </button>
-                      </div>
+                {filteredProducts.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" className="p-8 text-center text-gray-500 dark:text-white/60">
+                      {loading ? 'Loading products...' : 'No products found.'}
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  filteredProducts.map((prod) => (
+                    <tr key={prod.productId} className="border-b border-gray-200 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors group">
+                      <td className="p-4 pl-6">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-lg bg-surface border border-gray-200 dark:border-white/10 shrink-0 overflow-hidden">
+                            <img
+                              src={getImageUrl(prod.imageUrl)}
+                              alt=""
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = DEFAULT_PRODUCT_IMAGE;
+                              }}
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="font-medium text-gray-900 dark:text-white line-clamp-1">{prod.productName}</span>
+                            <span className="text-xs text-gray-500 dark:text-white/50">#PRD-{prod.productId}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-4 text-gray-700 dark:text-white/80">{prod.category?.categoryName || 'Uncategorized'}</td>
+                      <td className="p-4 font-bold text-gray-900 dark:text-white">LKR {parseFloat(prod.price).toLocaleString()}</td>
+                      <td className="p-4">
+                        <span className={cn(
+                          "font-medium",
+                          prod.quantity === 0 ? "text-red-400" : prod.quantity < 5 ? "text-yellow-400" : "text-gray-900 dark:text-white/90"
+                        )}>
+                          {prod.quantity} in stock
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <span className="px-2.5 py-1 rounded-full text-xs font-medium border border-current/20 whitespace-nowrap text-green-400 bg-green-400/10">
+                          Active
+                        </span>
+                      </td>
+                      <td className="p-4 pr-6 text-right">
+                        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Link to={`/seller/edit-product/${prod.productId}`}>
+                            <button
+                              className="p-2 text-gray-500 dark:text-white/60 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors disabled:opacity-50"
+                              disabled={deleteLoading === prod.productId}
+                            >
+                              <Edit2 className="w-4 h-4"/>
+                            </button>
+                          </Link>
+                          <button
+                            onClick={() => handleDelete(prod.productId)}
+                            disabled={deleteLoading === prod.productId}
+                            className="p-2 text-gray-500 dark:text-white/60 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors disabled:opacity-50"
+                          >
+                            {deleteLoading === prod.productId ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Trash2 className="w-4 h-4"/>
+                            )}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
 
         {/* Footer Stats */}
         {products.length > 0 && (
-          <div className="p-4 border-t border-white/5 bg-white/[0.01] text-sm text-textPrimary/60">
+          <div className="p-4 border-t border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-white/[0.01] text-sm text-gray-600 dark:text-white/60">
             <p>Showing {filteredProducts.length} of {products.length} products</p>
           </div>
         )}
