@@ -457,7 +457,7 @@ export const AdminPaymentsEscrow = () => {
             <div id="receipt-print-area" className="space-y-3 text-sm">
               <div className="text-center pb-3 border-b border-gray-200 dark:border-white/10">
                 <p className="text-lg font-bold text-gray-900 dark:text-white">Payment Receipt</p>
-                <p className="text-xs text-gray-500 dark:text-white/50">Nexora Marketplace</p>
+                <p className="text-xs text-gray-500 dark:text-white/50">EventNest Platform</p>
               </div>
               <div className="flex justify-between gap-4">
                 <span className="text-gray-500 dark:text-white/50">Order ID</span>

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -80,7 +80,7 @@ export const Footer = () => {
 
         <div className="border-t border-gray-200 dark:border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between">
           <p className="text-gray-500 dark:text-white/60 text-sm">
-            &copy; {new Date().getFullYear()} Nexora. All rights reserved.
+            &copy; {new Date().getFullYear()} EventNest. All rights reserved.
           </p>
           <div className="flex items-center gap-6 mt-4 md:mt-0">
             <span className="text-gray-500 dark:text-white/60 text-sm flex items-center gap-2">

@@ -1,9 +1,19 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const getUserQuery = (req) => ({
-  ...(req.user.role === 'customer' ? { customerId: req.user.id } : { vendorId: req.user.id })
-});
+const getUserQuery = (req) => {
+  if (req.user.role === 'customer') {
+    return { customerId: req.user.id };
+  }
+  if (req.user.role === 'vendor' || req.user.role === 'seller' || req.user.role === 'service_provider' || req.user.role === 'event_company') {
+    return { vendorId: req.user.id };
+  }
+  if (req.user.role === 'admin') {
+    // Admin receives global/platform notifications or all notifications
+    return {};
+  }
+  return {};
+};
 
 const getMyNotifications = async (req, res) => {
   try {

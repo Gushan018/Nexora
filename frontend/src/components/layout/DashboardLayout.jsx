@@ -60,7 +60,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
     refetchOnWindowFocus: false,
   });
 
-  const canReceiveNotifications = role === 'customer' || role === 'vendor';
+  const canReceiveNotifications = !!userRole;
 
   const { data: rawNotifications } = useQuery({
     queryKey: ['notifications'],
@@ -182,7 +182,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
             <Link to="/" className="flex items-center justify-center group w-full">
               <img
                 src={resolveAssetUrl(systemSettings?.logoUrl)}
-                alt="Nexora"
+                alt="EventNest"
                 className="h-12 sm:h-16 md:h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
               />
             </Link>

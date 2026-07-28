@@ -381,6 +381,8 @@ const getAdminDashboardStats = async (req, res) => {
 
     res.status(200).json({
       totalUsers,
+      customerCount,
+      vendorCount,
       activeVendors,
       totalRevenue,
       escrowBalance,
@@ -437,7 +439,20 @@ const getSystemSettings = async (req, res) => {
     let settings = await prisma.systemSetting.findFirst();
 
     if (!settings) {
-      settings = await prisma.systemSetting.create({ data: {} });
+      settings = await prisma.systemSetting.create({
+        data: {
+          platformName: 'EventNest Platform',
+          supportEmail: 'support@eventnest.com',
+        },
+      });
+    } else if (settings.platformName.includes('Nexora') || settings.supportEmail.includes('nexora')) {
+      settings = await prisma.systemSetting.update({
+        where: { id: settings.id },
+        data: {
+          platformName: settings.platformName.replace(/Nexora/g, 'EventNest'),
+          supportEmail: settings.supportEmail.replace(/nexora/g, 'eventnest'),
+        },
+      });
     }
 
     res.status(200).json(settings);

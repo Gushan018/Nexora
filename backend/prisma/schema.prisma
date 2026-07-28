@@ -385,8 +385,8 @@ model Notification {
 
 model SystemSetting {
   id                      Int      @id @default(autoincrement()) @map("id")
-  platformName            String   @default("Nexora Marketplace") @map("platformName")
-  supportEmail            String   @default("support@nexora.com") @map("supportEmail")
+  platformName            String   @default("EventNest Platform") @map("platformName")
+  supportEmail            String   @default("support@eventnest.com") @map("supportEmail")
   logoUrl                 String?  @map("logoUrl")
   defaultTimezone         String   @default("UTC") @map("defaultTimezone")
   defaultCurrency         String   @default("LKR") @map("defaultCurrency")

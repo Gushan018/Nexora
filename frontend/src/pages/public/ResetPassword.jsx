@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,6 +7,8 @@ import { Button } from '../../components/common/Button';
 export const ResetPassword = () => {
   const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,17 +47,34 @@ export const ResetPassword = () => {
                   <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input 
                     type="password" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••" 
                     required
                     className="w-full bg-black/40 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-300"
                   />
                 </div>
                 {/* Password Strength Indicator */}
-                <div className="flex gap-1 pt-2">
-                  <div className="h-1 flex-1 bg-green-500 rounded-full" />
-                  <div className="h-1 flex-1 bg-green-500 rounded-full" />
-                  <div className="h-1 flex-1 bg-green-500 rounded-full" />
-                </div>
+                {(() => {
+                  let score = 0;
+                  if (password) {
+                    if (password.length < 8) score = 1;
+                    else {
+                      let checks = 0;
+                      if (/[0-9]/.test(password)) checks++;
+                      if (/[^A-Za-z0-9]/.test(password)) checks++;
+                      if (/[a-z]/.test(password) && /[A-Z]/.test(password)) checks++;
+                      score = checks === 0 ? 1 : checks === 1 ? 2 : 3;
+                    }
+                  }
+                  return (
+                    <div className="flex gap-1.5 pt-2">
+                      <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${score >= 1 ? (score === 1 ? 'bg-rose-500' : score === 2 ? 'bg-amber-500' : 'bg-emerald-500') : 'bg-slate-300'}`} />
+                      <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${score >= 2 ? (score === 2 ? 'bg-amber-500' : 'bg-emerald-500') : 'bg-slate-300'}`} />
+                      <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${score >= 3 ? 'bg-emerald-500' : 'bg-slate-300'}`} />
+                    </div>
+                  );
+                })()}
               </div>
 
               <div className="space-y-2">
@@ -64,6 +83,8 @@ export const ResetPassword = () => {
                   <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input 
                     type="password" 
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••" 
                     required
                     className="w-full bg-black/40 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-300"

@@ -82,12 +82,30 @@ const getVendorById = async (req, res) => {
 };
 
 // ===============================================
+// Helper: Resolve authentic Vendor ID from JWT user ID
+const resolveVendorId = async (rawUserId) => {
+  const userId = parseInt(rawUserId);
+  if (isNaN(userId)) return null;
+
+  let vendor = await prisma.vendor.findUnique({ where: { vendorId: userId } });
+  if (!vendor) {
+    vendor = await prisma.vendor.findFirst({ where: { userId: userId } });
+  }
+  return vendor ? vendor.vendorId : userId;
+};
+
+// ===============================================
 // 3. GET LOGGED-IN VENDOR PROFILE
 // ===============================================
 const getMyProfile = async (req, res) => {
   try {
+    const targetVendorId = await resolveVendorId(req.user.id);
+    if (!targetVendorId) {
+      return res.status(404).json({ message: "Vendor profile not found" });
+    }
+
     const vendor = await prisma.vendor.findUnique({
-      where: { vendorId: req.user.id },
+      where: { vendorId: targetVendorId },
       select: {
         vendorId: true,
         businessName: true,
@@ -128,6 +146,11 @@ const getMyProfile = async (req, res) => {
 // ===============================================
 const updateMyProfile = async (req, res) => {
   try {
+    const targetVendorId = await resolveVendorId(req.user.id);
+    if (!targetVendorId) {
+      return res.status(404).json({ message: "Vendor profile not found" });
+    }
+
     const {
       businessName,
       email,
@@ -147,26 +170,30 @@ const updateMyProfile = async (req, res) => {
       website,
     } = req.body;
 
-    const updateData = {
-      businessName,
-      description,
-      contactNumber,
-      location,
-      registrationNumber,
-      establishedYear: establishedYear ? parseInt(establishedYear) : null,
-      address,
-      bannerImage: bannerImage || coverImage,
-      logoImage: logoImage || profileImage,
-      socialFacebook,
-      socialInstagram,
-      socialTwitter,
-      website,
-    };
+    const updateData = {};
+    if (businessName !== undefined) updateData.businessName = businessName;
+    if (description !== undefined) updateData.description = description;
+    if (contactNumber !== undefined) updateData.contactNumber = contactNumber;
+    if (location !== undefined) updateData.location = location;
+    if (registrationNumber !== undefined) updateData.registrationNumber = registrationNumber;
+    if (establishedYear !== undefined) updateData.establishedYear = establishedYear ? parseInt(establishedYear) : null;
+    if (address !== undefined) updateData.address = address;
+    if (socialFacebook !== undefined) updateData.socialFacebook = socialFacebook;
+    if (socialInstagram !== undefined) updateData.socialInstagram = socialInstagram;
+    if (socialTwitter !== undefined) updateData.socialTwitter = socialTwitter;
+    if (website !== undefined) updateData.website = website;
+
+    const finalBanner = bannerImage || coverImage;
+    if (finalBanner !== undefined) updateData.bannerImage = finalBanner;
+
+    const finalLogo = logoImage || profileImage;
+    if (finalLogo !== undefined) updateData.logoImage = finalLogo;
+
     if (email) updateData.email = email;
     if (req.body.vendorType) updateData.vendorType = req.body.vendorType;
 
     const vendor = await prisma.vendor.update({
-      where: { vendorId: req.user.id },
+      where: { vendorId: targetVendorId },
       data: updateData,
       select: {
         vendorId: true,

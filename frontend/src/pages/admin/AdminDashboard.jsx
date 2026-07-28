@@ -21,8 +21,8 @@ export const AdminDashboard = () => {
   });
 
   const STATS = [
-    { id: 's1', title: 'Total Users', value: isLoading ? '...' : `${data?.totalUsers ?? 0}`, trend: '14 Cust • 12 Vend', trendUp: true, icon: <Users className="w-5 h-5 text-primary" />, color: 'bg-primary' },
-    { id: 's2', title: 'Active Vendors', value: isLoading ? '...' : `${data?.activeVendors ?? 0}`, trend: '100% Active', trendUp: true, icon: <UserCheck className="w-5 h-5 text-accent" />, color: 'bg-accent' },
+    { id: 's1', title: 'Total Users', value: isLoading ? '...' : `${data?.totalUsers ?? 0}`, trend: `${data?.customerCount ?? 0} Cust • ${data?.vendorCount ?? 0} Vend`, trendUp: true, icon: <Users className="w-5 h-5 text-primary" />, color: 'bg-primary' },
+    { id: 's2', title: 'Active Vendors', value: isLoading ? '...' : `${data?.activeVendors ?? 0}`, trend: `${data?.activeVendors ?? 0} Active`, trendUp: true, icon: <UserCheck className="w-5 h-5 text-accent" />, color: 'bg-accent' },
     { id: 's3', title: 'Total Revenue', value: isLoading ? '...' : `LKR ${Number(data?.totalRevenue ?? 0).toLocaleString()}`, trend: 'Live DB', trendUp: true, icon: <DollarSign className="w-5 h-5 text-green-400" />, color: 'bg-green-400' },
     { id: 's4', title: 'Escrow Balance', value: isLoading ? '...' : `LKR ${Number(data?.escrowBalance ?? 0).toLocaleString()}`, trend: 'Escrow Held', trendUp: true, icon: <DollarSign className="w-5 h-5 text-yellow-500" />, color: 'bg-yellow-400' },
   ];

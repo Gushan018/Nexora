@@ -55,16 +55,31 @@ app.get('/api/settings', async (req, res) => {
     let settings = await prisma.systemSetting.findFirst();
     if (!settings) {
       console.log('📝 Creating default settings');
-      settings = await prisma.systemSetting.create({ data: {} });
+      settings = await prisma.systemSetting.create({
+        data: {
+          platformName: 'EventNest Platform',
+          supportEmail: 'support@eventnest.com',
+        },
+      });
+    } else if (settings.platformName.includes('Nexora') || settings.supportEmail.includes('nexora')) {
+      settings = await prisma.systemSetting.update({
+        where: { id: settings.id },
+        data: {
+          platformName: settings.platformName.replace(/Nexora/g, 'EventNest'),
+          supportEmail: settings.supportEmail.replace(/nexora/g, 'eventnest'),
+        },
+      });
     }
     console.log('✅ Sending settings:', settings);
     res.status(200).json(settings);
   } catch (error) {
     console.warn('⚠️ Warning in /api/settings (using default fallback):', error.message);
     res.status(200).json({
-      systemName: 'Nexora Event Ecosystem',
+      systemName: 'EventNest Platform',
+      platformName: 'EventNest Platform',
+      supportEmail: 'support@eventnest.com',
       logoUrl: '/logo.png',
-      commissionRate: 5.0,
+      commissionRate: 10.0,
       autoApproveVendors: true,
       maintenanceMode: false
     });

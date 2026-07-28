@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Settings, Server, Globe, Lock, Bell, CreditCard, Mail, Database, Smartphone } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
@@ -7,8 +7,8 @@ import { api, resolveAssetUrl } from '../../utils/api';
 
 export const SystemSettings = () => {
   const defaultFormState = {
-    platformName: 'Nexora Marketplace',
-    supportEmail: 'support@nexora.com',
+    platformName: 'EventNest Platform',
+    supportEmail: 'support@eventnest.com',
     maintenanceMode: false,
     commissionPercent: 10,
     paymentGateway: 'Stripe',
@@ -49,9 +49,20 @@ export const SystemSettings = () => {
       try {
         const response = await api.get('/admin/settings');
         const data = response.data;
+
+        let cleanPlatformName = data.platformName || 'EventNest Platform';
+        if (cleanPlatformName.includes('Nexora')) {
+          cleanPlatformName = cleanPlatformName.replace(/Nexora/g, 'EventNest');
+        }
+
+        let cleanSupportEmail = data.supportEmail || 'support@eventnest.com';
+        if (cleanSupportEmail.includes('nexora')) {
+          cleanSupportEmail = cleanSupportEmail.replace(/nexora/g, 'eventnest');
+        }
+
         const loadedState = {
-          platformName: data.platformName || 'Nexora Marketplace',
-          supportEmail: data.supportEmail || 'support@nexora.com',
+          platformName: cleanPlatformName,
+          supportEmail: cleanSupportEmail,
           maintenanceMode: data.maintenanceMode ?? false,
           commissionPercent: data.commissionPercent ?? 10,
           paymentGateway: data.paymentGateway || 'Stripe',
@@ -69,7 +80,6 @@ export const SystemSettings = () => {
         };
         setFormState(loadedState);
         setInitialState(loadedState);
-        // set preview if logo exists
         if (loadedState.logoUrl) {
           setLogoPreview(resolveAssetUrl(loadedState.logoUrl));
         }
@@ -145,7 +155,7 @@ export const SystemSettings = () => {
               className={cn(
                 "w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors text-left",
                 item.id === activeTab
-                  ? "bg-primary/20 text-primary border border-primary/20"
+                  ? "bg-amber-500/10 dark:bg-[#252014] text-amber-500 dark:text-[#d4af37] border border-amber-500/30 dark:border-[#52441d]"
                   : "text-gray-600 dark:text-white/60 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5"
               )}
             >

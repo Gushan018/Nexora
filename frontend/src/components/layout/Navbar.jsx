@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, User, Sparkles, Sun, Moon } from 'lucide-react';
@@ -63,7 +63,7 @@ export const Navbar = () => {
           <Link to="/" className="flex items-center group">
             <img
               src={logoSrc}
-              alt="Nexora"
+              alt="EventNest"
               className="h-12 sm:h-16 md:h-20 object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </Link>

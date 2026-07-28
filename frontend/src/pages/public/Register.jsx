@@ -274,12 +274,50 @@ export const Register = () => {
               </div>
               
               {/* Password Strength Indicator */}
-              <div className="flex gap-1 pt-2">
-                <div className="h-1 flex-1 bg-green-500 rounded-full" />
-                <div className="h-1 flex-1 bg-green-500 rounded-full" />
-                <div className="h-1 flex-1 bg-slate-200 dark:bg-slate-700 rounded-full" />
-              </div>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400">Must be at least 8 characters long</p>
+              {(() => {
+                const pass = formData.password;
+                let score = 0;
+                let label = 'Must be at least 8 characters long';
+                let labelColor = 'text-slate-500 dark:text-slate-400';
+                
+                if (pass) {
+                  if (pass.length < 8) {
+                    score = 1;
+                    label = 'Weak (Must be at least 8 characters)';
+                    labelColor = 'text-rose-500';
+                  } else {
+                    let checks = 0;
+                    if (/[0-9]/.test(pass)) checks++;
+                    if (/[^A-Za-z0-9]/.test(pass)) checks++;
+                    if (/[a-z]/.test(pass) && /[A-Z]/.test(pass)) checks++;
+                    
+                    if (checks === 0) {
+                      score = 1;
+                      label = 'Fair (Add numbers or symbols for strength)';
+                      labelColor = 'text-amber-500';
+                    } else if (checks === 1) {
+                      score = 2;
+                      label = 'Good password';
+                      labelColor = 'text-yellow-500';
+                    } else {
+                      score = 3;
+                      label = 'Strong password';
+                      labelColor = 'text-emerald-500';
+                    }
+                  }
+                }
+
+                return (
+                  <>
+                    <div className="flex gap-1.5 pt-2">
+                      <div className={cn("h-1 flex-1 rounded-full transition-all duration-300", score >= 1 ? (score === 1 ? 'bg-rose-500' : score === 2 ? 'bg-amber-500' : 'bg-emerald-500') : 'bg-slate-200 dark:bg-slate-700')} />
+                      <div className={cn("h-1 flex-1 rounded-full transition-all duration-300", score >= 2 ? (score === 2 ? 'bg-amber-500' : 'bg-emerald-500') : 'bg-slate-200 dark:bg-slate-700')} />
+                      <div className={cn("h-1 flex-1 rounded-full transition-all duration-300", score >= 3 ? 'bg-emerald-500' : 'bg-slate-200 dark:bg-slate-700')} />
+                    </div>
+                    <p className={cn("text-[10px] font-medium transition-colors mt-1", labelColor)}>{label}</p>
+                  </>
+                );
+              })()}
             </div>
 
             {/* Terms checkbox */}
