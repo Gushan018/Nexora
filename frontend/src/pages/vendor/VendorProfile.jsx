@@ -6,7 +6,7 @@ import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import { Modal } from '../../components/common/Modal';
 import { cn } from '../../utils/cn';
-import { api } from '../../utils/api';
+import { api, resolveAssetUrl } from '../../utils/api';
 
 export const VendorProfile = () => {
   const [vendor, setVendor] = useState(null);
@@ -44,8 +44,8 @@ export const VendorProfile = () => {
         contactNumber: data.contactNumber || '',
         location: data.location || ''
       });
-      setPreviewImage(data.profileImage || 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&q=80');
-      setPreviewCover(data.coverImage || 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80');
+      setPreviewImage(data.profileImage || data.logoImage || 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&q=80');
+      setPreviewCover(data.coverImage || data.bannerImage || 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80');
       setError(null);
     } catch (err) {
       setError('Failed to load profile data.');
@@ -84,7 +84,7 @@ export const VendorProfile = () => {
       const response = await api.post('/upload', fd, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      return response.data.imageUrl || response.data.url;
+      return response.data.url || response.data.imageUrl || response.data.fileUrl;
     } catch (err) {
       console.error('Image upload failed', err);
       return null;
@@ -98,21 +98,34 @@ export const VendorProfile = () => {
     setSuccess('');
 
     try {
-      let imageUrl = vendor?.profileImage;
+      let imageUrl = vendor?.profileImage || vendor?.logoImage;
       if (profileImage) {
-        imageUrl = await uploadImage(profileImage);
+        const uploadedUrl = await uploadImage(profileImage);
+        if (uploadedUrl) imageUrl = uploadedUrl;
       }
 
-      let coverUrl = vendor?.coverImage;
+      let coverUrl = vendor?.coverImage || vendor?.bannerImage;
       if (coverImage) {
-        coverUrl = await uploadImage(coverImage);
+        const uploadedCover = await uploadImage(coverImage);
+        if (uploadedCover) coverUrl = uploadedCover;
       }
 
-      await api.put('/vendors/profile', {
+      const res = await api.put('/vendors/profile', {
         ...formData,
         profileImage: imageUrl,
         coverImage: coverUrl,
+        logoImage: imageUrl,
+        bannerImage: coverUrl,
       });
+
+      const updated = res.data;
+      setVendor(updated);
+      const newLogo = updated.profileImage || updated.logoImage || imageUrl;
+      const newBanner = updated.coverImage || updated.bannerImage || coverUrl;
+      setPreviewImage(newLogo);
+      setPreviewCover(newBanner);
+      setProfileImage(null);
+      setCoverImage(null);
 
       setSuccess('Profile updated successfully!');
       setTimeout(() => setSuccess(''), 3000);
@@ -173,7 +186,7 @@ export const VendorProfile = () => {
         {/* Cover Photo */}
         <div className="h-64 w-full relative group cursor-pointer bg-slate-900 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10">
           <img 
-            src={previewCover} 
+            src={resolveAssetUrl(previewCover)} 
             alt="Cover" 
             className="w-full h-full object-cover opacity-70 group-hover:opacity-40 transition-opacity"
           />
@@ -190,7 +203,7 @@ export const VendorProfile = () => {
           <div className="relative group cursor-pointer">
             <div className="w-32 h-32 rounded-2xl bg-slate-900 border-4 border-slate-950 flex items-center justify-center overflow-hidden shadow-2xl">
               <img 
-                src={previewImage} 
+                src={resolveAssetUrl(previewImage)} 
                 alt="Logo" 
                 className="w-full h-full object-cover group-hover:opacity-50 transition-opacity"
               />
@@ -329,10 +342,10 @@ export const VendorProfile = () => {
       <Modal isOpen={isPreviewModalOpen} onClose={() => setIsPreviewModalOpen(false)} title="Public Customer Profile Preview">
         <div className="space-y-6 pt-2 text-gray-900 dark:text-white">
           <div className="relative rounded-2xl overflow-hidden h-48 border border-gray-200 dark:border-white/10">
-            <img src={previewCover} alt="Cover" className="w-full h-full object-cover" />
+            <img src={resolveAssetUrl(previewCover)} alt="Cover" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent flex items-end p-6 gap-4">
               <div className="w-20 h-20 rounded-xl overflow-hidden border-2 border-primary shrink-0 bg-slate-900">
-                <img src={previewImage} alt="Logo" className="w-full h-full object-cover" />
+                <img src={resolveAssetUrl(previewImage)} alt="Logo" className="w-full h-full object-cover" />
               </div>
               <div>
                 <div className="flex items-center gap-2">

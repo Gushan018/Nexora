@@ -209,7 +209,7 @@ export const CustomerDashboard = () => {
             <CardContent>
               <div className="space-y-6">
                 {stats?.upcomingBookingsList?.length === 0 ? (
-                  <p className="text-slate-500 text-sm py-4">No upcoming events scheduled.</p>
+                  <p className="text-gray-500 dark:text-white/60 text-sm py-4">No upcoming events scheduled.</p>
                 ) : (
                   stats?.upcomingBookingsList?.map((booking, index) => (
                     <TimelineItem 
@@ -236,7 +236,7 @@ export const CustomerDashboard = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-200 text-sm font-medium text-slate-500">
+                    <tr className="border-b border-gray-200 dark:border-white/10 text-sm font-medium text-gray-500 dark:text-white/60">
                       <th className="pb-3 pl-2">Order ID</th>
                       <th className="pb-3">Item</th>
                       <th className="pb-3">Status</th>
@@ -245,12 +245,12 @@ export const CustomerDashboard = () => {
                   </thead>
                   <tbody className="text-sm">
                     {stats?.recentOrders?.length === 0 ? (
-                      <tr><td colSpan="4" className="py-8 text-slate-500 text-center">No recent orders found.</td></tr>
+                      <tr><td colSpan="4" className="py-8 text-gray-500 dark:text-white/60 text-center">No recent orders found.</td></tr>
                     ) : (
                       stats?.recentOrders?.map((order) => (
-                        <tr key={order.orderId} className="border-b border-slate-200 hover:bg-white/[0.03] transition-colors group">
-                          <td className="py-4 pl-2 font-medium text-slate-800 group-hover:text-slate-900 transition-colors">#ORD-{order.orderId}</td>
-                          <td className="py-4 text-slate-600 group-hover:text-slate-800 transition-colors">
+                        <tr key={order.orderId} className="border-b border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/[0.03] transition-colors group">
+                          <td className="py-4 pl-2 font-medium text-gray-900 dark:text-white group-hover:text-primary transition-colors">#ORD-{order.orderId}</td>
+                          <td className="py-4 text-gray-600 dark:text-white/70 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
                             {order.orderItems?.[0]?.product?.productName || 'Items'} 
                             {order.orderItems?.length > 1 ? ` (+${order.orderItems.length - 1} more)` : ''}
                           </td>
@@ -263,7 +263,7 @@ export const CustomerDashboard = () => {
                               {order.status}
                             </span>
                           </td>
-                          <td className="py-4 text-right pr-2 font-bold text-slate-900">LKR {Number(order.totalAmount).toFixed(2)}</td>
+                          <td className="py-4 text-right pr-2 font-bold text-gray-900 dark:text-white">LKR {Number(order.totalAmount).toFixed(2)}</td>
                         </tr>
                       ))
                     )}
@@ -285,14 +285,14 @@ export const CustomerDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4 pt-0">
               {stats?.actionRequired?.length === 0 ? (
-                <div className="p-4 rounded-xl bg-surface/50 border border-slate-300">
-                  <p className="text-sm text-slate-600">You're all caught up! No actions required.</p>
+                <div className="p-4 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                  <p className="text-sm text-gray-700 dark:text-white/80">You're all caught up! No actions required.</p>
                 </div>
               ) : (
                 stats?.actionRequired?.map(action => (
-                  <div key={action.bookingId} className="p-4 rounded-xl bg-surface/50 border border-red-500/20">
-                    <h4 className="font-medium text-slate-900 mb-1">Payment Required</h4>
-                    <p className="text-sm text-slate-600 mb-3">{action.service?.vendor?.businessName || action.package?.vendor?.businessName} accepted your booking.</p>
+                  <div key={action.bookingId} className="p-4 rounded-xl bg-gray-100 dark:bg-white/5 border border-red-500/20">
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-1">Payment Required</h4>
+                    <p className="text-sm text-gray-600 dark:text-white/70 mb-3">{action.service?.vendor?.businessName || action.package?.vendor?.businessName} accepted your booking.</p>
                     <Button size="sm" className="w-full bg-red-500/20 text-red-400 hover:bg-red-500/30" onClick={() => navigate(`/customer/payment-page?bookingId=${action.bookingId}&amount=${action.service?.price || action.package?.price || 0}&item=Booking`)}>
                       Pay Now
                     </Button>
@@ -310,18 +310,18 @@ export const CustomerDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4 pt-0">
               {stats?.recommendedVendors?.length === 0 ? (
-                <p className="text-slate-500 text-sm">No suggestions at this time.</p>
+                <p className="text-gray-500 dark:text-white/60 text-sm">No suggestions at this time.</p>
               ) : (
                 stats?.recommendedVendors?.map((vendor, i) => (
-                  <div key={vendor.vendorId} onClick={() => navigate(`/customer/event-packages`)} className="flex items-center justify-between p-3 rounded-xl bg-surface/50 border border-slate-200 hover:border-slate-300 transition-colors group cursor-pointer">
+                  <div key={vendor.vendorId} onClick={() => navigate(`/customer/event-packages`)} className="flex items-center justify-between p-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-colors group cursor-pointer">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-gradient-premium flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity" />
                       <div>
-                        <p className="text-sm font-medium text-slate-900">{vendor.businessName}</p>
-                        <p className="text-xs text-slate-500">{vendor.vendorType} • Recommended</p>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{vendor.businessName}</p>
+                        <p className="text-xs text-gray-500 dark:text-white/60">{vendor.vendorType} • Recommended</p>
                       </div>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-primary transition-colors" />
+                    <ChevronRight className="w-4 h-4 text-gray-400 dark:text-white/40 group-hover:text-primary transition-colors" />
                   </div>
                 ))
               )}
@@ -340,17 +340,17 @@ const StatCard = ({ icon, title, value, label, delay }) => (
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay, type: "spring" }}
   >
-    <Card className="hover:border-primary/40 transition-all duration-300 group hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(212,175,55,0.1)] bg-surface/40 backdrop-blur-md">
+    <Card className="hover:border-primary/40 transition-all duration-300 group hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(212,175,55,0.1)] bg-light-surface dark:bg-surface border border-gray-200 dark:border-white/10">
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
-          <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center border border-slate-300 group-hover:border-primary/50 group-hover:bg-primary/10 transition-colors">
+          <div className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-white/10 flex items-center justify-center border border-gray-200 dark:border-white/10 group-hover:border-primary/50 group-hover:bg-primary/10 transition-colors">
             {icon}
           </div>
         </div>
         <div>
-          <h3 className="text-4xl font-black text-slate-900 mb-1 drop-shadow-sm">{value}</h3>
-          <p className="text-sm font-bold text-slate-800 mb-1 tracking-wide">{title}</p>
-          <p className="text-xs text-slate-500">{label}</p>
+          <h3 className="text-4xl font-black text-gray-900 dark:text-white mb-1 drop-shadow-sm">{value}</h3>
+          <p className="text-sm font-bold text-gray-800 dark:text-white/90 mb-1 tracking-wide">{title}</p>
+          <p className="text-xs text-gray-500 dark:text-white/60">{label}</p>
         </div>
       </CardContent>
     </Card>
@@ -360,7 +360,7 @@ const StatCard = ({ icon, title, value, label, delay }) => (
 const TimelineItem = ({ time, title, subtitle, status, isLast }) => (
   <div className="flex gap-4 relative">
     {!isLast && (
-      <div className="absolute top-8 left-[11px] bottom-[-24px] w-px bg-slate-200" />
+      <div className="absolute top-8 left-[11px] bottom-[-24px] w-px bg-gray-200 dark:bg-white/10" />
     )}
     <div className="flex flex-col items-center mt-1">
       <div className={cn(
@@ -375,8 +375,8 @@ const TimelineItem = ({ time, title, subtitle, status, isLast }) => (
     </div>
     <div className="pb-6">
       <div className="text-xs font-semibold text-primary mb-1">{time}</div>
-      <h4 className="text-base font-medium text-slate-900 mb-0.5">{title}</h4>
-      <p className="text-sm text-slate-600">{subtitle}</p>
+      <h4 className="text-base font-medium text-gray-900 dark:text-white mb-0.5">{title}</h4>
+      <p className="text-sm text-gray-600 dark:text-white/60">{subtitle}</p>
     </div>
   </div>
 );

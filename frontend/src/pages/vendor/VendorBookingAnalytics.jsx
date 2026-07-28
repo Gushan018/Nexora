@@ -33,8 +33,8 @@ export const VendorBookingAnalytics = () => {
   const locationCounts = {};
 
   bookingsList.forEach((b) => {
-    const d = b.eventDate ? new Date(b.eventDate) : new Date(b.bookingDate);
-    if (!isNaN(d.getTime())) {
+    const d = b.eventDate ? new Date(b.eventDate) : (b.bookingDate ? new Date(b.bookingDate) : null);
+    if (d && !isNaN(d.getTime())) {
       monthCounts[d.getMonth()] += 1;
     }
 
@@ -48,30 +48,29 @@ export const VendorBookingAnalytics = () => {
       }
     }
 
-    const loc = b.location || b.eventLocation || 'Colombo, Sri Lanka';
-    locationCounts[loc] = (locationCounts[loc] || 0) + 1;
+    const loc = b.location || b.eventLocation || b.address;
+    if (loc) {
+      locationCounts[loc] = (locationCounts[loc] || 0) + 1;
+    }
   });
 
   const maxMonthIdx = monthCounts.indexOf(Math.max(...monthCounts));
-  const busiestMonth = totalBookings > 0 ? monthNames[maxMonthIdx] : 'N/A';
-  const busiestCount = totalBookings > 0 ? monthCounts[maxMonthIdx] : 0;
+  const maxMonthCount = Math.max(...monthCounts);
+  const busiestMonth = totalBookings > 0 && maxMonthCount > 0 ? monthNames[maxMonthIdx] : 'N/A';
+  const busiestCount = totalBookings > 0 && maxMonthCount > 0 ? monthCounts[maxMonthIdx] : 0;
 
-  const avgLeadMonths = leadCount > 0 ? (totalLeadDays / leadCount / 30).toFixed(1) : '1.5';
+  const avgLeadMonths = leadCount > 0 ? (totalLeadDays / leadCount / 30).toFixed(1) : '0.0';
 
   const maxSeasonalCount = Math.max(...monthCounts, 1);
   const seasonalData = monthCounts.map((count, i) => ({
     month: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][i],
     count,
-    heightPct: totalBookings > 0 ? Math.max(10, Math.round((count / maxSeasonalCount) * 100)) : 10,
+    heightPct: totalBookings > 0 && count > 0 ? Math.max(12, Math.round((count / maxSeasonalCount) * 100)) : 0,
   }));
 
   const locationList = Object.entries(locationCounts)
     .map(([location, count]) => ({ location, count }))
     .sort((a, b) => b.count - a.count);
-
-  if (locationList.length === 0) {
-    locationList.push({ location: 'Colombo, Sri Lanka', count: totalBookings });
-  }
 
   const handleDownloadReport = () => {
     const headers = ['Booking ID', 'Customer', 'Service/Package', 'Date', 'Status'];
@@ -182,7 +181,10 @@ export const VendorBookingAnalytics = () => {
                   initial={{ height: 0 }}
                   animate={{ height: `${item.heightPct}%` }}
                   transition={{ duration: 0.6, delay: i * 0.04 }}
-                  className="w-full bg-primary/80 hover:bg-primary rounded-t transition-colors min-h-[6px]"
+                  className={cn(
+                    "w-full rounded-t transition-colors",
+                    item.heightPct > 0 ? "bg-primary/80 hover:bg-primary min-h-[6px]" : "bg-gray-200 dark:bg-white/5 h-1"
+                  )}
                 />
                 <span className="text-xs text-gray-500 dark:text-white/50 mt-2">{item.month}</span>
               </div>
@@ -200,20 +202,26 @@ export const VendorBookingAnalytics = () => {
             <CardDescription>Where your services are most requested</CardDescription>
           </CardHeader>
           <CardContent className="p-6 pt-0 border-t border-gray-200 dark:border-white/5 mt-4 space-y-4 flex-1 overflow-y-auto">
-            {locationList.map((item, idx) => {
-              const pct = totalBookings > 0 ? Math.round((item.count / totalBookings) * 100) : 100;
-              return (
-                <div key={idx} className="space-y-1">
-                  <div className="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                    <span>{item.location}</span>
-                    <span className="font-bold text-primary">{item.count}</span>
+            {locationList.length === 0 ? (
+              <div className="h-full flex flex-col items-center justify-center text-gray-500 dark:text-white/50 text-sm py-12">
+                No location data recorded yet in live database.
+              </div>
+            ) : (
+              locationList.map((item, idx) => {
+                const pct = totalBookings > 0 ? Math.round((item.count / totalBookings) * 100) : 0;
+                return (
+                  <div key={idx} className="space-y-1">
+                    <div className="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
+                      <span>{item.location}</span>
+                      <span className="font-bold text-primary">{item.count}</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-white/10 h-2 rounded-full overflow-hidden">
+                      <div className="bg-primary h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-white/10 h-2 rounded-full overflow-hidden">
-                    <div className="bg-primary h-full rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </CardContent>
         </Card>
 

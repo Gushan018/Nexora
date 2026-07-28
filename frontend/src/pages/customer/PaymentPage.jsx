@@ -114,17 +114,17 @@ export const PaymentPage = () => {
       <div className="container mx-auto px-6 max-w-4xl">
         
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-slate-900 mb-4">Secure Checkout</h1>
-          <p className="text-slate-600">Complete your payment to confirm your {isOrder ? 'order' : 'booking'}.</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Secure Checkout</h1>
+          <p className="text-gray-600 dark:text-white/70">Complete your payment to confirm your {isOrder ? 'order' : 'booking'}.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Payment Form */}
           <div className="lg:col-span-2 space-y-6">
-            <Card>
+            <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
               <CardHeader>
-                <CardTitle>Payment Method</CardTitle>
+                <CardTitle className="text-gray-900 dark:text-white">Payment Method</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 
@@ -133,7 +133,7 @@ export const PaymentPage = () => {
                     onClick={() => setPaymentMethod('ONLINE')}
                     className={cn(
                       "p-4 rounded-xl border flex flex-col items-center gap-2 transition-all",
-                      paymentMethod === 'ONLINE' ? "border-primary bg-primary/10 text-slate-900" : "border-slate-300 bg-surface text-slate-500 hover:bg-surface/80"
+                      paymentMethod === 'ONLINE' ? "border-primary bg-primary/10 text-primary font-bold" : "border-gray-300 dark:border-white/10 bg-gray-50 dark:bg-slate-900 text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-slate-800"
                     )}
                   >
                     <CreditCard className="w-6 h-6" />
@@ -143,7 +143,7 @@ export const PaymentPage = () => {
                     onClick={() => setPaymentMethod('BANK_SLIP')}
                     className={cn(
                       "p-4 rounded-xl border flex flex-col items-center gap-2 transition-all",
-                      paymentMethod === 'BANK_SLIP' ? "border-primary bg-primary/10 text-slate-900" : "border-slate-300 bg-surface text-slate-500 hover:bg-surface/80"
+                      paymentMethod === 'BANK_SLIP' ? "border-primary bg-primary/10 text-primary font-bold" : "border-gray-300 dark:border-white/10 bg-gray-50 dark:bg-slate-900 text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-slate-800"
                     )}
                   >
                     <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 6.007 0h7.36c3.273 0 5.39 1.403 5.39 4.356 0 3.45-2.204 5.301-4.887 5.301h-2.14a.64.64 0 0 0-.632.535l-.76 4.79-.148.917a.641.641 0 0 1-.632.538H7.076z"/></svg>
@@ -154,11 +154,11 @@ export const PaymentPage = () => {
                 {paymentMethod === 'ONLINE' && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-4 pt-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-800">Cardholder Name</label>
+                      <label className="text-sm font-medium text-gray-900 dark:text-white">Cardholder Name</label>
                       <input 
                         type="text" 
                         placeholder="John Doe" 
-                        className={cn("w-full bg-surface border rounded-xl px-4 py-3 text-slate-900 focus:outline-none transition-colors", cardErrors.name ? "border-red-500 focus:border-red-500" : "border-slate-300 focus:border-primary")}
+                        className={cn("w-full bg-gray-50 dark:bg-slate-900 border rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/40 focus:outline-none transition-colors", cardErrors.name ? "border-red-500 focus:border-red-500" : "border-gray-300 dark:border-white/10 focus:border-primary")}
                         value={cardDetails.name}
                         onChange={(e) => {
                           setCardDetails({...cardDetails, name: e.target.value});
@@ -169,13 +169,13 @@ export const PaymentPage = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-800">Card Number</label>
+                      <label className="text-sm font-medium text-gray-900 dark:text-white">Card Number</label>
                       <div className="relative">
-                        <CreditCard className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                        <CreditCard className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/40" />
                         <input 
                           type="text" 
                           placeholder="0000 0000 0000 0000" 
-                          className={cn("w-full bg-surface border rounded-xl pl-12 pr-4 py-3 text-slate-900 focus:outline-none transition-colors font-mono", cardErrors.number ? "border-red-500 focus:border-red-500" : "border-slate-300 focus:border-primary")}
+                          className={cn("w-full bg-gray-50 dark:bg-slate-900 border rounded-xl pl-12 pr-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/40 focus:outline-none transition-colors font-mono", cardErrors.number ? "border-red-500 focus:border-red-500" : "border-gray-300 dark:border-white/10 focus:border-primary")}
                           value={cardDetails.number}
                           onChange={handleNumberChange}
                         />
@@ -185,22 +185,22 @@ export const PaymentPage = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-slate-800">Expiry Date</label>
+                        <label className="text-sm font-medium text-gray-900 dark:text-white">Expiry Date</label>
                         <input 
                           type="text" 
                           placeholder="MM/YY" 
-                          className={cn("w-full bg-surface border rounded-xl px-4 py-3 text-slate-900 focus:outline-none transition-colors font-mono", cardErrors.expiry ? "border-red-500 focus:border-red-500" : "border-slate-300 focus:border-primary")}
+                          className={cn("w-full bg-gray-50 dark:bg-slate-900 border rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/40 focus:outline-none transition-colors font-mono", cardErrors.expiry ? "border-red-500 focus:border-red-500" : "border-gray-300 dark:border-white/10 focus:border-primary")}
                           value={cardDetails.expiry}
                           onChange={handleExpiryChange}
                         />
                         {cardErrors.expiry && <p className="text-red-400 text-xs mt-1">{cardErrors.expiry}</p>}
                       </div>
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-slate-800">CVV</label>
+                        <label className="text-sm font-medium text-gray-900 dark:text-white">CVV</label>
                         <input 
                           type="password" 
                           placeholder="123" 
-                          className={cn("w-full bg-surface border rounded-xl px-4 py-3 text-slate-900 focus:outline-none transition-colors font-mono", cardErrors.cvc ? "border-red-500 focus:border-red-500" : "border-slate-300 focus:border-primary")}
+                          className={cn("w-full bg-gray-50 dark:bg-slate-900 border rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/40 focus:outline-none transition-colors font-mono", cardErrors.cvc ? "border-red-500 focus:border-red-500" : "border-gray-300 dark:border-white/10 focus:border-primary")}
                           value={cardDetails.cvc}
                           onChange={handleCvcChange}
                         />
@@ -212,33 +212,33 @@ export const PaymentPage = () => {
 
                 {paymentMethod === 'BANK_SLIP' && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="space-y-4 pt-4">
-                    <div className="space-y-4 p-4 rounded-xl bg-surface border border-slate-300">
+                    <div className="space-y-4 p-4 rounded-xl bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-white/10">
                       <div className="flex items-start gap-3 mb-2">
                         <AlertCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-slate-900 font-medium text-sm">Upload Payment Slip</p>
-                          <p className="text-slate-600 text-xs mt-1">Please transfer the total amount to our bank account and upload the receipt here.</p>
+                          <p className="text-gray-900 dark:text-white font-medium text-sm">Upload Payment Slip</p>
+                          <p className="text-gray-600 dark:text-white/70 text-xs mt-1">Please transfer the total amount to our bank account and upload the receipt here.</p>
                         </div>
                       </div>
-                      <div className="bg-background rounded-lg p-3 text-sm text-slate-800 border border-slate-200 mb-4">
+                      <div className="bg-white dark:bg-surface rounded-lg p-3 text-sm text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 mb-4">
                         <p><strong>Bank:</strong> Commercial Bank</p>
                         <p><strong>Account Name:</strong> Event Nest Marketplace</p>
                         <p><strong>Account No:</strong> 1234567890</p>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-slate-800 mb-2">Payment Slip Image</label>
+                        <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">Payment Slip Image</label>
                         <input 
                           type="file" 
                           accept="image/*,.pdf" 
                           onChange={(e) => setFile(e.target.files[0])}
-                          className="w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30" 
+                          className="w-full text-sm text-gray-600 dark:text-white/70 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30" 
                         />
                       </div>
                     </div>
                   </motion.div>
                 )}
 
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-sm text-green-400 mt-6">
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-sm text-green-600 dark:text-green-400 mt-6">
                   <ShieldCheck className="w-5 h-5 shrink-0" />
                   <p>Your payment information is encrypted and securely processed. We never store your full card details.</p>
                 </div>
@@ -249,24 +249,24 @@ export const PaymentPage = () => {
 
           {/* Order Summary */}
           <div className="space-y-6">
-            <Card className="sticky top-24 border-primary/20 bg-surface/50 backdrop-blur-xl">
+            <Card className="sticky top-24 border-gray-200 dark:border-white/10 bg-white dark:bg-surface shadow-xl">
               <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
+                <CardTitle className="text-gray-900 dark:text-white">Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 
                 <div className="space-y-4">
                   <div className="flex gap-4">
-                    <div className="w-16 h-16 rounded-lg bg-slate-100 shrink-0" />
+                    <div className="w-16 h-16 rounded-lg bg-gray-100 dark:bg-slate-900 shrink-0" />
                     <div>
-                      <h4 className="font-bold text-slate-900 text-sm">{itemName}</h4>
-                      <p className="text-xs text-slate-500 mt-1">Total Payment</p>
+                      <h4 className="font-bold text-gray-900 dark:text-white text-sm">{itemName}</h4>
+                      <p className="text-xs text-gray-500 dark:text-white/60 mt-1">Total Payment</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-slate-300 flex justify-between items-end">
-                  <span className="font-bold text-slate-900">Total Due</span>
+                <div className="pt-4 border-t border-gray-200 dark:border-white/10 flex justify-between items-end">
+                  <span className="font-bold text-gray-900 dark:text-white">Total Due</span>
                   <span className="text-2xl font-bold text-primary">LKR {Number(amount).toFixed(2)}</span>
                 </div>
 

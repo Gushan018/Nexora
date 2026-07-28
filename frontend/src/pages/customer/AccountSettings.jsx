@@ -97,8 +97,8 @@ export const AccountSettings = () => {
     >
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Account Settings</h1>
-          <p className="text-slate-600 text-lg">Manage your personal information and preferences.</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Account Settings</h1>
+          <p className="text-gray-600 dark:text-white/70 text-lg">Manage your personal information and preferences.</p>
         </div>
         <Button 
           leftIcon={<Save className="w-4 h-4"/>} 
@@ -112,12 +112,12 @@ export const AccountSettings = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Profile Avatar Card */}
-        <Card className="md:col-span-1 border-slate-200 bg-surface/40 hover:border-primary/30 transition-colors">
+        <Card className="md:col-span-1 border-gray-200 dark:border-white/10 bg-light-surface dark:bg-surface hover:border-primary/30 transition-colors">
           <CardContent className="p-8 flex flex-col items-center text-center space-y-4">
             <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
               <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
-              <div className="w-32 h-32 rounded-full bg-gradient-premium border-4 border-surface p-1 shadow-[0_0_30px_rgba(212,175,55,0.3)]">
-                <div className="w-full h-full rounded-full bg-surface flex items-center justify-center text-4xl text-primary font-bold overflow-hidden">
+              <div className="w-32 h-32 rounded-full bg-gradient-premium border-4 border-light-surface dark:border-surface p-1 shadow-[0_0_30px_rgba(212,175,55,0.3)]">
+                <div className="w-full h-full rounded-full bg-light-surface dark:bg-surface flex items-center justify-center text-4xl text-primary font-bold overflow-hidden">
                   {previewImage ? (
                     <img 
                       src={resolveAssetUrl(previewImage)} 
@@ -135,37 +135,37 @@ export const AccountSettings = () => {
               </div>
             </div>
             <div>
-              <h3 className="text-xl font-bold text-slate-900">{user?.name || 'User Name'}</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">{user?.name || 'User Name'}</h3>
               <p className="text-primary font-medium text-sm">{user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1) || 'Customer'}</p>
             </div>
           </CardContent>
         </Card>
 
         {/* General Info Card */}
-        <Card className="md:col-span-2 border-slate-200 bg-surface/40 hover:border-primary/30 transition-colors">
+        <Card className="md:col-span-2 border-gray-200 dark:border-white/10 bg-light-surface dark:bg-surface hover:border-primary/30 transition-colors">
           <CardHeader>
-            <CardTitle className="text-xl flex items-center gap-2">
+            <CardTitle className="text-xl flex items-center gap-2 text-gray-900 dark:text-white">
               <User className="w-5 h-5 text-primary" />
               General Information
             </CardTitle>
-            <CardDescription>Update your contact details and description.</CardDescription>
+            <CardDescription className="text-gray-600 dark:text-white/60">Update your contact details and description.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800">First Name</label>
+                <label className="text-sm font-medium text-gray-700 dark:text-white/80 block">First Name</label>
                 <input 
                   type="text" 
-                  className="w-full bg-background/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
+                  className="w-full bg-light-surface dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
                   value={formFirst} 
                   onChange={(e) => setFormFirst(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800">Last Name</label>
+                <label className="text-sm font-medium text-gray-700 dark:text-white/80 block">Last Name</label>
                 <input 
                   type="text" 
-                  className="w-full bg-background/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
+                  className="w-full bg-light-surface dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
                   value={formLast} 
                   onChange={(e) => setFormLast(e.target.value)}
                 />
@@ -173,26 +173,26 @@ export const AccountSettings = () => {
             </div>
             
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-800">Email Address</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-white/80 block">Email Address</label>
               <div className="relative">
-                <Mail className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Mail className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/40" />
                 <input 
                   type="email" 
                   disabled
-                  className="w-full bg-background/50 border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-slate-500 cursor-not-allowed focus:outline-none transition-all" 
+                  className="w-full bg-gray-100 dark:bg-slate-900/60 border border-gray-300 dark:border-white/10 rounded-xl pl-12 pr-4 py-3 text-gray-600 dark:text-white/70 cursor-not-allowed focus:outline-none transition-all" 
                   value={user?.email || ''} 
                 />
               </div>
             </div>
             
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-800">Bio / Description</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-white/80 block">Bio / Description</label>
               <textarea 
                 rows="4" 
                 value={formBio}
                 onChange={(e) => setFormBio(e.target.value)}
                 placeholder="Tell vendors a bit about yourself..."
-                className="w-full bg-background/50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
+                className="w-full bg-light-surface dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
               ></textarea>
             </div>
             
@@ -201,13 +201,13 @@ export const AccountSettings = () => {
       </div>
 
       {/* Theme Preferences Card */}
-      <Card className="border-slate-200 bg-surface/40 hover:border-primary/30 transition-colors mt-8">
+      <Card className="border-gray-200 dark:border-white/10 bg-light-surface dark:bg-surface hover:border-primary/30 transition-colors mt-8">
         <CardHeader>
-          <CardTitle className="text-xl flex items-center gap-2">
+          <CardTitle className="text-xl flex items-center gap-2 text-gray-900 dark:text-white">
             <Shield className="w-5 h-5 text-primary" />
             Appearance
           </CardTitle>
-          <CardDescription>Customize how Event Nest looks for you.</CardDescription>
+          <CardDescription className="text-gray-600 dark:text-white/60">Customize how Event Nest looks for you.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-4">
@@ -215,25 +215,25 @@ export const AccountSettings = () => {
               onClick={toggleTheme}
               className={cn(
                 "flex-1 p-6 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-4",
-                theme === 'light' ? "border-primary bg-primary/5 text-primary" : "border-slate-200 hover:border-slate-300 text-slate-600 hover:bg-slate-50"
+                theme === 'light' ? "border-primary bg-primary/5 text-primary" : "border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-600 dark:text-white/70 hover:bg-gray-50 dark:hover:bg-white/5"
               )}
             >
-              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center">
                 <div className="w-6 h-6 bg-yellow-400 rounded-full" />
               </div>
-              <span className="font-bold">Light Mode</span>
+              <span className="font-bold text-gray-900 dark:text-white">Light Mode</span>
             </button>
             <button
               onClick={toggleTheme}
               className={cn(
                 "flex-1 p-6 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-4",
-                theme === 'dark' ? "border-primary bg-primary/5 text-primary" : "border-slate-200 hover:border-slate-300 text-slate-600 hover:bg-slate-50"
+                theme === 'dark' ? "border-primary bg-primary/5 text-primary" : "border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 text-gray-600 dark:text-white/70 hover:bg-gray-50 dark:hover:bg-white/5"
               )}
             >
               <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center">
                 <div className="w-4 h-4 bg-transparent rounded-full shadow-[inset_4px_-4px_0_0_#cbd5e1]" />
               </div>
-              <span className="font-bold">Dark Mode</span>
+              <span className="font-bold text-gray-900 dark:text-white">Dark Mode</span>
             </button>
           </div>
         </CardContent>
