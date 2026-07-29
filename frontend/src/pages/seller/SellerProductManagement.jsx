@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Plus, Edit2, Trash2, Package, Tag, AlertTriangle, Loader2, X, Check } from 'lucide-react';
-import { Card, CardContent } from '../../components/common/Card';
+import { Search, Filter, Plus, Edit2, Trash2, Package, AlertTriangle, Loader2, X, Check } from 'lucide-react';
+import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
+import { ConfirmModal } from '../../components/common/ConfirmModal';
 import { cn } from '../../utils/cn';
 import { Link } from 'react-router-dom';
 import { api, getImageUrl, DEFAULT_PRODUCT_IMAGE } from '../../utils/api';
@@ -17,6 +18,7 @@ export const SellerProductManagement = () => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [deleteLoading, setDeleteLoading] = useState(null);
+  const [productToDelete, setProductToDelete] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -43,16 +45,13 @@ export const SellerProductManagement = () => {
   };
 
   const handleDelete = async (productId) => {
-    if (!window.confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
-      return;
-    }
-
     try {
       setDeleteLoading(productId);
       await api.delete(`/products/${productId}`);
 
       setProducts(products.filter(p => p.productId !== productId));
       setSuccessMessage('Product deleted successfully!');
+      setProductToDelete(null);
       setTimeout(() => setSuccessMessage(''), 3000);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to delete product');
@@ -225,7 +224,7 @@ export const SellerProductManagement = () => {
                             </button>
                           </Link>
                           <button
-                            onClick={() => handleDelete(prod.productId)}
+                            onClick={() => setProductToDelete(prod)}
                             disabled={deleteLoading === prod.productId}
                             className="p-2 text-gray-500 dark:text-white/60 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors disabled:opacity-50"
                           >
@@ -251,6 +250,17 @@ export const SellerProductManagement = () => {
           </div>
         )}
       </Card>
+
+      <ConfirmModal
+        isOpen={!!productToDelete}
+        onClose={() => setProductToDelete(null)}
+        onConfirm={() => productToDelete && handleDelete(productToDelete.productId)}
+        title="Delete Product"
+        message={`Are you sure you want to delete "${productToDelete?.productName}"? This action cannot be undone.`}
+        confirmText="Delete Product"
+        isDanger={true}
+        isLoading={deleteLoading === productToDelete?.productId}
+      />
     </div>
   );
 };

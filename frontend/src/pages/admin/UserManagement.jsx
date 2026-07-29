@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Modal } from '../../components/common/Modal';
+import { ConfirmModal } from '../../components/common/ConfirmModal';
 import { cn } from '../../utils/cn';
 import { api } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
@@ -13,6 +14,7 @@ export const UserManagement = () => {
   const { loginAsUser } = useAuth();
   const navigate = useNavigate();
   const [impersonating, setImpersonating] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [statusFilter, setStatusFilter] = useState('All Status');
@@ -241,24 +243,24 @@ export const UserManagement = () => {
     }
   };
 
-  const handleDelete = async (user) => {
-    const isVendor = typeof user === 'object' && (user.role === 'Vendor' || !!user.vendorId);
+  const handleDelete = async (targetUser) => {
+    const isVendor = typeof targetUser === 'object' && (targetUser.role === 'Vendor' || !!targetUser.vendorId);
     const idToPass = isVendor
-      ? (user.vendorId || user.raw?.vendorId || Number(String(user.id).replace('VND-', '')))
-      : (user.customerId || user.raw?.customerId || Number(String(user.id).replace('VND-', '')));
+      ? (targetUser.vendorId || targetUser.raw?.vendorId || Number(String(targetUser.id).replace('VND-', '')))
+      : (targetUser.customerId || targetUser.raw?.customerId || Number(String(targetUser.id).replace('VND-', '')));
 
     if (!idToPass || isNaN(Number(idToPass))) return;
 
-    if (!window.confirm(`Delete this ${isVendor ? 'vendor' : 'user'} account?`)) return;
     try {
       if (isVendor) {
         await api.put(`/admin/vendors/${idToPass}/reject`);
       } else {
         await api.delete(`/admin/users/${idToPass}`);
       }
-      if (selectedUser?.id === user.id) {
+      if (selectedUser?.id === targetUser.id) {
         setSelectedUser(null);
       }
+      setUserToDelete(null);
       fetchUsers();
     } catch (error) {
       console.error('Failed to delete user:', error);
@@ -744,6 +746,16 @@ export const UserManagement = () => {
           </div>
         </div>
       </Modal>
+
+      <ConfirmModal
+        isOpen={!!userToDelete}
+        onClose={() => setUserToDelete(null)}
+        onConfirm={() => userToDelete && handleDelete(userToDelete)}
+        title="Delete User Account"
+        message={`Are you sure you want to delete ${userToDelete?.name || userToDelete?.email || 'this user'}? This action cannot be undone.`}
+        confirmText="Delete Account"
+        isDanger={true}
+      />
     </div>
   );
 };
