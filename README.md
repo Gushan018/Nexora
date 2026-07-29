@@ -1,6 +1,6 @@
-# 🚀 EventNest (Nexora Ecosystem) — Event Management & Multi-Vendor Marketplace
+# 🚀 EventNest — Event Management & Multi-Vendor Marketplace
 
-EventNest is a smart, unified event management ecosystem and multi-vendor marketplace tailored for the Sri Lankan market. It bridges the gap between event organizers, service providers, product suppliers, event management companies, and platform administrators.
+**EventNest** is a smart, unified event management ecosystem and multi-vendor marketplace developed by **Team Nexora** for the Sri Lankan market. It bridges the gap between event organizers, service providers, product suppliers, event management companies, and platform administrators.
 
 ---
 
@@ -133,4 +133,4 @@ node tests/run-all-6-user-tests.js
 
 ---
 
-© 2026 EventNest Project Team. All rights reserved.
+© 2026 Team Nexora. All rights reserved.
