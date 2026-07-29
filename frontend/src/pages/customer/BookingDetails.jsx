@@ -4,6 +4,8 @@ import { Calendar, Clock, MapPin, Download, CheckCircle2, AlertCircle, XCircle, 
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Modal } from '../../components/common/Modal';
+import { ConfirmModal } from '../../components/common/ConfirmModal';
+import { useToast } from '../../context/ToastContext';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../utils/api';
@@ -14,9 +16,12 @@ export const BookingDetails = () => {
   const [searchParams] = useSearchParams();
   const bookingId = searchParams.get('id');
   const { user } = useAuth();
+  const { showToast } = useToast();
   const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
 
-  const { data: bookings = [], isLoading } = useQuery({
+  const { data: bookings = [], isLoading, refetch } = useQuery({
     queryKey: ['bookings'],
     queryFn: async () => {
       const res = await api.get('/bookings/my');
@@ -33,7 +38,7 @@ export const BookingDetails = () => {
       <div className="text-center text-slate-600 dark:text-slate-400 py-20">
         Booking not found.
         <br/>
-        <Link to="/customer/event-dashboard" className="text-primary hover:underline mt-4 inline-block">Return to My Events</Link>
+        <Link to="/customer/event-dashboard" className="text-amber-500 hover:underline mt-4 inline-block">Return to My Events</Link>
       </div>
     );
   }
@@ -48,9 +53,25 @@ export const BookingDetails = () => {
   const contactEmail = booking.service?.vendor?.email || booking.package?.vendor?.email || 'vendor@eventnest.lk';
 
   const isPaid = !!booking.payment || booking.status === 'COMPLETED' || booking.paymentStatus === 'COMPLETED' || booking.paymentStatus === 'PAID';
+  const canRequestCancellation = ['PENDING', 'ACCEPTED', 'CONFIRMED'].includes(booking.status);
 
   const handlePrintInvoice = () => {
     window.print();
+  };
+
+  const handleConfirmCancellation = async () => {
+    setIsCancelling(true);
+    try {
+      await api.put(`/bookings/${booking.bookingId}/status`, { status: 'CANCELLATION_REQUESTED' });
+      setShowCancelModal(false);
+      showToast('Cancellation request submitted to vendor', 'success');
+      refetch();
+    } catch (err) {
+      console.error('Failed to submit cancellation request:', err);
+      showToast(err.response?.data?.message || 'Failed to submit cancellation request', 'error');
+    } finally {
+      setIsCancelling(false);
+    }
   };
 
   return (
@@ -68,13 +89,23 @@ export const BookingDetails = () => {
           <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
             <span>Placed on {new Date(booking.bookingDate || Date.now()).toLocaleDateString()}</span>
             <span>•</span>
-            <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-semibold border border-emerald-500/20">
+            <span className="flex items-center gap-1 bg-amber-500/10 px-2 py-0.5 rounded font-semibold border border-amber-500/20">
               {booking.status === 'ACCEPTED' || booking.status === 'COMPLETED' ? (
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
               ) : (
                 <AlertCircle className="w-3.5 h-3.5 text-amber-500" />
               )} 
-              <span className={booking.status === 'PENDING' ? 'text-amber-500' : 'text-emerald-600 dark:text-emerald-400'}>{booking.status}</span>
+              <span className={
+                booking.status === 'COMPLETED' || booking.status === 'ACCEPTED' 
+                  ? 'text-emerald-600 dark:text-emerald-400' 
+                  : booking.status === 'CANCELLATION_REQUESTED'
+                  ? 'text-amber-500'
+                  : booking.status === 'CANCELLED' || booking.status === 'REJECTED'
+                  ? 'text-rose-500'
+                  : 'text-amber-500'
+              }>
+                {booking.status === 'CANCELLATION_REQUESTED' ? 'CANCELLATION REQUESTED' : booking.status}
+              </span>
             </span>
           </div>
         </div>
@@ -243,14 +274,22 @@ export const BookingDetails = () => {
             </CardContent>
           </Card>
 
-          <Button 
-            variant="outline" 
-            className="w-full text-rose-500 hover:bg-rose-500/10 border-rose-500/30 justify-center" 
-            leftIcon={<XCircle className="w-4 h-4"/>}
-            onClick={() => alert('Cancellation request submitted. The vendor will process your request.')}
-          >
-            Request Cancellation
-          </Button>
+          {/* Cancellation Request Section */}
+          {booking.status === 'CANCELLATION_REQUESTED' ? (
+            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-200 text-sm font-semibold flex items-center gap-2.5">
+              <AlertCircle className="w-5 h-5 text-amber-500 shrink-0" />
+              <span>Cancellation request submitted. The vendor is processing your request.</span>
+            </div>
+          ) : canRequestCancellation ? (
+            <Button 
+              variant="outline" 
+              className="w-full text-rose-500 hover:bg-rose-500/10 border-rose-500/30 justify-center" 
+              leftIcon={<XCircle className="w-4 h-4"/>}
+              onClick={() => setShowCancelModal(true)}
+            >
+              Request Cancellation
+            </Button>
+          ) : null}
         </div>
 
       </div>
@@ -322,6 +361,18 @@ export const BookingDetails = () => {
 
         </div>
       </Modal>
+
+      {/* Cancellation Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showCancelModal}
+        onClose={() => setShowCancelModal(false)}
+        onConfirm={handleConfirmCancellation}
+        title="Request Booking Cancellation"
+        message={`Are you sure you want to request cancellation for Booking #NXR-${booking.bookingId}? This request will be sent directly to ${vendorName} for approval.`}
+        confirmText="Send Cancellation Request"
+        isDanger={true}
+        isLoading={isCancelling}
+      />
 
       {/* Dedicated Printable Area for Window.print() */}
       <div id="printable-invoice" className="hidden">
