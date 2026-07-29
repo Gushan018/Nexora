@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingCart, Package, DollarSign, TrendingUp, AlertTriangle, ArrowUpRight, Loader2, Briefcase, CheckCircle2 } from 'lucide-react';
+import { ShoppingCart, Package, DollarSign, TrendingUp, AlertTriangle, ArrowUpRight, Loader2, Briefcase, CheckCircle2, Receipt } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
@@ -82,6 +82,8 @@ export const SellerDashboard = () => {
 
   // Calculate Stats
   const totalSales = groupedOrders.reduce((acc, o) => acc + o.sellerTotal, 0);
+  const platformFee = Math.round(totalSales * 0.10);
+  const netEarnings = Math.round(totalSales * 0.90);
   const pendingOrders = groupedOrders.filter(o => o.status === 'PENDING').length;
   const lowOrOutCount = lowStockProducts.length;
   const totalProducts = products?.length || 0;
@@ -108,10 +110,11 @@ export const SellerDashboard = () => {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <SellerStatCard title="Total Revenue" value={`LKR ${totalSales.toLocaleString()}`} icon={<DollarSign className="w-5 h-5 text-green-500" />} />
+        <SellerStatCard title="Platform Fee (10%)" value={`-LKR ${platformFee.toLocaleString()}`} isWarning={true} icon={<Receipt className="w-5 h-5 text-red-500" />} />
+        <SellerStatCard title="Net Earnings" value={`LKR ${netEarnings.toLocaleString()}`} icon={<TrendingUp className="w-5 h-5 text-emerald-500" />} />
         <SellerStatCard title="Pending Orders" value={pendingOrders.toString()} isWarning={pendingOrders > 0} icon={<ShoppingCart className="w-5 h-5 text-yellow-500" />} />
-        <SellerStatCard title="Low/Out of Stock" value={lowOrOutCount.toString()} isWarning={lowOrOutCount > 0} icon={<Briefcase className="w-5 h-5 text-red-500" />} />
         <SellerStatCard title="Total Products" value={totalProducts.toString()} icon={<Package className="w-5 h-5 text-primary" />} />
       </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Building2, Calendar, Package, DollarSign, CheckCircle2, Clock, Plus, Activity, MessageSquare, FileText } from 'lucide-react';
+import { Building2, Calendar, Package, DollarSign, CheckCircle2, Clock, Plus, Activity, MessageSquare, FileText, Receipt, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { useAuth } from '../../context/AuthContext';
@@ -59,12 +59,15 @@ export const CompanyDashboard = () => {
     return sum + price;
   }, 0);
 
+  const platformFee = Math.round(totalRevenue * 0.10);
+  const netEarnings = Math.round(totalRevenue * 0.90);
+
   const stats = [
-    { title: 'Total Packages', value: totalPackages, badge: '+0%', icon: <Package className="w-5 h-5 text-amber-400" /> },
-    { title: 'Total Bookings', value: totalBookings, badge: '+0%', icon: <Calendar className="w-5 h-5 text-amber-400" /> },
-    { title: 'Pending Requests', value: pendingRequests, badge: '0', icon: <Clock className="w-5 h-5 text-amber-400" /> },
-    { title: 'Completed Events', value: completedEvents, badge: '+0%', icon: <CheckCircle2 className="w-5 h-5 text-amber-400" /> },
-    { title: 'Total Revenue', value: `Rs. ${totalRevenue.toLocaleString()}`, badge: '+0%', icon: <DollarSign className="w-5 h-5 text-amber-400" /> },
+    { title: 'Total Revenue', value: `Rs. ${totalRevenue.toLocaleString()}`, badge: 'Gross', icon: <DollarSign className="w-5 h-5 text-amber-400" /> },
+    { title: 'Platform Fee (10%)', value: `-Rs. ${platformFee.toLocaleString()}`, badge: '10% Fee', icon: <Receipt className="w-5 h-5 text-rose-400" /> },
+    { title: 'Net Earnings', value: `Rs. ${netEarnings.toLocaleString()}`, badge: 'Net', icon: <TrendingUp className="w-5 h-5 text-emerald-400" /> },
+    { title: 'Total Bookings', value: totalBookings, badge: `${pendingRequests} pending`, icon: <Calendar className="w-5 h-5 text-amber-400" /> },
+    { title: 'Total Packages', value: totalPackages, badge: `${completedEvents} done`, icon: <Package className="w-5 h-5 text-amber-400" /> },
   ];
 
   return (

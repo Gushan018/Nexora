@@ -23,7 +23,7 @@ export const RevenueDashboard = () => {
   }, 0);
 
   const grossRevenue = rawRevenue;
-  const platformFees = Math.round(grossRevenue * 0.05);
+  const platformFees = Math.round(grossRevenue * 0.10);
   const netEarnings = grossRevenue - platformFees;
 
   return (
@@ -62,12 +62,12 @@ export const RevenueDashboard = () => {
         {/* Platform Fees */}
         <Card className="border-slate-200 dark:border-white/10">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Platform Fees</h3>
+            <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Platform Fees (10%)</h3>
             <div className="flex flex-col justify-end h-full">
               <span className="text-3xl font-bold text-slate-900 dark:text-white">
                 {isLoading ? '...' : `-LKR ${platformFees.toLocaleString()}`}
               </span>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Flat 5% Event Nest Fee</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Flat 10% Platform Fee</p>
             </div>
           </CardContent>
         </Card>
