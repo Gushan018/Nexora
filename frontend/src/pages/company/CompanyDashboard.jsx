@@ -15,26 +15,14 @@ export const CompanyDashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const { data: vendorData } = useQuery({
-    queryKey: ['companyDashboardData'],
+  const { data: statsResponse, isLoading: statsLoading } = useQuery({
+    queryKey: ['companyVendorStats'],
     queryFn: async () => {
       try {
-        const res = await api.get('/vendor/profile');
+        const res = await api.get('/vendors/stats');
         return res.data;
       } catch (err) {
         return null;
-      }
-    },
-  });
-
-  const { data: bookingsData } = useQuery({
-    queryKey: ['companyBookings'],
-    queryFn: async () => {
-      try {
-        const res = await api.get('/bookings/my');
-        return res.data;
-      } catch (err) {
-        return [];
       }
     },
   });
@@ -52,23 +40,21 @@ export const CompanyDashboard = () => {
   });
 
   const packagesList = Array.isArray(packagesData) ? packagesData : packagesData?.packages || [];
-  const bookingsList = Array.isArray(bookingsData) ? bookingsData : bookingsData?.bookings || [];
+  const statsObj = statsResponse?.stats || {};
+  const recentRequests = statsResponse?.recentRequests || [];
+  const revenueChartFromDb = statsResponse?.revenueChart || [];
 
-  const totalPackages = packagesList.length;
-  const totalBookings = bookingsList.length;
-  const pendingRequests = bookingsList.filter(b => b.status === 'PENDING').length;
-  const acceptedBookings = bookingsList.filter(b => b.status === 'ACCEPTED').length;
-  const completedEvents = bookingsList.filter(b => b.status === 'COMPLETED').length;
-  const cancelledBookings = bookingsList.filter(b => b.status === 'CANCELLED' || b.status === 'REJECTED').length;
+  const totalPackages = packagesList.length || statsObj.totalPackages || 0;
+  const totalBookings = statsObj.totalBookings ?? 0;
+  const pendingRequests = statsObj.pendingBookings ?? 0;
+  const completedEvents = statsObj.completedBookings ?? 0;
+  const acceptedBookings = statsObj.activeBookings ?? (completedEvents + pendingRequests);
+  const cancelledBookings = 0;
 
-  const grossRevenue = bookingsList.reduce((sum, b) => {
-    const price = Number(b.package?.price || b.service?.price || 0);
-    return sum + price;
-  }, 0);
-
-  const PLATFORM_FEE_PERCENT = 10; // 10% Platform Fee
-  const platformFee = Math.round((grossRevenue * PLATFORM_FEE_PERCENT) / 100);
-  const netEarnings = Math.round(grossRevenue - platformFee);
+  const grossRevenue = statsObj.totalRevenue ?? 0;
+  const platformFee = statsObj.platformFee ?? Math.round(grossRevenue * 0.10);
+  const netEarnings = statsObj.netEarnings ?? Math.round(grossRevenue - platformFee);
+  
   const avgBookingValue = totalBookings > 0 ? (grossRevenue / totalBookings) : 0;
   const acceptanceRate = totalBookings > 0 ? Math.round(((acceptedBookings + completedEvents) / totalBookings) * 100) : 100;
 
@@ -77,22 +63,21 @@ export const CompanyDashboard = () => {
   const currentMonthIdx = new Date().getMonth();
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   
-  // Fill monthly data from real bookings
-  bookingsList.forEach(b => {
-    if (b.eventDate || b.bookingDate) {
-      const d = new Date(b.eventDate || b.bookingDate);
-      const mName = monthNames[d.getMonth()];
-      const val = Number(b.package?.price || b.service?.price || 0);
-      if (monthsMap[mName] !== undefined) {
-        monthsMap[mName] += val;
+  if (revenueChartFromDb && revenueChartFromDb.length > 0) {
+    revenueChartFromDb.forEach(item => {
+      if (item.label || item.month) {
+        const mKey = item.label || item.month;
+        if (monthsMap[mKey] !== undefined) {
+          monthsMap[mKey] = Number(item.revenue || item.amount || 0);
+        }
       }
-    }
-  });
+    });
+  }
 
   const chartData = monthNames.slice(Math.max(0, currentMonthIdx - 5), currentMonthIdx + 1).map(m => ({
     month: m,
-    Revenue: monthsMap[m] || (grossRevenue > 0 ? Math.round(grossRevenue / 4) : 0),
-    Bookings: bookingsList.length || 0
+    Revenue: monthsMap[m] || 0,
+    Bookings: totalBookings || 0
   }));
 
   const stats = [
@@ -205,7 +190,7 @@ export const CompanyDashboard = () => {
                 </div>
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
-                    <Percent className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" /> Platform Fee ({PLATFORM_FEE_PERCENT}%)
+                    <Percent className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" /> Platform Fee (10%)
                   </span>
                   <span className="font-bold text-rose-600 dark:text-rose-400">- LKR {platformFee.toLocaleString()}</span>
                 </div>
