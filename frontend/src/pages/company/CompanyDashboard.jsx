@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { 
   Building2, Calendar, Package, DollarSign, CheckCircle2, Clock, 
-  Plus, Activity, MessageSquare, FileText, TrendingUp, ShieldCheck, PieChart, ArrowUpRight, Percent
+  Plus, Activity, MessageSquare, FileText, TrendingUp, ShieldCheck, PieChart, ArrowUpRight, Percent, Receipt
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -67,8 +67,8 @@ export const CompanyDashboard = () => {
   }, 0);
 
   const PLATFORM_FEE_PERCENT = 10; // 10% Platform Fee
-  const platformFee = (grossRevenue * PLATFORM_FEE_PERCENT) / 100;
-  const netEarnings = grossRevenue - platformFee;
+  const platformFee = Math.round((grossRevenue * PLATFORM_FEE_PERCENT) / 100);
+  const netEarnings = Math.round(grossRevenue - platformFee);
   const avgBookingValue = totalBookings > 0 ? (grossRevenue / totalBookings) : 0;
   const acceptanceRate = totalBookings > 0 ? Math.round(((acceptedBookings + completedEvents) / totalBookings) * 100) : 100;
 
@@ -96,11 +96,11 @@ export const CompanyDashboard = () => {
   }));
 
   const stats = [
-    { title: 'Total Packages', value: totalPackages, badge: 'Active', icon: <Package className="w-5 h-5 text-amber-400" /> },
-    { title: 'Total Bookings', value: totalBookings, badge: `${acceptanceRate}% rate`, icon: <Calendar className="w-5 h-5 text-amber-400" /> },
-    { title: 'Pending Requests', value: pendingRequests, badge: pendingRequests > 0 ? 'Requires Action' : 'All Clear', icon: <Clock className="w-5 h-5 text-amber-400" /> },
-    { title: 'Completed Events', value: completedEvents, badge: 'Done', icon: <CheckCircle2 className="w-5 h-5 text-amber-400" /> },
     { title: 'Gross Revenue', value: `LKR ${grossRevenue.toLocaleString()}`, badge: 'Total', icon: <DollarSign className="w-5 h-5 text-amber-400" /> },
+    { title: 'Platform Fee (10%)', value: `-LKR ${platformFee.toLocaleString()}`, badge: '10% Fee', icon: <Percent className="w-5 h-5 text-amber-400" /> },
+    { title: 'Net Earnings', value: `LKR ${netEarnings.toLocaleString()}`, badge: 'Take-Home', icon: <Receipt className="w-5 h-5 text-emerald-400" /> },
+    { title: 'Total Bookings', value: totalBookings.toString(), badge: `${acceptanceRate}% rate`, icon: <Calendar className="w-5 h-5 text-amber-400" /> },
+    { title: 'Total Packages', value: totalPackages.toString(), badge: 'Active', icon: <Package className="w-5 h-5 text-amber-400" /> },
   ];
 
   return (
@@ -125,7 +125,7 @@ export const CompanyDashboard = () => {
         </div>
       </div>
 
-      {/* Top KPI Cards */}
+      {/* 5 Top KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {stats.map((stat, idx) => (
           <div key={idx} className="border border-white/10 bg-[#151D2F] rounded-2xl p-5 shadow-lg">
@@ -137,7 +137,7 @@ export const CompanyDashboard = () => {
                 {stat.badge}
               </span>
             </div>
-            <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
+            <div className="text-xl font-bold text-white mb-1 tracking-tight">{stat.value}</div>
             <div className="text-xs font-medium text-slate-400">{stat.title}</div>
           </div>
         ))}

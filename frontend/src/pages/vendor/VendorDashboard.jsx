@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { DollarSign, Calendar, Star, TrendingUp, Users, Briefcase, Package, Loader2, AlertCircle, Download, CheckCircle2, Clock } from 'lucide-react';
+import { DollarSign, Calendar, Star, TrendingUp, Users, Briefcase, Package, Loader2, AlertCircle, Download, CheckCircle2, Clock, Receipt, Percent } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
 import { ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, AreaChart, Area } from 'recharts';
 import { Link } from 'react-router-dom';
 import { api } from '../../utils/api';
-
-// Revenue chart dynamically powered by database data
 
 export const VendorDashboard = () => {
   const [data, setData] = useState(null);
@@ -78,6 +76,10 @@ export const VendorDashboard = () => {
 
   const { stats = {}, recentRequests = [] } = data || {};
 
+  const totalRev = stats?.totalRevenue ?? 0;
+  const platformFee = stats?.platformFee ?? Math.round(totalRev * 0.10);
+  const netEarn = stats?.netEarnings ?? Math.round(totalRev * 0.90);
+
   const chartData = (data?.revenueChart && data.revenueChart.length > 0)
     ? data.revenueChart.map(item => ({
         label: item.month || item.day || item.label || '',
@@ -96,7 +98,7 @@ export const VendorDashboard = () => {
     <div className="space-y-6 pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Overview</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Service Provider Dashboard</h1>
           <p className="text-slate-600 dark:text-slate-400">Welcome back, here's what's happening with your business today.</p>
         </div>
         <div className="flex items-center gap-3">
@@ -131,14 +133,29 @@ export const VendorDashboard = () => {
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* 5 KPI Cards Grid for Service Provider */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <StatCard 
           title="Total Revenue" 
-          value={`LKR ${(stats?.totalRevenue ?? 0).toLocaleString()}`} 
-          trend="+15%" 
+          value={`LKR ${totalRev.toLocaleString()}`} 
+          trend="Gross" 
           trendUp={true}
           icon={<DollarSign className="w-5 h-5 text-primary" />} 
+        />
+        <StatCard 
+          title="Platform Fee (10%)" 
+          value={`-LKR ${platformFee.toLocaleString()}`} 
+          trend="Standard 10%" 
+          trendUp={false}
+          isWarning={true}
+          icon={<Percent className="w-5 h-5 text-amber-500" />} 
+        />
+        <StatCard 
+          title="Net Earnings" 
+          value={`LKR ${netEarn.toLocaleString()}`} 
+          trend="Take-Home" 
+          trendUp={true}
+          icon={<Receipt className="w-5 h-5 text-green-500" />} 
         />
         <StatCard 
           title="Active Bookings" 
@@ -148,18 +165,11 @@ export const VendorDashboard = () => {
           icon={<Calendar className="w-5 h-5 text-yellow-500" />} 
         />
         <StatCard 
-          title="Services & Packages" 
-          value={((stats?.totalServices ?? 0) + (stats?.totalPackages ?? 0)).toString()} 
-          trend={`${stats?.totalServices ?? 0} Svcs / ${stats?.totalPackages ?? 0} Pkgs`} 
-          trendUp={true}
-          icon={<Briefcase className="w-5 h-5 text-primary" />} 
-        />
-        <StatCard 
-          title="Completed Bookings" 
+          title="Completed Events" 
           value={(stats?.completedBookings ?? 0).toString()} 
-          trend="Total" 
+          trend="Completed" 
           trendUp={true}
-          icon={<Star className="w-5 h-5 text-green-500" />} 
+          icon={<CheckCircle2 className="w-5 h-5 text-green-500" />} 
         />
       </div>
 
@@ -170,7 +180,7 @@ export const VendorDashboard = () => {
           <Card className="h-[420px]">
             <CardHeader>
               <CardTitle>Revenue Analytics</CardTitle>
-              <CardDescription>Your monthly revenue breakdown from the database.</CardDescription>
+              <CardDescription>Your monthly revenue breakdown from live bookings.</CardDescription>
             </CardHeader>
             <CardContent className="h-[300px] pt-2">
               <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
@@ -183,7 +193,7 @@ export const VendorDashboard = () => {
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
                   <XAxis dataKey="label" stroke="#94a3b8" />
-                  <YAxis stroke="#94a3b8" tickFormatter={(val) => `Rs.${val}`} />
+                  <YAxis stroke="#94a3b8" tickFormatter={(val) => `LKR ${val}`} />
                   <Tooltip 
                     formatter={(value) => [`LKR ${parseFloat(value).toLocaleString()}`, 'Revenue']}
                     contentStyle={{ backgroundColor: '#1e293b', borderColor: 'rgba(255,255,255,0.1)', color: '#fff', borderRadius: '12px' }} 
@@ -236,20 +246,20 @@ export const VendorDashboard = () => {
   );
 };
 
-const StatCard = ({ title, value, trend, trendUp, icon }) => (
-  <Card>
-    <CardContent className="p-6">
+const StatCard = ({ title, value, trend, trendUp, isWarning, icon }) => (
+  <Card className={cn("hover:-translate-y-1 transition-transform duration-300", isWarning && "border-amber-500/30 bg-amber-500/5")}>
+    <CardContent className="p-5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-medium text-slate-600 dark:text-slate-400">{title}</h3>
-        <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center border border-slate-200 dark:border-white/10">
+        <h3 className="text-xs font-medium text-slate-600 dark:text-slate-400">{title}</h3>
+        <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center border border-slate-200 dark:border-white/10">
           {icon}
         </div>
       </div>
-      <div className="flex items-end gap-3">
-        <div className="text-3xl font-bold text-slate-900 dark:text-white">{value}</div>
+      <div className="flex flex-col gap-1">
+        <div className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">{value}</div>
         <div className={cn(
-          "text-xs font-semibold mb-1 flex items-center gap-1",
-          trendUp ? "text-green-500" : "text-red-500"
+          "text-[11px] font-semibold flex items-center gap-1",
+          trendUp ? "text-green-500" : "text-amber-500"
         )}>
           {trend}
         </div>

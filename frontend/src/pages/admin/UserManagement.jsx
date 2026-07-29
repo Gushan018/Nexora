@@ -302,13 +302,40 @@ export const UserManagement = () => {
   const handleLoginAsUser = async (userObj) => {
     setImpersonating(true);
     try {
-      const isVendor = typeof userObj === 'object' ? (userObj.role === 'Vendor' || !!userObj.vendorId) : false;
-      const targetRole = isVendor ? 'vendor' : 'customer';
+      const isVendor = typeof userObj === 'object' && (
+        userObj.role === 'Vendor' || 
+        !!userObj.vendorId || 
+        userObj.role === 'Service Provider' || 
+        userObj.role === 'Seller / Supplier' || 
+        userObj.role === 'Event Management Company' ||
+        !!userObj.raw?.vendorId
+      );
+
+      let targetRole = 'customer';
+      if (isVendor) {
+        if (userObj.role === 'Seller / Supplier' || userObj.vendorType === 'RENTAL') {
+          targetRole = 'seller';
+        } else if (userObj.role === 'Event Management Company' || userObj.vendorType === 'EVENT_COMPANY') {
+          targetRole = 'company';
+        } else {
+          targetRole = 'vendor';
+        }
+      }
+
       const targetId = typeof userObj === 'object' ? (isVendor ? (userObj.vendorId || userObj.raw?.vendorId || Number(String(userObj.id).replace('VND-', ''))) : (userObj.customerId || userObj.raw?.customerId || userObj.id)) : userObj;
       
       const response = await api.post(`/admin/impersonate/${targetRole}/${targetId}`);
       loginAsUser(response.data.token, response.data.user);
-      navigate(isVendor ? '/vendor/dashboard' : '/customer/dashboard');
+
+      if (response.data.user?.role === 'seller' || targetRole === 'seller') {
+        navigate('/seller/dashboard');
+      } else if (response.data.user?.role === 'company' || targetRole === 'company') {
+        navigate('/company/dashboard');
+      } else if (response.data.user?.role === 'vendor' || targetRole === 'vendor') {
+        navigate('/vendor/dashboard');
+      } else {
+        navigate('/customer/dashboard');
+      }
     } catch (error) {
       console.error(error);
       setImpersonating(false);

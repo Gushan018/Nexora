@@ -1546,12 +1546,14 @@ const impersonateUser = async (req, res) => {
     const { role, id } = req.params;
     const targetId = parseInt(id, 10);
 
-    if (!['customer', 'vendor'].includes(role) || Number.isNaN(targetId)) {
+    if (!['customer', 'vendor', 'seller', 'company'].includes(role) || Number.isNaN(targetId)) {
       return res.status(400).json({ message: 'Invalid impersonation target' });
     }
 
+    const actualRole = (role === 'seller' || role === 'company') ? 'vendor' : role;
+
     const target =
-      role === 'customer'
+      actualRole === 'customer'
         ? await prisma.customer.findUnique({ where: { customerId: targetId } })
         : await prisma.vendor.findUnique({ where: { vendorId: targetId } });
 
@@ -1559,20 +1561,22 @@ const impersonateUser = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    const userRole = actualRole === 'customer' ? 'customer' : (target.vendorType === 'RENTAL' ? 'seller' : (target.vendorType === 'EVENT_COMPANY' ? 'company' : 'vendor'));
+
     const token = jwt.sign(
-      { id: targetId, role, impersonatedBy: req.user.id },
+      { id: targetId, role: userRole, impersonatedBy: req.user.id },
       process.env.JWT_SECRET,
       { expiresIn: '30m' }
     );
 
     await prisma.impersonationLog.create({
-      data: { adminId: req.user.id, targetRole: role, targetId },
+      data: { adminId: req.user.id, targetRole: userRole, targetId },
     });
 
     const user =
-      role === 'customer'
+      actualRole === 'customer'
         ? { id: target.customerId, name: target.name, email: target.email, role: 'customer' }
-        : { id: target.vendorId, businessName: target.businessName, email: target.email, role: 'vendor' };
+        : { id: target.vendorId, businessName: target.businessName, email: target.email, role: userRole, vendorType: target.vendorType };
 
     res.status(200).json({ token, user });
   } catch (error) {

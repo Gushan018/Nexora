@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingCart, Package, DollarSign, TrendingUp, AlertTriangle, ArrowUpRight, Loader2, Briefcase, CheckCircle2 } from 'lucide-react';
+import { ShoppingCart, Package, DollarSign, TrendingUp, AlertTriangle, ArrowUpRight, Loader2, Briefcase, CheckCircle2, Receipt, Percent } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
@@ -82,6 +82,8 @@ export const SellerDashboard = () => {
 
   // Calculate Stats
   const totalSales = groupedOrders.reduce((acc, o) => acc + o.sellerTotal, 0);
+  const platformFee = Math.round(totalSales * 0.10);
+  const netEarnings = Math.round(totalSales * 0.90);
   const pendingOrders = groupedOrders.filter(o => o.status === 'PENDING').length;
   const lowOrOutCount = lowStockProducts.length;
   const totalProducts = products?.length || 0;
@@ -91,7 +93,7 @@ export const SellerDashboard = () => {
       {/* Welcome & Quick Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Storefront Overview</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Seller Dashboard</h1>
           <p className="text-slate-600 dark:text-slate-400">Manage your products, track orders, and monitor sales performance.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -107,12 +109,35 @@ export const SellerDashboard = () => {
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <SellerStatCard title="Total Revenue" value={`LKR ${totalSales.toLocaleString()}`} icon={<DollarSign className="w-5 h-5 text-green-500" />} />
-        <SellerStatCard title="Pending Orders" value={pendingOrders.toString()} isWarning={pendingOrders > 0} icon={<ShoppingCart className="w-5 h-5 text-yellow-500" />} />
-        <SellerStatCard title="Low/Out of Stock" value={lowOrOutCount.toString()} isWarning={lowOrOutCount > 0} icon={<Briefcase className="w-5 h-5 text-red-500" />} />
-        <SellerStatCard title="Total Products" value={totalProducts.toString()} icon={<Package className="w-5 h-5 text-primary" />} />
+      {/* 5 KPI Cards Grid for Product Seller */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <SellerStatCard 
+          title="Total Revenue" 
+          value={`LKR ${totalSales.toLocaleString()}`} 
+          icon={<DollarSign className="w-5 h-5 text-green-500" />} 
+        />
+        <SellerStatCard 
+          title="Platform Fee (10%)" 
+          value={`-LKR ${platformFee.toLocaleString()}`} 
+          isWarning={true}
+          icon={<Percent className="w-5 h-5 text-amber-500" />} 
+        />
+        <SellerStatCard 
+          title="Net Earnings" 
+          value={`LKR ${netEarnings.toLocaleString()}`} 
+          icon={<Receipt className="w-5 h-5 text-primary" />} 
+        />
+        <SellerStatCard 
+          title="Pending Orders" 
+          value={pendingOrders.toString()} 
+          isWarning={pendingOrders > 0} 
+          icon={<ShoppingCart className="w-5 h-5 text-yellow-500" />} 
+        />
+        <SellerStatCard 
+          title="Total Products" 
+          value={totalProducts.toString()} 
+          icon={<Package className="w-5 h-5 text-primary" />} 
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -286,16 +311,16 @@ export const SellerDashboard = () => {
 };
 
 const SellerStatCard = ({ title, value, isWarning, icon }) => (
-  <Card className={cn("hover:-translate-y-1 transition-transform duration-300", isWarning && "border-yellow-500/30 bg-yellow-500/5")}>
-    <CardContent className="p-6">
-      <div className="flex items-start justify-between mb-2">
-        <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{title}</p>
-        <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center border border-slate-200 dark:border-white/10">
+  <Card className={cn("hover:-translate-y-1 transition-transform duration-300", isWarning && "border-amber-500/30 bg-amber-500/5")}>
+    <CardContent className="p-5">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-xs font-medium text-slate-600 dark:text-slate-400">{title}</h3>
+        <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center border border-slate-200 dark:border-white/10">
           {icon}
         </div>
       </div>
-      <div className="flex items-end gap-3 mt-2">
-        <h3 className="text-3xl font-bold text-slate-900 dark:text-white">{value}</h3>
+      <div className="flex items-end gap-3 mt-1">
+        <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">{value}</h3>
       </div>
     </CardContent>
   </Card>
