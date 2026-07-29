@@ -124,6 +124,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           { name: 'Payments', path: '/vendor/revenue-dashboard', icon: <DollarSign /> },
           { name: 'Reports & Analytics', path: '/vendor/vendor-booking-analytics', icon: <Activity /> },
           { name: 'Reviews & Ratings', path: '/vendor/customer-reviews', icon: <Star /> },
+          { name: 'Settings', path: '/vendor/vendor-settings', icon: <Settings /> },
         ];
       case 'vendor':
         return [
@@ -403,7 +404,12 @@ export const DashboardLayout = ({ role = 'customer' }) => {
                     </div>
                     <div className="p-2 flex flex-col">
                       <Link 
-                        to={userRole === 'customer' ? '/customer/account-settings' : userRole === 'vendor' ? '/vendor/vendor-settings' : userRole === 'seller' ? '/seller/seller-settings' : '/admin/system-settings'} 
+                        to={
+                          userRole === 'customer' ? '/customer/account-settings' : 
+                          userRole === 'seller' ? '/seller/seller-settings' : 
+                          (userRole === 'company' || userRole === 'emc' || userRole === 'vendor' || userRole === 'service_provider') ? '/vendor/vendor-settings' : 
+                          userRole === 'admin' ? '/admin/system-settings' : '/vendor/vendor-settings'
+                        } 
                         onClick={() => setActiveDropdown(null)} 
                         className="px-4 py-2 text-sm text-gray-700 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors text-left flex items-center gap-2"
                       >
