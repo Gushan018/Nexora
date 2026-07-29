@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Star, Upload, CheckCircle2, ChevronLeft, Building2, Camera, AlertCircle, Sparkles, UserCheck } from 'lucide-react';
+import { Star, Upload, CheckCircle2, ChevronLeft, Building2, Camera, AlertCircle, Sparkles, UserCheck, Package } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -20,6 +20,7 @@ export const ReviewSubmission = () => {
   const vendorId = searchParams.get('vendorId');
   const serviceId = searchParams.get('serviceId');
   const productId = searchParams.get('productId');
+  const packageId = searchParams.get('packageId');
 
   const { data: vendorInfo } = useQuery({
     queryKey: ['vendorInfoForReview', vendorId],
@@ -35,7 +36,7 @@ export const ReviewSubmission = () => {
     enabled: !!vendorId
   });
 
-  const isEventCompany = vendorInfo?.vendorType === 'EVENT_COMPANY';
+  const isEventCompany = vendorInfo?.vendorType === 'EVENT_COMPANY' || !!packageId;
 
   const submitReviewMutation = useMutation({
     mutationFn: async () => {
@@ -44,7 +45,8 @@ export const ReviewSubmission = () => {
         comment: reviewText,
         vendorId: vendorId ? parseInt(vendorId) : null,
         serviceId: serviceId ? parseInt(serviceId) : null,
-        productId: productId ? parseInt(productId) : null
+        productId: productId ? parseInt(productId) : null,
+        packageId: packageId ? parseInt(packageId) : null
       });
       return res.data;
     },
@@ -59,7 +61,7 @@ export const ReviewSubmission = () => {
 
   if (isSubmitted) {
     return (
-      <div className="pt-24 pb-20 min-h-screen bg-background flex flex-col items-center justify-center">
+      <div className="pt-24 pb-20 min-h-screen bg-background flex flex-col items-center justify-center text-slate-900 dark:text-slate-100">
         <motion.div 
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -70,10 +72,10 @@ export const ReviewSubmission = () => {
           </div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">Review Submitted!</h1>
           <p className="text-slate-600 dark:text-slate-300 mb-8">
-            Thank you for sharing your feedback. Your review helps other customers choose the right {isEventCompany ? 'Event Management Company' : 'Service Provider'}.
+            Thank you for sharing your feedback. Your review helps other customers choose the right {isEventCompany ? 'Event Package & Company' : 'Service Provider'}.
           </p>
           <Link to="/customer/review-management">
-            <Button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold">View My Reviews</Button>
+            <Button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold border-none">View My Reviews</Button>
           </Link>
         </motion.div>
       </div>
@@ -81,7 +83,7 @@ export const ReviewSubmission = () => {
   }
 
   return (
-    <div className="pt-24 pb-20 min-h-screen bg-background flex flex-col items-center">
+    <div className="pt-24 pb-20 min-h-screen bg-background flex flex-col items-center text-slate-900 dark:text-slate-100">
       <div className="container mx-auto px-6 max-w-2xl">
         
         <div className="mb-8">
@@ -90,36 +92,36 @@ export const ReviewSubmission = () => {
           </Link>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Leave a Rating & Review</h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Share your feedback for {vendorInfo?.businessName || (isEventCompany ? 'Event Management Company' : 'Service Provider')}.
+            Share your experience with {vendorInfo?.businessName || (packageId ? 'Event Package' : isEventCompany ? 'Event Management Company' : 'Service Provider')}.
           </p>
         </div>
 
         {/* Entity Card Header */}
-        <Card className="mb-8 border-amber-500/20 bg-amber-500/5">
+        <Card className="mb-8 border-amber-500/20 bg-amber-500/5 dark:bg-[#151D2F]">
           <CardContent className="p-6 flex items-center gap-4">
-            <div className="w-16 h-16 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0">
-              {isEventCompany ? <Building2 className="w-8 h-8" /> : <UserCheck className="w-8 h-8" />}
+            <div className="w-16 h-16 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 shrink-0">
+              {packageId ? <Package className="w-8 h-8" /> : isEventCompany ? <Building2 className="w-8 h-8" /> : <UserCheck className="w-8 h-8" />}
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                  {vendorInfo?.businessName || 'Reviewing Partner'}
+                  {vendorInfo?.businessName || (packageId ? 'Event Package Review' : 'Partner Review')}
                 </h2>
                 <span className={cn(
                   "text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border",
-                  isEventCompany ? "bg-amber-500/10 border-amber-500/20 text-amber-400" : "bg-purple-500/10 border-purple-500/20 text-purple-400"
+                  packageId ? "bg-amber-500/10 border-amber-500/20 text-amber-500" : isEventCompany ? "bg-amber-500/10 border-amber-500/20 text-amber-500" : "bg-purple-500/10 border-purple-500/20 text-purple-400"
                 )}>
-                  {isEventCompany ? 'Event Mgmt Company' : 'Service Provider'}
+                  {packageId ? 'Event Package' : isEventCompany ? 'Event Mgmt Company' : 'Service Provider'}
                 </span>
               </div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Help others make informed hiring choices.</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Help others make informed booking choices.</p>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-200 dark:border-white/10 bg-white dark:bg-[#151D2F]">
           <CardHeader>
-            <CardTitle>Your Detailed Rating</CardTitle>
+            <CardTitle className="text-slate-900 dark:text-white">Your Detailed Rating</CardTitle>
           </CardHeader>
           <CardContent className="p-6 space-y-8">
             
@@ -138,14 +140,14 @@ export const ReviewSubmission = () => {
                       className={cn(
                         "w-12 h-12 transition-colors",
                         (hoveredRating || rating) >= star 
-                          ? "text-amber-400 fill-amber-400" 
+                          ? "text-amber-500 fill-amber-500" 
                           : "text-slate-300 dark:text-slate-600"
                       )} 
                     />
                   </button>
                 ))}
               </div>
-              <span className="text-sm font-semibold text-amber-400 h-5">
+              <span className="text-sm font-semibold text-amber-500 h-5">
                 {rating === 1 && "Terrible"}
                 {rating === 2 && "Poor"}
                 {rating === 3 && "Average"}
@@ -160,7 +162,9 @@ export const ReviewSubmission = () => {
                 rows="5" 
                 value={reviewText}
                 onChange={(e) => setReviewText(e.target.value)}
-                placeholder={isEventCompany 
+                placeholder={packageId 
+                  ? "Describe the package setup, included services, value for money, and overall event execution..."
+                  : isEventCompany 
                   ? "Describe the event management, organization, package setup, communication, and overall quality..."
                   : "Describe the service quality, punctuality, expertise, and overall experience with this provider..."
                 } 
@@ -169,18 +173,18 @@ export const ReviewSubmission = () => {
               <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between">
                 <span>Constructive feedback helps vendors improve.</span>
                 <span className={cn(
-                  reviewText.length > 0 ? "text-amber-400 font-bold" : "text-slate-500 dark:text-slate-400"
+                  reviewText.length > 0 ? "text-amber-500 font-bold" : "text-slate-500 dark:text-slate-400"
                 )}>{reviewText.length}/500</span>
               </p>
             </div>
 
-            <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200/90">
-              <AlertCircle className="w-5 h-5 shrink-0 text-amber-400 mt-0.5" />
-              <p>Reviews are verified and published on the partner's public profile page.</p>
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-800 dark:text-amber-200/90">
+              <AlertCircle className="w-5 h-5 shrink-0 text-amber-500 mt-0.5" />
+              <p>Reviews are verified and published on the partner's public profile and package listing page.</p>
             </div>
 
             <Button 
-              className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold h-12 rounded-xl text-base" 
+              className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold h-12 rounded-xl text-base border-none" 
               disabled={rating === 0 || submitReviewMutation.isPending}
               onClick={() => submitReviewMutation.mutate()}
             >
