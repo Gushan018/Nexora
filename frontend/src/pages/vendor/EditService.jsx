@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Upload, Save, Trash2, Loader2, AlertCircle, Check, MapPin } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
+import { ConfirmModal } from '../../components/common/ConfirmModal';
 import { Input } from '../../components/common/Input';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { api } from '../../utils/api';
@@ -158,17 +159,24 @@ export const EditService = () => {
     }
   };
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
   const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this service? This action cannot be undone.')) return;
     try {
+      setDeleting(true);
       try {
         await api.delete(`/services/${serviceId}`);
       } catch (eDel) {
         await api.delete(`/vendors/services/${serviceId}`);
       }
+      showToast('Service deleted successfully!', 'success');
+      setShowDeleteConfirm(false);
       navigate('/vendor/service-listing');
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to delete service');
+      showToast(err.response?.data?.message || 'Failed to delete service', 'error');
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -433,7 +441,7 @@ export const EditService = () => {
             <CardContent className="space-y-4">
               <p className="text-sm text-slate-600 dark:text-slate-400">Permanently delete this service. This action cannot be undone and will remove it from all future search results.</p>
               <Button 
-                onClick={handleDelete}
+                onClick={() => setShowDeleteConfirm(true)}
                 variant="outline" 
                 className="w-full text-red-500 hover:text-red-600 hover:bg-red-500/10 border-red-500/30" 
                 leftIcon={<Trash2 className="w-4 h-4"/>}
@@ -445,6 +453,17 @@ export const EditService = () => {
         </div>
 
       </div>
+
+      <ConfirmModal
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDelete}
+        title="Delete Service"
+        message="Are you sure you want to delete this service? This action cannot be undone and will remove it from all search results."
+        confirmText="Delete Service"
+        isDanger={true}
+        isLoading={deleting}
+      />
     </div>
   );
 };

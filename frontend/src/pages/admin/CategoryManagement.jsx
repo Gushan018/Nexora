@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Layers, Plus, Search, Edit2, Trash2, CheckCircle2, RefreshCcw, Loader2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
+import { ConfirmModal } from '../../components/common/ConfirmModal';
+import { useToast } from '../../context/ToastContext';
 import { api } from '../../utils/api';
 
 export const CategoryManagement = () => {
@@ -65,18 +67,21 @@ export const CategoryManagement = () => {
     }
   };
 
-  const handleDelete = async (categoryId, name) => {
-    if (!window.confirm(`Are you sure you want to delete category "${name}"?`)) return;
+  const [catToDelete, setCatToDelete] = useState(null);
+
+  const handleDelete = async (cat) => {
     try {
-      await api.delete(`/categories/${categoryId}`);
-      if (selectedCat?.categoryId === categoryId) {
+      await api.delete(`/categories/${cat.categoryId}`);
+      if (selectedCat?.categoryId === cat.categoryId) {
         setSelectedCat(null);
         setCategoryName('');
         setIsEditing(false);
       }
+      setCatToDelete(null);
+      showToast(`Category "${cat.categoryName}" deleted.`, 'success');
       fetchCategories();
     } catch (err) {
-      alert(err.response?.data?.message || 'Error deleting category');
+      showToast(err.response?.data?.message || 'Error deleting category', 'error');
     }
   };
 
@@ -146,7 +151,7 @@ export const CategoryManagement = () => {
                         Edit
                       </Button>
                       <button 
-                        onClick={() => handleDelete(cat.categoryId, cat.categoryName)}
+                        onClick={() => setCatToDelete(cat)}
                         className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors" 
                         title="Delete Category"
                       >
@@ -200,6 +205,16 @@ export const CategoryManagement = () => {
           </Card>
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={!!catToDelete}
+        onClose={() => setCatToDelete(null)}
+        onConfirm={() => catToDelete && handleDelete(catToDelete)}
+        title="Delete Category"
+        message={`Are you sure you want to delete category "${catToDelete?.categoryName}"?`}
+        confirmText="Delete Category"
+        isDanger={true}
+      />
     </div>
   );
 };
