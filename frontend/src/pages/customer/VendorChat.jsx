@@ -128,16 +128,10 @@ export const VendorChat = () => {
         {/* Input Area */}
         <div className="p-4 border-t border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shrink-0">
           <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl p-2 pr-3 focus-within:border-primary transition-colors">
-            <button className="p-2 text-slate-400 hover:text-primary transition-colors">
-              <Paperclip className="w-5 h-5" />
-            </button>
-            <button className="p-2 text-slate-400 hover:text-primary transition-colors">
-              <ImageIcon className="w-5 h-5" />
-            </button>
             <input 
               type="text" 
               placeholder="Type your message..." 
-              className="flex-1 bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none text-sm px-2"
+              className="flex-1 bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none text-sm px-3 py-1"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
