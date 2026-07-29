@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, MapPin, Download, CheckCircle2, AlertCircle, XCircle, ChevronLeft, Building, User, CreditCard, Printer, FileText } from 'lucide-react';
+import { Calendar, Clock, MapPin, Download, CheckCircle2, AlertCircle, XCircle, ChevronLeft, Building, User, CreditCard, Printer, FileText, Star } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Modal } from '../../components/common/Modal';
@@ -59,7 +59,7 @@ export const BookingDetails = () => {
       {/* Header & Navigation */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="space-y-1">
-          <Link to="/customer/event-dashboard" className="text-sm text-primary hover:underline flex items-center gap-1 w-fit mb-2">
+          <Link to="/customer/event-dashboard" className="text-sm text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1 w-fit mb-2 font-medium">
             <ChevronLeft className="w-4 h-4" /> Back to My Events
           </Link>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -68,27 +68,35 @@ export const BookingDetails = () => {
           <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
             <span>Placed on {new Date(booking.bookingDate || Date.now()).toLocaleDateString()}</span>
             <span>•</span>
-            <span className="flex items-center gap-1 text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded font-semibold">
+            <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-semibold border border-emerald-500/20">
               {booking.status === 'ACCEPTED' || booking.status === 'COMPLETED' ? (
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
               ) : (
                 <AlertCircle className="w-3.5 h-3.5 text-amber-500" />
               )} 
-              <span className={booking.status === 'PENDING' ? 'text-amber-500' : 'text-emerald-500'}>{booking.status}</span>
+              <span className={booking.status === 'PENDING' ? 'text-amber-500' : 'text-emerald-600 dark:text-emerald-400'}>{booking.status}</span>
             </span>
           </div>
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          {booking.status === 'COMPLETED' && (
+            <Link to={`/customer/review-submission?vendorId=${booking.service?.vendorId || booking.package?.vendorId || ''}&serviceId=${booking.serviceId || ''}&packageId=${booking.packageId || ''}`}>
+              <Button className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold border-none" leftIcon={<Star className="w-4 h-4 fill-slate-950 text-slate-950"/>}>
+                Write Review
+              </Button>
+            </Link>
+          )}
           <Button 
             variant="outline" 
-            leftIcon={<Download className="w-4 h-4"/>}
+            leftIcon={<Download className="w-4 h-4 text-amber-500 dark:text-amber-400"/>}
             onClick={() => setIsInvoiceOpen(true)}
+            className="border-slate-300 dark:border-white/10 text-slate-900 dark:text-white"
           >
             View Invoice
           </Button>
           <a href={`mailto:${contactEmail}`}>
-            <Button variant="primary">Contact Vendor</Button>
+            <Button variant="outline" className="border-slate-300 dark:border-white/10 text-slate-900 dark:text-white">Contact Vendor</Button>
           </a>
         </div>
       </div>
@@ -104,7 +112,7 @@ export const BookingDetails = () => {
             <CardContent className="p-6 space-y-6">
               
               <div className="flex flex-col sm:flex-row gap-6">
-                <div className="flex-1 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-white/10 space-y-4">
+                <div className="flex-1 bg-slate-50 dark:bg-slate-800/60 rounded-xl p-5 border border-slate-200 dark:border-white/10 space-y-4">
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                     <div>
@@ -122,7 +130,7 @@ export const BookingDetails = () => {
                   </div>
                 </div>
 
-                <div className="flex-1 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-white/10 space-y-4">
+                <div className="flex-1 bg-slate-50 dark:bg-slate-800/60 rounded-xl p-5 border border-slate-200 dark:border-white/10 space-y-4">
                   <div className="flex items-start gap-3">
                     <User className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                     <div>
@@ -144,7 +152,7 @@ export const BookingDetails = () => {
 
               <div className="space-y-3">
                 <h4 className="font-bold text-slate-900 dark:text-white">Additional Notes</h4>
-                <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-xl text-sm text-slate-700 dark:text-slate-300 italic border border-slate-200 dark:border-white/10">
+                <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl text-sm text-slate-700 dark:text-slate-300 italic border border-slate-200 dark:border-white/10">
                   "{booking.notes || 'No special requirements provided during booking.'}"
                 </div>
               </div>
@@ -237,7 +245,7 @@ export const BookingDetails = () => {
 
           <Button 
             variant="outline" 
-            className="w-full text-red-500 hover:bg-red-500/10 border-red-500/30 justify-center" 
+            className="w-full text-rose-500 hover:bg-rose-500/10 border-rose-500/30 justify-center" 
             leftIcon={<XCircle className="w-4 h-4"/>}
             onClick={() => alert('Cancellation request submitted. The vendor will process your request.')}
           >
@@ -247,64 +255,66 @@ export const BookingDetails = () => {
 
       </div>
 
-      {/* Invoice Modal */}
+      {/* Sleek High-Contrast Invoice Modal */}
       <Modal isOpen={isInvoiceOpen} onClose={() => setIsInvoiceOpen(false)} title="Official Tax Invoice">
         <div className="space-y-6 text-slate-900 dark:text-slate-100 p-2">
           
           <div className="flex justify-between items-start border-b border-slate-200 dark:border-white/10 pb-4">
             <div>
-              <h3 className="text-xl font-bold font-serif text-slate-900 dark:text-white">EVENT NEST PLATFORM</h3>
-              <p className="text-xs text-slate-500">Official Booking Tax Invoice</p>
+              <h3 className="text-xl font-bold font-serif text-slate-900 dark:text-white tracking-wide">EVENT NEST PLATFORM</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Official Booking Tax Invoice</p>
             </div>
             <div className="text-right">
-              <span className="text-sm font-bold text-amber-500">#INV-2026-{booking.bookingId}</span>
-              <p className="text-xs text-slate-500">Date: {new Date(booking.bookingDate || Date.now()).toLocaleDateString()}</p>
+              <span className="text-base font-extrabold text-amber-500 dark:text-amber-400">#INV-2026-{booking.bookingId}</span>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Date: {new Date(booking.bookingDate || Date.now()).toLocaleDateString()}</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 text-xs">
-            <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-white/10">
-              <p className="font-semibold text-slate-500 mb-1">BILLED FROM (VENDOR):</p>
-              <p className="font-bold text-slate-900 dark:text-white">{vendorName}</p>
-              <p className="text-slate-500">{contactEmail}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            <div className="p-4 bg-slate-100 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-white/10">
+              <p className="font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider text-[10px] mb-1">BILLED FROM (VENDOR)</p>
+              <p className="font-extrabold text-slate-900 dark:text-white text-sm">{vendorName}</p>
+              <p className="text-slate-600 dark:text-slate-300">{contactEmail}</p>
             </div>
-            <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-white/10">
-              <p className="font-semibold text-slate-500 mb-1">BILLED TO (CUSTOMER):</p>
-              <p className="font-bold text-slate-900 dark:text-white">{user?.name || 'Valued Customer'}</p>
-              <p className="text-slate-500">{user?.email || 'customer@eventnest.lk'}</p>
+            <div className="p-4 bg-slate-100 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-white/10">
+              <p className="font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider text-[10px] mb-1">BILLED TO (CUSTOMER)</p>
+              <p className="font-extrabold text-slate-900 dark:text-white text-sm">{user?.name || 'Valued Customer'}</p>
+              <p className="text-slate-600 dark:text-slate-300">{user?.email || 'customer@eventnest.lk'}</p>
             </div>
           </div>
 
-          <table className="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr className="border-b border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-slate-800">
-                <th className="p-2.5">Item Description</th>
-                <th className="p-2.5 text-right">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-slate-200 dark:border-white/5">
-                <td className="p-2.5 font-medium">{name} ({type})</td>
-                <td className="p-2.5 text-right font-bold">LKR {amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
-              </tr>
-              <tr className="border-b border-slate-200 dark:border-white/5">
-                <td className="p-2.5 text-slate-500">Platform Escrow Fee (5%)</td>
-                <td className="p-2.5 text-right font-bold">LKR {serviceFee.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
-              </tr>
-              <tr className="bg-amber-500/10 font-bold text-slate-900 dark:text-white">
-                <td className="p-2.5 text-sm">TOTAL AMOUNT PAID</td>
-                <td className="p-2.5 text-right text-sm text-amber-600 dark:text-amber-400">LKR {totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-white/10">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="border-b border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-slate-800 font-bold text-slate-800 dark:text-slate-200">
+                  <th className="p-3 pl-4">Item Description</th>
+                  <th className="p-3 text-right pr-4">Amount</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 dark:divide-white/10">
+                <tr>
+                  <td className="p-3 pl-4 font-bold text-slate-900 dark:text-white">{name} ({type})</td>
+                  <td className="p-3 text-right pr-4 font-extrabold text-slate-900 dark:text-white">LKR {amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                </tr>
+                <tr>
+                  <td className="p-3 pl-4 text-slate-600 dark:text-slate-300 font-medium">Platform Escrow Fee (5%)</td>
+                  <td className="p-3 text-right pr-4 font-bold text-slate-900 dark:text-white">LKR {serviceFee.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                </tr>
+                <tr className="bg-amber-500/10 font-bold text-slate-900 dark:text-white">
+                  <td className="p-3 pl-4 text-sm font-extrabold text-slate-900 dark:text-white">TOTAL AMOUNT PAID</td>
+                  <td className="p-3 text-right pr-4 text-base font-extrabold text-amber-600 dark:text-amber-400">LKR {totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <div className="flex justify-between items-center pt-2">
-            <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
-              <CheckCircle2 className="w-4 h-4" /> Escrow Protected & Verified
+            <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Escrow Protected & Verified
             </span>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => setIsInvoiceOpen(false)}>Close</Button>
-              <Button size="sm" className="bg-amber-500 text-slate-950 font-bold" leftIcon={<Printer className="w-4 h-4" />} onClick={handlePrintInvoice}>
+              <Button variant="outline" size="sm" className="border-slate-300 dark:border-white/10 text-slate-900 dark:text-white" onClick={() => setIsInvoiceOpen(false)}>Close</Button>
+              <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold border-none" leftIcon={<Printer className="w-4 h-4" />} onClick={handlePrintInvoice}>
                 Print Invoice
               </Button>
             </div>
@@ -312,6 +322,62 @@ export const BookingDetails = () => {
 
         </div>
       </Modal>
+
+      {/* Dedicated Printable Area for Window.print() */}
+      <div id="printable-invoice" className="hidden">
+        <div style={{ padding: '40px', fontFamily: 'sans-serif', color: '#0f172a', backgroundColor: '#ffffff' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid #e2e8f0', pb: '20px', marginBottom: '30px' }}>
+            <div>
+              <h1 style={{ fontSize: '24px', fontWeight: 'bold', margin: '0 0 5px 0' }}>EVENT NEST PLATFORM</h1>
+              <p style={{ margin: 0, color: '#64748b', fontSize: '14px' }}>Official Booking Tax Invoice</p>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#d97706', margin: '0 0 5px 0' }}>#INV-2026-{booking.bookingId}</h2>
+              <p style={{ margin: 0, color: '#64748b', fontSize: '14px' }}>Date: {new Date(booking.bookingDate || Date.now()).toLocaleDateString()}</p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '20px', marginBottom: '30px' }}>
+            <div style={{ flex: 1, padding: '15px', border: '1px solid #e2e8f0', borderRadius: '10px', backgroundColor: '#f8fafc' }}>
+              <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#d97706', textTransform: 'uppercase', marginBottom: '5px' }}>BILLED FROM (VENDOR)</p>
+              <p style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 5px 0' }}>{vendorName}</p>
+              <p style={{ margin: 0, color: '#64748b', fontSize: '13px' }}>{contactEmail}</p>
+            </div>
+            <div style={{ flex: 1, padding: '15px', border: '1px solid #e2e8f0', borderRadius: '10px', backgroundColor: '#f8fafc' }}>
+              <p style={{ fontSize: '11px', fontWeight: 'bold', color: '#d97706', textTransform: 'uppercase', marginBottom: '5px' }}>BILLED TO (CUSTOMER)</p>
+              <p style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 5px 0' }}>{user?.name || 'Valued Customer'}</p>
+              <p style={{ margin: 0, color: '#64748b', fontSize: '13px' }}>{user?.email || 'customer@eventnest.lk'}</p>
+            </div>
+          </div>
+
+          <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '30px' }}>
+            <thead>
+              <tr style={{ backgroundColor: '#f1f5f9', borderBottom: '2px solid #cbd5e1', textAlign: 'left' }}>
+                <th style={{ padding: '12px', fontSize: '14px' }}>Item Description</th>
+                <th style={{ padding: '12px', textAlign: 'right', fontSize: '14px' }}>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
+                <td style={{ padding: '12px', fontWeight: 'bold' }}>{name} ({type})</td>
+                <td style={{ padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>LKR {amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
+                <td style={{ padding: '12px', color: '#64748b' }}>Platform Escrow Fee (5%)</td>
+                <td style={{ padding: '12px', textAlign: 'right', fontWeight: 'bold' }}>LKR {serviceFee.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+              </tr>
+              <tr style={{ backgroundColor: '#fef3c7', fontWeight: 'bold' }}>
+                <td style={{ padding: '14px', fontSize: '16px', color: '#92400e' }}>TOTAL AMOUNT PAID</td>
+                <td style={{ padding: '14px', textAlign: 'right', fontSize: '18px', color: '#b45309' }}>LKR {totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style={{ textAlign: 'center', color: '#059669', fontWeight: 'bold', padding: '15px', border: '1px solid #a7f3d0', borderRadius: '10px', backgroundColor: '#ecfdf5' }}>
+            ✓ Escrow Protected & Verified Payment • Official EventNest Invoice
+          </div>
+        </div>
+      </div>
 
     </div>
   );

@@ -210,13 +210,19 @@ html.theme-transition *::after {
     visibility: hidden;
   }
   #receipt-print-area,
-  #receipt-print-area * {
+  #receipt-print-area *,
+  #printable-invoice,
+  #printable-invoice * {
     visibility: visible;
   }
-  #receipt-print-area {
+  #receipt-print-area,
+  #printable-invoice {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    display: block !important;
   }
 }
