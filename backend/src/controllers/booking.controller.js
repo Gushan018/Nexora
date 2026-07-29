@@ -167,7 +167,7 @@ const updateBookingStatus = async (req, res) => {
     const { status } = req.body; 
 
 
-    const validStatuses = ['ACCEPTED', 'REJECTED', 'COMPLETED', 'CANCELLED'];
+    const validStatuses = ['ACCEPTED', 'REJECTED', 'COMPLETED', 'CANCELLED', 'CANCELLATION_REQUESTED'];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
     }
@@ -177,7 +177,13 @@ const updateBookingStatus = async (req, res) => {
       return res.status(400).json({ message: 'Invalid booking ID' });
     }
 
-    const existing = await prisma.booking.findUnique({ where: { bookingId } });
+    const existing = await prisma.booking.findUnique({
+      where: { bookingId },
+      include: {
+        service: { include: { vendor: true } },
+        package: { include: { vendor: true } }
+      }
+    });
     if (!existing) {
       return res.status(404).json({ message: 'Booking not found' });
     }
@@ -190,13 +196,17 @@ const updateBookingStatus = async (req, res) => {
       },
     });
 
-    await prisma.notification.create({
-      data: {
-        type: 'booking_status',
-        message: `Your booking status has been updated to ${status}`,
-        customerId: updatedBooking.customerId,
-      },
-    });
+    if (updatedBooking.customerId) {
+      await prisma.notification.create({
+        data: {
+          type: 'booking_status',
+          message: status === 'CANCELLATION_REQUESTED'
+            ? `Cancellation requested for Booking #${bookingId}`
+            : `Your booking status has been updated to ${status}`,
+          customerId: updatedBooking.customerId,
+        },
+      }).catch(() => {});
+    }
 
     res.status(200).json({ message: `Booking status updated to ${status}`, booking: updatedBooking });
 
