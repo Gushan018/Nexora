@@ -158,6 +158,10 @@ function App() {
           <Route path="book-vendor" element={<BookVendor />} />
           <Route path="booking-details" element={<BookingDetails />} />
           <Route path="review-submission" element={<ReviewSubmission />} />
+          <Route path="review-management" element={<ReviewSubmission />} />
+          <Route path="booking-history" element={<EventDashboard />} />
+          <Route path="orders" element={<OrderHistory />} />
+          <Route path="my-events" element={<EventDashboard />} />
           <Route path="chat-inbox" element={<ChatInbox />} />
           <Route path="vendor-chat/:conversationId?" element={<VendorChat />} />
         </Route>
