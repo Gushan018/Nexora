@@ -46,10 +46,7 @@ export const Login = () => {
     setIsLoading(false);
   };
 
-  const handleDemoLogin = (demoEmail) => {
-    setEmail(demoEmail);
-    setPassword('password123');
-  };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center relative pt-40 pb-12">
@@ -148,47 +145,7 @@ export const Login = () => {
             </Button>
           </form>
 
-          {/* Quick Demo Login Badges */}
-          <div className="mt-6 pt-6 border-t border-slate-200 dark:border-white/10 text-center">
-            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider">Quick Demo Login by Member Role</p>
-            <div className="flex flex-wrap justify-center gap-2">
-              <button 
-                type="button" 
-                onClick={() => handleDemoLogin('sarah@example.com')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-primary/20 hover:text-primary dark:hover:text-white border border-slate-300 dark:border-slate-700 transition-colors"
-              >
-                👤 Customer
-              </button>
-              <button 
-                type="button" 
-                onClick={() => handleDemoLogin('vendor1@example.com')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-primary/20 hover:text-primary dark:hover:text-white border border-slate-300 dark:border-slate-700 transition-colors"
-              >
-                🛠️ Service Provider
-              </button>
-              <button 
-                type="button" 
-                onClick={() => handleDemoLogin('seller1@example.com')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-primary/20 hover:text-primary dark:hover:text-white border border-slate-300 dark:border-slate-700 transition-colors"
-              >
-                📦 Seller
-              </button>
-              <button 
-                type="button" 
-                onClick={() => handleDemoLogin('eventcompany@example.com')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-primary/20 hover:text-primary dark:hover:text-white border border-slate-300 dark:border-slate-700 transition-colors"
-              >
-                🎪 Event Company
-              </button>
-              <button 
-                type="button" 
-                onClick={() => handleDemoLogin('admin@example.com')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-primary/20 hover:text-primary dark:hover:text-white border border-slate-300 dark:border-slate-700 transition-colors"
-              >
-                🛡️ Admin
-              </button>
-            </div>
-          </div>
+
         </div>
 
         <motion.p 
