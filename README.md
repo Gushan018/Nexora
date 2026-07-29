@@ -1,6 +1,6 @@
-# 🚀 Nexora — Event Management & Marketplace Ecosystem
+# 🚀 EventNest (Nexora Ecosystem) — Event Management & Multi-Vendor Marketplace
 
-Nexora is a smart, unified event management ecosystem and multi-vendor marketplace tailored for the Sri Lankan market. It bridges the gap between event organizers, service providers, product suppliers, event management companies, and platform administrators.
+EventNest is a smart, unified event management ecosystem and multi-vendor marketplace tailored for the Sri Lankan market. It bridges the gap between event organizers, service providers, product suppliers, event management companies, and platform administrators.
 
 ---
 
@@ -10,8 +10,8 @@ Nexora is a smart, unified event management ecosystem and multi-vendor marketpla
 - **Event Budget Tracker (`/api/budget`):** Customer budget planning tool with category cost tracking and automatic expense synchronization from accepted bookings and product purchases.
 - **Order & Inventory Management:** E-commerce shopping cart, stock auto-deduction, order tracking (`PENDING` → `PROCESSING` → `SHIPPED` → `DELIVERED`), and customer refund request workflows.
 - **Booking & Availability System:** Real-time vendor calendar scheduling with slot availability validation and double-booking conflict prevention.
-- **Escrow Financial Settlement (`/api/payments`):** Secure funds flow (`PENDING` → `HELD_IN_ESCROW` → `RELEASED` to vendor) supporting online payments and offline bank slip uploads.
-- **Ratings & Moderation:** Verified 1–5 star reviews, vendor replies, reporting moderation queue, and admin content management.
+- **Escrow Financial Settlement (`/api/payments`):** Secure funds flow (`PENDING` → `HELD_IN_ESCROW` → `RELEASED` to vendor) supporting online payments and offline bank slip uploads with standard 10% platform fee.
+- **Ratings & Moderation:** Verified 1–5 star reviews for services and event packages, vendor replies, reporting moderation queue, and admin content management.
 - **Reporting & Exporting:** Vendor dashboard analytics with PDF export (`pdfkit`) and Excel export (`exceljs`).
 
 ---
@@ -21,7 +21,7 @@ Nexora is a smart, unified event management ecosystem and multi-vendor marketpla
 1. **👤 Customer / Event Planner:** Search services/packages/products, place orders, submit booking requests, manage event budget, write reviews, request order refunds.
 2. **📷 Service Provider (Photographer, Decorator, Caterer, DJ):** Manage service listings, pricing, availability calendar, accept/reject booking requests, respond to customer reviews.
 3. **🛍️ Seller / Supplier:** Publish product catalog, monitor inventory stock, fulfill orders, update shipping status, approve/reject customer refund requests.
-4. **🏢 Event Management Company (Nexora Event Co.):** Create and bundle multi-service all-in-one Event Packages (e.g. Wedding Packages, Corporate Packages), manage client bookings.
+4. **🏢 Event Management Company (EventNest Event Co.):** Create and bundle multi-service all-in-one Event Packages (e.g. Wedding Packages, Corporate Packages), manage client bookings.
 5. **🛡️ System Administrator:** Approve business accounts & listings, oversee escrow payouts, manage platform settings, handle user disputes, moderate reviews, and audit impersonation logs.
 6. **💳 Payment Gateway / Financial System:** Online escrow transaction processing (`HELD_IN_ESCROW`), bank slip verification, and payout disbursement callbacks.
 
@@ -29,7 +29,7 @@ Nexora is a smart, unified event management ecosystem and multi-vendor marketpla
 
 ## 🛠️ Technology Stack
 
-- **Frontend:** React (Vite), Tailwind CSS, Framer Motion, Lucide React, Recharts, Axios
+- **Frontend:** React (Vite), Vanilla CSS / Tailwind CSS, Framer Motion, Lucide React, Recharts, Axios
 - **Backend:** Node.js, Express.js REST API
 - **Database & ORM:** PostgreSQL, Prisma ORM
 - **Authentication:** JWT (JSON Web Tokens) & `bcryptjs` password hashing
@@ -133,4 +133,4 @@ node tests/run-all-6-user-tests.js
 
 ---
 
-© 2026 Nexora Project Team. All rights reserved.
+© 2026 EventNest Project Team. All rights reserved.
