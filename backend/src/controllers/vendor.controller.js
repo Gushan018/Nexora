@@ -881,13 +881,16 @@ const getVendorPayments = async (req, res) => {
 
     res.status(200).json({
       analyticsCards: [
-        { label: 'Total Revenue', value: `Rs. ${totalRevenue.toLocaleString()}`, change: '+0%', icon: 'DollarSign' },
+        { label: 'Total Revenue', value: `LKR ${totalRevenue.toLocaleString()}`, change: '+0%', icon: 'TrendingUp' },
         { label: 'Total Transactions', value: String(payments.length), change: '+0%', icon: 'CreditCard' },
         { label: 'Pending Payments', value: payments.filter(p => p.status !== 'RELEASED').length.toString(), change: '0', icon: 'Clock' },
       ],
       revenueChart,
       revenueBreakdown,
       recentTransactions,
+      totalRevenue: Math.round(totalRevenue),
+      platformFee: Math.round(totalRevenue * 0.10),
+      netEarnings: Math.round(totalRevenue * 0.90),
     });
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
