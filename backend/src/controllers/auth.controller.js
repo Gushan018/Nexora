@@ -368,4 +368,101 @@ const changePassword = async (req, res) => {
   }
 };
 
-module.exports = { registerCustomer, loginCustomer, registerVendor, loginVendor, registerSeller, loginSeller, registerCompany, loginAdmin, loginUnified, changePassword };
+// ==========================================
+// 7. FORGOT PASSWORD
+// ==========================================
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required." });
+    }
+
+    const customer = await prisma.customer.findUnique({ where: { email } });
+    const vendor = await prisma.vendor.findUnique({ where: { email } });
+    const admin = await prisma.admin.findUnique({ where: { email } });
+
+    if (!customer && !vendor && !admin) {
+      return res.status(404).json({ message: "No account found with this email address." });
+    }
+
+    res.status(200).json({
+      message: "Reset instructions sent to email address.",
+      resetUrl: `/reset-password?email=${encodeURIComponent(email)}`
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+// ==========================================
+// 8. RESET PASSWORD
+// ==========================================
+const resetPassword = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+      return res.status(400).json({ message: "Email and new password are required." });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters." });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    let updated = false;
+
+    const customer = await prisma.customer.findUnique({ where: { email } });
+    if (customer) {
+      await prisma.customer.update({
+        where: { email },
+        data: { password: hashedPassword }
+      });
+      updated = true;
+    }
+
+    const vendor = await prisma.vendor.findUnique({ where: { email } });
+    if (vendor) {
+      await prisma.vendor.update({
+        where: { email },
+        data: { password: hashedPassword }
+      });
+      updated = true;
+    }
+
+    const admin = await prisma.admin.findUnique({ where: { email } });
+    if (admin) {
+      await prisma.admin.update({
+        where: { email },
+        data: { password: hashedPassword }
+      });
+      updated = true;
+    }
+
+    if (!updated) {
+      return res.status(404).json({ message: "No account found with this email address." });
+    }
+
+    res.status(200).json({ message: "Password reset successfully. You can now log in with your new password." });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+module.exports = {
+  registerCustomer,
+  loginCustomer,
+  registerVendor,
+  loginVendor,
+  registerSeller,
+  loginSeller,
+  registerCompany,
+  loginAdmin,
+  loginUnified,
+  changePassword,
+  forgotPassword,
+  resetPassword
+};

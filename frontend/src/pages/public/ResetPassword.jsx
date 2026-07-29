@@ -1,22 +1,54 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Lock, ArrowRight, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../../components/common/Button';
+import { api } from '../../utils/api';
 
 export const ResetPassword = () => {
   const navigate = useNavigate();
-  const [submitted, setSubmitted] = useState(false);
+  const [searchParams] = useSearchParams();
+  const urlEmail = searchParams.get('email') || '';
+
+  const [email, setEmail] = useState(urlEmail);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    // Redirect to login after 3 seconds
-    setTimeout(() => {
-      navigate('/login');
-    }, 3000);
+    if (!email.trim()) {
+      setErrorMsg('Please enter your account email address.');
+      return;
+    }
+    if (password.length < 6) {
+      setErrorMsg('Password must be at least 6 characters.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setErrorMsg('Passwords do not match.');
+      return;
+    }
+
+    setLoading(true);
+    setErrorMsg('');
+
+    try {
+      await api.post('/auth/reset-password', {
+        email: email.trim(),
+        newPassword: password
+      });
+      setSubmitted(true);
+      setTimeout(() => {
+        navigate('/login');
+      }, 2500);
+    } catch (err) {
+      setErrorMsg(err.response?.data?.message || 'Failed to reset password.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -30,19 +62,37 @@ export const ResetPassword = () => {
       <div className="w-full max-w-md relative z-10 px-4">
         
         <div className="text-center mb-8">
-
-          <h1 className="text-2xl font-bold text-slate-900 mb-2">Create new password</h1>
-          <p className="text-slate-600 max-w-sm mx-auto">Your new password must be different from previous used passwords.</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Create new password</h1>
+          <p className="text-slate-600 dark:text-slate-400 max-w-sm mx-auto">Set a secure password for your account.</p>
         </div>
 
-        <div className="bg-surface/50 border border-slate-300 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+        <div className="bg-white/80 dark:bg-slate-900/80 border border-slate-300 dark:border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+
+          {errorMsg && (
+            <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-500 text-xs font-semibold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{errorMsg}</span>
+            </div>
+          )}
 
           {!submitted ? (
             <form onSubmit={handleSubmit} className="space-y-5">
               
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800 block">New Password</label>
+                <label className="text-sm font-medium text-slate-800 dark:text-slate-200 block">Account Email Address</label>
+                <input 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com" 
+                  required
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary transition-all placeholder:text-slate-400 text-sm"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-800 dark:text-slate-200 block">New Password</label>
                 <div className="relative">
                   <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input 
@@ -51,34 +101,13 @@ export const ResetPassword = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••" 
                     required
-                    className="w-full bg-black/40 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-300"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl pl-10 pr-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary transition-all placeholder:text-slate-400 text-sm"
                   />
                 </div>
-                {/* Password Strength Indicator */}
-                {(() => {
-                  let score = 0;
-                  if (password) {
-                    if (password.length < 8) score = 1;
-                    else {
-                      let checks = 0;
-                      if (/[0-9]/.test(password)) checks++;
-                      if (/[^A-Za-z0-9]/.test(password)) checks++;
-                      if (/[a-z]/.test(password) && /[A-Z]/.test(password)) checks++;
-                      score = checks === 0 ? 1 : checks === 1 ? 2 : 3;
-                    }
-                  }
-                  return (
-                    <div className="flex gap-1.5 pt-2">
-                      <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${score >= 1 ? (score === 1 ? 'bg-rose-500' : score === 2 ? 'bg-amber-500' : 'bg-emerald-500') : 'bg-slate-300'}`} />
-                      <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${score >= 2 ? (score === 2 ? 'bg-amber-500' : 'bg-emerald-500') : 'bg-slate-300'}`} />
-                      <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${score >= 3 ? 'bg-emerald-500' : 'bg-slate-300'}`} />
-                    </div>
-                  );
-                })()}
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-800 block">Confirm Password</label>
+                <label className="text-sm font-medium text-slate-800 dark:text-slate-200 block">Confirm New Password</label>
                 <div className="relative">
                   <Lock className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input 
@@ -87,13 +116,13 @@ export const ResetPassword = () => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••" 
                     required
-                    className="w-full bg-black/40 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-slate-900 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-slate-300"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl pl-10 pr-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-primary transition-all placeholder:text-slate-400 text-sm"
                   />
                 </div>
               </div>
 
-              <Button type="submit" className="w-full mt-2" size="lg" rightIcon={<ArrowRight className="w-4 h-4"/>}>
-                Reset Password
+              <Button type="submit" className="w-full mt-2 font-bold" size="lg" disabled={loading} rightIcon={<ArrowRight className="w-4 h-4"/>}>
+                {loading ? 'Resetting Password...' : 'Reset Password'}
               </Button>
             </form>
           ) : (
@@ -105,10 +134,13 @@ export const ResetPassword = () => {
               <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4 border border-green-500/20">
                 <CheckCircle2 className="w-8 h-8 text-green-400" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Password Reset</h3>
-              <p className="text-sm text-slate-600 mb-6">
-                Your password has been successfully reset. Redirecting you to login...
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Password Reset Successful!</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300 mb-6">
+                Your password has been updated in the database. Redirecting you to login...
               </p>
+              <Link to="/login">
+                <Button className="w-full font-bold">Go to Login Now</Button>
+              </Link>
             </motion.div>
           )}
 
@@ -118,4 +150,3 @@ export const ResetPassword = () => {
     </div>
   );
 };
-

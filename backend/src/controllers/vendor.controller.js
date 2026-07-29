@@ -316,8 +316,6 @@ const getDashboard = async (req, res) => {
         pendingBookings,
         completedBookings,
         totalRevenue: Math.round(totalRevenue),
-        platformFee: Math.round(totalRevenue * 0.10),
-        netEarnings: Math.round(totalRevenue * 0.90),
       },
       revenueChart,
       recentRequests: recentPendingRequests.map(b => ({

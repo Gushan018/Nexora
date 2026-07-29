@@ -121,7 +121,6 @@ export const DashboardLayout = ({ role = 'customer' }) => {
           { name: 'Package Management', path: '/company/package-management', icon: <Package /> },
           { name: 'Booking Management', path: '/vendor/booking-management', icon: <Calendar /> },
           { name: 'Messages', path: '/customer/chat-inbox', icon: <MessageSquare /> },
-          { name: 'Orders', path: '/company/inquiries', icon: <ShoppingCart /> },
           { name: 'Payments', path: '/vendor/revenue-dashboard', icon: <DollarSign /> },
           { name: 'Reports & Analytics', path: '/vendor/vendor-booking-analytics', icon: <Activity /> },
           { name: 'Reviews & Ratings', path: '/vendor/customer-reviews', icon: <Star /> },

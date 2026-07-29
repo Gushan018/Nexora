@@ -260,7 +260,7 @@ export const EventPackages = ({ isDashboard = false }) => {
               <Button 
                 variant="outline" 
                 className="w-full py-6 text-lg rounded-xl text-slate-900 dark:text-white border-slate-300 dark:border-slate-700 group-hover:bg-primary group-hover:text-slate-950 group-hover:border-primary font-bold transition-all"
-                onClick={() => navigate(`/customer/book-vendor?id=${pkg.vendorId}`)}
+                onClick={() => navigate(`/customer/book-vendor?id=${pkg.vendorId}&packageId=${pkg.packageId}`)}
               >
                 Book Package
               </Button>

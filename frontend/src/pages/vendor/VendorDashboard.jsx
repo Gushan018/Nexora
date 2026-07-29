@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { DollarSign, Calendar, Star, TrendingUp, Users, Briefcase, Package, Loader2, AlertCircle, Download, CheckCircle2, Clock, Receipt } from 'lucide-react';
+import { DollarSign, Calendar, Star, TrendingUp, Users, Briefcase, Package, Loader2, AlertCircle, Download, CheckCircle2, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
@@ -78,10 +78,6 @@ export const VendorDashboard = () => {
 
   const { stats = {}, recentRequests = [] } = data || {};
 
-  const totalRev = stats?.totalRevenue ?? 0;
-  const platformFee = stats?.platformFee ?? Math.round(totalRev * 0.10);
-  const netEarnings = stats?.netEarnings ?? Math.round(totalRev * 0.90);
-
   const chartData = (data?.revenueChart && data.revenueChart.length > 0)
     ? data.revenueChart.map(item => ({
         label: item.month || item.day || item.label || '',
@@ -136,27 +132,13 @@ export const VendorDashboard = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard 
           title="Total Revenue" 
-          value={`LKR ${totalRev.toLocaleString()}`} 
-          trend="Gross" 
+          value={`LKR ${(stats?.totalRevenue ?? 0).toLocaleString()}`} 
+          trend="+15%" 
           trendUp={true}
           icon={<DollarSign className="w-5 h-5 text-primary" />} 
-        />
-        <StatCard 
-          title="Platform Fee (10%)" 
-          value={`-LKR ${platformFee.toLocaleString()}`} 
-          trend="10% Fee" 
-          trendUp={false}
-          icon={<Receipt className="w-5 h-5 text-red-500" />} 
-        />
-        <StatCard 
-          title="Net Earnings" 
-          value={`LKR ${netEarnings.toLocaleString()}`} 
-          trend="Net Revenue" 
-          trendUp={true}
-          icon={<TrendingUp className="w-5 h-5 text-green-500" />} 
         />
         <StatCard 
           title="Active Bookings" 
@@ -164,6 +146,13 @@ export const VendorDashboard = () => {
           trend={`+${stats?.pendingBookings ?? 0} pending`} 
           trendUp={true}
           icon={<Calendar className="w-5 h-5 text-yellow-500" />} 
+        />
+        <StatCard 
+          title="Services & Packages" 
+          value={((stats?.totalServices ?? 0) + (stats?.totalPackages ?? 0)).toString()} 
+          trend={`${stats?.totalServices ?? 0} Svcs / ${stats?.totalPackages ?? 0} Pkgs`} 
+          trendUp={true}
+          icon={<Briefcase className="w-5 h-5 text-primary" />} 
         />
         <StatCard 
           title="Completed Bookings" 

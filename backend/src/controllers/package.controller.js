@@ -42,6 +42,7 @@ const createPackage = async (req, res) => {
         category: categoryStr,
         duration: duration || '',
         maxGuests: maxGuests != null ? parseInt(maxGuests) : 0,
+        isApproved: true,
         vendorId: req.user.id,
         services: {
           create: (services || []).filter((s) => s && String(s).trim()).map((name) => ({ name: String(name).trim() })),
@@ -110,6 +111,7 @@ const updatePackage = async (req, res) => {
         category: categoryStr,
         duration: duration || '',
         maxGuests: maxGuests != null ? parseInt(maxGuests) : 0,
+        isApproved: true,
         services: {
           deleteMany: {},
           create: (services || []).filter((s) => s && String(s).trim()).map((name) => ({ name: String(name).trim() })),
@@ -172,23 +174,55 @@ const deletePackage = async (req, res) => {
 
 const getAllPublicPackages = async (req, res) => {
   try {
-    const packages = await prisma.eventPackage.findMany({
-      include: {
-        services: true,
-        images: true,
-        vendor: { 
-          select: { 
-            vendorId: true, 
-            businessName: true, 
-            location: true, 
-            vendorType: true,
-            reviews: { select: { rating: true } }
-          } 
+    const [packages, services] = await Promise.all([
+      prisma.eventPackage.findMany({
+        include: {
+          services: true,
+          images: true,
+          vendor: { 
+            select: { 
+              vendorId: true, 
+              businessName: true, 
+              location: true, 
+              vendorType: true,
+              reviews: { select: { rating: true } }
+            } 
+          },
         },
-      },
-      orderBy: { createdAt: 'desc' },
-    });
-    res.status(200).json(packages);
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.service.findMany({
+        include: {
+          category: true,
+          vendor: { 
+            select: { 
+              vendorId: true, 
+              businessName: true, 
+              location: true, 
+              vendorType: true,
+              reviews: { select: { rating: true } }
+            } 
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      })
+    ]);
+
+    const mappedServices = services.map(s => ({
+      packageId: s.serviceId,
+      packageName: s.serviceName,
+      description: s.description || '',
+      price: s.price,
+      category: s.category?.categoryName || 'Catering & Event Services',
+      isApproved: s.isApproved !== false,
+      vendorId: s.vendorId,
+      vendor: s.vendor,
+      images: s.imageUrl ? [{ url: s.imageUrl }] : [],
+      services: [{ name: s.serviceName }]
+    }));
+
+    const combined = [...packages, ...mappedServices];
+    res.status(200).json(combined);
   } catch (error) {
     console.error('getAllPublicPackages error:', error);
     res.status(500).json({ message: 'Server Error', error: error.message });

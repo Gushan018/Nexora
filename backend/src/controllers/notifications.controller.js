@@ -5,7 +5,7 @@ const getUserQuery = (req) => {
   if (req.user.role === 'customer') {
     return { customerId: req.user.id };
   }
-  if (req.user.role === 'vendor' || req.user.role === 'seller' || req.user.role === 'service_provider' || req.user.role === 'event_company') {
+  if (['vendor', 'seller', 'service_provider', 'event_company', 'company'].includes(req.user.role)) {
     return { vendorId: req.user.id };
   }
   if (req.user.role === 'admin') {

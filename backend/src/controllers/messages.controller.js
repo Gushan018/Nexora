@@ -1,182 +1,246 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+// Helper: parse participant ID from conversation string (e.g., "cust-1", "vend-2", "1-2", "2")
+const parseParticipantId = (conversationId) => {
+  if (!conversationId) return null;
+  const str = String(conversationId);
+  if (str.includes('-')) {
+    const parts = str.split('-');
+    const lastPart = parts[parts.length - 1];
+    const parsed = parseInt(lastPart, 10);
+    return isNaN(parsed) ? null : parsed;
+  }
+  const parsed = parseInt(str, 10);
+  return isNaN(parsed) ? null : parsed;
+};
+
+// Helper: resolve user/participant details by ID
+const resolveParticipantDetails = async (partnerId, partnerType) => {
+  if (!partnerId) return null;
+
+  if (partnerType === 'vendor' || partnerType === 'seller' || partnerType === 'company') {
+    const vendor = await prisma.vendor.findUnique({
+      where: { vendorId: partnerId },
+      select: { vendorId: true, businessName: true, contactNumber: true, email: true, bannerImage: true, logoImage: true }
+    }).catch(() => null);
+
+    if (vendor) {
+      return {
+        id: vendor.vendorId,
+        name: vendor.businessName,
+        type: 'vendor',
+        phone: vendor.contactNumber || '',
+        email: vendor.email,
+        avatar: vendor.logoImage || vendor.businessName.charAt(0).toUpperCase()
+      };
+    }
+  }
+
+  if (partnerType === 'customer' || partnerType === 'user') {
+    const customer = await prisma.customer.findUnique({
+      where: { customerId: partnerId },
+      select: { customerId: true, name: true, contactNumber: true, email: true, profileImage: true }
+    }).catch(() => null);
+
+    if (customer) {
+      return {
+        id: customer.customerId,
+        name: customer.name,
+        type: 'customer',
+        phone: customer.contactNumber || '',
+        email: customer.email,
+        avatar: customer.profileImage || customer.name.charAt(0).toUpperCase()
+      };
+    }
+  }
+
+  // Fallback
+  return {
+    id: partnerId,
+    name: `User #${partnerId}`,
+    type: partnerType || 'user',
+    phone: '',
+    email: '',
+    avatar: 'U'
+  };
+};
+
+// ================================================
+// 1. GET CONVERSATIONS LIST
+// ================================================
 const getConversations = async (req, res) => {
   try {
     const userId = req.user.id;
-    const userRole = req.user.role;
+    const userRole = req.user.role || 'customer';
+    const isVendorLike = ['vendor', 'seller', 'company'].includes(userRole);
 
-    let conversations = [];
-    if (userRole === 'vendor') {
-      const vendorServices = await prisma.service.findMany({
-        where: { vendorId: userId },
-        select: { serviceId: true },
-      });
-      const vendorPackages = await prisma.eventPackage.findMany({
-        where: { vendorId: userId },
-        select: { packageId: true },
-      });
-      const serviceIds = vendorServices.map(s => s.serviceId);
-      const packageIds = vendorPackages.map(p => p.packageId);
+    // A. Gather partner IDs from Message table
+    const messages = await prisma.message.findMany({
+      where: {
+        OR: [
+          { senderId: userId, senderType: isVendorLike ? 'vendor' : 'customer' },
+          { receiverId: userId, receiverType: isVendorLike ? 'vendor' : 'customer' }
+        ]
+      },
+      orderBy: { createdAt: 'desc' }
+    });
 
-      const bookings = (serviceIds.length > 0 || packageIds.length > 0)
-        ? await prisma.booking.findMany({
-            where: {
-              OR: [
-                ...(serviceIds.length ? [{ serviceId: { in: serviceIds } }] : []),
-                ...(packageIds.length ? [{ packageId: { in: packageIds } }] : []),
-              ],
-            },
-            include: { customer: { select: { customerId: true, name: true } } },
-            orderBy: { bookingDate: 'desc' },
-          })
-        : [];
+    const partnerMap = new Map(); // partnerKey -> { partnerId, partnerType, lastMessage, lastMessageTime, unreadCount }
 
-      const seen = new Set();
-      for (const b of bookings) {
-        if (!b.customer) continue;
-        const cid = b.customer.customerId;
-        if (seen.has(cid)) continue;
-        seen.add(cid);
+    for (const msg of messages) {
+      const isSender = msg.senderId === userId && (isVendorLike ? ['vendor', 'seller', 'company'].includes(msg.senderType) : ['customer', 'user'].includes(msg.senderType));
+      const partnerId = isSender ? msg.receiverId : msg.senderId;
+      let partnerType = isSender ? msg.receiverType : msg.senderType;
+      
+      if (['vendor', 'seller', 'company'].includes(partnerType)) partnerType = 'vendor';
+      if (['customer', 'user'].includes(partnerType)) partnerType = 'customer';
+      
+      if (!partnerId) continue;
+      const partnerKey = `${partnerType}-${partnerId}`;
 
-        const lastMsg = await prisma.message.findFirst({
-          where: {
-            OR: [
-              { senderId: cid, receiverId: userId, senderType: 'customer', receiverType: 'vendor' },
-              { senderId: userId, receiverId: cid, senderType: 'vendor', receiverType: 'customer' },
-            ],
-          },
-          orderBy: { createdAt: 'desc' },
-        });
-
-        const unread = await prisma.message.count({
-          where: { senderId: cid, receiverId: userId, senderType: 'customer', receiverType: 'vendor', isRead: false },
-        });
-
-        conversations.push({
-          conversationId: `cust-${cid}`,
-          participantId: cid,
-          participantName: b.customer.name,
-          participantAvatar: b.customer.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase(),
-          lastMessage: lastMsg?.content || 'Start a conversation',
-          lastMessageTime: (lastMsg?.createdAt || b.bookingDate).toISOString(),
-          unreadCount: unread,
-          online: false,
+      if (!partnerMap.has(partnerKey)) {
+        partnerMap.set(partnerKey, {
+          partnerId,
+          partnerType,
+          lastMessage: msg.content,
+          lastMessageTime: msg.createdAt,
+          unreadCount: 0
         });
       }
-    } else if (userRole === 'customer') {
-      const bookings = await prisma.booking.findMany({
-        where: { customerId: userId },
-        include: {
-          service: { select: { vendor: { select: { vendorId: true, businessName: true } } } },
-          package: { select: { vendor: { select: { vendorId: true, businessName: true } } } },
-        },
-        orderBy: { bookingDate: 'desc' },
-      });
 
-      const seen = new Set();
-      for (const b of bookings) {
-        const vendor = b.service?.vendor || b.package?.vendor;
-        if (!vendor || seen.has(vendor.vendorId)) continue;
-        seen.add(vendor.vendorId);
+      if (!isSender && !msg.isRead) {
+        const item = partnerMap.get(partnerKey);
+        item.unreadCount += 1;
+      }
+    }
 
-        const lastMsg = await prisma.message.findFirst({
+    // B. Gather partner IDs from Booking table
+    let bookingPartners = [];
+
+    if (isVendorLike) {
+      const services = await prisma.service.findMany({ where: { vendorId: userId }, select: { serviceId: true } }).catch(() => []);
+      const packages = await prisma.eventPackage.findMany({ where: { vendorId: userId }, select: { packageId: true } }).catch(() => []);
+      const serviceIds = services.map(s => s.serviceId);
+      const packageIds = packages.map(p => p.packageId);
+
+      if (serviceIds.length > 0 || packageIds.length > 0) {
+        bookingPartners = await prisma.booking.findMany({
           where: {
             OR: [
-              { senderId: userId, receiverId: vendor.vendorId, senderType: 'customer', receiverType: 'vendor' },
-              { senderId: vendor.vendorId, receiverId: userId, senderType: 'vendor', receiverType: 'customer' },
-            ],
+              ...(serviceIds.length ? [{ serviceId: { in: serviceIds } }] : []),
+              ...(packageIds.length ? [{ packageId: { in: packageIds } }] : []),
+            ]
           },
-          orderBy: { createdAt: 'desc' },
-        });
+          select: { customerId: true, bookingDate: true },
+          orderBy: { bookingDate: 'desc' }
+        }).catch(() => []);
+      }
+    } else {
+      bookingPartners = await prisma.booking.findMany({
+        where: { customerId: userId },
+        include: {
+          service: { select: { vendorId: true } },
+          package: { select: { vendorId: true } }
+        },
+        orderBy: { bookingDate: 'desc' }
+      }).catch(() => []);
+    }
 
-        const unread = await prisma.message.count({
-          where: { senderId: vendor.vendorId, receiverId: userId, senderType: 'vendor', receiverType: 'customer', isRead: false },
-        });
+    for (const b of bookingPartners) {
+      const partnerId = isVendorLike ? b.customerId : (b.service?.vendorId || b.package?.vendorId);
+      const partnerType = isVendorLike ? 'customer' : 'vendor';
+      const partnerKey = `${partnerType}-${partnerId}`;
 
-        conversations.push({
-          conversationId: `vend-${vendor.vendorId}`,
-          participantId: vendor.vendorId,
-          participantName: vendor.businessName,
-          participantAvatar: vendor.businessName.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase(),
-          lastMessage: lastMsg?.content || 'Start a conversation',
-          lastMessageTime: (lastMsg?.createdAt || b.bookingDate).toISOString(),
-          unreadCount: unread,
-          online: false,
+      if (partnerId && !partnerMap.has(partnerKey)) {
+        partnerMap.set(partnerKey, {
+          partnerId,
+          partnerType,
+          lastMessage: 'Start a conversation',
+          lastMessageTime: b.bookingDate || new Date(),
+          unreadCount: 0
         });
       }
     }
 
+    // C. Build response objects
+    const conversations = [];
+    for (const [key, data] of partnerMap.entries()) {
+      const details = await resolveParticipantDetails(data.partnerId, data.partnerType);
+      const prefix = details?.type === 'vendor' ? 'vend' : 'cust';
+      conversations.push({
+        conversationId: `${prefix}-${data.partnerId}`,
+        participantId: data.partnerId,
+        participantName: details?.name || `User #${data.partnerId}`,
+        participantAvatar: details?.avatar || 'U',
+        participantPhone: details?.phone || '',
+        participantType: details?.type || 'user',
+        lastMessage: data.lastMessage,
+        lastMessageTime: new Date(data.lastMessageTime).toISOString(),
+        unreadCount: data.unreadCount,
+        online: true
+      });
+    }
+
+    // Sort by lastMessageTime descending
+    conversations.sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
+
     res.status(200).json(conversations);
   } catch (error) {
+    console.error('getConversations error:', error);
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
+// ================================================
+// 2. GET MESSAGES FOR A CONVERSATION
+// ================================================
 const getMessages = async (req, res) => {
   try {
     const { conversationId } = req.params;
     const userId = req.user.id;
-    const userRole = req.user.role;
 
-    const parts = conversationId.split('-');
-    const otherRole = parts[0];
-    const otherId = parseInt(parts[1]);
-
-    if (isNaN(otherId)) {
+    const partnerId = parseParticipantId(conversationId);
+    if (!partnerId) {
       return res.status(400).json({ message: 'Invalid conversation ID' });
     }
 
-    let participant = null;
-    if (otherRole === 'vend') {
-      const v = await prisma.vendor.findUnique({
-        where: { vendorId: otherId },
-        select: { vendorId: true, businessName: true, vendorType: true, contactNumber: true }
-      });
-      if (v) {
-        participant = {
-          id: v.vendorId,
-          name: v.businessName,
-          type: v.vendorType,
-          phone: v.contactNumber
-        };
-      }
-    } else if (otherRole === 'cust') {
-      const c = await prisma.customer.findUnique({
-        where: { customerId: otherId },
-        select: { customerId: true, name: true, phone: true }
-      });
-      if (c) {
-        participant = {
-          id: c.customerId,
-          name: c.name,
-          phone: c.phone
-        };
-      }
-    }
+    const isVendorLike = ['vendor', 'seller', 'company'].includes(req.user.role || 'customer');
+    const partnerType = isVendorLike ? 'customer' : 'vendor';
+    const participant = await resolveParticipantDetails(partnerId, partnerType);
 
-    const where = {
-      OR: [
-        { senderId: userId, receiverId: otherId, senderType: userRole, receiverType: otherRole === 'cust' ? 'customer' : 'vendor' },
-        { senderId: otherId, receiverId: userId, senderType: otherRole === 'cust' ? 'customer' : 'vendor', receiverType: userRole },
-      ],
-    };
-
+    // Fetch messages between userId and partnerId
     const messagesList = await prisma.message.findMany({
-      where,
-      orderBy: { createdAt: 'asc' },
+      where: {
+        OR: [
+          { senderId: userId, receiverId: partnerId },
+          { senderId: partnerId, receiverId: userId },
+          { conversationId: String(conversationId) }
+        ]
+      },
+      orderBy: { createdAt: 'asc' }
     });
 
+    // Mark unread messages sent by partner as read
     await prisma.message.updateMany({
-      where: { senderId: otherId, receiverId: userId, senderType: otherRole === 'cust' ? 'customer' : 'vendor', receiverType: userRole, isRead: false },
-      data: { isRead: true },
-    });
+      where: {
+        senderId: partnerId,
+        receiverId: userId,
+        isRead: false
+      },
+      data: { isRead: true }
+    }).catch(() => {});
 
     const formattedMessages = messagesList.map(m => ({
       id: m.messageId,
+      messageId: m.messageId,
       senderId: m.senderId,
+      receiverId: m.receiverId,
       senderType: m.senderType,
+      receiverType: m.receiverType,
       text: m.content,
+      content: m.content,
+      isMe: m.senderId === userId,
       createdAt: m.createdAt
     }));
 
@@ -186,42 +250,47 @@ const getMessages = async (req, res) => {
       participant
     });
   } catch (error) {
+    console.error('getMessages error:', error);
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
+// ================================================
+// 3. SEND A MESSAGE
+// ================================================
 const sendMessage = async (req, res) => {
   try {
     let { receiverId, message, conversationId, text } = req.body;
     const msgText = (text || message || '').trim();
 
     if (!receiverId && conversationId) {
-      const parts = conversationId.split('-');
-      receiverId = parseInt(parts[1]);
+      receiverId = parseParticipantId(conversationId);
     }
 
-    if (!receiverId || isNaN(parseInt(receiverId)) || !msgText) {
+    const targetReceiverId = parseInt(receiverId, 10);
+    if (isNaN(targetReceiverId) || !msgText) {
       return res.status(400).json({ message: 'Receiver ID and message content are required' });
     }
 
     const senderId = req.user.id;
-    const senderType = req.user.role;
-    const receiverType = senderType === 'vendor' ? 'customer' : 'vendor';
-    const convId = conversationId || (senderType === 'vendor' ? `cust-${receiverId}` : `vend-${receiverId}`);
+    const isVendorLike = ['vendor', 'seller', 'company'].includes(req.user.role || 'user');
+    const senderType = isVendorLike ? 'vendor' : 'customer';
+    const receiverType = isVendorLike ? 'customer' : 'vendor';
+    const convId = conversationId || `${isVendorLike ? 'cust' : 'vend'}-${targetReceiverId}`;
 
     const msg = await prisma.message.create({
       data: {
-        conversationId: convId,
+        conversationId: String(convId),
         senderId,
         senderType,
-        receiverId: parseInt(receiverId),
+        receiverId: targetReceiverId,
         receiverType,
         content: msgText,
-      },
+      }
     });
 
     res.status(201).json({
-      message: 'Message sent',
+      message: 'Message sent successfully',
       id: msg.messageId,
       messageId: msg.messageId,
       senderId: msg.senderId,
@@ -230,11 +299,17 @@ const sendMessage = async (req, res) => {
       receiverType: msg.receiverType,
       text: msg.content,
       content: msg.content,
+      isMe: true,
       createdAt: msg.createdAt,
     });
   } catch (error) {
+    console.error('sendMessage error:', error);
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
-module.exports = { getConversations, getMessages, sendMessage };
+module.exports = {
+  getConversations,
+  getMessages,
+  sendMessage
+};

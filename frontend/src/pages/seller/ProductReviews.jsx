@@ -164,6 +164,30 @@ export const ProductReviews = () => {
                   )}
 
                   <p className="text-slate-800 dark:text-slate-200 text-sm leading-relaxed">{rev.comment || 'No written comment provided.'}</p>
+
+                  {rev.vendorReply ? (
+                    <div className="mt-3 p-3 rounded-xl bg-primary/10 border border-primary/20 text-xs text-slate-800 dark:text-slate-200">
+                      <span className="font-bold text-primary block mb-1">Your Response:</span>
+                      {rev.vendorReply}
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        const reply = prompt('Enter your reply to this customer feedback:');
+                        if (reply && reply.trim()) {
+                          api.post(`/reviews/${rev.reviewId}/reply`, { reply: reply.trim() })
+                            .then(() => {
+                              alert('Reply submitted successfully!');
+                              window.location.reload();
+                            })
+                            .catch((err) => alert(err.response?.data?.message || 'Failed to submit reply.'));
+                        }
+                      }}
+                      className="mt-2 text-xs font-semibold text-primary hover:underline block"
+                    >
+                      + Reply to Customer Feedback
+                    </button>
+                  )}
                 </div>
               ))}
             </div>

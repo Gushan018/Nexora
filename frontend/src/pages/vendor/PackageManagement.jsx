@@ -168,50 +168,50 @@ export const PackageManagement = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-slate-900 dark:text-white">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Pricing Packages</h1>
-          <p className="text-slate-600">Configure tiered pricing packages for your primary service.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Pricing Packages</h1>
+          <p className="text-slate-600 dark:text-slate-300">Configure tiered pricing packages for your primary service.</p>
         </div>
         <Button onClick={() => handleOpenModal()} leftIcon={<Plus className="w-4 h-4"/>}>Create New Package</Button>
       </div>
 
       {loading ? (
-        <div className="text-center text-slate-500 py-12">Loading packages...</div>
+        <div className="text-center text-slate-500 dark:text-slate-400 py-12">Loading packages...</div>
       ) : packages.length === 0 ? (
-        <Card className="border-slate-200">
-          <CardContent className="p-12 text-center text-slate-500">
-            <Package className="w-12 h-12 mx-auto mb-4 opacity-20" />
-            <p className="text-lg font-medium text-slate-700 mb-2">No Packages Found</p>
-            <p className="text-sm mb-6">Create your first tiered pricing package to offer clients bundled event services.</p>
+        <Card className="border-slate-200 dark:border-white/10 bg-white dark:bg-surface">
+          <CardContent className="p-12 text-center text-slate-500 dark:text-slate-400">
+            <Package className="w-12 h-12 mx-auto mb-4 opacity-30" />
+            <p className="text-lg font-medium text-slate-900 dark:text-white mb-2">No Packages Found</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300 mb-6">Create your first tiered pricing package to offer clients bundled event services.</p>
             <Button onClick={() => handleOpenModal()} leftIcon={<Plus className="w-4 h-4"/>}>Create New Package</Button>
           </CardContent>
         </Card>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-6">
           {packages.map((pkg) => (
-            <Card key={pkg.packageId} className="relative transition-all duration-300 hover:-translate-y-1 border-slate-300">
+            <Card key={pkg.packageId} className="relative transition-all duration-300 hover:-translate-y-1 border-slate-300 dark:border-white/10 bg-white dark:bg-surface">
               <CardContent className="p-6">
                 <div className="flex justify-between items-start mb-6">
                   <div>
-                    <h3 className="text-xl font-bold text-slate-900">{pkg.packageName}</h3>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">{pkg.packageName}</h3>
                     <div className="flex items-baseline gap-1 mt-2">
-                      <span className="text-3xl font-bold text-slate-900">LKR {Number(pkg.price).toLocaleString()}</span>
-                      <span className="text-sm text-slate-500">/event</span>
+                      <span className="text-3xl font-bold text-slate-900 dark:text-white">LKR {Number(pkg.price).toLocaleString()}</span>
+                      <span className="text-sm text-slate-500 dark:text-slate-400">/event</span>
                     </div>
                   </div>
                   <div className="flex flex-col gap-1">
                     <button 
                       onClick={() => handleOpenModal(pkg)}
-                      className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors"
+                      className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 rounded transition-colors"
                       title="Edit Package"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button 
                       onClick={() => handleDelete(pkg.packageId)}
-                      className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-400/10 rounded transition-colors"
+                      className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded transition-colors"
                       title="Delete Package"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -219,7 +219,7 @@ export const PackageManagement = () => {
                   </div>
                 </div>
 
-                <p className="text-sm text-slate-600 mb-6">{pkg.description || 'Custom event service package.'}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-300 mb-6">{pkg.description || 'Custom event service package.'}</p>
                 <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider">
                   <CheckCircle2 className="w-4 h-4 text-green-500" />
                   {pkg.isApproved ? 'Approved & Live' : 'Pending Approval'}
@@ -232,9 +232,9 @@ export const PackageManagement = () => {
 
         {/* Global Add-ons */}
         <div className="lg:col-span-3 mt-8">
-          <Card>
-            <CardHeader className="flex flex-row justify-between items-center border-b border-slate-200 pb-4">
-              <CardTitle>Global Add-ons</CardTitle>
+          <Card className="border-slate-200 dark:border-white/10 bg-white dark:bg-surface">
+            <CardHeader className="flex flex-row justify-between items-center border-b border-slate-200 dark:border-white/10 pb-4">
+              <CardTitle className="text-slate-900 dark:text-white">Global Add-ons</CardTitle>
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -246,13 +246,13 @@ export const PackageManagement = () => {
             </CardHeader>
             <CardContent className="p-0">
               {addons.length === 0 ? (
-                <div className="p-8 text-center text-slate-500 text-sm">No global add-ons added yet. Click "Add Item" above.</div>
+                <div className="p-8 text-center text-slate-500 dark:text-slate-400 text-sm">No global add-ons added yet. Click "Add Item" above.</div>
               ) : (
                 <div className="divide-y divide-slate-100 dark:divide-white/5">
                   {addons.map((addon) => (
                     <div key={addon.id} className="p-4 flex items-center justify-between group hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
                       <div className="flex items-center gap-3">
-                        <GripVertical className="w-4 h-4 text-slate-300 cursor-grab" />
+                        <GripVertical className="w-4 h-4 text-slate-300 dark:text-slate-600 cursor-grab" />
                         <span className="font-medium text-slate-900 dark:text-white">{addon.name}</span>
                       </div>
                       <div className="flex items-center gap-4">
@@ -321,13 +321,13 @@ export const PackageManagement = () => {
           />
           
           <div className="space-y-2">
-            <label className="text-sm font-medium text-textPrimary/90">Description</label>
+            <label className="text-sm font-medium text-slate-900 dark:text-white">Description</label>
             <textarea 
               rows="4"
               placeholder="What's included in this package?"
               value={formData.description}
               onChange={(e) => setFormData({...formData, description: e.target.value})}
-              className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors resize-none"
+              className="w-full bg-light-surface dark:bg-surface border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-white/40 focus:outline-none focus:border-primary/50 transition-colors resize-none"
             />
           </div>
 

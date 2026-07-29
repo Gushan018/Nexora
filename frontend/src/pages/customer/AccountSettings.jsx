@@ -1,16 +1,18 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Save, User, Mail, Shield, Camera } from 'lucide-react';
+import { Save, User, Mail, Shield, Camera, Lock, KeyRound, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import { useToast } from '../../context/ToastContext';
 import { cn } from '../../utils/cn';
 import { api, resolveAssetUrl } from '../../utils/api';
 
 export const AccountSettings = () => {
   const { user, setUser } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const { showToast } = useToast();
   
   const [firstName, ...lastNameArr] = (user?.name || ' ').split(' ');
   const defaultLastName = lastNameArr.join(' ');
@@ -23,6 +25,15 @@ export const AccountSettings = () => {
   const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(user?.profileImage || null);
   const fileInputRef = useRef(null);
+
+  // Password Change state
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showCurrentPass, setShowCurrentPass] = useState(false);
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   const profilePath = user?.role === 'admin' ? '/admin/profile' : '/customers/profile';
 
@@ -81,13 +92,54 @@ export const AccountSettings = () => {
       const updatedUser = { ...user, ...updatedProfile, bio: formBio };
       setUser(updatedUser);
       localStorage.setItem('user', JSON.stringify(updatedUser));
-      alert('Account settings saved successfully!');
+      showToast('Account settings saved successfully!', 'success');
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to save settings.');
+      showToast(err.response?.data?.message || 'Failed to save settings.', 'error');
     } finally {
       setIsSaving(false);
     }
   };
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    if (!currentPassword) {
+      showToast('Please enter your current password.', 'warning');
+      return;
+    }
+    if (!newPassword || newPassword.length < 8) {
+      showToast('New password must be at least 8 characters long.', 'warning');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      showToast('New passwords do not match.', 'error');
+      return;
+    }
+
+    setIsChangingPassword(true);
+    try {
+      const res = await api.put('/auth/change-password', {
+        currentPassword,
+        newPassword
+      });
+      showToast(res.data?.message || 'Password changed successfully!', 'success');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (err) {
+      showToast(err.response?.data?.message || 'Failed to change password. Please check your current password.', 'error');
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
+  const getPasswordStrength = () => {
+    if (!newPassword) return null;
+    if (newPassword.length < 6) return { label: 'Weak', color: 'bg-rose-500', width: 'w-1/3' };
+    if (newPassword.length < 10) return { label: 'Medium', color: 'bg-amber-500', width: 'w-2/3' };
+    return { label: 'Strong', color: 'bg-emerald-500', width: 'w-full' };
+  };
+
+  const strength = getPasswordStrength();
 
   return (
     <motion.div 
@@ -98,7 +150,7 @@ export const AccountSettings = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Account Settings</h1>
-          <p className="text-gray-600 dark:text-white/70 text-lg">Manage your personal information and preferences.</p>
+          <p className="text-gray-600 dark:text-white/70 text-lg">Manage your personal information, security options, and preferences.</p>
         </div>
         <Button 
           leftIcon={<Save className="w-4 h-4"/>} 
@@ -148,7 +200,7 @@ export const AccountSettings = () => {
               <User className="w-5 h-5 text-primary" />
               General Information
             </CardTitle>
-            <CardDescription className="text-gray-600 dark:text-white/60">Update your contact details and description.</CardDescription>
+            <CardDescription className="text-gray-600 dark:text-white/60">Update your contact details and profile bio.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -188,17 +240,121 @@ export const AccountSettings = () => {
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700 dark:text-white/80 block">Bio / Description</label>
               <textarea 
-                rows="4" 
+                rows="3" 
                 value={formBio}
                 onChange={(e) => setFormBio(e.target.value)}
                 placeholder="Tell vendors a bit about yourself..."
                 className="w-full bg-light-surface dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
               ></textarea>
             </div>
-            
           </CardContent>
         </Card>
       </div>
+
+      {/* Security & Password Change Card */}
+      <Card className="border-gray-200 dark:border-white/10 bg-light-surface dark:bg-surface hover:border-primary/30 transition-colors mt-8">
+        <CardHeader>
+          <CardTitle className="text-xl flex items-center gap-2 text-gray-900 dark:text-white">
+            <KeyRound className="w-5 h-5 text-amber-500" />
+            Security & Password Change
+          </CardTitle>
+          <CardDescription className="text-gray-600 dark:text-white/60">Update your account password to ensure maximum account security.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleChangePassword} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Current Password */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-white/80 block">Current Password</label>
+                <div className="relative">
+                  <Lock className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/40" />
+                  <input
+                    type={showCurrentPass ? 'text' : 'password'}
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full bg-light-surface dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl pl-10 pr-10 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-amber-500 transition-all text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrentPass(!showCurrentPass)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-white"
+                  >
+                    {showCurrentPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* New Password */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-white/80 block">New Password</label>
+                <div className="relative">
+                  <KeyRound className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/40" />
+                  <input
+                    type={showNewPass ? 'text' : 'password'}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Min 8 characters"
+                    className="w-full bg-light-surface dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl pl-10 pr-10 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-amber-500 transition-all text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPass(!showNewPass)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-white"
+                  >
+                    {showNewPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Confirm New Password */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 dark:text-white/80 block">Confirm New Password</label>
+                <div className="relative">
+                  <KeyRound className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/40" />
+                  <input
+                    type={showConfirmPass ? 'text' : 'password'}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Re-enter new password"
+                    className="w-full bg-light-surface dark:bg-slate-900 border border-gray-300 dark:border-white/10 rounded-xl pl-10 pr-10 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-amber-500 transition-all text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPass(!showConfirmPass)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-white"
+                  >
+                    {showConfirmPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Password Strength Indicator */}
+            {strength && (
+              <div className="space-y-1 max-w-xs">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-gray-500 dark:text-slate-400">Password Strength:</span>
+                  <span className="font-semibold text-gray-700 dark:text-white">{strength.label}</span>
+                </div>
+                <div className="w-full h-1.5 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
+                  <div className={`h-full ${strength.color} ${strength.width} transition-all duration-300`} />
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-end pt-2">
+              <Button
+                type="submit"
+                disabled={isChangingPassword || !currentPassword || !newPassword || !confirmPassword}
+                className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 h-11"
+              >
+                {isChangingPassword ? 'Updating Password...' : 'Update Password'}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
 
       {/* Theme Preferences Card */}
       <Card className="border-gray-200 dark:border-white/10 bg-light-surface dark:bg-surface hover:border-primary/30 transition-colors mt-8">
@@ -207,7 +363,7 @@ export const AccountSettings = () => {
             <Shield className="w-5 h-5 text-primary" />
             Appearance
           </CardTitle>
-          <CardDescription className="text-gray-600 dark:text-white/60">Customize how Event Nest looks for you.</CardDescription>
+          <CardDescription className="text-gray-600 dark:text-white/60">Customize how Nexora looks for you.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-4">
@@ -238,8 +394,6 @@ export const AccountSettings = () => {
           </div>
         </CardContent>
       </Card>
-
     </motion.div>
   );
 };
-

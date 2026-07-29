@@ -9,8 +9,6 @@ const getAllServices = async (req, res) => {
       where.vendorId = req.user.id;
     } else if (vendorId) {
       where.vendorId = parseInt(vendorId);
-    } else {
-      where.isApproved = true;
     }
     if (categoryId) where.categoryId = parseInt(categoryId);
     const services = await prisma.service.findMany({
@@ -81,10 +79,10 @@ const createService = async (req, res) => {
         imageUrl,
         categoryId: catId,
         vendorId: req.user.id,
-        isApproved: false
+        isApproved: true
       },
     });
-    res.status(201).json({ message: 'Service created. Awaiting admin approval.', service });
+    res.status(201).json({ message: 'Service created successfully.', service });
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }

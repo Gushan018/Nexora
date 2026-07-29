@@ -101,13 +101,21 @@ export const VendorProfile = () => {
       let imageUrl = vendor?.profileImage || vendor?.logoImage;
       if (profileImage) {
         const uploadedUrl = await uploadImage(profileImage);
-        if (uploadedUrl) imageUrl = uploadedUrl;
+        if (uploadedUrl) {
+          imageUrl = uploadedUrl;
+        } else if (previewImage && (previewImage.startsWith('data:') || previewImage.startsWith('http'))) {
+          imageUrl = previewImage;
+        }
       }
 
       let coverUrl = vendor?.coverImage || vendor?.bannerImage;
       if (coverImage) {
         const uploadedCover = await uploadImage(coverImage);
-        if (uploadedCover) coverUrl = uploadedCover;
+        if (uploadedCover) {
+          coverUrl = uploadedCover;
+        } else if (previewCover && (previewCover.startsWith('data:') || previewCover.startsWith('http'))) {
+          coverUrl = previewCover;
+        }
       }
 
       const res = await api.put('/vendors/profile', {
@@ -120,8 +128,8 @@ export const VendorProfile = () => {
 
       const updated = res.data;
       setVendor(updated);
-      const newLogo = updated.profileImage || updated.logoImage || imageUrl;
-      const newBanner = updated.coverImage || updated.bannerImage || coverUrl;
+      const newLogo = updated.logoImage || updated.profileImage || imageUrl || previewImage;
+      const newBanner = updated.bannerImage || updated.coverImage || coverUrl || previewCover;
       setPreviewImage(newLogo);
       setPreviewCover(newBanner);
       setProfileImage(null);
@@ -186,9 +194,13 @@ export const VendorProfile = () => {
         {/* Cover Photo */}
         <div className="h-64 w-full relative group cursor-pointer bg-slate-900 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10">
           <img 
-            src={resolveAssetUrl(previewCover)} 
+            src={resolveAssetUrl(previewCover, 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80')} 
             alt="Cover" 
             className="w-full h-full object-cover opacity-70 group-hover:opacity-40 transition-opacity"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80';
+            }}
           />
           <label className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer bg-slate-950/60 backdrop-blur-xs">
             <Camera className="w-8 h-8 text-white mb-2" />
@@ -203,9 +215,13 @@ export const VendorProfile = () => {
           <div className="relative group cursor-pointer">
             <div className="w-32 h-32 rounded-2xl bg-slate-900 border-4 border-slate-950 flex items-center justify-center overflow-hidden shadow-2xl">
               <img 
-                src={resolveAssetUrl(previewImage)} 
+                src={resolveAssetUrl(previewImage, 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&q=80')} 
                 alt="Logo" 
                 className="w-full h-full object-cover group-hover:opacity-50 transition-opacity"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=200&q=80';
+                }}
               />
             </div>
             <label className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer bg-slate-950/60 rounded-2xl">

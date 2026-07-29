@@ -32,7 +32,9 @@ export const VendorChat = () => {
   const messages = React.useMemo(() => {
     return rawMessages.map(m => ({
       id: m.id || m.messageId,
+      senderId: m.senderId,
       senderType: m.senderType,
+      isMe: m.isMe,
       text: m.text || m.content || '',
       createdAt: m.createdAt
     }));
@@ -68,18 +70,18 @@ export const VendorChat = () => {
         {/* Chat Header */}
         <div className="p-4 border-b border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md flex justify-between items-center shrink-0 z-10">
           <div className="flex items-center gap-4">
-            <Link to="/customer/chat-inbox" className="p-2 -ml-2 text-slate-600 dark:text-slate-300 hover:text-primary transition-colors flex items-center gap-1 text-sm font-medium">
+            <Link to="../chat-inbox" className="p-2 -ml-2 text-slate-600 dark:text-slate-300 hover:text-primary transition-colors flex items-center gap-1 text-sm font-medium">
               <ChevronLeft className="w-5 h-5" />
               <span className="hidden sm:inline">Back to Inbox</span>
             </Link>
             <div className="relative">
               <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold">
-                {participant?.name ? participant.name.charAt(0) : 'V'}
+                {participant?.name ? participant.name.charAt(0) : 'U'}
               </div>
               <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white dark:border-slate-900" />
             </div>
             <div>
-              <h2 className="font-bold text-slate-900 dark:text-white">{participant?.name || 'Vendor Chat'}</h2>
+              <h2 className="font-bold text-slate-900 dark:text-white">{participant?.name || 'Chat'}</h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Online
               </p>
@@ -88,12 +90,9 @@ export const VendorChat = () => {
           <div className="flex gap-2">
             {participant?.phone && (
               <a href={`tel:${participant.phone}`}>
-                <Button variant="outline" size="sm" className="hidden sm:flex text-slate-900 dark:text-white border-slate-300 dark:border-slate-700" leftIcon={<Phone className="w-4 h-4"/>}>Call Vendor</Button>
+                <Button variant="outline" size="sm" className="hidden sm:flex text-slate-900 dark:text-white border-slate-300 dark:border-slate-700" leftIcon={<Phone className="w-4 h-4"/>}>Call</Button>
               </a>
             )}
-            <Link to="/vendor/booking-management">
-              <Button variant="outline" size="sm" className="hidden sm:flex text-slate-900 dark:text-white border-slate-300 dark:border-slate-700" leftIcon={<Calendar className="w-4 h-4"/>}>View Booking</Button>
-            </Link>
           </div>
         </div>
 
@@ -104,7 +103,7 @@ export const VendorChat = () => {
           </div>
 
           {messages.map((msg) => {
-            const isMe = msg.senderType === 'customer' || msg.senderType === 'vendor';
+            const isMe = msg.isMe;
             const timeStr = new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             return (
               <div key={msg.id} className={cn("flex w-full", isMe ? "justify-end" : "justify-start")}>

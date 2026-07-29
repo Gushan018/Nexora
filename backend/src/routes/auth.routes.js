@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-
 const { protect } = require('../middleware/auth.middleware');
 
 const {
@@ -14,7 +13,9 @@ const {
   registerCompany,
   loginAdmin,
   loginUnified,
-  changePassword
+  changePassword,
+  forgotPassword,
+  resetPassword
 } = require('../controllers/auth.controller');
 
 // Unified Login
@@ -38,7 +39,11 @@ router.post('/register/company', registerCompany);
 // Admin Login
 router.post('/login/admin', loginAdmin);
 
-// Protected Routes
+// Forgot & Reset Password Routes
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
+
+// Protected Password Change
 router.put('/change-password', protect, changePassword);
 
 module.exports = router;

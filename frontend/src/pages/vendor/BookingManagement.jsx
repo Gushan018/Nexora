@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Search, Filter, CheckCircle2, Clock, MoreVertical, ShieldCheck, Loader2, AlertCircle, XCircle, RefreshCcw } from 'lucide-react';
+import { 
+  Calendar, Search, Filter, CheckCircle2, Clock, MoreVertical, 
+  ShieldCheck, Loader2, AlertCircle, XCircle, RefreshCcw, MapPin, User, Phone, Sparkles 
+} from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { cn } from '../../utils/cn';
@@ -57,6 +60,12 @@ export const BookingManagement = () => {
     }
   };
 
+  const nextUpcomingEvent = useMemo(() => {
+    const accepted = bookings.filter(b => b.status === 'ACCEPTED' && b.eventDate);
+    if (accepted.length === 0) return null;
+    return accepted.sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate))[0];
+  }, [bookings]);
+
   const filteredBookings = useMemo(() => bookings.filter(booking => {
     const query = searchTerm.trim().toLowerCase();
     if (statusFilter !== 'All' && booking.status !== statusFilter) {
@@ -91,7 +100,7 @@ export const BookingManagement = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4">
         <Card className="border-primary/20 bg-primary/5">
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Upcoming Events</h3>
@@ -134,6 +143,78 @@ export const BookingManagement = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Upcoming Event Spotlight Card */}
+      <Card className="border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-slate-900/40 to-slate-900 border overflow-hidden shadow-xl">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2 text-amber-400 font-bold text-sm uppercase tracking-wider">
+              <Sparkles className="w-4 h-4 animate-pulse" />
+              Upcoming Event Spotlight
+            </div>
+            <span className="text-xs px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold">
+              Confirmed Status
+            </span>
+          </div>
+
+          {nextUpcomingEvent ? (
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="space-y-2 flex-1">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                    {nextUpcomingEvent.service?.serviceName || nextUpcomingEvent.package?.packageName || 'Event Reservation'}
+                  </h2>
+                  <span className="text-xs text-slate-400 font-mono">BKG-{nextUpcomingEvent.bookingId}</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-slate-600 dark:text-slate-300 pt-1">
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>Client: <strong className="text-slate-900 dark:text-white">{nextUpcomingEvent.customer?.name || 'Customer'}</strong></span>
+                  </div>
+                  {nextUpcomingEvent.customer?.contactNumber && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-amber-400 shrink-0" />
+                      <span>{nextUpcomingEvent.customer.contactNumber}</span>
+                    </div>
+                  )}
+                  {nextUpcomingEvent.location && (
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
+                      <span>{nextUpcomingEvent.location}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-t lg:border-t-0 lg:border-l border-white/10 pt-4 lg:pt-0 lg:pl-6 shrink-0">
+                <div>
+                  <div className="text-xs text-slate-400">Event Date</div>
+                  <div className="text-lg font-bold text-amber-400">
+                    {new Date(nextUpcomingEvent.eventDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
+                  </div>
+                  <div className="text-xs text-emerald-400 font-medium">
+                    Value: LKR {Number(nextUpcomingEvent.service?.price || nextUpcomingEvent.package?.price || 0).toLocaleString()}
+                  </div>
+                </div>
+
+                <Button 
+                  size="sm"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-10 px-4 rounded-xl border-none shadow-md"
+                  onClick={() => handleStatusUpdate(nextUpcomingEvent.bookingId, 'COMPLETED')}
+                >
+                  Mark Completed
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="py-4 text-center text-sm text-slate-400 flex flex-col items-center gap-2">
+              <Calendar className="w-8 h-8 opacity-40 text-amber-400" />
+              <span>No upcoming confirmed events scheduled at the moment.</span>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         {/* Toolbar */}

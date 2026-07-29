@@ -73,13 +73,22 @@ export const UserManagement = () => {
         const rawDate = v.registrationDate || v.lastActive;
         const formattedDate = rawDate ? new Date(rawDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A';
         const isBlocked = !!(v.blocked || v.isBlocked || !v.isApproved);
+        
+        let roleName = 'Service Provider';
+        if (v.vendorType === 'RENTAL' || (v.businessName || '').toLowerCase().includes('seller')) {
+          roleName = 'Seller / Supplier';
+        } else if (v.vendorType === 'EVENT_COMPANY' || (v.businessName || '').toLowerCase().includes('company')) {
+          roleName = 'Event Management Company';
+        }
+
         return {
           id: `VND-${v.vendorId}`,
           vendorId: v.vendorId,
           name: v.businessName || v.name || 'Vendor',
           email: v.email || '-',
           phone: v.contactNumber || v.phone || '-',
-          role: 'Vendor',
+          role: roleName,
+          vendorType: v.vendorType,
           status: isBlocked ? 'Blocked' : 'Active',
           joinDate: formattedDate,
           isBlocked: isBlocked,
@@ -397,7 +406,9 @@ export const UserManagement = () => {
         >
           <option value="All Roles">All Roles</option>
           <option value="Customer">Customers Only</option>
-          <option value="Vendor">Vendors Only</option>
+          <option value="Service Provider">Service Providers</option>
+          <option value="Seller / Supplier">Sellers / Suppliers</option>
+          <option value="Event Management Company">Event Management Companies</option>
         </select>
         <select
           value={statusFilter}

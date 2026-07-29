@@ -116,9 +116,6 @@ const getVendorBookings = async (req, res) => {
   try {
     const userId = parseInt(req.user.id);
     let vendor = await prisma.vendor.findUnique({ where: { vendorId: userId } });
-    if (!vendor) {
-      vendor = await prisma.vendor.findFirst({ where: { userId: userId } });
-    }
     const vendorId = vendor ? vendor.vendorId : userId;
 
     const vendorServices = await prisma.service.findMany({
@@ -132,6 +129,10 @@ const getVendorBookings = async (req, res) => {
 
     const serviceIds = vendorServices.map(s => s.serviceId);
     const packageIds = vendorPackages.map(p => p.packageId);
+
+    if (serviceIds.length === 0 && packageIds.length === 0) {
+      return res.status(200).json([]);
+    }
 
     const bookings = await prisma.booking.findMany({
       where: {

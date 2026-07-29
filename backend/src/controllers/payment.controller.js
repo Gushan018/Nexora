@@ -115,5 +115,6 @@ const getMyPayments = async (req, res) => {
 
 module.exports = {
   makePayment,
-  getMyPayments
+  getMyPayments,
+  getPaymentHistory: getMyPayments
 };

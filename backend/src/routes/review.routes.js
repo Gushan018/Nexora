@@ -4,13 +4,15 @@ const { submitReview, getMyReviews, getSellerReviews, replyToReview, deleteRevie
 const { protect, restrictTo } = require('../middleware/auth.middleware');
 
 router.get('/public', getPublicReviews);
-router.post('/', protect, restrictTo('customer'), submitReview);
+router.post('/', protect, submitReview);
 router.get('/my', protect, getMyReviews);
-router.get('/seller', protect, restrictTo('seller', 'vendor'), getSellerReviews);
-router.get('/vendor', protect, restrictTo('seller', 'vendor'), getSellerReviews);
-router.put('/:id/reply', protect, restrictTo('seller', 'vendor'), replyToReview);
-router.delete('/:id/reply', protect, restrictTo('seller', 'vendor'), deleteReviewReply);
-router.put('/:id/report', protect, restrictTo('seller', 'vendor'), reportReview);
-router.put('/:id/unreport', protect, restrictTo('seller', 'vendor'), unreportReview);
+router.get('/seller', protect, getSellerReviews);
+router.get('/vendor', protect, getSellerReviews);
+
+router.post('/:id/reply', protect, replyToReview);
+router.put('/:id/reply', protect, replyToReview);
+router.delete('/:id/reply', protect, deleteReviewReply);
+router.put('/:id/report', protect, reportReview);
+router.put('/:id/unreport', protect, unreportReview);
 
 module.exports = router;

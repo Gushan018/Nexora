@@ -90,7 +90,15 @@ const getProductById = async (req, res) => {
         isApproved: true,
       },
       include: {
-        vendor: { select: { businessName: true, location: true } },
+        vendor: { 
+          select: { 
+            businessName: true, 
+            location: true,
+            vendorId: true,
+            eventPackages: { where: { isApproved: true }, take: 4 },
+            products: { where: { isApproved: true }, take: 4 }
+          } 
+        },
         reviews: { 
           include: {
             customer: { select: { name: true } }

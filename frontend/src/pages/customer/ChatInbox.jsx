@@ -65,7 +65,7 @@ export const ChatInbox = () => {
                 const timeStr = conv.lastMessageTime ? new Date(conv.lastMessageTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
                 
                 return (
-                  <Link to={`/customer/vendor-chat/${conv.conversationId}`} key={conv.conversationId}>
+                  <Link to={`../vendor-chat/${conv.conversationId}`} key={conv.conversationId}>
                     <div className="p-4 border-b border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-slate-800/50 cursor-pointer transition-colors flex gap-4">
                       <div className="relative shrink-0">
                         <div className="w-12 h-12 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-lg">

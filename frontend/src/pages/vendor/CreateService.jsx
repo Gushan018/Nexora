@@ -163,21 +163,23 @@ export const CreateService = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto pb-12">
+    <div className="space-y-6 max-w-4xl mx-auto pb-12 text-slate-900 dark:text-white">
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <Link to="/vendor/service-listing" className="text-sm text-slate-600 hover:text-slate-900 flex items-center gap-1 w-fit mb-2 transition-colors">
+          <Link to="/vendor/service-listing" className="text-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1 w-fit mb-2 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to Services
           </Link>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white flex items-center gap-2 tracking-tight">
             Create New Service
           </h1>
-          <p className="text-slate-600">Define a new service offering to showcase to customers.</p>
+          <p className="text-slate-600 dark:text-slate-300">Define a new service offering to showcase to customers.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">Save Draft</Button>
-          <Button leftIcon={<Plus className="w-4 h-4"/>}>Publish Service</Button>
+          <Button variant="outline" onClick={() => navigate('/vendor/service-listing')}>Cancel</Button>
+          <Button onClick={handleSubmit} disabled={loading} leftIcon={<Plus className="w-4 h-4"/>}>
+            {loading ? 'Publishing...' : 'Publish Service'}
+          </Button>
         </div>
       </div>
 
@@ -195,14 +197,14 @@ export const CreateService = () => {
         </motion.div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-4">
 
         {/* Main Form */}
         <div className="lg:col-span-2 space-y-6">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <Card>
+            <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
               <CardHeader>
-                <CardTitle>Basic Information</CardTitle>
+                <CardTitle className="text-slate-900 dark:text-white">Basic Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <Input
@@ -215,7 +217,7 @@ export const CreateService = () => {
                 />
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-textPrimary/90">Category *</label>
+                  <label className="text-sm font-medium text-slate-900 dark:text-white">Category *</label>
                   <select
                     name="category"
                     value={formData.category}
@@ -242,35 +244,35 @@ export const CreateService = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-textPrimary/90">Detailed Description</label>
+                  <label className="text-sm font-medium text-slate-900 dark:text-white">Detailed Description</label>
                   <textarea
                     rows="4"
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
                     placeholder="Describe what makes this service special..."
-                    className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                    className="w-full bg-light-surface dark:bg-surface border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-white/40 focus:outline-none focus:border-primary/50 transition-colors resize-none"
                   />
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
               <CardHeader>
-                <CardTitle>Media & Portfolio</CardTitle>
+                <CardTitle className="text-slate-900 dark:text-white">Media & Portfolio</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-textPrimary/90">Cover Photo</label>
-                  <label className="w-full h-48 rounded-xl border-2 border-dashed border-white/10 flex flex-col items-center justify-center hover:border-primary/50 hover:bg-surface/50 cursor-pointer transition-all group bg-surface/30">
+                  <label className="text-sm font-medium text-slate-900 dark:text-white">Cover Photo</label>
+                  <label className="w-full h-48 rounded-xl border-2 border-dashed border-slate-300 dark:border-white/10 flex flex-col items-center justify-center hover:border-primary/50 cursor-pointer transition-all group bg-slate-50 dark:bg-slate-800/40">
                     {coverImagePreview ? (
                       <img src={coverImagePreview} alt="Cover" className="w-full h-full object-cover rounded-lg" />
                     ) : (
                       <>
-                        <Upload className="w-8 h-8 text-textPrimary/40 mb-3 group-hover:text-primary transition-colors" />
-                        <p className="text-sm text-textPrimary font-medium">Click to upload or drag and drop</p>
-                        <p className="text-xs text-textPrimary/40 mt-1">1920x1080px (16:9) recommended</p>
+                        <Upload className="w-8 h-8 text-slate-400 dark:text-white/50 mb-3 group-hover:text-primary transition-colors" />
+                        <p className="text-sm text-slate-800 dark:text-white font-medium">Click to upload or drag and drop</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">1920x1080px (16:9) recommended</p>
                       </>
                     )}
                     <input
@@ -283,9 +285,9 @@ export const CreateService = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-textPrimary/90 flex justify-between">
+                  <label className="text-sm font-medium text-slate-900 dark:text-white flex justify-between">
                     <span>Gallery Images</span>
-                    <span className="text-textPrimary/40">{galleryImages.length}/10</span>
+                    <span className="text-slate-500 dark:text-slate-400">{galleryImages.length}/10</span>
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {galleryPreviews.map((preview, i) => (
@@ -294,15 +296,15 @@ export const CreateService = () => {
                         <button
                           type="button"
                           onClick={() => removeGalleryImage(i)}
-                          className="absolute -top-2 -right-2 bg-red-500 rounded-full p-1 text-textPrimary hover:bg-red-600"
+                          className="absolute -top-2 -right-2 bg-red-500 rounded-full p-1 text-white hover:bg-red-600"
                         >
                           <X className="w-4 h-4" />
                         </button>
                       </div>
                     ))}
                     {galleryImages.length < 10 && (
-                      <label className="aspect-square rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center hover:border-white/30 cursor-pointer bg-surface/30 transition-colors">
-                        <Plus className="w-6 h-6 text-textPrimary/20" />
+                      <label className="aspect-square rounded-xl border-2 border-dashed border-slate-300 dark:border-white/10 flex items-center justify-center hover:border-slate-400 dark:hover:border-white/30 cursor-pointer bg-slate-50 dark:bg-slate-800/40 transition-colors">
+                        <Plus className="w-6 h-6 text-slate-400 dark:text-white/40" />
                         <input
                           type="file"
                           multiple
@@ -318,9 +320,9 @@ export const CreateService = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-gray-200 dark:border-white/10 bg-white dark:bg-surface">
               <CardHeader>
-                <CardTitle>Service Settings</CardTitle>
+                <CardTitle className="text-slate-900 dark:text-white">Service Settings</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
 
@@ -338,7 +340,7 @@ export const CreateService = () => {
                     required
                   />
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-textPrimary/90">Pricing Model</label>
+                    <label className="text-sm font-medium text-slate-900 dark:text-white">Pricing Model</label>
                     <select
                       name="pricingModel"
                       value={formData.pricingModel}
@@ -353,19 +355,19 @@ export const CreateService = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-textPrimary/90">Service Area (Sri Lankan Cities / Districts)</label>
+                  <label className="text-sm font-medium text-slate-900 dark:text-white">Service Area (Sri Lankan Cities / Districts)</label>
                   <div className="relative">
-                    <MapPin className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-textPrimary/40" />
+                    <MapPin className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input
                       type="text"
                       name="serviceArea"
                       value={formData.serviceArea}
                       onChange={handleInputChange}
                       placeholder="e.g. Colombo, Kandy, Galle, Negombo"
-                      className="w-full bg-surface/50 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-textPrimary focus:outline-none focus:border-primary/50 transition-colors"
+                      className="w-full bg-light-surface dark:bg-surface border border-slate-300 dark:border-white/10 rounded-xl pl-10 pr-4 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-white/40 focus:outline-none focus:border-primary/50 transition-colors"
                     />
                   </div>
-                  <p className="text-xs text-textPrimary/40 mt-1">Separate Sri Lankan locations with commas.</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Separate Sri Lankan locations with commas.</p>
                 </div>
 
               </CardContent>
@@ -392,17 +394,17 @@ export const CreateService = () => {
 
         {/* Sidebar Help/Tips */}
         <div className="space-y-6">
-          <Card className="bg-primary/5 border-primary/20 sticky top-24">
+          <Card className="bg-primary/10 border-primary/30 sticky top-24">
             <CardHeader>
-              <CardTitle className="text-primary flex items-center gap-2 text-lg">
+              <CardTitle className="text-primary flex items-center gap-2 text-lg font-bold">
                 <Info className="w-5 h-5" /> Tips for Success
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2 text-sm text-slate-800 leading-relaxed">
-                <p><strong className="text-slate-900">Use High-Quality Photos:</strong> Listings with at least 5 high-resolution photos receive 60% more inquiries.</p>
-                <p><strong className="text-slate-900">Be Transparent with Pricing:</strong> Even if you require custom quotes, providing a realistic "Starting at" price helps filter qualified leads.</p>
-                <p><strong className="text-slate-900">Write a Clear Description:</strong> Clearly state what is included in the base rate and what costs extra.</p>
+              <div className="space-y-3 text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+                <p><strong className="text-slate-900 dark:text-white font-semibold">Use High-Quality Photos:</strong> Listings with at least 5 high-resolution photos receive 60% more inquiries.</p>
+                <p><strong className="text-slate-900 dark:text-white font-semibold">Be Transparent with Pricing:</strong> Even if you require custom quotes, providing a realistic "Starting at" price helps filter qualified leads.</p>
+                <p><strong className="text-slate-900 dark:text-white font-semibold">Write a Clear Description:</strong> Clearly state what is included in the base rate and what costs extra.</p>
               </div>
             </CardContent>
           </Card>

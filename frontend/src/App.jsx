@@ -107,12 +107,15 @@ import { SystemSettings } from './pages/admin/SystemSettings';
 import { RolesPermissions } from './pages/admin/RolesPermissions';
 import { AdvancedAnalyticsDashboard } from './pages/admin/AdvancedAnalyticsDashboard';
 
+import { ToastProvider } from './context/ToastContext';
+
 function App() {
   return (
     <Router>
-      <PageTitleManager />
-      <ErrorBoundary>
-      <Routes>
+      <ToastProvider>
+        <PageTitleManager />
+        <ErrorBoundary>
+        <Routes>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<LandingPage />} />
           <Route path="about-us" element={<AboutUs />} />
@@ -177,6 +180,7 @@ function App() {
           <Route path="vendor-booking-calendar" element={<VendorBookingCalendar />} />
           <Route path="availability" element={<VendorBookingCalendar />} />
           <Route path="chat-inbox" element={<ChatInbox />} />
+          <Route path="vendor-chat/:conversationId?" element={<VendorChat />} />
           <Route path="revenue-dashboard" element={<RevenueDashboard />} />
           <Route path="earnings" element={<Earnings />} />
           <Route path="withdrawals" element={<Withdrawals />} />
@@ -195,6 +199,7 @@ function App() {
           <Route path="booking-management" element={<BookingManagement />} />
           <Route path="availability" element={<VendorBookingCalendar />} />
           <Route path="chat-inbox" element={<ChatInbox />} />
+          <Route path="vendor-chat/:conversationId?" element={<VendorChat />} />
           <Route path="inquiries" element={<CompanyInquiries />} />
           <Route path="revenue-dashboard" element={<RevenueDashboard />} />
           <Route path="vendor-booking-analytics" element={<VendorBookingAnalytics />} />
@@ -219,6 +224,8 @@ function App() {
           <Route path="sales-dashboard" element={<SalesDashboard />} />
           <Route path="seller-revenue-analytics" element={<SellerRevenueAnalytics />} />
           <Route path="product-reviews" element={<ProductReviews />} />
+          <Route path="chat-inbox" element={<ChatInbox />} />
+          <Route path="vendor-chat/:conversationId?" element={<VendorChat />} />
           <Route path="seller-settings" element={<SellerSettings />} />
           <Route path="account-settings" element={<AccountSettings />} />
         </Route>
@@ -255,6 +262,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       </ErrorBoundary>
+      </ToastProvider>
     </Router>
   );
 }

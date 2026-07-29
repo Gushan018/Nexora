@@ -63,7 +63,8 @@ async function testCustomerRole() {
 
   // 5. Submit Event Booking Request
   try {
-    const req = { ...reqUser, body: { serviceId: 1, eventDate: new Date().toISOString(), location: "Colombo" } };
+    const futureDate = new Date(Date.now() + Math.floor(Math.random() * 1000000000)).toISOString();
+    const req = { ...reqUser, body: { serviceId: 1, eventDate: futureDate, location: "Colombo" } };
     const res = mockRes();
     await bookingController.createBooking(req, res);
     results.push({ role: "Customer", test: "Submit Service Booking Request", status: res.statusCode < 500 ? "PASSED" : "FAILED" });

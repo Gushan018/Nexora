@@ -875,20 +875,26 @@ const getAllBookingsForAdmin = async (req, res) => {
 // ===========================================
 const releasePayment = async (req, res) => {
   try {
-    const { id } = req.params; 
-
+    const { id } = req.params;
     const payment = await prisma.payment.findUnique({ where: { paymentId: parseInt(id) } });
 
-    if (!payment || payment.status !== 'HELD_IN_ESCROW') {
-      return res.status(400).json({ message: "Payment is not held in escrow." });
+    if (!payment) {
+      return res.status(404).json({ message: "Payment transaction not found." });
     }
+
+    const nextStatus = payment.status === 'PENDING' ? 'HELD_IN_ESCROW' : 'RELEASED';
 
     await prisma.payment.update({
       where: { paymentId: parseInt(id) },
-      data: { status: 'RELEASED' },
+      data: { status: nextStatus, paidAt: payment.paidAt || new Date() },
     });
 
-    res.status(200).json({ message: "Funds successfully released to the vendor!" });
+    res.status(200).json({
+      message: nextStatus === 'HELD_IN_ESCROW'
+        ? "Bank slip payment verified! Funds placed in Escrow."
+        : "Escrow funds successfully released to vendor!",
+      status: nextStatus
+    });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }

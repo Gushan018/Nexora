@@ -109,18 +109,30 @@ export const StoreManagement = () => {
 
       // Upload Logo if new file selected
       if (logoFile) {
-        const logoData = new FormData();
-        logoData.append('file', logoFile);
-        const logoRes = await api.post('/upload', logoData);
-        logoImage = logoRes.data.imageUrl || logoRes.data.fileUrl || logoRes.data.url;
+        try {
+          const logoData = new FormData();
+          logoData.append('file', logoFile);
+          const logoRes = await api.post('/upload', logoData);
+          logoImage = logoRes.data.imageUrl || logoRes.data.fileUrl || logoRes.data.url || logoPreview;
+        } catch (uErr) {
+          if (logoPreview && (logoPreview.startsWith('data:') || logoPreview.startsWith('http'))) {
+            logoImage = logoPreview;
+          }
+        }
       }
 
       // Upload Banner if new file selected
       if (bannerFile) {
-        const bannerData = new FormData();
-        bannerData.append('file', bannerFile);
-        const bannerRes = await api.post('/upload', bannerData);
-        bannerImage = bannerRes.data.imageUrl || bannerRes.data.fileUrl || bannerRes.data.url;
+        try {
+          const bannerData = new FormData();
+          bannerData.append('file', bannerFile);
+          const bannerRes = await api.post('/upload', bannerData);
+          bannerImage = bannerRes.data.imageUrl || bannerRes.data.fileUrl || bannerRes.data.url || bannerPreview;
+        } catch (uErr) {
+          if (bannerPreview && (bannerPreview.startsWith('data:') || bannerPreview.startsWith('http'))) {
+            bannerImage = bannerPreview;
+          }
+        }
       }
 
       const payload = {
@@ -129,11 +141,14 @@ export const StoreManagement = () => {
         bannerImage
       };
 
-      await api.put('/vendors/profile', payload);
+      const res = await api.put('/vendors/profile', payload);
+      const updated = res.data;
+      const finalLogo = updated.logoImage || updated.profileImage || logoImage || logoPreview;
+      const finalBanner = updated.bannerImage || updated.coverImage || bannerImage || bannerPreview;
 
-      setFormData(prev => ({ ...prev, logoImage, bannerImage }));
-      if (logoImage) setLogoPreview(getImageUrl(logoImage));
-      if (bannerImage) setBannerPreview(getImageUrl(bannerImage));
+      setFormData(prev => ({ ...prev, logoImage: finalLogo, bannerImage: finalBanner }));
+      if (finalLogo) setLogoPreview(getImageUrl(finalLogo));
+      if (finalBanner) setBannerPreview(getImageUrl(finalBanner));
       setLogoFile(null);
       setBannerFile(null);
       setSuccessMessage('Store details updated successfully!');

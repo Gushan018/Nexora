@@ -356,17 +356,9 @@ export const AddProduct = () => {
                 <CardTitle className="text-gray-900 dark:text-white">Shipping Options</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer transition-colors">
-                  <input type="checkbox" className="w-4 h-4 rounded bg-surface border-gray-400 text-primary focus:ring-primary/50 focus:ring-offset-background" defaultChecked />
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">Standard Delivery (3-5 days)</span>
-                </label>
-                <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer transition-colors">
-                  <input type="checkbox" className="w-4 h-4 rounded bg-surface border-gray-400 text-primary focus:ring-primary/50 focus:ring-offset-background" />
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">Express Delivery (Next day)</span>
-                </label>
-                <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer transition-colors">
-                  <input type="checkbox" className="w-4 h-4 rounded bg-surface border-gray-400 text-primary focus:ring-primary/50 focus:ring-offset-background" />
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">Local Pickup Allowed</span>
+                <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5 cursor-default transition-colors">
+                  <input type="checkbox" className="w-4 h-4 rounded bg-surface border-gray-400 text-primary focus:ring-primary/50" defaultChecked readOnly />
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">Standard Delivery Options (Island-wide)</span>
                 </label>
               </CardContent>
             </Card>

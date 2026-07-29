@@ -56,7 +56,7 @@ const uploadFile = async (req, res) => {
     // 2. Try Unsigned Cloudinary Presets
     if (cloudName) {
       const base64File = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-      const presets = ['ml_default', 'unsigned', 'nexora_uploads', 'nexora'];
+      const presets = [process.env.CLOUDINARY_UPLOAD_PRESET || 'zx5hl3z6', 'zx5hl3z6', 'ml_default', 'unsigned', 'eventnest_uploads', 'nexora'];
       for (const preset of presets) {
         try {
           const unsignedData = new URLSearchParams();
@@ -85,28 +85,49 @@ const uploadFile = async (req, res) => {
     }
 
     // 3. Local Disk Storage Fallback
-    const uploadsDir = path.join(__dirname, '..', '..', 'uploads');
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
+    try {
+      const uploadsDir = path.join(__dirname, '..', '..', 'uploads');
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      const fileExt = path.extname(req.file.originalname) || '.jpg';
+      const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExt}`;
+      const filePath = path.join(uploadsDir, filename);
+
+      fs.writeFileSync(filePath, req.file.buffer);
+      const localUrl = `/uploads/${filename}`;
+
+      console.log('✅ Saved file locally:', localUrl);
+      return res.status(200).json({
+        message: 'File uploaded successfully',
+        url: localUrl,
+        fileUrl: localUrl,
+        imageUrl: localUrl
+      });
+    } catch (diskErr) {
+      console.warn('⚠️ Disk write un-writable (serverless/Vercel environment). Fallback to Base64 Data URL:', diskErr.message);
+      const base64Data = `data:${req.file.mimetype || 'image/jpeg'};base64,${req.file.buffer.toString('base64')}`;
+      return res.status(200).json({
+        message: 'File converted to Data URL',
+        url: base64Data,
+        fileUrl: base64Data,
+        imageUrl: base64Data
+      });
     }
-
-    const fileExt = path.extname(req.file.originalname) || '.jpg';
-    const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExt}`;
-    const filePath = path.join(uploadsDir, filename);
-
-    fs.writeFileSync(filePath, req.file.buffer);
-    const localUrl = `/uploads/${filename}`;
-
-    console.log('✅ Saved file locally:', localUrl);
-    return res.status(200).json({
-      message: 'File uploaded successfully',
-      url: localUrl,
-      fileUrl: localUrl,
-      imageUrl: localUrl
-    });
 
   } catch (error) {
     console.error('Upload Error:', error.message);
+    // Fallback: If buffer exists, return Data URL instead of 500 error
+    if (req.file && req.file.buffer) {
+      const base64Data = `data:${req.file.mimetype || 'image/jpeg'};base64,${req.file.buffer.toString('base64')}`;
+      return res.status(200).json({
+        message: 'File processed',
+        url: base64Data,
+        fileUrl: base64Data,
+        imageUrl: base64Data
+      });
+    }
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };

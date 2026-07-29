@@ -8,8 +8,10 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { api } from '../../utils/api';
 import { PageLoader } from '../../components/common/PageLoader';
+import { useToast } from '../../context/ToastContext';
 
 export const BookVendor = () => {
+  const { showToast } = useToast();
   const [step, setStep] = useState(1);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [eventDate, setEventDate] = useState('');
@@ -31,30 +33,56 @@ export const BookVendor = () => {
 
   const bookMutation = useMutation({
     mutationFn: async () => {
-      const res = await api.post('/bookings', {
-        packageId: selectedPackage,
+      const selectedPkgObj = PACKAGES.find(p => String(p.packageId) === String(selectedPackage));
+      const payload = {
         eventDate: eventDate || new Date().toISOString(),
         location: location || 'Not Specified',
         notes: message
-      });
+      };
+      if (selectedPkgObj?.isService) {
+        payload.serviceId = selectedPackage;
+      } else {
+        payload.packageId = selectedPackage;
+      }
+      const res = await api.post('/bookings', payload);
       return res.data;
     },
     onSuccess: () => {
-      alert('Booking request sent successfully!');
+      showToast('Booking request sent successfully!', 'success');
       navigate('/customer/event-dashboard');
     },
     onError: (err) => {
       console.error(err);
-      alert(`${err.response?.data?.message || 'Failed to send booking request.'} Details: ${err.response?.data?.error || err.message}`);
+      showToast(`${err.response?.data?.message || 'Failed to send booking request.'}`, 'error');
     }
   });
 
-  const PACKAGES = vendor?.eventPackages || [];
+  const rawPackages = (vendor?.eventPackages || []).map(p => ({ ...p, isService: false }));
+  const rawServices = (vendor?.services || []).map(s => ({
+    packageId: s.serviceId,
+    packageName: s.serviceName,
+    description: s.description || '',
+    price: s.price,
+    category: s.category?.categoryName || 'Service',
+    services: [{ name: s.serviceName }],
+    isService: true
+  }));
+  const PACKAGES = [...rawPackages, ...rawServices];
+
+  React.useEffect(() => {
+    const pkgParam = searchParams.get('packageId') || searchParams.get('serviceId');
+    if (pkgParam && PACKAGES.length > 0 && !selectedPackage) {
+      const match = PACKAGES.find(p => String(p.packageId) === String(pkgParam));
+      if (match) setSelectedPackage(match.packageId);
+    } else if (PACKAGES.length > 0 && !selectedPackage) {
+      setSelectedPackage(PACKAGES[0].packageId);
+    }
+  }, [searchParams, PACKAGES, selectedPackage]);
 
   if (isLoading) return <PageLoader text="Loading vendor details..." />;
-  if (!vendor) return <div className="pt-32 pb-20 text-center text-slate-900">Vendor not found.</div>;
+  if (!vendor) return <div className="pt-32 pb-20 text-center text-slate-900 dark:text-white">Vendor not found.</div>;
 
-  const selectedPkgData = PACKAGES.find(p => p.packageId === selectedPackage);
+  const selectedPkgData = PACKAGES.find(p => String(p.packageId) === String(selectedPackage));
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background flex flex-col items-center relative overflow-hidden">
@@ -118,30 +146,33 @@ export const BookVendor = () => {
                     {PACKAGES.length === 0 && (
                       <div className="text-center text-gray-600 dark:text-white/70 py-8">This vendor has no packages available.</div>
                     )}
-                    {PACKAGES.map(pkg => (
-                      <div 
-                        key={pkg.packageId} 
-                        onClick={() => setSelectedPackage(pkg.packageId)}
-                        className={cn(
-                          "p-6 rounded-2xl border cursor-pointer transition-all duration-300 relative overflow-hidden group/item",
-                          selectedPackage === pkg.packageId 
-                            ? "border-primary bg-primary/10 shadow-[0_0_30px_rgba(212,175,55,0.15)] -translate-y-1" 
-                            : "border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-slate-900/60 hover:bg-gray-100 dark:hover:bg-slate-900 hover:border-gray-300 dark:hover:border-white/20 hover:-translate-y-1"
-                        )}
-                      >
-                        {selectedPackage === pkg.packageId && (
-                          <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent pointer-events-none" />
-                        )}
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className={cn(
-                            "font-bold text-lg",
-                            selectedPackage === pkg.packageId ? "text-primary" : "text-gray-900 dark:text-white"
-                          )}>{pkg.packageName}</h3>
-                          <span className="font-bold text-gray-900 dark:text-white">LKR {Number(pkg.price).toFixed(2)}</span>
+                    {PACKAGES.map(pkg => {
+                      const isSelected = String(selectedPackage) === String(pkg.packageId);
+                      return (
+                        <div 
+                          key={pkg.packageId} 
+                          onClick={() => setSelectedPackage(pkg.packageId)}
+                          className={cn(
+                            "p-6 rounded-2xl border cursor-pointer transition-all duration-300 relative overflow-hidden group/item",
+                            isSelected 
+                              ? "border-primary bg-primary/10 shadow-[0_0_30px_rgba(212,175,55,0.15)] -translate-y-1" 
+                              : "border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-slate-900/60 hover:bg-gray-100 dark:hover:bg-slate-900 hover:border-gray-300 dark:hover:border-white/20 hover:-translate-y-1"
+                          )}
+                        >
+                          {isSelected && (
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent pointer-events-none" />
+                          )}
+                          <div className="flex justify-between items-start mb-2">
+                            <h3 className={cn(
+                              "font-bold text-lg",
+                              isSelected ? "text-primary" : "text-gray-900 dark:text-white"
+                            )}>{pkg.packageName}</h3>
+                            <span className="font-bold text-gray-900 dark:text-white">LKR {Number(pkg.price).toFixed(2)}</span>
+                          </div>
+                          <p className="text-sm text-gray-600 dark:text-white/70 mb-4">{pkg.description || 'No description available.'}</p>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-white/70 mb-4">{pkg.description || 'No description available.'}</p>
-                      </div>
-                    ))}
+                      );
+                    })}
 
                     <div className="pt-6 flex justify-end">
                       <Button 
