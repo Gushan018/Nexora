@@ -19,39 +19,39 @@ router.delete('/packages/:id', protect, restrictTo('vendor'), deletePackage);
 router.get('/', getAllVendors);
 
 // GET /api/vendors/profile  (must be before /:id)
-router.get('/profile', protect, restrictTo('vendor', 'seller'), getMyProfile);
+router.get('/profile', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), getMyProfile);
 
 // PUT /api/vendors/profile
-router.put('/profile', protect, restrictTo('vendor', 'seller'), updateMyProfile);
+router.put('/profile', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), updateMyProfile);
 
 // GET /api/vendors/dashboard & /api/vendors/stats
-router.get('/dashboard', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), getDashboard);
-router.get('/stats', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), getDashboard);
-router.get('/dashboard-stats', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), getDashboard);
+router.get('/dashboard', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), getDashboard);
+router.get('/stats', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), getDashboard);
+router.get('/dashboard-stats', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), getDashboard);
 
 // GET /api/vendors/reports & /api/vendors/report
-router.get('/reports', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), getReports);
-router.get('/report', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), getReports);
+router.get('/reports', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), getReports);
+router.get('/report', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), getReports);
 
 // GET /api/vendors/reports/export/pdf
-router.get('/reports/export/pdf', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), exportReportPDF);
+router.get('/reports/export/pdf', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), exportReportPDF);
 
 // GET /api/vendors/reports/export/excel
-router.get('/reports/export/excel', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company'), exportReportExcel);
+router.get('/reports/export/excel', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), exportReportExcel);
 
 // GET /api/vendors/my-services & /api/vendors/services
-router.get('/my-services', protect, restrictTo('vendor', 'service_provider', 'event_company'), getMyServices);
-router.get('/services', protect, restrictTo('vendor', 'service_provider', 'event_company'), getMyServices);
-router.get('/services/:id', protect, restrictTo('vendor', 'service_provider', 'event_company'), getServiceById);
-router.post('/services', protect, restrictTo('vendor', 'service_provider', 'event_company'), createService);
-router.put('/services/:id', protect, restrictTo('vendor', 'service_provider', 'event_company'), updateService);
-router.delete('/services/:id', protect, restrictTo('vendor', 'service_provider', 'event_company'), deleteService);
+router.get('/my-services', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), getMyServices);
+router.get('/services', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), getMyServices);
+router.get('/services/:id', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), getServiceById);
+router.post('/services', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), createService);
+router.put('/services/:id', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), updateService);
+router.delete('/services/:id', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), deleteService);
 
 // GET /api/vendors/my-products
-router.get('/my-products', protect, restrictTo('vendor'), getMyProducts);
+router.get('/my-products', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), getMyProducts);
 
 // GET /api/vendors/payments
-router.get('/payments', protect, restrictTo('vendor'), getVendorPayments);
+router.get('/payments', protect, restrictTo('vendor', 'seller', 'service_provider', 'event_company', 'company'), getVendorPayments);
 
 // GET /api/vendors/123 
 router.get('/:id', getVendorById);
