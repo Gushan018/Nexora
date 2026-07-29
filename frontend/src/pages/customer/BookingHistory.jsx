@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Search, Filter, CheckCircle2, Clock, MapPin, Download, MoreVertical, Star } from 'lucide-react';
 import { Card, CardContent } from '../../components/common/Card';
@@ -115,7 +115,7 @@ export const BookingHistory = () => {
                   </td>
                   <td className="p-4 pr-6 text-right space-x-2">
                     {booking.status === 'COMPLETED' && (
-                      <Link to={`/customer/review-submission?vendorId=${booking.package?.vendorId || booking.service?.vendorId || ''}&serviceId=${booking.serviceId || ''}&productId=${booking.packageId || ''}`}>
+                      <Link to={`/customer/review-submission?vendorId=${booking.package?.vendorId || booking.service?.vendorId || ''}&serviceId=${booking.serviceId || ''}&packageId=${booking.packageId || ''}`}>
                         <Button variant="outline" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
                           Review
                         </Button>

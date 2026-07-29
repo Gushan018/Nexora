@@ -3,11 +3,17 @@ const prisma = new PrismaClient();
 
 const submitReview = async (req, res) => {
   try {
-    const { rating, comment, vendorId, serviceId, productId } = req.body;
+    const { rating, comment, vendorId, serviceId, productId, packageId } = req.body;
     const customerId = req.user.id;
 
     if (!rating || rating < 1 || rating > 5) {
       return res.status(400).json({ message: "Valid rating (1-5) is required." });
+    }
+
+    let targetVendorId = vendorId ? parseInt(vendorId) : null;
+    if (!targetVendorId && packageId) {
+      const pkg = await prisma.package.findUnique({ where: { packageId: parseInt(packageId) } });
+      if (pkg) targetVendorId = pkg.vendorId;
     }
 
     const review = await prisma.review.create({
@@ -15,7 +21,7 @@ const submitReview = async (req, res) => {
         rating,
         comment,
         customerId,
-        vendorId: vendorId ? parseInt(vendorId) : null,
+        vendorId: targetVendorId,
         serviceId: serviceId ? parseInt(serviceId) : null,
         productId: productId ? parseInt(productId) : null,
       }
