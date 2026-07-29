@@ -140,7 +140,7 @@ export const VendorDashboard = () => {
           value={`LKR ${totalRev.toLocaleString()}`} 
           trend="Gross" 
           trendUp={true}
-          icon={<DollarSign className="w-5 h-5 text-primary" />} 
+          icon={<TrendingUp className="w-5 h-5 text-primary" />} 
         />
         <StatCard 
           title="Platform Fee (10%)" 

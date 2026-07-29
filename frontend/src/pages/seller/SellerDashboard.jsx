@@ -114,7 +114,7 @@ export const SellerDashboard = () => {
         <SellerStatCard 
           title="Total Revenue" 
           value={`LKR ${totalSales.toLocaleString()}`} 
-          icon={<DollarSign className="w-5 h-5 text-green-500" />} 
+          icon={<TrendingUp className="w-5 h-5 text-green-500" />} 
         />
         <SellerStatCard 
           title="Platform Fee (10%)" 

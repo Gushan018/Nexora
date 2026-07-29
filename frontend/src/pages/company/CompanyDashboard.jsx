@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { 
   Building2, Calendar, Package, DollarSign, CheckCircle2, Clock, 
-  Plus, Activity, MessageSquare, FileText, TrendingUp, ShieldCheck, PieChart, ArrowUpRight, Percent, Receipt
+  Plus, Activity, MessageSquare, FileText, TrendingUp, ShieldCheck, PieChart, ArrowUpRight, Percent, Receipt, Wallet
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
@@ -96,7 +96,7 @@ export const CompanyDashboard = () => {
   }));
 
   const stats = [
-    { title: 'Gross Revenue', value: `LKR ${grossRevenue.toLocaleString()}`, badge: 'Total', icon: <DollarSign className="w-5 h-5 text-amber-400" /> },
+    { title: 'Gross Revenue', value: `LKR ${grossRevenue.toLocaleString()}`, badge: 'Total', icon: <TrendingUp className="w-5 h-5 text-amber-400" /> },
     { title: 'Platform Fee (10%)', value: `-LKR ${platformFee.toLocaleString()}`, badge: '10% Fee', icon: <Percent className="w-5 h-5 text-amber-400" /> },
     { title: 'Net Earnings', value: `LKR ${netEarnings.toLocaleString()}`, badge: 'Take-Home', icon: <Receipt className="w-5 h-5 text-emerald-400" /> },
     { title: 'Total Bookings', value: totalBookings.toString(), badge: `${acceptanceRate}% rate`, icon: <Calendar className="w-5 h-5 text-amber-400" /> },
@@ -188,7 +188,7 @@ export const CompanyDashboard = () => {
           <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-serif font-bold text-white flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-amber-400" />
+                <Wallet className="w-5 h-5 text-amber-400" />
                 Payment & Platform Fee Card
               </h3>
               <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
