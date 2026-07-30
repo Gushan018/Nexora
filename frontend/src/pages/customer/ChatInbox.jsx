@@ -63,13 +63,26 @@ export const ChatInbox = () => {
             ) : (
               filteredConversations.map((conv) => {
                 const timeStr = conv.lastMessageTime ? new Date(conv.lastMessageTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-                
+                const isAvatarUrl = conv.participantAvatar && typeof conv.participantAvatar === 'string' && (conv.participantAvatar.startsWith('http') || conv.participantAvatar.startsWith('/') || conv.participantAvatar.includes('.'));
+                const isImageMsg = conv.lastMessage && typeof conv.lastMessage === 'string' && (conv.lastMessage.match(/^https?:\/\//i) || conv.lastMessage.match(/\.(jpg|jpeg|png|gif|webp|svg)/i) || conv.lastMessage.includes('/upload/'));
+
                 return (
                   <Link to={`../vendor-chat/${conv.conversationId}`} key={conv.conversationId}>
-                    <div className="p-4 border-b border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-slate-800/50 cursor-pointer transition-colors flex gap-4">
+                    <div className="p-4 border-b border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-slate-800/50 cursor-pointer transition-colors flex gap-4 items-center">
                       <div className="relative shrink-0">
-                        <div className="w-12 h-12 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-lg">
-                          {conv.participantAvatar || (conv.participantName ? conv.participantName.charAt(0) : 'V')}
+                        <div className="w-12 h-12 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-lg overflow-hidden shrink-0 border border-primary/20">
+                          {isAvatarUrl ? (
+                            <img 
+                              src={conv.participantAvatar} 
+                              alt={conv.participantName || 'Avatar'} 
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                              }}
+                            />
+                          ) : (
+                            <span>{conv.participantName ? conv.participantName.charAt(0).toUpperCase() : 'V'}</span>
+                          )}
                         </div>
                         {conv.unreadCount > 0 && (
                           <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-slate-950 font-bold text-xs rounded-full flex items-center justify-center">
@@ -85,7 +98,7 @@ export const ChatInbox = () => {
                           </span>
                         </div>
                         <p className="text-sm truncate text-slate-600 dark:text-slate-300">
-                          {conv.lastMessage}
+                          {isImageMsg ? '📷 Photo' : (conv.lastMessage || 'Start a conversation')}
                         </p>
                       </div>
                     </div>

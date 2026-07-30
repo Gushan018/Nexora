@@ -99,7 +99,7 @@ const getMyBookings = async (req, res) => {
         payment: { select: { paymentId: true, status: true, paymentMethod: true, amount: true, paidAt: true } }
       },
       orderBy: {
-        eventDate: 'desc', 
+        bookingDate: 'desc', 
       },
     });
 

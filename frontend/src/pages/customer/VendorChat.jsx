@@ -105,13 +105,24 @@ export const VendorChat = () => {
           {messages.map((msg) => {
             const isMe = msg.isMe;
             const timeStr = new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const isImageUrl = msg.text && typeof msg.text === 'string' && (msg.text.match(/^https?:\/\//i) || msg.text.includes('/upload/'));
+
             return (
               <div key={msg.id} className={cn("flex w-full", isMe ? "justify-end" : "justify-start")}>
                 <div className={cn(
                   "max-w-[80%] sm:max-w-[70%] rounded-2xl p-4 shadow-sm",
                   isMe ? "bg-primary text-slate-950 font-medium rounded-tr-sm" : "bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-tl-sm"
                 )}>
-                  <p className="text-sm leading-relaxed">{msg.text}</p>
+                  {isImageUrl ? (
+                    <img 
+                      src={msg.text} 
+                      alt="Attachment" 
+                      className="max-w-xs max-h-60 rounded-xl object-cover border border-black/10 cursor-pointer hover:opacity-95 transition-opacity" 
+                      onClick={() => window.open(msg.text, '_blank')}
+                    />
+                  ) : (
+                    <p className="text-sm leading-relaxed">{msg.text}</p>
+                  )}
                   <div className={cn(
                     "text-[10px] mt-2 flex items-center gap-1",
                     isMe ? "text-slate-800 font-medium justify-end" : "text-slate-500 dark:text-slate-400 justify-start"

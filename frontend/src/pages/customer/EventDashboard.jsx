@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../..
 import { Button } from '../../components/common/Button';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../../utils/api';
+import { api, resolveAssetUrl } from '../../utils/api';
 import { PageLoader } from '../../components/common/PageLoader';
 import { cn } from '../../utils/cn';
 
@@ -22,15 +22,15 @@ export const EventDashboard = () => {
 
   const filteredBookings = React.useMemo(() => {
     if (activeTab === 'ALL') return bookings;
-    if (activeTab === 'PENDING') return bookings.filter(b => b.status === 'PENDING');
-    if (activeTab === 'UPCOMING') return bookings.filter(b => b.status === 'ACCEPTED');
-    if (activeTab === 'COMPLETED') return bookings.filter(b => b.status === 'COMPLETED');
+    if (activeTab === 'PENDING') return bookings.filter(b => ['PENDING', 'PROCESSING', 'PENDING_APPROVAL'].includes(b.status?.toUpperCase()));
+    if (activeTab === 'UPCOMING') return bookings.filter(b => ['ACCEPTED', 'APPROVED', 'CONFIRMED'].includes(b.status?.toUpperCase()));
+    if (activeTab === 'COMPLETED') return bookings.filter(b => b.status?.toUpperCase() === 'COMPLETED');
     return bookings;
   }, [bookings, activeTab]);
 
   const tabs = [
     { id: 'ALL', label: 'All Events', icon: <ListOrdered className="w-4 h-4" /> },
-    { id: 'PENDING', label: 'Pending Approval', icon: <Hourglass className="w-4 h-4" /> },
+    { id: 'PENDING', label: 'Processing (Pending Approval)', icon: <Hourglass className="w-4 h-4" /> },
     { id: 'UPCOMING', label: 'Upcoming (Accepted)', icon: <CalendarDays className="w-4 h-4" /> },
     { id: 'COMPLETED', label: 'Completed', icon: <CheckCircle2 className="w-4 h-4" /> },
   ];
@@ -42,7 +42,7 @@ export const EventDashboard = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">My Events</h1>
-          <p className="text-slate-600 dark:text-slate-300">Manage all your upcoming and past events.</p>
+          <p className="text-slate-600 dark:text-slate-300">Manage all your upcoming, processing, and past events.</p>
         </div>
       </div>
 
@@ -69,12 +69,17 @@ export const EventDashboard = () => {
           <div className="col-span-2 text-center text-slate-500 dark:text-slate-400 py-12">No events found for this status.</div>
         ) : (
           filteredBookings.map((booking, i) => {
-            const name = booking.service?.serviceName || booking.package?.packageName || 'My Event';
-            const type = booking.service?.category?.categoryName || booking.package?.category || 'Event Service';
+            const name = booking.service?.serviceName || booking.package?.packageName || 'Event Service / Package';
+            const type = booking.service?.category?.categoryName || booking.package?.category || 'Event Package';
             const amount = Number(booking.service?.price || booking.package?.price || 0);
             const vendorName = booking.service?.vendor?.businessName || booking.package?.vendor?.businessName || 'Vendor';
             const vendorLocation = booking.location || booking.service?.vendor?.location || booking.package?.vendor?.location || 'Location not specified';
-            const imageUrl = booking.service?.imageUrl || booking.package?.images?.[0]?.url || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=500&q=80';
+            const rawImg = booking.service?.imageUrl || booking.package?.images?.[0]?.url;
+            const imageUrl = resolveAssetUrl(rawImg, 'https://images.unsplash.com/photo-1519741497674-611481863552?w=500&q=80');
+
+            const statusUpper = (booking.status || 'PENDING').toUpperCase();
+            const isPending = ['PENDING', 'PROCESSING', 'PENDING_APPROVAL'].includes(statusUpper);
+            const isAccepted = ['ACCEPTED', 'APPROVED', 'CONFIRMED'].includes(statusUpper);
 
             return (
               <motion.div
@@ -87,13 +92,18 @@ export const EventDashboard = () => {
                   <div className="h-40 w-full relative overflow-hidden">
                     <img src={imageUrl} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                    <div className="absolute bottom-4 left-4 flex gap-2">
+                    <div className="absolute bottom-4 left-4 flex gap-2 flex-wrap">
                       <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-medium text-white border border-slate-300/50 flex items-center gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
                         {type}
                       </span>
-                      <span className="px-3 py-1 bg-primary text-slate-950 backdrop-blur-md rounded-full text-xs font-bold border border-primary/30">
-                        {booking.status}
+                      <span className={cn(
+                        "px-3 py-1 backdrop-blur-md rounded-full text-xs font-bold border",
+                        isAccepted ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40" :
+                        isPending ? "bg-amber-500/20 text-amber-300 border-amber-500/40" :
+                        "bg-primary text-slate-950 border-primary/30"
+                      )}>
+                        {isPending ? 'PROCESSING (PENDING APPROVAL)' : statusUpper}
                       </span>
                     </div>
                   </div>
@@ -115,15 +125,29 @@ export const EventDashboard = () => {
                       <div className="flex justify-between text-sm mb-2">
                         <span className="text-slate-700 dark:text-slate-300 font-medium">Status</span>
                         <span className="text-primary font-bold">
-                          {booking.payment ? `Paid (${booking.payment.status.replace(/_/g, ' ')})` : booking.status === 'ACCEPTED' ? 'Vendor Approved (Pending Payment)' : booking.status === 'PENDING' ? 'Awaiting Vendor Approval' : booking.status}
+                          {booking.payment 
+                            ? `Paid (${booking.payment.status.replace(/_/g, ' ')})` 
+                            : isAccepted 
+                              ? 'Vendor Approved (Pending Payment)' 
+                              : isPending 
+                                ? 'Processing - Awaiting Vendor Approval' 
+                                : booking.status}
                         </span>
                       </div>
                       <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
-                          animate={{ width: booking.payment ? '100%' : booking.status === 'ACCEPTED' ? '60%' : booking.status === 'PENDING' ? '20%' : '100%' }}
+                          animate={{ 
+                            width: booking.payment 
+                              ? '100%' 
+                              : isAccepted 
+                                ? '60%' 
+                                : isPending 
+                                  ? '30%' 
+                                  : '100%' 
+                          }}
                           transition={{ duration: 1, delay: 0.2 }}
-                          className="h-full bg-primary"
+                          className={cn("h-full", isPending ? "bg-amber-400" : "bg-primary")}
                         />
                       </div>
                     </div>
@@ -145,7 +169,7 @@ export const EventDashboard = () => {
                           View Booking Details
                         </Button>
                       </Link>
-                      {booking.status === 'ACCEPTED' && !booking.payment && (
+                      {isAccepted && !booking.payment && (
                         <Link to={`/customer/payment-page?bookingId=${booking.bookingId}&amount=${amount}&item=${encodeURIComponent('Booking: ' + name)}`}>
                           <Button className="bg-primary text-slate-950 font-bold hover:bg-primary/90">
                             Pay Now
