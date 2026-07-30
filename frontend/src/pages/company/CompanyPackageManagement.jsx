@@ -4,12 +4,19 @@ import { Package, Plus, ShieldCheck, Edit, Trash2, Calendar, Users, DollarSign, 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Modal } from '../../components/common/Modal';
+import { ConfirmModal } from '../../components/common/ConfirmModal';
+import { useToast } from '../../context/ToastContext';
 import { api } from '../../utils/api';
 
 export const CompanyPackageManagement = () => {
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingPackage, setEditingPackage] = useState(null);
+
+  // Delete confirmation state
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [packageToDelete, setPackageToDelete] = useState(null);
 
   const [formData, setFormData] = useState({
     packageName: '',
@@ -36,24 +43,49 @@ export const CompanyPackageManagement = () => {
     mutationFn: (newPackage) => api.post('/packages', newPackage),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['companyPackages'] });
+      showToast('Event package created successfully!', 'success');
       closeModal();
     },
+    onError: (err) => {
+      showToast(err.response?.data?.message || 'Failed to create package.', 'error');
+    }
   });
 
   const updatePackageMutation = useMutation({
     mutationFn: ({ id, data }) => api.put(`/packages/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['companyPackages'] });
+      showToast('Event package updated successfully!', 'success');
       closeModal();
     },
+    onError: (err) => {
+      showToast(err.response?.data?.message || 'Failed to update package.', 'error');
+    }
   });
 
   const deletePackageMutation = useMutation({
     mutationFn: (id) => api.delete(`/packages/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['companyPackages'] });
+      showToast('Event package deleted successfully!', 'success');
+      setDeleteConfirmOpen(false);
+      setPackageToDelete(null);
     },
+    onError: (err) => {
+      showToast(err.response?.data?.message || 'Failed to delete package.', 'error');
+    }
   });
+
+  const handleDeleteClick = (pkg) => {
+    setPackageToDelete(pkg);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (packageToDelete) {
+      deletePackageMutation.mutate(packageToDelete.packageId || packageToDelete.id);
+    }
+  };
 
   const closeModal = () => {
     setIsCreateModalOpen(false);
@@ -198,7 +230,7 @@ export const CompanyPackageManagement = () => {
                   <Button variant="outline" size="sm" onClick={() => handleEditClick(pkg)} leftIcon={<Edit className="w-3.5 h-3.5" />}>
                     Edit
                   </Button>
-                  <Button variant="outline" size="sm" className="text-red-500 hover:bg-red-500/10 border-red-500/30" onClick={() => deletePackageMutation.mutate(pkg.packageId || pkg.id)} leftIcon={<Trash2 className="w-3.5 h-3.5" />}>
+                  <Button variant="outline" size="sm" className="text-red-500 hover:bg-red-500/10 border-red-500/30" onClick={() => handleDeleteClick(pkg)} leftIcon={<Trash2 className="w-3.5 h-3.5" />}>
                     Delete
                   </Button>
                 </div>
@@ -319,6 +351,18 @@ export const CompanyPackageManagement = () => {
           </div>
         </form>
       </Modal>
+
+      {/* Confirmation Modal for Package Deletion */}
+      <ConfirmModal
+        isOpen={deleteConfirmOpen}
+        onClose={() => { setDeleteConfirmOpen(false); setPackageToDelete(null); }}
+        onConfirm={handleConfirmDelete}
+        title="Delete Event Package"
+        message={packageToDelete ? `Are you sure you want to delete "${packageToDelete.packageName}"? This action cannot be undone.` : "Are you sure you want to delete this event package?"}
+        confirmText="Delete Package"
+        confirmVariant="danger"
+        isLoading={deletePackageMutation.isPending}
+      />
     </div>
   );
 };
