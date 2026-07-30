@@ -67,7 +67,25 @@ const loginCustomer = async (req, res) => {
 };
 
 // ==========================================
-// 3. VENDOR REGISTER
+// Helper validation function
+const validateVendorPayload = (email, password, businessName, contactNumber) => {
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+    return "Please provide a valid email address.";
+  }
+  if (!password || password.length < 8) {
+    return "Password must be at least 8 characters long.";
+  }
+  if (!businessName || !businessName.trim()) {
+    return "Business / Store / Company name is required.";
+  }
+  if (!contactNumber || !contactNumber.trim()) {
+    return "Contact phone number is required.";
+  }
+  return null;
+};
+
+// ==========================================
+// 3. VENDOR REGISTER (Service Provider - 3500 RS Fee)
 // ==========================================
 const registerVendor = async (req, res) => {
   try {
@@ -77,9 +95,22 @@ const registerVendor = async (req, res) => {
       password,
       contact_number,
       location,
+      address,
+      registration_number,
+      established_year,
+      website,
       vendor_type,
       description,
+      payment_method,
+      transaction_id,
+      payment_receipt,
     } = req.body;
+
+    const validationError = validateVendorPayload(email, password, business_name, contact_number);
+    if (validationError) {
+      return res.status(400).json({ message: validationError });
+    }
+
     const userExists = await prisma.vendor.findUnique({ where: { email } });
     if (userExists) {
       return res.status(400).json({ message: "This email address is already in use." });
@@ -93,12 +124,23 @@ const registerVendor = async (req, res) => {
         password: hashedPassword,
         contactNumber: contact_number,
         location,
-        vendorType: vendor_type,
+        address,
+        registrationNumber: registration_number,
+        establishedYear: established_year ? parseInt(established_year) : null,
+        website,
+        vendorType: vendor_type || 'OTHER',
         description,
+        registrationFee: 3500,
+        registrationPaymentStatus: 'PAID',
+        registrationPaymentMethod: payment_method || 'ONLINE',
+        registrationPaymentReceipt: payment_receipt || null,
+        registrationTransactionId: transaction_id || `TXN-${Date.now()}`,
+        registrationPaymentDate: new Date(),
+        isApproved: false,
       },
     });
     res.status(201).json({
-      message: "Vendor registered successfully.",
+      message: "Registration completed and payment of 3500 RS recorded! Your account is pending admin approval.",
       vendorId: vendor.vendorId,
     });
   } catch (error) {
@@ -107,11 +149,35 @@ const registerVendor = async (req, res) => {
 };
 
 // ==========================================
-// 4. SELLER REGISTER
+// 4. SELLER REGISTER (Product Seller - 4000 RS Fee)
 // ==========================================
 const registerSeller = async (req, res) => {
   try {
-    const { shopName, business_name, email, password, contactNumber, contact_number, location, description } = req.body;
+    const {
+      shopName,
+      business_name,
+      email,
+      password,
+      contactNumber,
+      contact_number,
+      location,
+      address,
+      registration_number,
+      established_year,
+      website,
+      description,
+      payment_method,
+      transaction_id,
+      payment_receipt,
+    } = req.body;
+
+    const bName = shopName || business_name;
+    const phone = contactNumber || contact_number;
+    const validationError = validateVendorPayload(email, password, bName, phone);
+    if (validationError) {
+      return res.status(400).json({ message: validationError });
+    }
+
     const userExists = await prisma.vendor.findUnique({ where: { email } });
     if (userExists) {
       return res.status(400).json({ message: "This email address is already in use." });
@@ -120,17 +186,28 @@ const registerSeller = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     const seller = await prisma.vendor.create({
       data: {
-        businessName: shopName || business_name,
+        businessName: bName,
         email,
         password: hashedPassword,
-        contactNumber: contactNumber || contact_number,
+        contactNumber: phone,
         location,
+        address,
+        registrationNumber: registration_number,
+        establishedYear: established_year ? parseInt(established_year) : null,
+        website,
         vendorType: 'RENTAL',
         description,
+        registrationFee: 4000,
+        registrationPaymentStatus: 'PAID',
+        registrationPaymentMethod: payment_method || 'ONLINE',
+        registrationPaymentReceipt: payment_receipt || null,
+        registrationTransactionId: transaction_id || `TXN-${Date.now()}`,
+        registrationPaymentDate: new Date(),
+        isApproved: false,
       },
     });
     res.status(201).json({
-      message: "Seller registered successfully.",
+      message: "Registration completed and payment of 4000 RS recorded! Your account is pending admin approval.",
       sellerId: seller.vendorId,
     });
   } catch (error) {
@@ -139,11 +216,30 @@ const registerSeller = async (req, res) => {
 };
 
 // ==========================================
-// 4b. EVENT COMPANY REGISTER
+// 4b. EVENT COMPANY REGISTER (Event Management - 5000 RS Fee)
 // ==========================================
 const registerCompany = async (req, res) => {
   try {
-    const { business_name, email, password, contact_number, location, description } = req.body;
+    const {
+      company_name,
+      business_name,
+      email,
+      password,
+      contact_number,
+      location,
+      address,
+      registration_number,
+      established_year,
+      website,
+      description,
+    } = req.body;
+
+    const cName = company_name || business_name;
+    const validationError = validateVendorPayload(email, password, cName, contact_number);
+    if (validationError) {
+      return res.status(400).json({ message: validationError });
+    }
+
     const userExists = await prisma.vendor.findUnique({ where: { email } });
     if (userExists) {
       return res.status(400).json({ message: "This email address is already in use." });
@@ -152,17 +248,28 @@ const registerCompany = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     const company = await prisma.vendor.create({
       data: {
-        businessName: business_name,
+        businessName: company_name || business_name,
         email,
         password: hashedPassword,
         contactNumber: contact_number,
         location,
+        address,
+        registrationNumber: registration_number,
+        establishedYear: established_year ? parseInt(established_year) : null,
+        website,
         vendorType: 'EVENT_COMPANY',
         description,
+        registrationFee: 5000,
+        registrationPaymentStatus: 'PAID',
+        registrationPaymentMethod: payment_method || 'ONLINE',
+        registrationPaymentReceipt: payment_receipt || null,
+        registrationTransactionId: transaction_id || `TXN-${Date.now()}`,
+        registrationPaymentDate: new Date(),
+        isApproved: false,
       },
     });
     res.status(201).json({
-      message: "Event Management Company registered successfully.",
+      message: "Registration completed and payment of 5000 RS recorded! Your account is pending admin approval.",
       companyId: company.vendorId,
     });
   } catch (error) {
@@ -183,6 +290,9 @@ const loginSeller = async (req, res) => {
     const isMatch = await bcrypt.compare(password, seller.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password." });
+    }
+    if (!seller.isApproved) {
+      return res.status(403).json({ message: "Your account is pending admin approval after initial payment verification. You can sign in once admin approves your account." });
     }
     const token = generateToken(seller.vendorId, 'seller');
     res.status(200).json({
@@ -208,6 +318,9 @@ const loginVendor = async (req, res) => {
     const isMatch = await bcrypt.compare(password, vendor.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password." });
+    }
+    if (!vendor.isApproved) {
+      return res.status(403).json({ message: "Your account is pending admin approval after initial payment verification. You can sign in once admin approves your account." });
     }
     const token = generateToken(vendor.vendorId, 'vendor');
     res.status(200).json({
@@ -270,11 +383,16 @@ const loginUnified = async (req, res) => {
       }
     }
 
-    // 2. Check Vendor / Seller
+    // 2. Check Vendor / Seller / Event Company
     const vendor = await prisma.vendor.findUnique({ where: { email } });
     if (vendor) {
       const isMatch = await bcrypt.compare(password, vendor.password);
       if (isMatch) {
+        if (!vendor.isApproved) {
+          return res.status(403).json({
+            message: "Your account is pending admin approval after initial payment verification. You will be able to sign in once admin approves your account."
+          });
+        }
         let role = 'vendor';
         if (vendor.vendorType === 'RENTAL' || email.includes('seller')) {
           role = 'seller';

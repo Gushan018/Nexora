@@ -95,26 +95,32 @@ model Customer {
 }
 
 model Vendor {
-  vendorId           Int        @id @default(autoincrement()) @map("vendor_id")
-  businessName       String     @map("business_name")
-  email              String     @unique
-  password           String
-  description        String?
-  contactNumber      String?    @map("contact_number")
-  location           String?
-  registrationNumber String?    @map("registration_number")
-  establishedYear    Int?       @map("established_year")
-  address            String?
-  bannerImage        String?    @map("banner_image")
-  logoImage          String?    @map("logo_image")
-  socialFacebook     String?    @map("social_facebook")
-  socialInstagram    String?    @map("social_instagram")
-  socialTwitter      String?    @map("social_twitter")
-  website            String?
-  vendorType         VendorType @map("vendor_type")
-  isApproved         Boolean    @default(true) @map("is_approved")
-  isBlocked          Boolean    @default(false) @map("is_blocked")
-  registrationDate   DateTime   @default(now()) @map("registration_date")
+  vendorId                   Int        @id @default(autoincrement()) @map("vendor_id")
+  businessName               String     @map("business_name")
+  email                      String     @unique
+  password                   String
+  description                String?
+  contactNumber              String?    @map("contact_number")
+  location                   String?
+  registrationNumber         String?    @map("registration_number")
+  establishedYear            Int?       @map("established_year")
+  address                    String?
+  bannerImage                String?    @map("banner_image")
+  logoImage                  String?    @map("logo_image")
+  socialFacebook             String?    @map("social_facebook")
+  socialInstagram            String?    @map("social_instagram")
+  socialTwitter              String?    @map("social_twitter")
+  website                    String?
+  vendorType                 VendorType @map("vendor_type")
+  isApproved                 Boolean    @default(false) @map("is_approved")
+  isBlocked                  Boolean    @default(false) @map("is_blocked")
+  registrationFee            Decimal?   @map("registration_fee") @db.Decimal(10, 2)
+  registrationPaymentStatus  String     @default("PENDING") @map("registration_payment_status")
+  registrationPaymentMethod  String?    @map("registration_payment_method")
+  registrationPaymentReceipt String?    @map("registration_payment_receipt")
+  registrationTransactionId  String?    @map("registration_transaction_id")
+  registrationPaymentDate    DateTime?  @map("registration_payment_date")
+  registrationDate           DateTime   @default(now()) @map("registration_date")
 
   services      Service[]
   products      Product[]

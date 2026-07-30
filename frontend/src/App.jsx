@@ -259,6 +259,8 @@ function App() {
           <Route path="audit-logs" element={<AuditLogs />} />
           <Route path="system-settings" element={<SystemSettings />} />
           <Route path="account-settings" element={<AccountSettings />} />
+          <Route path="business-approvals" element={<BusinessApprovals />} />
+          <Route path="vendor-verification" element={<VendorVerification />} />
           <Route path="roles-permissions" element={<RolesPermissions />} />
           <Route path="advanced-analytics-dashboard" element={<AdvancedAnalyticsDashboard />} />
           <Route path="user/:id" element={<UserDetail />} />

@@ -60,8 +60,8 @@ router.get('/bookings', getAllBookingsForAdmin);
 
 // Vendors Management
 router.get('/vendors', getAllVendors);
-router.get('/vendors/:id', getAdminVendorById);
 router.get('/vendors/pending', getPendingVendors);
+router.get('/vendors/:id', getAdminVendorById);
 router.put('/vendors/:id', updateVendor);
 router.put('/vendors/:id/approve', approveVendor);
 router.put('/vendors/:id/reject', rejectVendor);
