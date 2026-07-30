@@ -72,8 +72,11 @@ const getDashboardStats = async (req, res) => {
       where: { customerId, status: 'PENDING' }
     });
 
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
     const upcomingEvents = await prisma.booking.count({
-      where: { customerId, status: 'ACCEPTED', eventDate: { gte: new Date() } }
+      where: { customerId, status: 'ACCEPTED', eventDate: { gte: startOfToday } }
     });
 
     // Mocking wishlist count as we don't have a specific table for it yet
@@ -87,9 +90,9 @@ const getDashboardStats = async (req, res) => {
     });
 
     const upcomingBookingsList = await prisma.booking.findMany({
-      where: { customerId, status: { in: ['ACCEPTED', 'PENDING'] }, eventDate: { gte: new Date() } },
-      orderBy: { eventDate: 'asc' },
-      take: 3,
+      where: { customerId, status: { in: ['ACCEPTED', 'PENDING', 'PROCESSING'] }, eventDate: { gte: startOfToday } },
+      orderBy: { bookingDate: 'desc' },
+      take: 5,
       include: { service: { include: { vendor: true } }, package: { include: { vendor: true } } }
     });
 
