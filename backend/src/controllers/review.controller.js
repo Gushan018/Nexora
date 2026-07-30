@@ -118,8 +118,22 @@ const replyToReview = async (req, res) => {
       data: {
         vendorReply: reply.trim(),
         vendorReplyDate: new Date()
+      },
+      include: {
+        vendor: { select: { businessName: true } }
       }
     });
+
+    if (updated.customerId) {
+      const vendorName = updated.vendor?.businessName || 'A vendor';
+      await prisma.notification.create({
+        data: {
+          type: 'review_reply',
+          message: `${vendorName} replied to your review: "${reply.trim().substring(0, 50)}${reply.length > 50 ? '...' : ''}"`,
+          customerId: updated.customerId
+        }
+      }).catch(() => {});
+    }
 
     res.status(200).json({ message: "Reply submitted successfully.", review: updated });
   } catch (error) {

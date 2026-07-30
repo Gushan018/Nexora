@@ -35,7 +35,16 @@ export const AccountSettings = () => {
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
 
-  const profilePath = user?.role === 'admin' ? '/admin/profile' : '/customers/profile';
+  const getProfilePath = () => {
+    const role = (user?.role || '').toLowerCase();
+    if (role === 'admin') return '/admin/profile';
+    if (role === 'vendor' || role === 'seller' || role === 'service_provider' || role === 'company' || role === 'emc') {
+      return '/vendors/profile';
+    }
+    return '/customers/profile';
+  };
+
+  const profilePath = getProfilePath();
 
   React.useEffect(() => {
     const fetchProfile = async () => {
@@ -44,13 +53,14 @@ export const AccountSettings = () => {
         if (res.data) {
           const profile = res.data;
           if (profile.bio !== undefined) setFormBio(profile.bio || '');
-          if (profile.name) {
-            const [first, ...rest] = profile.name.split(' ');
+          const profileName = profile.name || profile.businessName || user?.name || '';
+          if (profileName) {
+            const [first, ...rest] = profileName.split(' ');
             setFormFirst(first || '');
             setFormLast(rest.join(' ') || '');
           }
-          if (profile.profileImage) {
-            setPreviewImage(profile.profileImage);
+          if (profile.profileImage || profile.logoImage) {
+            setPreviewImage(profile.profileImage || profile.logoImage);
           }
         }
       } catch (e) {
@@ -58,7 +68,7 @@ export const AccountSettings = () => {
       }
     };
     fetchProfile();
-  }, [profilePath]);
+  }, [profilePath, user]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -82,18 +92,29 @@ export const AccountSettings = () => {
         profileImageUrl = uploadRes.data.url;
       }
 
-      const res = await api.put(profilePath, {
+      const payload = {
+        name: `${formFirst} ${formLast}`.trim(),
+        businessName: `${formFirst} ${formLast}`.trim(),
+        profileImage: profileImageUrl,
+        logoImage: profileImageUrl,
+        bio: formBio
+      };
+
+      const res = await api.put(profilePath, payload);
+
+      const updatedProfile = res.data.customer || res.data.vendor || res.data.admin || res.data || {};
+      const updatedUser = {
+        ...user,
         name: `${formFirst} ${formLast}`.trim(),
         profileImage: profileImageUrl,
+        ...updatedProfile,
         bio: formBio
-      });
-
-      const updatedProfile = res.data.customer || res.data.admin || {};
-      const updatedUser = { ...user, ...updatedProfile, bio: formBio };
+      };
       setUser(updatedUser);
       localStorage.setItem('user', JSON.stringify(updatedUser));
       showToast('Account settings saved successfully!', 'success');
     } catch (err) {
+      console.error('Failed to save settings:', err);
       showToast(err.response?.data?.message || 'Failed to save settings.', 'error');
     } finally {
       setIsSaving(false);
