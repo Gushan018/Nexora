@@ -10,10 +10,12 @@ const getPendingVendors = async (req, res) => {
   try {
     const vendors = await prisma.vendor.findMany({
       where: { isApproved: false },
-      select: { vendorId: true, businessName: true, email: true, vendorType: true, registrationDate: true }
+      orderBy: { registrationDate: 'desc' },
     });
-    res.status(200).json(vendors);
+    const safeVendors = vendors.map(({ password, ...rest }) => rest);
+    res.status(200).json(safeVendors);
   } catch (error) {
+    console.error("getPendingVendors error:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
@@ -529,12 +531,16 @@ const approveVendor = async (req, res) => {
   try {
     const { id } = req.params; 
 
-    await prisma.vendor.update({
+    const vendor = await prisma.vendor.update({
       where: { vendorId: parseInt(id) },
-      data: { isApproved: true },
+      data: {
+        isApproved: true,
+        isBlocked: false,
+        registrationPaymentStatus: 'PAID',
+      },
     });
 
-    res.status(200).json({ message: "Vendor approved successfully!" });
+    res.status(200).json({ message: "Vendor approved successfully! Account activated.", vendor });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
@@ -654,7 +660,7 @@ const rejectVendor = async (req, res) => {
 
     await prisma.vendor.update({
       where: { vendorId: parseInt(id) },
-      data: { isApproved: false, isBlocked: true },
+      data: { isApproved: false, isBlocked: true, registrationPaymentStatus: 'REJECTED' },
     });
 
     res.status(200).json({ message: 'Vendor registration rejected successfully.' });

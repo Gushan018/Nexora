@@ -101,6 +101,7 @@ export const DashboardLayout = ({ role = 'customer' }) => {
       case 'admin':
         return [
           { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard /> },
+          { name: 'Approvals', path: '/admin/business-approvals', icon: <ShieldAlert /> },
           { name: 'Users', path: '/admin/user-management', icon: <User /> },
           { name: 'Vendors', path: '/admin/admin-vendor-management', icon: <ShoppingBag /> },
           { name: 'Customers', path: '/admin/admin-customer-management', icon: <User /> },
