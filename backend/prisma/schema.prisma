@@ -15,6 +15,7 @@ enum VendorType {
   CATERING
   DJ
   EVENT_COMPANY
+  SELLER
   OTHER
 }
 
