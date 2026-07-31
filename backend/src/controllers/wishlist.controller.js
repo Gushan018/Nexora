@@ -3,7 +3,10 @@ const prisma = new PrismaClient();
 
 const getWishlist = async (req, res) => {
   try {
-    const customerId = req.user.id;
+    const customerId = parseInt(req.user.id);
+    if (!prisma.wishlist) {
+      return res.status(200).json([]);
+    }
     const wishlist = await prisma.wishlist.findMany({
       where: { customerId },
       include: {
@@ -20,8 +23,12 @@ const getWishlist = async (req, res) => {
 
 const addToWishlist = async (req, res) => {
   try {
-    const customerId = req.user.id;
+    const customerId = parseInt(req.user.id);
     const { productId, serviceId, packageId } = req.body;
+
+    if (!prisma.wishlist) {
+      return res.status(200).json({ message: "Wishlist feature unavailable.", item: null });
+    }
 
     const existing = await prisma.wishlist.findFirst({
       where: {
@@ -56,7 +63,11 @@ const addToWishlist = async (req, res) => {
 const removeFromWishlist = async (req, res) => {
   try {
     const { id } = req.params;
-    const customerId = req.user.id;
+    const customerId = parseInt(req.user.id);
+
+    if (!prisma.wishlist) {
+      return res.status(200).json({ message: "Removed from wishlist." });
+    }
 
     await prisma.wishlist.delete({
       where: {

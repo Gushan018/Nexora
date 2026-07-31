@@ -240,7 +240,7 @@ const deleteCustomer = async (req, res) => {
     try {
       await prisma.$transaction([
         prisma.cart.deleteMany({ where: { customerId } }),
-        prisma.wishlist.deleteMany({ where: { customerId } }),
+        ...(prisma.wishlist ? [prisma.wishlist.deleteMany({ where: { customerId } })] : []),
         prisma.notification.deleteMany({ where: { customerId } }),
         prisma.customer.delete({ where: { customerId } }),
       ]);

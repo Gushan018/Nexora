@@ -87,10 +87,7 @@ const resolveVendorId = async (rawUserId) => {
   const userId = parseInt(rawUserId);
   if (isNaN(userId)) return null;
 
-  let vendor = await prisma.vendor.findUnique({ where: { vendorId: userId } });
-  if (!vendor) {
-    vendor = await prisma.vendor.findFirst({ where: { userId: userId } });
-  }
+  const vendor = await prisma.vendor.findUnique({ where: { vendorId: userId } });
   return vendor ? vendor.vendorId : userId;
 };
 
@@ -234,11 +231,7 @@ const updateMyProfile = async (req, res) => {
 const getDashboard = async (req, res) => {
   try {
     const userId = parseInt(req.user.id);
-    let vendor = await prisma.vendor.findUnique({ where: { vendorId: userId } });
-    if (!vendor) {
-      vendor = await prisma.vendor.findFirst({ where: { userId: userId } });
-    }
-    const vendorId = vendor ? vendor.vendorId : userId;
+    const vendorId = await resolveVendorId(req.user.id);
     const now = new Date();
 
     const totalPackages = await prisma.eventPackage.count({ where: { vendorId } });
