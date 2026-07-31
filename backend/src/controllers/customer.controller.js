@@ -62,7 +62,7 @@ const updateCustomerProfile = async (req, res) => {
 // Get Customer Dashboard Stats
 const getDashboardStats = async (req, res) => {
   try {
-    const customerId = req.user.id;
+    const customerId = parseInt(req.user.id);
 
     const activeOrders = await prisma.order.count({
       where: { customerId, status: { notIn: ['DELIVERED', 'CANCELLED'] } }
@@ -79,8 +79,7 @@ const getDashboardStats = async (req, res) => {
       where: { customerId, status: 'ACCEPTED', eventDate: { gte: startOfToday } }
     });
 
-    // Mocking wishlist count as we don't have a specific table for it yet
-    const wishlisted = await prisma.wishlist.count({ where: { customerId } }); 
+    const wishlisted = prisma.wishlist ? await prisma.wishlist.count({ where: { customerId } }).catch(() => 0) : 0; 
 
     const recentOrders = await prisma.order.findMany({
       where: { customerId },
@@ -90,7 +89,7 @@ const getDashboardStats = async (req, res) => {
     });
 
     const upcomingBookingsList = await prisma.booking.findMany({
-      where: { customerId, status: { in: ['ACCEPTED', 'PENDING', 'PROCESSING'] }, eventDate: { gte: startOfToday } },
+      where: { customerId, status: { in: ['ACCEPTED', 'PENDING'] }, eventDate: { gte: startOfToday } },
       orderBy: { bookingDate: 'desc' },
       take: 5,
       include: { service: { include: { vendor: true } }, package: { include: { vendor: true } } }
@@ -113,6 +112,7 @@ const getDashboardStats = async (req, res) => {
       actionRequired
     });
   } catch (error) {
+    console.error('Error fetching customer dashboard stats:', error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };

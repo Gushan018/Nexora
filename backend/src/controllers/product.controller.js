@@ -6,10 +6,7 @@ const resolveVendorId = async (rawUserId) => {
   const userId = parseInt(rawUserId);
   if (isNaN(userId)) return null;
 
-  let vendor = await prisma.vendor.findUnique({ where: { vendorId: userId } });
-  if (!vendor) {
-    vendor = await prisma.vendor.findFirst({ where: { userId: userId } });
-  }
+  const vendor = await prisma.vendor.findUnique({ where: { vendorId: userId } });
   return vendor ? vendor.vendorId : userId;
 };
 

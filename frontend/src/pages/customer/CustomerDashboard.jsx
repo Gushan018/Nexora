@@ -103,7 +103,9 @@ export const CustomerDashboard = () => {
     queryFn: async () => {
       const res = await api.get('/customers/dashboard-stats');
       return res.data;
-    }
+    },
+    staleTime: 0,
+    refetchOnWindowFocus: true
   });
 
   return (
