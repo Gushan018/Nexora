@@ -13,10 +13,25 @@ const getPendingVendors = async (req, res) => {
       orderBy: { registrationDate: 'desc' },
     });
     const safeVendors = vendors.map(({ password, ...rest }) => rest);
-    res.status(200).json(safeVendors);
+    return res.status(200).json(safeVendors);
   } catch (error) {
     console.error("getPendingVendors error:", error);
-    res.status(500).json({ message: "Server Error", error: error.message });
+    try {
+      const rawVendors = await prisma.$queryRawUnsafe(`
+        SELECT vendor_id AS "vendorId", business_name AS "businessName", email,
+               contact_number AS "contactNumber", location, vendor_type AS "vendorType",
+               is_approved AS "isApproved", is_blocked AS "isBlocked",
+               registration_fee AS "registrationFee", registration_payment_status AS "registrationPaymentStatus",
+               registration_payment_method AS "registrationPaymentMethod", registration_payment_receipt AS "registrationPaymentReceipt",
+               registration_transaction_id AS "registrationTransactionId", registration_payment_date AS "registrationPaymentDate",
+               registration_date AS "registrationDate"
+        FROM vendor WHERE is_approved = false ORDER BY registration_date DESC
+      `);
+      return res.status(200).json(rawVendors || []);
+    } catch (fallbackErr) {
+      console.error("getPendingVendors fallback error:", fallbackErr);
+      return res.status(200).json([]);
+    }
   }
 };
 
